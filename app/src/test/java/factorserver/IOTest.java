@@ -7,7 +7,7 @@ import org.mockito.invocation.InvocationOnMock;
 import java.util.ArrayList;
 import java.util.Iterator;
 public class IOTest {
-  static String GREETING = "Hello, welcome to Lucy's Prime Factor Server!";
+  static String GREETING = "Hello, welcome to Yezhou's Prime Factor Server!";
   static String PROMPT = "Please enter a number:";
   static String INVALID_NUMBER_MESG = "That is not a valid integer";
   static String UNFACTORABLE_NUMBER_MESG =
