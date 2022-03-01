@@ -45,3 +45,30 @@ task resolveDependencies {
        }
    }
 }
+
+/*
+project(':shared'){
+    
+}
+project(':server:app'){
+    dependencies{
+        implementation project(':shared')
+    }
+}
+project(':client:app'){
+    dependencies{
+        implementation project(':shared')
+    }
+}
+ */
+
+tasks.register("run-server"){
+    dependsOn project('server:app').getTasksByName('run',false)
+    group = 'Run Client/Server'
+    description = 'Run the Server'
+}
+tasks.register("run-client"){
+    dependsOn project('client:app').getTasksByName('run',false)
+    group = 'Run Client/Server'
+     description = 'Run the Client'
+}

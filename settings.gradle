@@ -8,4 +8,4 @@
  */
 
 rootProject.name = 'factorserver'
-include('app')
+include('shared', 'client:app', 'server:app')
