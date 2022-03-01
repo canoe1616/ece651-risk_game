@@ -13,6 +13,7 @@ do
         exit 1
     fi
     x=`netcat -N -w 1 localhost 1651 < /dev/null`
+    sleep 1
     let count=count+1
 done
 
@@ -25,7 +26,7 @@ nc -N localhost 1651 > testoutput <<EOF
 123456
 EOF
 cat > expectedoutput <<EOF
-Hello, welcome to Drew's Prime Factor Server!
+Hello, welcome to Yezhou's Prime Factor Server!
 Please enter a number:
 2
 Please enter a number:
