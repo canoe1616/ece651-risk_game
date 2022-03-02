@@ -14,4 +14,7 @@ public class Player implements Serializable{
   public void addTerritory(Territory ter){
     this.territoryList.add(ter);
   }
+  public HashSet<Territory> getTerritoryList(){
+    return this.territoryList;
+  }
 }

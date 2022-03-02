@@ -19,6 +19,10 @@ public class Territory implements Serializable{
     this.neighbors.add(ter);
   }
 
+  public HashSet<Territory> getNeighbors(){
+    return this.neighbors;
+  }
+
   public String getName(){
     return name;
   }
