@@ -11,7 +11,7 @@ CI/CD on Duke's Gitlab.
 ![coverage](https://gitlab.oit.duke.edu/yc407/factorserver/badges/master/coverage.svg?job=test)
 
 ## Coverage
-[Detailed coverage](https://NETID.pages.oit.duke.edu/PROJECT/dashboard.html)
+[Detailed coverage](https://NETID.pages.oit.duke.edu/factorserver/dashboard.html)
 
 
 
