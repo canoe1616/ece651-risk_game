@@ -80,7 +80,7 @@
 
 (defun dcoverage-default-find-cov-file ()
   "Default way to find coverage file: find project root, then go to 'build/reports/clover/clover.xml'."
-  (concat (file-name-as-directory (dcoverage-find-project-root)) "app/build/reports/clover/clover.xml"))
+  (concat (file-name-as-directory (dcoverage-find-project-root)) "shared/build/reports/clover/clover.xml"))
 
 (defvar dcoverage-find-cov-file-fn (symbol-function 'dcoverage-default-find-cov-file))
 "Specifies how to find the coverage file.  Set if you have a different setup."
@@ -135,7 +135,7 @@
           (let* ((linum (car item))
                  (lidelta (- linum currlinum))
                  (color (cdr item))
-                 (i1 (forward-line lidelta))
+                (i1 (forward-line lidelta))
                  (i2 (setq currlinum linum)))
             (dcoverage-mark-curr-line color)))))))
 
