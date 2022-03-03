@@ -25,7 +25,7 @@ clover{
         additionalArgs = "-g:lines,source,vars"
     }
     report {
-        xml=true
+        xml = true
         html = true
     }
 }
