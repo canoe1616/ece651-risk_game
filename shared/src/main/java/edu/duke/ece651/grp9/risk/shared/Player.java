@@ -19,7 +19,9 @@ public class Player implements Serializable{
     return this.territoryList;
   }
 
-
+  public char getName() {
+    return color;
+  }
   public HashMap<Territory, HashSet<Territory>> getAdjacency(){
     HashMap<Territory, HashSet<Territory>> ans = new HashMap<>();
     for(Territory t : getTerritoryList()){
