@@ -9,12 +9,13 @@ import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
-import java.net.ServerSocket;
+//import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Iterator;
 import java.util.Scanner;
 
 import edu.duke.ece651.grp9.risk.shared.Map;
+//import edu.duke.ece651.grp9.risk.shared.Message;
 import edu.duke.ece651.grp9.risk.shared.Territory;
 
 public class App {
@@ -24,13 +25,15 @@ public class App {
     this.inputReader = inputSource;
   }
 
-  public String selectColor(ObjectInputStream stream) throws IOException { 
-    String s;
+  public String selectColor(ObjectInputStream stream, BufferedReader inputSource) throws IOException { 
+    String s = "";
     try {
       String colorPrompt = (String)stream.readObject();
       System.out.println(colorPrompt);
-      s = inputReader.readLine();
-    } catch (Exception exception) {
+      s = inputSource.readLine();
+      System.out.println(s);
+    }
+    catch (Exception exception) {
       System.out.println(exception.getMessage());
       return "INVALID";
     }
@@ -38,6 +41,7 @@ public class App {
   }
 
   public static void main(String[] args) {
+        
     BufferedReader inputSource = new BufferedReader(new InputStreamReader(System.in));
     App app = new App(inputSource);
 
@@ -53,8 +57,7 @@ public class App {
       while (it.hasNext()){
         System.out.println(it.next().getName());
       }
-      
-      String color = app.selectColor(objectInputStream);
+      String color = app.selectColor(objectInputStream, inputSource);
       
       OutputStream outputStream = socket.getOutputStream();
       ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
