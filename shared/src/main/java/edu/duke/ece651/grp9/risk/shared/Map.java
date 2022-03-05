@@ -4,9 +4,13 @@ import java.util.HashSet;
 
 public class Map implements Serializable{
   private HashSet<Territory> territoryList;
+  private HashSet<Player> players;
   //private List<List<Integer>> adjList = new ArrayList<List<Integer>>();
   public Map(){
     this.territoryList = new HashSet<Territory>();
+    this.players = new HashSet<Player>();
+    // build a test map
+    buildTestMap();
     //this.territoryList = buildTestMap().territoryList;
   }
   public Map(HashSet<Territory> list) {
@@ -17,7 +21,10 @@ public class Map implements Serializable{
     return territoryList;
   }
 
-  
+  public HashSet<Player> getPlayer() {
+    return players;
+  }
+
   public void buildTestMap(){
     /* Test map look like this:
       |A|B|
@@ -25,6 +32,8 @@ public class Map implements Serializable{
      */
     Player p1 = new Player('b');
     Player p2 = new Player('g');
+    players.add(p1);
+    players.add(p2);
     
     Territory a = new Territory("A", 10, p1);
     Territory b = new Territory("B", 10, p1);

@@ -26,4 +26,9 @@ public class Territory implements Serializable{
   public String getName(){
     return name;
   }
+
+  public int getUnit() {
+    return unit;
+  }
+
 }
