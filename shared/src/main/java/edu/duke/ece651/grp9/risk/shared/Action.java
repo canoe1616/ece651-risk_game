@@ -6,7 +6,7 @@ package edu.duke.ece651.grp9.risk.shared;
  * @author PROY
  * @since 10 March 2022
  */
-public interface class Action {
+public interface Action {
 
   /**
    * Perform action on source and destination Territories
