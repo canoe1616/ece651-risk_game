@@ -5,21 +5,28 @@ import java.util.HashSet;
 public class Territory implements Serializable{
   private String name;
   private int unit;
-  private Player owner;
-  private HashSet<Territory> neighbors;
+  private String color;
+  private HashSet<String> neighbors;
   
-  public Territory(String name, int unit, Player owner){
+  public Territory(String name){
     this.name = name;
+    this.neighbors = new HashSet<String>();
+  }
+
+  public void setUnit(int unit){
     this.unit = unit;
-    this.owner = owner;
-    this.neighbors = new HashSet<Territory>();
   }
 
-  public void addNeighbors(Territory ter){
-    this.neighbors.add(ter);
+  public void setColor(String color){
+    this.color = color;
+  }
+  
+  
+  public void addNeighbors(String name){
+    this.neighbors.add(name);
   }
 
-  public HashSet<Territory> getNeighbors(){
+  public HashSet<String> getNeighbors(){
     return this.neighbors;
   }
 

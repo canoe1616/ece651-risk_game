@@ -11,11 +11,10 @@ class MapTextViewTest {
     @Disabled
     @Test
     void test_getAdjacencyText() {
-        Random rand = new Random(0);
         MapTextView view = new MapTextView(new Map());
-        Territory t = new Territory("RiverWood", 10, new Player('g'));
-        t.addNeighbors(new Territory("Hawii", 10, new Player('g')));
-        t.addNeighbors(new Territory("Durham", 10, new Player('b')));
+        Territory t = new Territory("RiverWood");
+        t.addNeighbors("Hawii");
+        t.addNeighbors("Durham");
         String exp = "Hawii, Durham";
         assertEquals(exp, view.getAdjacencyText(t));
     }
@@ -40,6 +39,6 @@ class MapTextViewTest {
                 " (M)ove\n" +
                 " (a)ttack\n" +
                 " (D)one\n";
-        assertEquals(exp, view.displayGameState(new Player('g')));
+        assertEquals(exp, view.displayGameState(new Player("green")));
     }
 }

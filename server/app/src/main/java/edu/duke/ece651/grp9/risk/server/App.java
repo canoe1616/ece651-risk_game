@@ -14,6 +14,7 @@ import java.util.HashSet;
 import edu.duke.ece651.grp9.risk.shared.Map;
 //import edu.duke.ece651.grp9.risk.shared.MapPackage;
 //import edu.duke.ece651.grp9.risk.shared.Message;
+import edu.duke.ece651.grp9.risk.shared.MapFactory;
 
 public class App {
   private HashSet<String> remainingColors;
@@ -49,9 +50,9 @@ public class App {
 
   public static void main(String[] args) {
     App app = new App();
-
-    Map myMap = new Map();
-    myMap.buildTestMap();
+    
+    MapFactory f = new MapFactory();
+    Map myMap = f.makeMapForTwo();
     int player_num = 3;
 
     try(ServerSocket ss = new ServerSocket(6666)){
