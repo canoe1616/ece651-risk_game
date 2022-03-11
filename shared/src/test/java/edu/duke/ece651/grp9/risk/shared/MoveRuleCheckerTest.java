@@ -20,15 +20,23 @@ public class MoveRuleCheckerTest {
 
     RuleChecker ruleChecker = new MoveRuleChecker(null);
     t1.addNeighbors(t2);
+    t2.addNeighbors(t1);
+
     t1.addNeighbors(t3);
+    t3.addNeighbors(t1);
+
     t2.addNeighbors(t4);
+    t4.addNeighbors(t2);
+
     t4.addNeighbors(t5);
+    t5.addNeighbors(t4);
 
     assertEquals(ruleChecker.checkMyRule(p1, t1, t2, 4), error1);
     assertEquals(ruleChecker.checkMyRule(p1, t1, t3, 4), null);
     assertEquals(ruleChecker.checkMyRule(p1, t1, t5, 4), error2);
 
     t3.addNeighbors(t4);
+    t4.addNeighbors(t3);
     assertEquals(ruleChecker.checkMyRule(p1, t1, t5, 4), null);
   }
 }

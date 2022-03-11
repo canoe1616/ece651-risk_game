@@ -22,6 +22,7 @@ public class AttackRuleCheckerTest {
 
     t1.addNeighbors(t2);
     assertEquals(ruleChecker.checkMyRule(p1, t1, t2, 4), null);
+    t1.addNeighbors(t3);
     assertEquals(ruleChecker.checkMyRule(p1, t1, t3, 4), error2);
   }
 }
