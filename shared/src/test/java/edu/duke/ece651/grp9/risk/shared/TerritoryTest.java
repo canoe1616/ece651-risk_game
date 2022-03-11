@@ -9,19 +9,19 @@ import org.junit.jupiter.api.Test;
 public class TerritoryTest {
   @Test
   public void test_getName() {
-    Player p1 = new Player('b');
-    Territory ter = new Territory("Test", 10, p1);
+    Player p1 = new Player("blue");
+    Territory ter = new Territory("Test");
     assertEquals("Test",ter.getName());
   }
 
   @Test
   public void test_addNeighbors(){
-    Player p1 = new Player('b');
-    Territory ter1 = new Territory("Test1", 10, p1);
-    Territory ter2 = new Territory("Test2", 10, p1);
-    ter1.addNeighbors(ter2);
-    HashSet<Territory> neighbors = new HashSet<Territory>();
-    neighbors.add(ter2);
+    Player p1 = new Player("blue");
+    Territory ter1 = new Territory("Test1");
+    Territory ter2 = new Territory("Test2");
+    ter1.addNeighbors("Test2");
+    HashSet<String> neighbors = new HashSet<String>();
+    neighbors.add("Test2");
     assertEquals(neighbors, ter1.getNeighbors());
   
 }

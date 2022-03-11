@@ -5,10 +5,10 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 public class Player implements Serializable{
-  private char color;
+  private String color;
   private HashSet<Territory> territoryList;
   
-  public Player(char color){
+  public Player(String color){
     this.color = color;
     this.territoryList = new HashSet<Territory>();
   }
@@ -19,13 +19,13 @@ public class Player implements Serializable{
     return this.territoryList;
   }
 
-  public char getName() {
+  public String getName() {
     return color;
   }
-  public HashMap<Territory, HashSet<Territory>> getAdjacency(){
-    HashMap<Territory, HashSet<Territory>> ans = new HashMap<>();
+  public HashMap<Territory, HashSet<String>> getAdjacency(){
+    HashMap<Territory, HashSet<String>> ans = new HashMap<>();
     for(Territory t : getTerritoryList()){
-      HashSet<Territory> tmp = new HashSet<Territory>();
+      HashSet<String> tmp = new HashSet<String>();
       tmp = t.getNeighbors();
       ans.put(t,tmp);
     }

@@ -1,6 +1,7 @@
 package edu.duke.ece651.grp9.risk.shared;
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.Iterator;
 
 public class Map implements Serializable{
   private HashSet<Territory> territoryList;
@@ -9,8 +10,6 @@ public class Map implements Serializable{
   public Map(){
     this.territoryList = new HashSet<Territory>();
     this.players = new HashSet<Player>();
-    // build a test map
-    buildTestMap();
     //this.territoryList = buildTestMap().territoryList;
   }
   public Map(HashSet<Territory> list) {
@@ -24,49 +23,43 @@ public class Map implements Serializable{
   public HashSet<Player> getPlayer() {
     return players;
   }
+  public void addPlayer(Player p){
+    players.add(p);
+  }
+
+  public Player findPlayer(String color){
+    Iterator<Player> playerIterator = players.iterator();
+    while(playerIterator.hasNext()){
+      Player p = playerIterator.next();
+      if (p.getName().equals(color)){
+        return p;
+      }
+    }
+    throw new IllegalArgumentException("No such player.");
+  }
+
+  public Territory findTerritory(String name){
+     Iterator<Territory> terIterator = territoryList.iterator();
+     while(terIterator.hasNext()){
+       Territory ter = terIterator.next();
+       if (ter.getName().equals(name)){
+         return ter;
+       }
+     }
+     throw new IllegalArgumentException("No such territory.");
+   }
 
   public void buildTestMap(){
-    /* Test map look like this:
-      |A|B|
-      |C|D|
-     */
-    Player p1 = new Player('b');
-    Player p2 = new Player('g');
-    players.add(p1);
-    players.add(p2);
-    
-    Territory a = new Territory("A", 10, p1);
-    Territory b = new Territory("B", 10, p1);
-    Territory c = new Territory("C", 10, p2);
-    Territory d = new Territory("D", 10, p2);
-
-    //set Territory of a player
-    p1.addTerritory(a);
-    p1.addTerritory(b);
-    p2.addTerritory(c);
-    p2.addTerritory(d);
-    
-    //set up territory's neighbors
-    a.addNeighbors(d);
-    a.addNeighbors(c);
-    
-    b.addNeighbors(a);
-    b.addNeighbors(d);
-
-    c.addNeighbors(a);
-    c.addNeighbors(d);
-
-    d.addNeighbors(b);
-    d.addNeighbors(c);
-    
-    //save all territory into the list
-    this.territoryList.add(a);
-    this.territoryList.add(b);
-    this.territoryList.add(c);
-    this.territoryList.add(d);
+    MapFactory m = new MapFactory();
+    territoryList = m.makeMapForTwo().getList();
   }
-  //for testingg
-  public HashSet<Territory> getTerritoryList(){
-    return territoryList;
+
+  public void buildThreePlayerMap(){
+    MapFactory m = new MapFactory();
+    territoryList = m.makeMapForThree().getList();
+  }
+  
+  public void addTerritory(Territory ter){
+    territoryList.add(ter);
   }
 }
