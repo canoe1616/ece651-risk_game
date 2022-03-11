@@ -12,7 +12,7 @@ public class OwnerRuleCheckerTest {
     Player p2 = new Player('g');
     Territory t1 = new Territory("Two Rivers", 5, p1);
     Territory t2 = new Territory("Tar Valon", 3, p2);
-    String error = "This action is invalid: you do not own Tar Valon."
+    String error = "This action is invalid: you do not own Tar Valon.";
 
     RuleChecker ruleChecker = new RuleChecker(new OwnerRuleChecker(null));
 

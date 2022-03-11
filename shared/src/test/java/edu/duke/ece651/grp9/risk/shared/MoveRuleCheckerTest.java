@@ -15,8 +15,8 @@ public class MoveRuleCheckerTest {
     Territory t3 = new Territory("Falme", 5, p1);
     Territory t4 = new Territory("Tear", 5, p1);
     Territory t5 = new Territory("Andor", 5, p1);
-    String error1 = "This action is invalid: Two Rivers is not connected to Tar Valon."
-    String error2 = "This action is invalid: Two Rivers is not connected to Andor."
+    String error1 = "This action is invalid: Two Rivers is not connected to Tar Valon.";
+    String error2 = "This action is invalid: Two Rivers is not connected to Andor.";
 
     RuleChecker ruleChecker = new RuleChecker(new MoveRuleChecker(null));
     t1.addNeighbors(t2);
