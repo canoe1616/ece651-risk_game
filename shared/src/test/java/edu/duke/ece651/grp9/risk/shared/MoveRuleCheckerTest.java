@@ -18,7 +18,7 @@ public class MoveRuleCheckerTest {
     String error1 = "This action is invalid: Two Rivers is not connected to Tar Valon.";
     String error2 = "This action is invalid: Two Rivers is not connected to Andor.";
 
-    RuleChecker ruleChecker = new RuleChecker(new MoveRuleChecker(null));
+    RuleChecker ruleChecker = new MoveRuleChecker(null);
     t1.addNeighbors(t2);
     t1.addNeighbors(t3);
     t2.addNeighbors(t4);

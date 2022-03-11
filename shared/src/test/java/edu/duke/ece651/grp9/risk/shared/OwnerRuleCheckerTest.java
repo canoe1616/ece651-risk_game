@@ -14,7 +14,7 @@ public class OwnerRuleCheckerTest {
     Territory t2 = new Territory("Tar Valon", 3, p2);
     String error = "This action is invalid: you do not own Tar Valon.";
 
-    RuleChecker ruleChecker = new RuleChecker(new OwnerRuleChecker(null));
+    RuleChecker ruleChecker = new OwnerRuleChecker(null);
 
     assertEquals(ruleChecker.checkMyRule(p1, t1, t2, 4), null);
     assertEquals(ruleChecker.checkMyRule(p1, t2, t1, 4), error);

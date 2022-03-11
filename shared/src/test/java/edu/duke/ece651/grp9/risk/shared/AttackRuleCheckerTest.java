@@ -14,9 +14,9 @@ public class AttackRuleCheckerTest {
     Territory t2 = new Territory("Tar Valon", 3, p2);
     Territory t3 = new Territory("Falme", 5, p1);
     String error1 = "This action is invalid: Two Rivers is not adjacent to Tar Valon.";
-    String error1 = "This action is invalid: you cannot attack your own Territory.";
+    String error2 = "This action is invalid: you cannot attack your own Territory.";
 
-    RuleChecker ruleChecker = new RuleChecker(new AttackRuleChecker(null));
+    RuleChecker ruleChecker = new AttackRuleChecker(null);
 
     assertEquals(ruleChecker.checkMyRule(p1, t1, t2, 4), error1);
 
