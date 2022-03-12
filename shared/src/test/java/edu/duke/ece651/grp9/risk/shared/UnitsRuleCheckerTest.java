@@ -11,11 +11,11 @@ public class UnitsRuleCheckerTest {
     Player p1 = new Player('r');
     Territory t1 = new Territory("Two Rivers", 5, p1);
     Territory t2 = new Territory("Tar Valon", 3, p1);
-    String error = "This action is invalid: Tar Valon does not have enough units.";
+    String error1 = "This action is invalid: Tar Valon does not have enough units.";
 
     RuleChecker ruleChecker = new UnitsRuleChecker(null);
 
     assertEquals(ruleChecker.checkMyRule(p1, t1, t2, 4), null);
-    assertEquals(ruleChecker.checkMyRule(p1, t2, t1, 4), error);
+    assertEquals(ruleChecker.checkMyRule(p1, t2, t1, 4), error1);
   }
 }
