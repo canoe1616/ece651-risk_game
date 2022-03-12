@@ -7,28 +7,30 @@ public class Territory implements Serializable{
   private String name;
   private Player owner;
   private int unit;
-  private String color;
-  private HashSet<String> neighbors;
-  
+  private HashSet<Territory> neighbors;
+  //Constructor
   public Territory(String name){
     this.name = name;
-    this.neighbors = new HashSet<String>();
+    this.neighbors = new HashSet<Territory>();
   }
 
   public void setUnit(int unit){
     this.unit = unit;
   }
 
-  public void setColor(String color){
-    this.color = color;
-  }
-  
-  
-  public void addNeighbors(String name){
-    this.neighbors.add(name);
+  public void setOwner(Player owner){
+    this.owner = owner;
   }
 
-  public HashSet<String> getNeighbors(){
+  public Player getOwner(){
+    return this.owner;
+  }
+  
+  public void addNeighbors(Territory ter){
+    this.neighbors.add(ter);
+  }
+
+  public HashSet<Territory> getNeighbors(){
     return this.neighbors;
   }
 
@@ -40,12 +42,18 @@ public class Territory implements Serializable{
     return unit;
   }
 
-  public Player getOwner() {
-    return owner;
+  /**
+   * Overrides the equals method to check if two Territories are the same
+   *
+   * @param o is the input object to be compared with this
+   * @return boolean indicating if the two objects are equal
+   */
+  @Override
+  public boolean equals(Object o) {
+    if (o.getClass().equals(getClass())) {
+      Territory t = (Territory) o;
+      return name == t.name;
+    }
+    return false;
   }
-
-  public void setOwner(Player owner) {
-    this.owner = owner;
-  }
-
 }

@@ -50,15 +50,6 @@ public class Map implements Serializable{
      throw new IllegalArgumentException("No such territory.");
    }
 
-  public void buildMap(int player_num){
-    MapFactory m = new MapFactory();
-    if (player_num == 2){
-      territoryList = m.makeMapForTwo().getList();
-      
-    }
-  }
-
-  
   public void addTerritory(Territory ter){
     territoryList.add(ter);
   }

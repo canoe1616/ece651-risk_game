@@ -24,21 +24,17 @@ public class PlayerTest {
     Territory ter_1 = new Territory("Test_1");
     Territory ter_2 = new Territory("Test_2");
     Territory ter_3 = new Territory("Test_3");
-    ter_1.addNeighbors("Test_2");
-    ter_1.addNeighbors("Test_3");
-    ter_2.addNeighbors("Test_3");
+    ter_1.addNeighbors(ter_2);
+    ter_1.addNeighbors(ter_3);
+    ter_2.addNeighbors(ter_3);
     p1.addTerritory(ter_1);
     p1.addTerritory(ter_2);
     p1.addTerritory(ter_3);
     //For the ter_1, its neighbors become the ter_2 and ter_3.
     // So that, the hashmap looks like <ter_1, <ter_2,ter_3>> for the playerB
-    HashSet<String> neighbors = new HashSet<String>();
-    neighbors.add("Test_2");
-    neighbors.add("Test_3");
+    HashSet<Territory> neighbors = new HashSet<Territory>();
+    neighbors.add(ter_2);
+    neighbors.add(ter_3);
     assertEquals(neighbors, p1.getAdjacency().get(ter_1));
-
-
-    
   }
-
 }

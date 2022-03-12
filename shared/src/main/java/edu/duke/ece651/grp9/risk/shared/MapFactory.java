@@ -21,23 +21,20 @@ public class MapFactory implements AbstractMapFactory {
   }
 
   public void createTerritory(HashSet<String> TerritoryNameList, Map myMap){
-    Iterator<String> territoryIterator = TerritoryNameList.iterator();
-    while(territoryIterator.hasNext()){
-      Territory t = new Territory(territoryIterator.next());
+    Iterator<String> territoryNameIterator = TerritoryNameList.iterator();
+    while(territoryNameIterator.hasNext()){
+      Territory t = new Territory(territoryNameIterator.next());
       myMap.addTerritory(t);
     }
   }
 
-  public void setOwner(String territoryName, String color, Map myMap){
-    Territory ter = myMap.findTerritory(territoryName);
-    Player pyr = myMap.findPlayer(color);
-    ter.setColor(color);
+  public void setOwner(Territory ter, Player pyr){
+    ter.setOwner(pyr);
     pyr.addTerritory(ter);
   }
   
-  public void addNeighbors(String mainTerritory, String neighborTerritory, Map myMap){
-    Territory target = myMap.findTerritory(mainTerritory);
-    target.addNeighbors(neighborTerritory);
+  public void addNeighbors(Territory mainTerritory,Territory neighborTerritory){
+    mainTerritory.addNeighbors(neighborTerritory);
   }
     
   /*2 player map
@@ -47,36 +44,36 @@ public class MapFactory implements AbstractMapFactory {
   @Override
   public Map makeMapForTwo(){
     Map mapForTwo = new Map();
-    //create color list
-    HashSet<String> colorList = new HashSet<>();
-    colorList.add("red");
-    colorList.add("blue");
-    //create player list
-    createPlayer(colorList, mapForTwo);
-    
+    //create player
+    Player p1 = new Player("red");
+    Player p2 = new Player("blue");
     //create territory
-    HashSet<String> TerritoryNameList = new HashSet<>();
-    TerritoryNameList.add("A");
-    TerritoryNameList.add("B");
-    TerritoryNameList.add("C");
-    TerritoryNameList.add("D");
+    Territory ter_1 = new Territory("A");
+    Territory ter_2 = new Territory("B");
+    Territory ter_3 = new Territory("C");
+    Territory ter_4 = new Territory("D");
 
-    createTerritory(TerritoryNameList, mapForTwo);
-    //set Territory of a player
-    setOwner("A","red",mapForTwo);
-    setOwner("B","red",mapForTwo);
-    setOwner("C","blue",mapForTwo);
-    setOwner("D","blue",mapForTwo);
-
+    //set owner
+    ter_1.setOwner(p1);
+    ter_2.setOwner(p1);
+    ter_3.setOwner(p2);
+    ter_4.setOwner(p2);
+    
     //set neighbors
-    addNeighbors("A","C",mapForTwo);
-    addNeighbors("A","D",mapForTwo);
-    addNeighbors("B","A",mapForTwo);
-    addNeighbors("B","D",mapForTwo);
-    addNeighbors("C","A",mapForTwo);
-    addNeighbors("C","D",mapForTwo);
-    addNeighbors("D","B",mapForTwo);
-    addNeighbors("D","C",mapForTwo);
+    ter_1.addNeighbors(ter_2);
+    ter_1.addNeighbors(ter_3);
+    ter_2.addNeighbors(ter_1);
+    ter_2.addNeighbors(ter_4);
+    ter_3.addNeighbors(ter_1);
+    ter_3.addNeighbors(ter_4);
+    ter_4.addNeighbors(ter_2);
+    ter_4.addNeighbors(ter_3);
+
+    //add to territory list in map
+    mapForTwo.addTerritory(ter_1);
+    mapForTwo.addTerritory(ter_2);
+    mapForTwo.addTerritory(ter_3);
+    mapForTwo.addTerritory(ter_4);
     
     return mapForTwo;
   }
@@ -93,57 +90,64 @@ public class MapFactory implements AbstractMapFactory {
   @Override
   public Map makeMapForThree(){
     Map mapForThree = new Map();
-    //create color list
-    HashSet<String> colorList = new HashSet<>();
-    colorList.add("red");
-    colorList.add("blue");
-    colorList.add("green");
+    //create player
+    Player p1 = new Player("red");
+    Player p2 = new Player("green");
+    Player p3 = new Player("blue");
 
     //create territory
-    HashSet<String> TerritoryNameList = new HashSet<>();
-    TerritoryNameList.add("A");
-    TerritoryNameList.add("B");
-    TerritoryNameList.add("C");
-    TerritoryNameList.add("D");
-    TerritoryNameList.add("E");
-    TerritoryNameList.add("F");
-    TerritoryNameList.add("G");
-    TerritoryNameList.add("H");
-    TerritoryNameList.add("I");
+    Territory ter_A = new Territory("A");
+    Territory ter_B = new Territory("B");
+    Territory ter_C = new Territory("C");
+    Territory ter_D = new Territory("D");
+    Territory ter_E = new Territory("E");
+    Territory ter_F = new Territory("F");
+    Territory ter_G = new Territory("G");
+    Territory ter_H = new Territory("H");
+    Territory ter_I = new Territory("I");
 
-    createTerritory(TerritoryNameList, mapForThree);
-
-    //set Territory of a player      
-    setOwner("A","red",mapForThree);
-    setOwner("B","red",mapForThree);
-    setOwner("C","red",mapForThree);
-    setOwner("E","blue",mapForThree);
-    setOwner("F","blue",mapForThree);
-    setOwner("G","blue",mapForThree);
-    setOwner("D","green",mapForThree);
-    setOwner("H","green",mapForThree);
-    setOwner("I","green",mapForThree);
+   //set owner
+    ter_A.setOwner(p1);
+    ter_B.setOwner(p1);
+    ter_C.setOwner(p1);
+    ter_D.setOwner(p2);
+    ter_E.setOwner(p2);
+    ter_F.setOwner(p2);
+    ter_G.setOwner(p3);
+    ter_H.setOwner(p3);
+    ter_I.setOwner(p3);
 
     //set neighbors
-    addNeighbors("A","C",mapForThree);
-    addNeighbors("B","C",mapForThree);
-    addNeighbors("B","F",mapForThree);
-    addNeighbors("C","A",mapForThree);
-    addNeighbors("C","B",mapForThree);
-    addNeighbors("C","D",mapForThree);
-    addNeighbors("D","C",mapForThree);
-    addNeighbors("D","H",mapForThree);
-    addNeighbors("E","F",mapForThree);
-    addNeighbors("F","B",mapForThree);
-    addNeighbors("F","E",mapForThree);
-    addNeighbors("F","G",mapForThree);
-    addNeighbors("G","F",mapForThree);
-    addNeighbors("G","H",mapForThree);
-    addNeighbors("H","D",mapForThree);
-    addNeighbors("H","G",mapForThree);
-    addNeighbors("H","I",mapForThree);
-    addNeighbors("I","H",mapForThree);
-    
+    ter_A.addNeighbors(ter_C);
+    ter_B.addNeighbors(ter_C);
+    ter_B.addNeighbors(ter_F);
+    ter_C.addNeighbors(ter_A);
+    ter_C.addNeighbors(ter_B);
+    ter_C.addNeighbors(ter_D);
+    ter_D.addNeighbors(ter_C);
+    ter_D.addNeighbors(ter_H);
+    ter_E.addNeighbors(ter_F);
+    ter_F.addNeighbors(ter_B);
+    ter_F.addNeighbors(ter_E);
+    ter_F.addNeighbors(ter_G);
+    ter_G.addNeighbors(ter_F);
+    ter_G.addNeighbors(ter_H);
+    ter_H.addNeighbors(ter_D);
+    ter_H.addNeighbors(ter_G);
+    ter_H.addNeighbors(ter_I);
+    ter_I.addNeighbors(ter_H);
+
+    //add to territory list in map
+    mapForThree.addTerritory(ter_A);
+    mapForThree.addTerritory(ter_B);
+    mapForThree.addTerritory(ter_C);
+    mapForThree.addTerritory(ter_D);
+    mapForThree.addTerritory(ter_E);
+    mapForThree.addTerritory(ter_F);
+    mapForThree.addTerritory(ter_G);
+    mapForThree.addTerritory(ter_H);
+    mapForThree.addTerritory(ter_I);
+
     return mapForThree;
   }
 
