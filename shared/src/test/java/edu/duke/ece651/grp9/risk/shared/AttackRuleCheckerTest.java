@@ -10,9 +10,18 @@ public class AttackRuleCheckerTest {
   public void test_checkMyRule() {
     Player p1 = new Player('r');
     Player p2 = new Player('g');
-    Territory t1 = new Territory("Two Rivers", 5, p1);
-    Territory t2 = new Territory("Tar Valon", 3, p2);
-    Territory t3 = new Territory("Falme", 5, p1);
+    Territory t1 = new Territory("Two Rivers");
+    t1.setOwner(p1);
+    t1.setUnit(5);
+
+    Territory t2 = new Territory("Tar Valon");
+    t2.setOwner(p2);
+    t2.setUnit(3);
+
+    Territory t3 = new Territory("Falme");
+    t3.setOwner(p1);
+    t3.setUnit(5);
+
     String error1 = "This action is invalid: Two Rivers is not adjacent to Tar Valon.";
     String error2 = "This action is invalid: you cannot attack your own Territory.";
 
