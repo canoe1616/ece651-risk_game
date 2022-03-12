@@ -19,9 +19,9 @@ public class MoveTest {
     String error1 = "This action is invalid: Two Rivers is not connected to Tar Valon.";
 
     Move m1 = new Move(p1, t1, t2, 5);
-    assertEquals(m1.canMoveUnits(), error1);
+    assertEquals(m1.canPerformAction(), error1);
     t2.addNeighbors(t1);
-    assertEquals(m1.canMoveUnits(), null);
+    assertEquals(m1.canPerformAction(), null);
 
     assertEquals(t1.getUnit(), 5);
     assertEquals(t2.getUnit(), 0);
