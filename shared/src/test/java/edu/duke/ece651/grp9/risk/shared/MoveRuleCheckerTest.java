@@ -10,23 +10,23 @@ public class MoveRuleCheckerTest {
   public void test_checkMyRule() {
     Player p1 = new Player("red");
     Player p2 = new Player("green");
-    Territory t1 = new Territory("Two Rivers", 5, p1);
+    Territory t1 = new Territory("Two Rivers");
     t1.setOwner(p1);
     t1.setUnit(5);
 
-    Territory t2 = new Territory("Tar Valon", 3, p2);
+    Territory t2 = new Territory("Tar Valon");
     t2.setOwner(p2);
     t2.setUnit(3);
 
-    Territory t3 = new Territory("Falme", 5, p1);
+    Territory t3 = new Territory("Falme");
     t3.setOwner(p1);
     t3.setUnit(5);
 
-    Territory t4 = new Territory("Tear", 5, p1);
+    Territory t4 = new Territory("Tear");
     t4.setOwner(p1);
     t4.setUnit(5);
 
-    Territory t5 = new Territory("Andor", 5, p1);
+    Territory t5 = new Territory("Andor");
     t5.setOwner(p1);
     t5.setUnit(5);
 
