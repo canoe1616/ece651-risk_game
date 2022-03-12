@@ -13,8 +13,8 @@ public class MapTextView {
     // this method is to get all neighboring territories
     String getAdjacencyText(Territory ter) {
         String ans = "";
-        for (String t: ter.getNeighbors()) {
-            ans += t + ", ";
+        for (Territory t: ter.getNeighbors()) {
+            ans += t.getName() + ", ";
         }
         return ans.substring(0, ans.length() - 2);
     }
