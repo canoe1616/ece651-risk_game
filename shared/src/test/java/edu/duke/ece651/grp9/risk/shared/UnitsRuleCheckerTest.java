@@ -16,7 +16,7 @@ public class UnitsRuleCheckerTest {
     Territory t2 = new Territory("Tar Valon");
     t2.setOwner(p1);
     t2.setUnit(3);
-    
+
     String error1 = "This action is invalid: Tar Valon does not have enough units.";
 
     RuleChecker ruleChecker = new UnitsRuleChecker(null);
