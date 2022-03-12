@@ -41,4 +41,11 @@ public class Territory implements Serializable{
     return unit;
   }
 
+  /**
+   * Move units from this Territory to destination Territory
+   */
+  public void moveUnits(Territory destination, int numUnits) {
+    
+  }
+
 }
