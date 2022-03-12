@@ -1,9 +1,11 @@
 package edu.duke.ece651.grp9.risk.shared;
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.HashSet;
 
 public class Territory implements Serializable{
   private String name;
+  private Player owner;
   private int unit;
   private String color;
   private HashSet<String> neighbors;
@@ -36,6 +38,14 @@ public class Territory implements Serializable{
 
   public int getUnit() {
     return unit;
+  }
+
+  public Player getOwner() {
+    return owner;
+  }
+
+  public void setOwner(Player owner) {
+    this.owner = owner;
   }
 
 }
