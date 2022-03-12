@@ -2,9 +2,7 @@ package edu.duke.ece651.grp9.risk.shared;
 
 import org.checkerframework.checker.units.qual.A;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Random;
+import java.util.*;
 
 public class Battle {
     private final Map territoryMap;
@@ -14,6 +12,16 @@ public class Battle {
     public Battle(Map map) {
         this.territoryMap = map;
         this.territoryUnderAttack = new HashMap<>();
+    }
+
+    public List<AttackAction> getAllAttackActions() {
+        List<AttackAction> res = new ArrayList<>();
+        for (HashSet<AttackAction> attacks : territoryUnderAttack.values()) {
+            for (AttackAction attack : attacks) {
+                res.add(attack);
+            }
+        }
+        return res;
     }
 
     /**
@@ -50,11 +58,7 @@ public class Battle {
      * The hashset ensures the order on each territory is random
      */
     public void playBattlePhase() {
-        for (Territory terr: territoryMap.getList()) {
-            HashSet<AttackAction> attacks = territoryUnderAttack.get(terr);
-            if (attacks.size() == 0) {
-                continue;
-            }
+        for (HashSet<AttackAction> attacks : territoryUnderAttack.values()) {
             for (AttackAction att : attacks) {
                 playOneAttack(att);
             }
@@ -93,6 +97,7 @@ public class Battle {
             }
         }
         if (attackerUnit > 0) {
+            attack.setWin();
             // if attacker wins the round, reset the unit and owner
             destination.setOwner(attacker);
             destination.setUnit(attackerUnit);

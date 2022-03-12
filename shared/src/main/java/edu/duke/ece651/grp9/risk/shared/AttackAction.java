@@ -1,16 +1,20 @@
 package edu.duke.ece651.grp9.risk.shared;
 
+
 public class AttackAction {
     private final Player attacker;
     private final Territory source;
     private final Territory destination;
     private int attackUnits;
+    // TODO(rune): prefer to enum.
+    private boolean win;
 
     public AttackAction(Player player, Territory source, Territory destination, int numUnits) {
         this.source = source;
         this.destination = destination;
         this.attackUnits = numUnits;
         this.attacker = player;
+        this.win = false;
     }
 
     public int getAttackUnits() {
@@ -29,6 +33,9 @@ public class AttackAction {
         return attacker;
     }
 
+    public boolean getState() {
+        return win;
+    }
     /**
      * if player A attacks territory X with units from multiple of her own territories, they count as a single combined force.
      * @param att another attack
@@ -44,5 +51,9 @@ public class AttackAction {
      */
     public void setAttackUnits(Integer units) {
         this.attackUnits = units;
+    }
+
+    public void setWin() {
+        this.win = true;
     }
 }
