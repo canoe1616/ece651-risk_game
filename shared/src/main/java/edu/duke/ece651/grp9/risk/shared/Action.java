@@ -19,5 +19,5 @@ public interface Action extends Serializable {
    * @param numUnits is the number of units we are moving from source to destination
    * @return String description of error if invalid move, or null if Action performed
    */
-  public String performAction(Player player, Territory source, Territory destination, int numUnits);
+  public void performAction();//)Player player, Territory source, Territory destination, int numUnits);
 }

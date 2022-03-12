@@ -23,13 +23,20 @@ public class Move implements Action {
    * @param numUnits is the number of units we are moving from source to destination
    * @param moveChecker checks if a Move is valid
    */
-  public Move (Player player, Territory source, Territory destination, int numUnits,
-               RuleChecker moveChecker) {
+  public Move (Player player, Territory source, Territory destination, int numUnits) {
     this.player = player;
     this.source = source;
     this.destination = destination;
     this.numUnits = numUnits;
-    this.moveChecker = moveChecker;
+    this.moveChecker = new UnitsRuleChecker(new OwnerRuleChecker(new MoveRuleChecker(null)));
+  }
+
+  /**
+   * Checks chain of rules to ensure Move is valid
+   * @return null if valid, if invalid a String describing error is returned
+   */
+  public String canMoveUnits() {
+    return moveChecker.checkAction(player, source, destination, numUnits);
   }
 
   /**
@@ -41,7 +48,7 @@ public class Move implements Action {
    * @param numUnits is the number of units we are moving from source to destination
    * @return String description of error if invalid move, or null if Action performed
    */
-  public String performAction(Player player, Territory source, Territory destination, int numUnits) {
+  public void performAction() {//Player player, Territory source, Territory destination, int numUnits) {
     /*String moveProblem = moveChecker.checkPlacement(player, source, destination, numUnits);
     if (moveProblem == null) {
       do something with the Move : add to a HashSet of moves?
@@ -49,6 +56,5 @@ public class Move implements Action {
     }
     return moveProblem;*/
     source.moveUnits(destination, numUnits);
-    return null;
   }
 }
