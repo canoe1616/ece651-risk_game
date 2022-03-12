@@ -22,10 +22,10 @@ public class Player implements Serializable{
   public String getName() {
     return color;
   }
-  public HashMap<Territory, HashSet<String>> getAdjacency(){
-    HashMap<Territory, HashSet<String>> ans = new HashMap<>();
+  public HashMap<Territory, HashSet<Territory>> getAdjacency(){
+    HashMap<Territory, HashSet<Territory>> ans = new HashMap<>();
     for(Territory t : getTerritoryList()){
-      HashSet<String> tmp = new HashSet<String>();
+      HashSet<Territory> tmp = new HashSet<Territory>();
       tmp = t.getNeighbors();
       ans.put(t,tmp);
     }
