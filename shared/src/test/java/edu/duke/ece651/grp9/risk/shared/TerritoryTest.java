@@ -23,19 +23,21 @@ public class TerritoryTest {
   }
 
   @Test
-  public void test_Color(){
+  public void test_setOwner(){
+    Player p1 = new Player("p1");
     Territory ter = new Territory("Test");
-    ter.setColor("blue");
-    String c = ter.getColor();
-    assertEquals(c,"blue");
+    ter.setOwner(p1);
+    Player p2 = ter.getOwner();
+    assertEquals(p1, p2);
   }
 
   @Test
   public void test_Neighbors(){
     Territory ter1 = new Territory("Test1");
-    ter1.addNeighbors("Test2");
-    HashSet<String> neighbors = new HashSet<String>();
-    neighbors.add("Test2");
+    Territory ter2 = new Territory("Test2");
+    ter1.addNeighbors(ter2);
+    HashSet<Territory> neighbors = new HashSet<Territory>();
+    neighbors.add(ter2);
     assertEquals(neighbors, ter1.getNeighbors());
   }
 }

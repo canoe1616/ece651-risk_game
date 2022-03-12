@@ -45,7 +45,19 @@ public class Territory implements Serializable{
    * Move units from this Territory to destination Territory
    */
   public void moveUnits(Territory destination, int numUnits) {
-    
   }
 
+  /** Overrides the equals method to check if two Territories are the same
+   *
+   * @param o is the input object to be compared with this
+   * @return boolean indicating if the two objects are equal
+   */
+  @Override
+  public boolean equals(Object o) {
+    if (o.getClass().equals(getClass())) {
+      Territory t = (Territory) o;
+      return name == t.name;
+    }
+    return false;
+  }
 }

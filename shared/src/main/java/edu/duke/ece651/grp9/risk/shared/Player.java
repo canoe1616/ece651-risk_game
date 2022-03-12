@@ -22,6 +22,7 @@ public class Player implements Serializable{
   public String getName() {
     return color;
   }
+
   public HashMap<Territory, HashSet<Territory>> getAdjacency(){
     HashMap<Territory, HashSet<Territory>> ans = new HashMap<>();
     for(Territory t : getTerritoryList()){
@@ -30,5 +31,20 @@ public class Player implements Serializable{
       ans.put(t,tmp);
     }
     return ans;
+  }
+
+  /**
+   * Overrides the equals method to check if two Players are the same
+   *
+   * @param o is the input object to be compared with this
+   * @return boolean indicating if the two objects are equal
+   */
+  @Override
+  public boolean equals(Object o) {
+    if (o.getClass().equals(getClass())) {
+      Player p = (Player) o;
+      return color == p.color;
+    }
+    return false;
   }
 }

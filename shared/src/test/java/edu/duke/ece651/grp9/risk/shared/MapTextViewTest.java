@@ -13,8 +13,11 @@ class MapTextViewTest {
     void test_getAdjacencyText() {
         MapTextView view = new MapTextView(new Map());
         Territory t = new Territory("RiverWood");
-        t.addNeighbors("Hawii");
-        t.addNeighbors("Durham");
+        Territory t1 = new Territory("Hawii");
+        Territory t2 = new Territory("Durham");
+        
+        t.addNeighbors(t1);
+        t.addNeighbors(t2);
         String exp = "Hawii, Durham";
         assertEquals(exp, view.getAdjacencyText(t));
     }
