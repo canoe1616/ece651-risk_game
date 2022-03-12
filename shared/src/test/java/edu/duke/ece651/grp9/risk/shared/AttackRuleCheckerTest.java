@@ -8,8 +8,8 @@ public class AttackRuleCheckerTest {
 
   @Test
   public void test_checkMyRule() {
-    Player p1 = new Player('r');
-    Player p2 = new Player('g');
+    Player p1 = new Player("red");
+    Player p2 = new Player("green");
     Territory t1 = new Territory("Two Rivers");
     t1.setOwner(p1);
     t1.setUnit(5);
