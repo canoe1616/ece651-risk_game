@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
-public class MoveTest {
+public class MoveActionTest {
 
   @Test
   public void test_performAction() {
@@ -18,7 +18,7 @@ public class MoveTest {
     t2.setUnit(0);
     String error1 = "This action is invalid: Two Rivers is not connected to Tar Valon.";
 
-    Move m1 = new Move(p1, t1, t2, 5);
+    MoveAction m1 = new MoveAction(p1, t1, t2, 5);
     assertEquals(m1.canPerformAction(), error1);
     t2.addNeighbors(t1);
     assertEquals(m1.canPerformAction(), null);

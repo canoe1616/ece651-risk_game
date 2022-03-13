@@ -6,7 +6,7 @@ package edu.duke.ece651.grp9.risk.shared;
  * @author PROY
  * @since 11 March 2022
  */
-public class Move implements Action {
+public class MoveAction implements Action {
 
   private final Player player;
   private final Territory source;
@@ -23,7 +23,7 @@ public class Move implements Action {
    * @param numUnits is the number of units we are moving from source to destination
    * @param moveChecker checks if a Move is valid
    */
-  public Move (Player player, Territory source, Territory destination, int numUnits) {
+  public MoveAction (Player player, Territory source, Territory destination, int numUnits) {
     this.player = player;
     this.source = source;
     this.destination = destination;
@@ -42,13 +42,7 @@ public class Move implements Action {
   /**
    * Perform move on source and destination Territories
    */
-  public void performAction() {//Player player, Territory source, Territory destination, int numUnits) {
-    /*String moveProblem = moveChecker.checkPlacement(player, source, destination, numUnits);
-    if (moveProblem == null) {
-      do something with the Move : add to a HashSet of moves?
-      return null;
-    }
-    return moveProblem;*/
+  public void performAction() {
     source.moveUnits(destination, numUnits);
   }
 }
