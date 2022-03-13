@@ -15,6 +15,8 @@ import edu.duke.ece651.grp9.risk.shared.Map;
 //import edu.duke.ece651.grp9.risk.shared.MapPackage;
 //import edu.duke.ece651.grp9.risk.shared.Message;
 import edu.duke.ece651.grp9.risk.shared.MapFactory;
+import edu.duke.ece651.grp9.risk.shared.Player;
+import edu.duke.ece651.grp9.risk.shared.Territory;
 
 public class App {
   private HashSet<String> remainingColors;
@@ -46,6 +48,19 @@ public class App {
       }
     }
     return false;
+  }
+
+
+  public void unitSetting(ObjectOutputStream stream, Player player){
+
+
+    //
+    StringBuilder sb = new StringBuilder();
+    sb.append("Please select what color you would like to play as: ");
+    for(Territory ter : player.getTerritoryList()){
+      sb.append(ter.getName()+ " ");
+    }
+
   }
 
   public static void main(String[] args) {
