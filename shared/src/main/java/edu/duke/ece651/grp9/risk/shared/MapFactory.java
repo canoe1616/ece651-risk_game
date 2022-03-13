@@ -27,6 +27,10 @@ public class MapFactory implements AbstractMapFactory {
     Territory ter_3 = new Territory("C");
     Territory ter_4 = new Territory("D");
 
+    //set player
+    mapForTwo.addPlayer(p1);
+    mapForTwo.addPlayer(p2);
+
     //set owner
     ter_1.setOwner(p1);
     ter_2.setOwner(p1);

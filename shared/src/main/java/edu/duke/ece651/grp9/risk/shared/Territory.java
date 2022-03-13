@@ -1,11 +1,12 @@
 package edu.duke.ece651.grp9.risk.shared;
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.HashSet;
 
 public class Territory implements Serializable{
   private String name;
-  private int unit;
   private Player owner;
+  private int unit;
   private HashSet<Territory> neighbors;
   //Constructor
   public Territory(String name){
