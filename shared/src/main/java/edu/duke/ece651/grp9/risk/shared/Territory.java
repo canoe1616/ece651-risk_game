@@ -28,6 +28,7 @@ public class Territory implements Serializable{
   
   public void addNeighbors(Territory ter){
     this.neighbors.add(ter);
+    ter.neighbors.add(this);
   }
 
   public HashSet<Territory> getNeighbors(){
@@ -43,7 +44,17 @@ public class Territory implements Serializable{
   }
 
   /**
-   * Overrides the equals method to check if two Territories are the same
+   * Move units from this Territory to destination Territory
+   *
+   * @param destination Territory that we are moving units to
+   * @param numUnits number of units being moved
+   */
+  public void moveUnits(Territory destination, int numUnits) {
+    this.unit -= numUnits;
+    destination.unit += numUnits;
+  }
+
+  /** Overrides the equals method to check if two Territories are the same
    *
    * @param o is the input object to be compared with this
    * @return boolean indicating if the two objects are equal
@@ -52,7 +63,7 @@ public class Territory implements Serializable{
   public boolean equals(Object o) {
     if (o.getClass().equals(getClass())) {
       Territory t = (Territory) o;
-      return name == t.name;
+      return name.equals(t.name);
     }
     return false;
   }

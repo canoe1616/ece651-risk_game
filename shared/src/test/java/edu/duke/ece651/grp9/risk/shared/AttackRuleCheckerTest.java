@@ -58,12 +58,10 @@ public class AttackRuleCheckerTest {
 
     RuleChecker ruleChecker = new UnitsRuleChecker(new OwnerRuleChecker(new AttackRuleChecker(null)));
 
-    t1.addNeighbors(t3);
     t3.addNeighbors(t1);
     assertEquals(ruleChecker.checkAction(p1, t1, t3, 4), error2);
     assertEquals(ruleChecker.checkAction(p1, t1, t2, 4), error1);
 
-    t1.addNeighbors(t2);
     t2.addNeighbors(t1);
     assertEquals(ruleChecker.checkAction(p1, t1, t2, 6), error4);
     assertEquals(ruleChecker.checkAction(p1, t2, t1, 3), error3);
