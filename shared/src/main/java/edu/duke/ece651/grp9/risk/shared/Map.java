@@ -35,4 +35,22 @@ public class Map implements Serializable{
   public void addTerritory(Territory ter){
     territoryList.add(ter);
   }
+
+  public Player findPlayer(String color){
+    for (Player p: players){
+      if (p.getName().equals(color))
+        return p;
+    }
+    return null;
+  }
+
+  public Territory findTerritory(String name){
+    for (Territory t: territoryList){
+      if (t.getName().equals(name))
+        return t;
+    }
+    return null;
+  }
+
+  
 }
