@@ -43,7 +43,7 @@ public class Player implements Serializable{
   public boolean equals(Object o) {
     if (o.getClass().equals(getClass())) {
       Player p = (Player) o;
-      return color == p.color;
+      return color.equals(p.color);
     }
     return false;
   }

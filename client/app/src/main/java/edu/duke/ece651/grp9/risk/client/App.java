@@ -40,6 +40,23 @@ public class App {
     return s;
   }
 
+  public String selectUnit(ObjectInputStream stream, BufferedReader inputSource) throws IOException
+  {
+    String s = "";
+    try {
+      String unitPrompt = (String)stream.readObject();
+      System.out.println(unitPrompt);
+      s = inputSource.readLine();
+      System.out.println(s);
+    }
+    catch (Exception exception) {
+      System.out.println(exception.getMessage());
+      return "INVALID";
+    }
+    return s;
+  }
+
+
   public static void main(String[] args) {
         
     BufferedReader inputSource = new BufferedReader(new InputStreamReader(System.in));
@@ -47,22 +64,31 @@ public class App {
 
     try {
       Socket socket = new Socket("localhost", 6666);
-
+      //receive map from server
       InputStream inputStream = socket.getInputStream();
-      ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
-       
+      ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);       
       Map myMap = (Map)objectInputStream.readObject();
-      System.out.println("Receive Map form server:");
-      Iterator<Territory> it = myMap.getList().iterator();
-      while (it.hasNext()){
-        System.out.println(it.next().getName());
-      }
-      String color = app.selectColor(objectInputStream, inputSource);
+      System.out.println("Receive Map form server.");
       
+      
+      String color = app.selectColor(objectInputStream, inputSource);
+
+      //sent color
       OutputStream outputStream = socket.getOutputStream();
       ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
       try {
         objectOutputStream.writeObject(color);
+      } catch(Exception e) {
+        System.out.println(e);
+      }
+
+      //you are player x, please select your unit for territory
+      String unitString = app.selectUnit(objectInputStream, inputSource);
+
+      OutputStream outputStream1 = socket.getOutputStream();
+      ObjectOutputStream objectOutputStream1 = new ObjectOutputStream(outputStream);
+      try {
+        objectOutputStream1.writeObject(unitString);
       } catch(Exception e) {
         System.out.println(e);
       }

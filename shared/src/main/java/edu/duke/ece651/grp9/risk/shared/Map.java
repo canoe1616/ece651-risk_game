@@ -13,8 +13,12 @@ public class Map implements Serializable{
     this.players = new HashSet<Player>();
   }
 
-  public Map(HashSet<Territory> list) {
-    this.territoryList = list;
+  public void setPlayerNum(int n){
+    this.player_num = n;
+  }
+
+  public int getPlayerNum(){
+    return this.player_num;
   }
 
   public HashSet<Territory> getList() {
@@ -28,38 +32,25 @@ public class Map implements Serializable{
     players.add(p);
   }
 
-  public Player findPlayer(String color){
-    Iterator<Player> playerIterator = players.iterator();
-    while(playerIterator.hasNext()){
-      Player p = playerIterator.next();
-      if (p.getName().equals(color)){
-        return p;
-      }
-    }
-    throw new IllegalArgumentException("No such player.");
-  }
-
-  public Territory findTerritory(String name){
-     Iterator<Territory> terIterator = territoryList.iterator();
-     while(terIterator.hasNext()){
-       Territory ter = terIterator.next();
-       if (ter.getName().equals(name)){
-         return ter;
-       }
-     }
-     throw new IllegalArgumentException("No such territory.");
-   }
-
-  public void buildMap(int player_num){
-    MapFactory m = new MapFactory();
-    if (player_num == 2){
-      territoryList = m.makeMapForTwo().getList();
-      
-    }
-  }
-
-  
   public void addTerritory(Territory ter){
     territoryList.add(ter);
   }
+
+  public Player findPlayer(String color){
+    for (Player p: players){
+      if (p.getName().equals(color))
+        return p;
+    }
+    return null;
+  }
+
+  public Territory findTerritory(String name){
+    for (Territory t: territoryList){
+      if (t.getName().equals(name))
+        return t;
+    }
+    return null;
+  }
+
+  
 }
