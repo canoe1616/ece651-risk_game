@@ -1,5 +1,6 @@
 package edu.duke.ece651.grp9.risk.shared;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -7,16 +8,33 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class BattleTest {
+    private Player findPlayer(Map map, String name) {
+        for (Player p: map.getPlayer()) {
+            if (p.getName().equals(name))
+                return p;
+        }
+        return null;
+    }
+
+    private Territory findTerritory(Map map, String name) {
+        for (Territory t: map.getList()) {
+            if (t.getName().equals(name)) {
+                return t;
+            }
+        }
+        return null;
+    }
 
     @Test
-    void addAttackAction() {
+    void addAttackAction_combine() {
         MapFactory mapFactory = new MapFactory();
         Map map = mapFactory.makeMapForTwo();
         Battle battle = new Battle(map);
-        Player player = map.findPlayer("red");
-        Territory src = map.findTerritory("A");
+        Player player = findPlayer(map, "red");
+
+        Territory src = findTerritory(map, "A");
         src.setUnit(10);
-        Territory dst = map.findTerritory("C");
+        Territory dst = findTerritory(map,"C");
         dst.setUnit(5);
         AttackAction attack0 = new AttackAction(player, src, dst, 6);
 
@@ -40,18 +58,39 @@ class BattleTest {
     }
 
     @Test
+    void addAttackAction_twoPlayersAttacks() {
+        MapFactory mapFactory = new MapFactory();
+        Map map = mapFactory.makeMapForThree();
+        Battle battle = new Battle(map);
+        Player p1 = findPlayer(map, "red");
+        Player p2 = findPlayer(map, "green");
+
+        Territory src1 = findTerritory(map, "A");
+        Territory src2 = findTerritory(map, "D");
+        Territory dst = findTerritory(map,"F");
+        src1.setUnit(10);
+        src2.setUnit(10);
+        AttackAction attack1 = new AttackAction(p1, src1, dst, 6);
+        AttackAction attack2 = new AttackAction(p2, src2, dst, 4);
+        battle.addAttackAction(attack1);
+        assertEquals(1, battle.getAllAttackActions().size());
+        battle.addAttackAction(attack2);
+        assertEquals(2, battle.getAllAttackActions().size());
+    }
+
+    @Test
     void simpleBattle() {
         MapFactory mapFactory = new MapFactory();
         Map map = mapFactory.makeMapForTwo();
-        Player playerRed = map.findPlayer("red");
-        Player playerBlue = map.findPlayer("blue");
-        Territory srcA = map.findTerritory("A");
-        Territory srcB = map.findTerritory("B");
+        Player playerRed = findPlayer(map,"red");
+        Player playerBlue = findPlayer(map,"blue");
+        Territory srcA = findTerritory(map,"A");
+        Territory srcB = findTerritory(map,"B");
         srcA.setUnit(5);
         srcA.setOwner(playerRed);
         srcB.setUnit(5);
         srcB.setOwner(playerRed);
-        Territory dstC = map.findTerritory("C");
+        Territory dstC = findTerritory(map,"C");
         dstC.setUnit(5);
         dstC.setOwner(playerBlue);
         AttackAction attack0 = new AttackAction(playerRed, srcA, dstC, 1);
@@ -76,14 +115,13 @@ class BattleTest {
     void simpleBattle2() {
         MapFactory mapFactory = new MapFactory();
         Map map = mapFactory.makeMapForTwo();
-        Player playerRed = map.findPlayer("red");
-        Player playerBlue = map.findPlayer("blue");
-        Territory srcA = map.findTerritory("A");
+        Player playerRed = findPlayer(map, "red");
+        Player playerBlue = findPlayer(map, "blue");
+        Territory srcA = findTerritory(map, "A");
         srcA.setUnit(5);
         srcA.setOwner(playerRed);
-        Territory dstD = map.findTerritory("D");
+        Territory dstD = findTerritory(map, "D");
         dstD.setUnit(10);
-        //test
         srcA.setOwner(playerBlue);
         AttackAction attack0 = new AttackAction(playerRed, srcA, dstD, srcA.getUnit());
         AttackAction attack1 = new AttackAction(playerBlue, dstD, srcA, dstD.getUnit());

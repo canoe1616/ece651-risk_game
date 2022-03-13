@@ -5,13 +5,8 @@ import org.checkerframework.checker.units.qual.A;
 import java.util.*;
 
 public class Battle {
-    // class Battle handles a battle after all players commit their actions.
-    // We use a hashmap store all attack actions, key is the territory being attacked, and the
-    // value is the attacked from each player.
-    // The general methodology is to first add actions to the hashmap, then iterator the territory and do the battles
-    // on each territory.
-    // todo: not sure if we should include the action checker in this part.
-
+    // The general methodology is to first add all players' attack actions to the hashmap, then iteratively the
+    // territory and do the battles on each territory.
     private final Map territoryMap;
     // key: territory being attacked; value: combined attacks onto the territory
     private HashMap<Territory, HashSet<AttackAction>> territoryUnderAttack;
@@ -70,51 +65,10 @@ public class Battle {
     public void playBattlePhase() {
         for (HashSet<AttackAction> attacks : territoryUnderAttack.values()) {
             for (AttackAction att : attacks) {
-                playOneAttack(att);
+                att.performAction();
             }
         }
     }
 
-    /**
-     * roll two 20-sided dice for attacker and defender, and check which side wins the game.
-     * The player with larger number wins; the defender wins if in a tie.
-     * @return true if attacker makes a successful attack, false if fail
-     */
-    private boolean isSuccessAttack() {
-        Random attackRoll = new Random();
-        Random defenderRoll = new Random();
-        int roll1 = attackRoll.nextInt(20);
-        int roll2 = defenderRoll.nextInt(20);
-        return roll1 > roll2;
-    }
-
-
-    /**
-     * Given an attack, do attack with the territory onwer
-     * @param attack
-     */
-    private void playOneAttack(AttackAction attack) {
-        Player attacker = attack.getAttacker();
-        Territory destination = attack.getDestination();
-        int defenderUnit = destination.getUnit();
-        int attackerUnit = attack.getAttackUnits();
-
-        while (defenderUnit > 0 && attackerUnit > 0) {
-            if (isSuccessAttack()) {
-                defenderUnit --;
-            } else {
-                attackerUnit --;
-            }
-        }
-        if (attackerUnit > 0) {
-            attack.setWin();
-            // if attacker wins the round, reset the unit and owner
-            destination.setOwner(attacker);
-            destination.setUnit(attackerUnit);
-        } else {
-            // if defender wins the round, reset the unit
-            destination.setUnit(defenderUnit);
-        }
-    }
 
 }
