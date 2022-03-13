@@ -7,10 +7,12 @@ import java.util.HashSet;
 public class Player implements Serializable{
   private String color;
   private HashSet<Territory> territoryList;
+  private int totalUnit;
   
   public Player(String color){
     this.color = color;
     this.territoryList = new HashSet<Territory>();
+    this.totalUnit = 30;
   }
   public void addTerritory(Territory ter){
     this.territoryList.add(ter);
@@ -21,6 +23,10 @@ public class Player implements Serializable{
 
   public String getName() {
     return color;
+  }
+
+  public int getUnit(){
+    return this.totalUnit;
   }
 
   public HashMap<Territory, HashSet<Territory>> getAdjacency(){
