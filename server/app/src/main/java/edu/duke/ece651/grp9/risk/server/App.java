@@ -57,7 +57,6 @@ public class App {
     return false;
   }
 
-<<<<<<< HEAD
 
   public void unitSetting(ObjectOutputStream stream, Player player){
 
@@ -71,7 +70,7 @@ public class App {
 
   }
 
-=======
+
   public void selectUnit(ObjectOutputStream stream, Player pyr) {
      StringBuilder sb = new StringBuilder();
      //System.out.println(pyr.getName());
@@ -100,7 +99,7 @@ public class App {
   }
 
 
->>>>>>> bd3120dacd6ec78be8e0abdd84d93bb32074aa87
+
   public static void main(String[] args) {
     
     MapFactory f = new MapFactory();
