@@ -27,15 +27,26 @@ public class App {
 
   public String selectColor(ObjectInputStream stream, BufferedReader inputSource) throws IOException { 
     String s = "";
-    try {
+    //get prompt and print it
+    try{
       String colorPrompt = (String)stream.readObject();
       System.out.println(colorPrompt);
-      s = inputSource.readLine();
-      System.out.println(s);
     }
-    catch (Exception exception) {
-      System.out.println(exception.getMessage());
-      return "INVALID";
+    catch (Exception e){
+      System.out.println(e.getMessage());
+    }
+
+    while(true){
+      try {
+        s = inputSource.readLine();
+        System.out.println(s);
+        //check color valid
+        break;
+      }
+      catch (Exception exception) {
+        System.out.println(exception.getMessage());
+        System.out.println("Invalid! Please enter again:");
+      }
     }
     return s;
   }
@@ -43,15 +54,24 @@ public class App {
   public String selectUnit(ObjectInputStream stream, BufferedReader inputSource) throws IOException
   {
     String s = "";
-    try {
+    //get prompt and print it
+    try{
       String unitPrompt = (String)stream.readObject();
       System.out.println(unitPrompt);
+    }
+    catch(Exception exception){
+      System.out.println(exception.getMessage());
+    }
+    while(true){
+    try {
       s = inputSource.readLine();
       System.out.println(s);
+      break;
     }
     catch (Exception exception) {
       System.out.println(exception.getMessage());
-      return "INVALID";
+      System.out.println("Invalid! Please enter again:");
+    }
     }
     return s;
   }
@@ -85,10 +105,10 @@ public class App {
       //you are player x, please select your unit for territory
       String unitString = app.selectUnit(objectInputStream, inputSource);
 
-      OutputStream outputStream1 = socket.getOutputStream();
-      ObjectOutputStream objectOutputStream1 = new ObjectOutputStream(outputStream);
+      outputStream = socket.getOutputStream();
+      objectOutputStream = new ObjectOutputStream(outputStream);
       try {
-        objectOutputStream1.writeObject(unitString);
+        objectOutputStream.writeObject(unitString);
       } catch(Exception e) {
         System.out.println(e);
       }
