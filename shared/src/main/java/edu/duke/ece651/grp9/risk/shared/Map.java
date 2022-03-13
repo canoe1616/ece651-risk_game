@@ -13,8 +13,12 @@ public class Map implements Serializable{
     this.players = new HashSet<Player>();
   }
 
-  public Map(HashSet<Territory> list) {
-    this.territoryList = list;
+  public void setPlayerNum(int n){
+    this.player_num = n;
+  }
+
+  public int getPlayerNum(){
+    return this.player_num;
   }
 
   public HashSet<Territory> getList() {

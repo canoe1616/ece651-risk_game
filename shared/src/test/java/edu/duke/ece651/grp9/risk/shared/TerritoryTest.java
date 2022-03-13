@@ -1,6 +1,7 @@
 package edu.duke.ece651.grp9.risk.shared;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import java.util.HashSet;
 
@@ -39,5 +40,12 @@ public class TerritoryTest {
     HashSet<Territory> neighbors = new HashSet<Territory>();
     neighbors.add(ter2);
     assertEquals(neighbors, ter1.getNeighbors());
+  }
+
+  @Test
+  public void test_equals(){
+    Territory ter1 = new Territory("Test1");
+    String a = "Hello";
+    assertFalse(ter1.equals(a));
   }
 }

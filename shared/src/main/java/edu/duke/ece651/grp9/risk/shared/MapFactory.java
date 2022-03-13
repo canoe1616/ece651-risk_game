@@ -17,7 +17,9 @@ public class MapFactory implements AbstractMapFactory {
    */
   @Override
   public Map makeMapForTwo(){
+    
     Map mapForTwo = new Map();
+    mapForTwo.setPlayerNum(2);
     //create player
     Player p1 = new Player("red");
     Player p2 = new Player("blue");
@@ -26,12 +28,18 @@ public class MapFactory implements AbstractMapFactory {
     Territory ter_2 = new Territory("B");
     Territory ter_3 = new Territory("C");
     Territory ter_4 = new Territory("D");
-
+    
     //set owner
     ter_1.setOwner(p1);
     ter_2.setOwner(p1);
     ter_3.setOwner(p2);
     ter_4.setOwner(p2);
+
+    //set territories to player
+    p1.addTerritory(ter_1);
+    p1.addTerritory(ter_2);
+    p2.addTerritory(ter_3);
+    p2.addTerritory(ter_4);
     
     //set neighbors
     ter_1.addNeighbors(ter_2);
@@ -68,6 +76,7 @@ public class MapFactory implements AbstractMapFactory {
   @Override
   public Map makeMapForThree(){
     Map mapForThree = new Map();
+    mapForThree.setPlayerNum(3);
     //create player
     Player p1 = new Player("red");
     Player p2 = new Player("green");
@@ -115,6 +124,17 @@ public class MapFactory implements AbstractMapFactory {
     ter_H.addNeighbors(ter_I);
     ter_I.addNeighbors(ter_H);
 
+    //set territories to player
+    p1.addTerritory(ter_A);
+    p1.addTerritory(ter_B);
+    p1.addTerritory(ter_C);
+    p2.addTerritory(ter_D);
+    p2.addTerritory(ter_E);
+    p2.addTerritory(ter_F);
+    p3.addTerritory(ter_G);
+    p3.addTerritory(ter_H);
+    p3.addTerritory(ter_I);
+
     //add to territory list in map
     mapForThree.addTerritory(ter_A);
     mapForThree.addTerritory(ter_B);
@@ -133,7 +153,7 @@ public class MapFactory implements AbstractMapFactory {
 
     return mapForThree;
   }
-
+  /*
   @Override
   public Map makeMapForFour(){
     Map mapForFour = new Map();
@@ -145,4 +165,5 @@ public class MapFactory implements AbstractMapFactory {
    Map mapForFive = new Map();
    return mapForFive;
   }
+  */
 }

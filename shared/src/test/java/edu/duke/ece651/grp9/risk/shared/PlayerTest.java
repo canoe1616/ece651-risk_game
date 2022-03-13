@@ -1,6 +1,7 @@
 package edu.duke.ece651.grp9.risk.shared;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import java.util.HashSet;
 
@@ -15,6 +16,12 @@ public class PlayerTest {
     HashSet<Territory> territoryList = new HashSet<Territory>();
     territoryList.add(ter);
     assertEquals(territoryList, p1.getTerritoryList());
+  }
+
+  @Test
+  public void test_getName(){
+    Player p1 = new Player("blue");
+    assertEquals(p1.getName(), "blue");     
   }
 
 
@@ -36,5 +43,11 @@ public class PlayerTest {
     neighbors.add(ter_2);
     neighbors.add(ter_3);
     assertEquals(neighbors, p1.getAdjacency().get(ter_1));
+  }
+
+  @Test
+  public void test_equal(){
+    Player p1 = new Player("blue");
+    assertFalse(p1.equals(1));
   }
 }
