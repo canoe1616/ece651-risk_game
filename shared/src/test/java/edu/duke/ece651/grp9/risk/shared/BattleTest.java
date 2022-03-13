@@ -54,7 +54,7 @@ class BattleTest {
         Territory dstC = map.findTerritory("C");
         dstC.setUnit(5);
         dstC.setOwner(playerBlue);
-        AttackAction attack0 = new AttackAction(playerRed, srcA, dstC, 4);
+        AttackAction attack0 = new AttackAction(playerRed, srcA, dstC, 1);
         AttackAction attack1 = new AttackAction(playerRed, srcB, dstC, 4);
 
         Battle battle = new Battle(map);

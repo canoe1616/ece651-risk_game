@@ -5,6 +5,13 @@ import org.checkerframework.checker.units.qual.A;
 import java.util.*;
 
 public class Battle {
+    // class Battle handles a battle after all players commit their actions.
+    // We use a hashmap store all attack actions, key is the territory being attacked, and the
+    // value is the attacked from each player.
+    // The general methodology is to first add actions to the hashmap, then iterator the territory and do the battles
+    // on each territory.
+    // todo: not sure if we should include the action checker in this part.
+
     private final Map territoryMap;
     // key: territory being attacked; value: combined attacks onto the territory
     private HashMap<Territory, HashSet<AttackAction>> territoryUnderAttack;
@@ -14,6 +21,9 @@ public class Battle {
         this.territoryUnderAttack = new HashMap<>();
     }
 
+    /**
+     * This method currently only used for test
+     */
     public List<AttackAction> getAllAttackActions() {
         List<AttackAction> res = new ArrayList<>();
         for (HashSet<AttackAction> attacks : territoryUnderAttack.values()) {

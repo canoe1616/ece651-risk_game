@@ -6,7 +6,7 @@ public class AttackAction {
     private final Territory source;
     private final Territory destination;
     private int attackUnits;
-    // TODO(rune): prefer to enum.
+    // TODO(rune): prefer to enum, but conflicts to clover.
     private boolean win;
 
     public AttackAction(Player player, Territory source, Territory destination, int numUnits) {
@@ -14,7 +14,7 @@ public class AttackAction {
         this.destination = destination;
         this.attackUnits = numUnits;
         this.attacker = player;
-        this.win = false;
+        this.win = false;  // default battle status as false
     }
 
     public int getAttackUnits() {
