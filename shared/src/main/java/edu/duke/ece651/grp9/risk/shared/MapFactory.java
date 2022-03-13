@@ -11,32 +11,6 @@ public class MapFactory implements AbstractMapFactory {
    * @return the player list.
    */
 
-  public HashSet<Player> createPlayer(HashSet<String> colorList, Map myMap){
-     Iterator<String> colorIterator = colorList.iterator();
-     while(colorIterator.hasNext()){
-       Player p = new Player(colorIterator.next());
-       myMap.addPlayer(p);
-     }
-     return myMap.getPlayer();
-  }
-
-  public void createTerritory(HashSet<String> TerritoryNameList, Map myMap){
-    Iterator<String> territoryNameIterator = TerritoryNameList.iterator();
-    while(territoryNameIterator.hasNext()){
-      Territory t = new Territory(territoryNameIterator.next());
-      myMap.addTerritory(t);
-    }
-  }
-
-  public void setOwner(Territory ter, Player pyr){
-    ter.setOwner(pyr);
-    pyr.addTerritory(ter);
-  }
-  
-  public void addNeighbors(Territory mainTerritory,Territory neighborTerritory){
-    mainTerritory.addNeighbors(neighborTerritory);
-  }
-    
   /*2 player map
     |A|B|
     |C|D|
@@ -74,7 +48,11 @@ public class MapFactory implements AbstractMapFactory {
     mapForTwo.addTerritory(ter_2);
     mapForTwo.addTerritory(ter_3);
     mapForTwo.addTerritory(ter_4);
-    
+
+    //add player to player list in map 
+    mapForTwo.addPlayer(p1);
+    mapForTwo.addPlayer(p2);
+
     return mapForTwo;
   }
 
@@ -147,6 +125,11 @@ public class MapFactory implements AbstractMapFactory {
     mapForThree.addTerritory(ter_G);
     mapForThree.addTerritory(ter_H);
     mapForThree.addTerritory(ter_I);
+
+    //add player to player list in map
+    mapForThree.addPlayer(p1);
+    mapForThree.addPlayer(p2);
+    mapForThree.addPlayer(p3);
 
     return mapForThree;
   }

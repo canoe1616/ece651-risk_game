@@ -28,37 +28,6 @@ public class Map implements Serializable{
     players.add(p);
   }
 
-  public Player findPlayer(String color){
-    Iterator<Player> playerIterator = players.iterator();
-    while(playerIterator.hasNext()){
-      Player p = playerIterator.next();
-      if (p.getName().equals(color)){
-        return p;
-      }
-    }
-    throw new IllegalArgumentException("No such player.");
-  }
-
-  public Territory findTerritory(String name){
-     Iterator<Territory> terIterator = territoryList.iterator();
-     while(terIterator.hasNext()){
-       Territory ter = terIterator.next();
-       if (ter.getName().equals(name)){
-         return ter;
-       }
-     }
-     throw new IllegalArgumentException("No such territory.");
-   }
-
-  public void buildMap(int player_num){
-    MapFactory m = new MapFactory();
-    if (player_num == 2){
-      territoryList = m.makeMapForTwo().getList();
-      
-    }
-  }
-
-  
   public void addTerritory(Territory ter){
     territoryList.add(ter);
   }
