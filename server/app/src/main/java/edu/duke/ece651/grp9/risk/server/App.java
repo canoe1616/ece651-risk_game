@@ -84,7 +84,6 @@ public class App {
     return null;
   }
 
-
   public static void main(String[] args) {
     
     MapFactory f = new MapFactory();
@@ -119,9 +118,9 @@ public class App {
       
       app.selectUnit(objectOutputStream, app.findPlayer(color, m));
       while(true){
-        InputStream inputUnit = socket.getInputStream();
-        ObjectInputStream objectInputUnit = new ObjectInputStream(inputUnit);
-        String unitString = (String)objectInputUnit.readObject();
+        InputStream inputStream = socket.getInputStream();
+        ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+        String unitString = (String)objectInputStream.readObject();
         System.out.println(unitString);
         break;
       }
