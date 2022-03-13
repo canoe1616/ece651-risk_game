@@ -29,21 +29,22 @@ public class ActionRuleChecker {
         int count = 0 ;
         //calculate the total number of units
         int total = 0;
-        for(int i = 0; i < tmp.length; ++i){
+        for(int i = 0; i < tmp.length; ++i) {
             //for blanks
-            if(!Character.isDigit(tmp[i])){
+            if (!Character.isDigit(tmp[i])) {
                 // 10  15
-                if(i > 0 && i < tmp.length -1 && (!Character.isDigit(tmp[i-1]) || !Character.isDigit(tmp[i+1]))){
+                if (i > 0 && i < tmp.length - 1 && (!Character.isDigit(tmp[i - 1]) || !Character.isDigit(tmp[i + 1]))) {
                     return "The input is not valid, please enter again";
                 }
                 // 10 5 15
                 //10 5 15
 
-                else if(i == 0 || i == tmp.length -1){
+                else if (i == 0 || i == tmp.length - 1) {
                     return "The input is not valid, please enter again";
                 }
                 count++;
             }
+        }
             if(count != player.getTerritoryList().size() -1){
                 return "The input is not valid, please enter again";
             }
@@ -54,7 +55,7 @@ public class ActionRuleChecker {
 
                 if(Character.isDigit(tmp[k])){
                     digit =0 ;
-                    while(Character.isDigit(tmp[k])){
+                    while(k < tmp.length && Character.isDigit(tmp[k])){
                     digit = digit*10 + Character. getNumericValue(tmp[k]);
                     k++;
                 }
@@ -66,7 +67,7 @@ public class ActionRuleChecker {
                 return "The input is not valid, please enter again";
             }
 
-        }
+
 
         return null;
     }
