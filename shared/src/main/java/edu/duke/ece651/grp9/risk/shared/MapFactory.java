@@ -7,7 +7,7 @@ public class MapFactory implements AbstractMapFactory {
   /**
    * Make a player list.
    * 
-   * @param where specifies the location and orientation of the ship to make
+   * @param myMap specifies the location and orientation of the ship to make
    * @return the player list.
    */
 
@@ -76,6 +76,9 @@ public class MapFactory implements AbstractMapFactory {
                   /\F /\H /\
                  /E \/G \/I \
    */
+
+
+
   
   @Override
   public Map makeMapForThree(){

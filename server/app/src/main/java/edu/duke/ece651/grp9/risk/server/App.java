@@ -57,6 +57,20 @@ public class App {
     return false;
   }
 
+
+  public void unitSetting(ObjectOutputStream stream, Player player){
+
+
+    //
+    StringBuilder sb = new StringBuilder();
+    sb.append("Please select what color you would like to play as: ");
+    for(Territory ter : player.getTerritoryList()){
+      sb.append(ter.getName()+ " ");
+    }
+
+  }
+
+
   public void selectUnit(ObjectOutputStream stream, Player pyr) {
      StringBuilder sb = new StringBuilder();
      //System.out.println(pyr.getName());

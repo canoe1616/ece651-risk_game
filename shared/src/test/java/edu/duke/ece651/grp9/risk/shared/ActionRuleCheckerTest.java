@@ -28,5 +28,12 @@ public class ActionRuleCheckerTest {
   }
 
 
+//  @Test
+//  public void test_checkUnit(){
+//    ActionRuleChecker tmp = new ActionRuleChecker();
+//    Player a = new Player()
+//  }
+
+
 
 }
