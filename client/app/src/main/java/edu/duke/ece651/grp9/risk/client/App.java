@@ -25,68 +25,66 @@ public class App {
     this.inputReader = inputSource;
   }
 
-  public String selectColor(BufferedReader inputSource,Socket socket) throws IOException {
+  public String selectColor(BufferedReader inputSource, ObjectInputStream inStream, ObjectOutputStream outStream) throws IOException {
     String s = "";
     //get prompt and print it
     try{
-      InputStream inputStream = socket.getInputStream();
-      System.out.println("step_1");
-      ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
-      System.out.println("step_2");
-      String colorPrompt = (String)objectInputStream.readObject();
+      String colorPrompt = (String)inStream.readObject();
       System.out.println(colorPrompt);
     }
     catch (Exception e){
       System.out.println(e.getMessage());
     }
 
+    String color_correct = "false";
 
-    boolean color_correct = false;
-
-    while(color_correct != true){
+    while(!color_correct.equals("true")){
       try {
         s = inputSource.readLine();
         System.out.println(s);
         //check color valid
         //From server -> color_correct
-        OutputStream outputStream = socket.getOutputStream();
-        ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
-        objectOutputStream.writeObject(s);
-
-        InputStream inputStream = socket.getInputStream();
-        ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
-        color_correct = (boolean)objectInputStream.readObject();
-
-        //break;
+        outStream.writeObject(s);
+        color_correct = (String)inStream.readObject();
+                
+        //System.out.println(color_correct);
+        if (color_correct.equals("false")){
+          System.out.println("Invalid color selection, please enter again!");
+        }
       }
       catch (Exception exception) {
         System.out.println(exception.getMessage());
-        System.out.println("Invalid! Please enter again:");
       }
     }
     return s;
   }
 
-  public String selectUnit(ObjectInputStream stream, BufferedReader inputSource) throws IOException
+  public String selectUnit(BufferedReader inputSource, ObjectInputStream inStream, ObjectOutputStream outStream) throws IOException
   {
     String s = "";
     //get prompt and print it
     try{
-      String unitPrompt = (String)stream.readObject();
+      String unitPrompt = (String)inStream.readObject();
       System.out.println(unitPrompt);
     }
     catch(Exception exception){
       System.out.println(exception.getMessage());
     }
-    while(true){
+
+    String unit_correct = "false";
+    
+    while(!unit_correct.equals("true")){
     try {
       s = inputSource.readLine();
       System.out.println(s);
-      break;
+      outStream.writeObject(s);
+      unit_correct = (String)inStream.readObject();
+      if(unit_correct.equals("false")){
+        System.out.println("Invalid unit selection, please enter again!"); 
+      }
     }
     catch (Exception exception) {
       System.out.println(exception.getMessage());
-      System.out.println("Invalid! Please enter again:");
     }
     }
     return s;
@@ -106,31 +104,12 @@ public class App {
       Map myMap = (Map)objectInputStream.readObject();
       System.out.println("Receive Map form server.");
 
-
       //sent color
-
-      String color = app.selectColor(inputSource, socket);
-
       OutputStream outputStream = socket.getOutputStream();
       ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
-
-
-      try {
-        objectOutputStream.writeObject(color);
-      } catch(Exception e) {
-        System.out.println(e);
-      }
-
-      //you are player x, please select your unit for territory
-      String unitString = app.selectUnit(objectInputStream, inputSource);
-
-      outputStream = socket.getOutputStream();
-      objectOutputStream = new ObjectOutputStream(outputStream);
-      try {
-        objectOutputStream.writeObject(unitString);
-      } catch(Exception e) {
-        System.out.println(e);
-      }
+      
+      String color = app.selectColor(inputSource, objectInputStream, objectOutputStream);
+      String unitString = app.selectUnit(inputSource, objectInputStream, objectOutputStream);
 
       socket.close();
     } catch(Exception e) {
