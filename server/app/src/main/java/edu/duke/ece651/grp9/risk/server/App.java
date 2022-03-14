@@ -100,6 +100,7 @@ public class App {
     return null;
   }
 
+  //boolean
   public static void main(String[] args) {
     
     MapFactory f = new MapFactory();
@@ -124,17 +125,36 @@ public class App {
       //check if the color selection is valid
       String color = "";
       while(true){
+
+        //boolean for color checking
+
+      boolean color_correct = true;
       InputStream inputStream = socket.getInputStream();
       ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
       color = (String)objectInputStream.readObject();
 
       // add the checker
+        //if everything is good, we will send "true" to the client
+
+
       while(tmp.checkColor(color, remainingColors) != null){
+        System.out.println(tmp.checkColor(color, remainingColors));
+        // sign 提示符给client 无论correct 与否都要传给client
+        color_correct = false;
+        outputStream = socket.getOutputStream();
+        objectOutputStream = new ObjectOutputStream(outputStream);
+        objectOutputStream.writeObject(color_correct);
+
+        //read the new color from the client
         color = (String)objectInputStream.readObject();
         }
 
-
-
+      if(tmp.checkColor(color, remainingColors) == null) {
+          color_correct = true;
+          outputStream = socket.getOutputStream();
+          objectOutputStream = new ObjectOutputStream(outputStream);
+          objectOutputStream.writeObject(color_correct);
+        }
       if (app.deleteColor(color)==false){
         }
       else{

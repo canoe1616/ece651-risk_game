@@ -25,23 +25,39 @@ public class App {
     this.inputReader = inputSource;
   }
 
-  public String selectColor(ObjectInputStream stream, BufferedReader inputSource) throws IOException { 
+  public String selectColor(BufferedReader inputSource,Socket socket) throws IOException {
     String s = "";
     //get prompt and print it
     try{
-      String colorPrompt = (String)stream.readObject();
+      InputStream inputStream = socket.getInputStream();
+      System.out.println("step_1");
+      ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+      System.out.println("step_2");
+      String colorPrompt = (String)objectInputStream.readObject();
       System.out.println(colorPrompt);
     }
     catch (Exception e){
       System.out.println(e.getMessage());
     }
 
-    while(true){
+
+    boolean color_correct = false;
+
+    while(color_correct != true){
       try {
         s = inputSource.readLine();
         System.out.println(s);
         //check color valid
-        break;
+        //From server -> color_correct
+        OutputStream outputStream = socket.getOutputStream();
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
+        objectOutputStream.writeObject(s);
+
+        InputStream inputStream = socket.getInputStream();
+        ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+        color_correct = (boolean)objectInputStream.readObject();
+
+        //break;
       }
       catch (Exception exception) {
         System.out.println(exception.getMessage());
@@ -89,13 +105,16 @@ public class App {
       ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);       
       Map myMap = (Map)objectInputStream.readObject();
       System.out.println("Receive Map form server.");
-      
-      
-      String color = app.selectColor(objectInputStream, inputSource);
+
 
       //sent color
+
+      String color = app.selectColor(inputSource, socket);
+
       OutputStream outputStream = socket.getOutputStream();
       ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
+
+
       try {
         objectOutputStream.writeObject(color);
       } catch(Exception e) {
