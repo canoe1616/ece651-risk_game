@@ -41,6 +41,7 @@ public class ActionRuleCheckerTest {
     assertEquals("The input is not valid, please enter again",tmp.checkUnit("15 5 10 ",a));
     assertEquals("The input is not valid, please enter again",tmp.checkUnit(" ",a));
     assertEquals("The input is not valid, please enter again",tmp.checkUnit(" 15 5 10",a));
+    assertEquals("The input is not valid, please enter again",tmp.checkUnit(" 16 5 10",a));
   }
 
 
