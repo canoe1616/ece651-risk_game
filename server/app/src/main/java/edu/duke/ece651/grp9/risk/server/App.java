@@ -11,15 +11,13 @@ import java.net.Socket;
 import java.util.HashSet;
 import java.util.Iterator;
 
-import edu.duke.ece651.grp9.risk.shared.Map;
+import edu.duke.ece651.grp9.risk.shared.*;
 //import edu.duke.ece651.grp9.risk.shared.MapPackage;
 //import edu.duke.ece651.grp9.risk.shared.Message;
-import edu.duke.ece651.grp9.risk.shared.MapFactory;
-import edu.duke.ece651.grp9.risk.shared.Player;
-import edu.duke.ece651.grp9.risk.shared.Territory;
+
 
 public class App {
-  private HashSet<String> remainingColors;
+  private static HashSet<String> remainingColors;
   public App() {
     remainingColors = new HashSet<>();
   }
@@ -60,30 +58,18 @@ public class App {
 
   public void unitSetting(ObjectOutputStream stream, Player player){
 
-
-    //
     StringBuilder sb = new StringBuilder();
-    sb.append("Please select what color you would like to play as: ");
+    sb.append("You have " + player.getTerritoryNumber()+ " territories: ");
     for(Territory ter : player.getTerritoryList()){
       sb.append(ter.getName()+ " ");
     }
-
-  }
-
-
-  public void selectUnit(ObjectOutputStream stream, Player pyr) {
-     StringBuilder sb = new StringBuilder();
-     //System.out.println(pyr.getName());
-     sb.append("Please set your original unit placement: ");
-     HashSet<Territory> list = pyr.getTerritoryList();
-     for (Territory t : list) {
-       sb.append(t.getName()+" ");
-     }
-     try {
-       stream.writeObject(sb.toString());
-     } catch(Exception e) {
-       System.out.println(e);
-     }
+    sb.append("\n");
+    sb.append("You have 30 total units, how do you want to place the units?");
+    try {
+      stream.writeObject(sb.toString());
+    } catch(Exception e) {
+      System.out.println(e);
+    }
   }
 
   public Player findPlayer(String color, Map m){
@@ -98,53 +84,97 @@ public class App {
     return null;
   }
 
+  //boolean
   public static void main(String[] args) {
     
     MapFactory f = new MapFactory();
     Map m = f.makeMapForThree();
     int player_num = 3;
     App app = new App(m);
-    
+ 
     try(ServerSocket ss = new ServerSocket(6666)){
       
     for(int i=0; i<player_num; i++){
+      //add the checker
+      ActionRuleChecker tmp = new ActionRuleChecker();
+
+
       Socket socket = ss.accept();
       //send map object
       OutputStream outputStream = socket.getOutputStream();
       ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
       objectOutputStream.writeObject(m);
 
+      InputStream inputStream = socket.getInputStream();
+      ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+      
       app.selectColor(objectOutputStream);
       //check if the color selection is valid
       String color = "";
       while(true){
-      InputStream inputStream = socket.getInputStream();
-      ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+
+        //boolean for color checking
+
+      String color_correct = "true";
+      //InputStream inputStream = socket.getInputStream();
+      //ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
       color = (String)objectInputStream.readObject();
-      if (app.deleteColor(color)==false){
+
+      // add the checker
+        //if everything is good, we will send "true" to the client
+
+      //System.out.println(color);
+      while(tmp.checkColor(color, remainingColors) != null){
+
+        //System.out.println(tmp.checkColor(color, remainingColors));
+        color_correct = "false";
+        
+        objectOutputStream.writeObject("false");
+
+        //read the new color from the client
+        color = (String)objectInputStream.readObject();
         }
-      else{
-        System.out.println(color);
-        break;
+
+      if(tmp.checkColor(color, remainingColors) == null) {
+        color_correct = "true";
+          objectOutputStream.writeObject(color_correct);
+           app.deleteColor(color);
+           break;
       }
       }
       //read unit assignment
-      
-      app.selectUnit(objectOutputStream, app.findPlayer(color, m));
+      app.unitSetting(objectOutputStream, app.findPlayer(color, m));
+      String unitString = "";
       while(true){
-        InputStream inputStream = socket.getInputStream();
-        ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
-        String unitString = (String)objectInputStream.readObject();
-        System.out.println(unitString);
-        break;
+        String unit_correct = "true";
+        //InputStream inputStream = socket.getInputStream();
+        //ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+
+        unitString = (String)objectInputStream.readObject();
+        System.out.print(unitString);
+        // add the checker
+        while(tmp.checkUnit(unitString, app.findPlayer(color, m)) != null){
+          System.out.print(unitString);
+          unit_correct = "false";
+          objectOutputStream.writeObject("false");
+          unitString = (String)objectInputStream.readObject();
+
+        }
+        //
+        
+        if(tmp.checkUnit(unitString, app.findPlayer(color, m)) == null) {
+           unit_correct = "true";
+           objectOutputStream.writeObject(unit_correct);
+           break;
+        }
       }
       
       socket.close();
-    }
+      }
     ss.close();
-    }
+  }
     catch(Exception e){
       System.out.println(e);
     }
   }
-}
+};

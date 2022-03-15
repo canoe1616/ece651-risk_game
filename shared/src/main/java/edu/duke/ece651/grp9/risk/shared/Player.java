@@ -29,6 +29,10 @@ public class Player implements Serializable{
     return this.totalUnit;
   }
 
+  public int getTerritoryNumber(){
+    return this.territoryList.size();
+  }
+
   public HashMap<Territory, HashSet<Territory>> getAdjacency(){
     HashMap<Territory, HashSet<Territory>> ans = new HashMap<>();
     for(Territory t : getTerritoryList()){
