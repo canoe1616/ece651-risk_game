@@ -18,7 +18,7 @@ public class Territory implements Serializable{
 
   public void setUnit(int unit){
     this.unit = unit;
-    //syncUnits();
+    syncUnits();
   }
 
   public void setOwner(Player owner){
@@ -55,7 +55,7 @@ public class Territory implements Serializable{
   public void moveUnits(Territory destination, int numUnits) {
     this.unit -= numUnits;
     destination.unit += numUnits;
-    
+
     syncUnits();
     destination.syncUnits();
   }

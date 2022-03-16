@@ -99,7 +99,7 @@ public class AttackAction implements Action {
      * Player 1 attacks 8 units to D
      * @param units
      */
-    public void setAttackUnits(Integer units) {
+    public void setAttackUnits(int units) {
         this.attackUnits = units;
     }
 }
