@@ -8,6 +8,8 @@ public class Territory implements Serializable{
   private Player owner;
   private int unit;
   private HashSet<Territory> neighbors;
+  private int mockUnits;
+
   //Constructor
   public Territory(String name){
     this.name = name;
@@ -16,6 +18,7 @@ public class Territory implements Serializable{
 
   public void setUnit(int unit){
     this.unit = unit;
+    //syncUnits();
   }
 
   public void setOwner(Player owner){
@@ -52,6 +55,35 @@ public class Territory implements Serializable{
   public void moveUnits(Territory destination, int numUnits) {
     this.unit -= numUnits;
     destination.unit += numUnits;
+    
+    syncUnits();
+    destination.syncUnits();
+  }
+
+  /**
+   * Mock the Actions (Move and Attack). Updates mockUnits to ensure every Territory does not
+   * 0 or more units after Player executes all set of moves
+   *
+   * @param unitMovement number of units moving into destination Territory
+   */
+  public void mockActions(Territory destination, int unitMovement) {
+    this.mockUnits -= unitMovement;
+    destination.mockUnits += unitMovement;
+  }
+
+  /**
+   * Checks so that no Territory is left with negative units count before Actions executed
+   * @return boolean value if mockUnits is at least 0
+   */
+  public boolean mockIsValid() {
+    return mockUnits >= 0;
+  }
+
+  /**
+   * Sets mockUnits to unit so that they are synced for next round of Action's check
+   */
+  public void syncUnits() {
+    mockUnits = unit;
   }
 
   /** Overrides the equals method to check if two Territories are the same
