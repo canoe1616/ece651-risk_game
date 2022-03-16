@@ -28,6 +28,7 @@ public class AttackAction implements Action {
     @Override
     public void performAction() {
         int defenderUnit = destination.getUnit();
+        Player defender = destination.getOwner();
 
         while (defenderUnit > 0 && attackUnits> 0) {
             if (isSuccessAttack()) {
@@ -41,6 +42,9 @@ public class AttackAction implements Action {
             // if attacker wins the round, reset the unit and owner
             destination.setOwner(attacker);
             destination.setUnit(attackUnits);
+            // if attacker wins the round, add the unit to attacker territory list
+            attacker.addTerritory(destination);
+            defender.removeTerritory(destination);
         } else {
             // if defender wins the round, reset the unit
             destination.setUnit(defenderUnit);

@@ -1,6 +1,5 @@
 package edu.duke.ece651.grp9.risk.shared;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -136,5 +135,44 @@ class BattleTest {
         assertEquals(10, srcA.getUnit());
         assertEquals("red", dstD.getOwner().getName());
         assertEquals(5, dstD.getUnit());
+    }
+
+    @Test
+    void isEnd_true() {
+        MapFactory mapFactory = new MapFactory();
+        Map map = mapFactory.makeMapForTwo();
+        Player playerRed = map.findPlayer("red");
+        Territory A = map.findTerritory("A");
+        Territory B = map.findTerritory("B");
+        Territory C = map.findTerritory("C");
+        Territory D = map.findTerritory("D");
+        A.setUnit(10);
+        B.setUnit(10);
+        C.setUnit(0);
+        D.setUnit(0);
+        Battle battle = new Battle(map);
+        battle.addAttackAction(new AttackAction(playerRed, A, C,5));
+        battle.addAttackAction(new AttackAction(playerRed, B, D,5));
+        battle.playBattlePhase();
+        assertEquals(playerRed, battle.getGameWinner());
+    }
+
+    @Test
+    void isEnd_false() {
+        MapFactory mapFactory = new MapFactory();
+        Map map = mapFactory.makeMapForTwo();
+        Player playerRed = map.findPlayer("red");
+        Territory A = map.findTerritory("A");
+        Territory B = map.findTerritory("B");
+        Territory C = map.findTerritory("C");
+        Territory D = map.findTerritory("D");
+        A.setUnit(10);
+        B.setUnit(10);
+        C.setUnit(0);
+        D.setUnit(0);
+        Battle battle = new Battle(map);
+        battle.addAttackAction(new AttackAction(playerRed, A, C,5));
+        battle.playBattlePhase();
+        assertEquals(null, battle.getGameWinner());
     }
 }

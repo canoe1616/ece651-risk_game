@@ -50,4 +50,13 @@ public class PlayerTest {
     Player p1 = new Player("blue");
     assertFalse(p1.equals(1));
   }
+
+    @Test
+    void isLose() {
+      Player p1 = new Player("blue");
+      Territory ter = new Territory("NC");
+      assertEquals(true, p1.isLose());
+      p1.addTerritory(ter);
+      assertEquals(false, p1.isLose());
+    }
 }

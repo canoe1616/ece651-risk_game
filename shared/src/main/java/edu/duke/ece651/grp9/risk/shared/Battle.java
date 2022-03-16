@@ -1,7 +1,5 @@
 package edu.duke.ece651.grp9.risk.shared;
 
-import org.checkerframework.checker.units.qual.A;
-
 import java.util.*;
 
 public class Battle {
@@ -70,5 +68,18 @@ public class Battle {
         }
     }
 
+    /**
+     * This method gets the game winner.
+     * If a player controls all territories, then she wins the game
+     * @return the winner if some player wins the game, null if no one wins the game
+     */
+    public Player getGameWinner() {
+        for (Player p: territoryMap.getPlayer()) {
+            if (p.getTerritoryList().size() == territoryMap.getList().size()) {
+                return p;
+            }
+        }
+        return null;
+    }
 
 }
