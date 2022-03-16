@@ -17,6 +17,9 @@ public class Player implements Serializable{
   public void addTerritory(Territory ter){
     this.territoryList.add(ter);
   }
+  public void removeTerritory(Territory ter) {
+    this.territoryList.remove(ter);
+  }
   public HashSet<Territory> getTerritoryList(){
     return this.territoryList;
   }
@@ -41,6 +44,14 @@ public class Player implements Serializable{
       ans.put(t,tmp);
     }
     return ans;
+  }
+
+  /**
+   * check if the player lose the game, aka lose all territories
+   * @return true if the player lose the game
+   */
+  public boolean isLose() {
+    return territoryList.isEmpty();
   }
 
   /**

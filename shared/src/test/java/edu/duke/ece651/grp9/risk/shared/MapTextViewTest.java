@@ -1,47 +1,60 @@
 package edu.duke.ece651.grp9.risk.shared;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-
-import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class MapTextViewTest {
-    @Disabled
-    @Test
-    void test_getAdjacencyText() {
-        MapTextView view = new MapTextView(new Map());
-        Territory t = new Territory("RiverWood");
-        Territory t1 = new Territory("Hawii");
-        Territory t2 = new Territory("Durham");
-        
-        t.addNeighbors(t1);
-        t.addNeighbors(t2);
-        String exp = "Hawii, Durham";
-        assertEquals(exp, view.getAdjacencyText(t));
-    }
-
-    @Disabled
     @Test
     void test_displayGeneralInfo() {
-        Random rand = new Random(0);
-        Map map = new Map();
+        MapFactory mapFactory = new MapFactory();
+        Map map = mapFactory.makeMapForTwo();
+        map.findTerritory("A").setUnit(10);
+        map.findTerritory("B").setUnit(10);
+        map.findTerritory("C").setUnit(10);
+        map.findTerritory("D").setUnit(10);
         MapTextView view = new MapTextView(map);
-        String exp = "b Player:\n" +
-                "----------------------------------\n" +
-                "10 units in A(next to: C, D)\n" +
-                "10 units in B(next to: A, D)\n" +
-                "\n" +
-                "g Player:\n" +
-                "----------------------------------\n" +
-                "10 units in C(next to: A, D)\n" +
-                "10 units in D(next to: C, B)\n" +
-                "\n" +
-                "You are the g Player, what would you like to do?\n" +
-                " (M)ove\n" +
-                " (a)ttack\n" +
-                " (D)one\n";
-        assertEquals(exp, view.displayGameState(new Player("green")));
+        String exp =
+                "blue Player:\n" +
+                        "----------------------------------\n" +
+                        "10 units in C(next to: A, D)\n" +
+                        "10 units in D(next to: B, C)\n" +
+                        "\n" +
+                        "red Player:\n" +
+                        "----------------------------------\n" +
+                        "10 units in A(next to: B, C)\n" +
+                        "10 units in B(next to: A, D)\n" +
+                        "\n" +
+                        "You are the red Player, what would you like to do?\n" +
+                        " (M)ove\n" +
+                        " (A)ttack\n" +
+                        " (D)one\n";
+        assertEquals(exp, view.displayGameState(null, map.findPlayer("red")));
+    }
+
+    @Test
+    void test_displayPlayerLose() {
+        Player p1 = new Player("blue");
+        Territory ter = new Territory("NC");
+        Map map = new Map();
+        map.addPlayer(p1);
+        MapTextView view = new MapTextView(map);
+        String exp = "Player blue, you lose the game!"
+                + " What would you like to do?\n" +
+                " (Q)uit\n" + " (C)ontinue watching game\n";
+        assertEquals(exp, view.displayGameState(null, p1));
+
+    }
+
+    @Test
+    void test_displayGameOver() {
+        Player p1 = new Player("blue");
+        Territory ter = new Territory("NC");
+        Map map = new Map();
+        map.addPlayer(p1);
+        MapTextView view = new MapTextView(map);
+        String exp ="Game Over! Player blue wins the game!";
+        assertEquals(exp, view.displayGameState(p1, p1));
+
     }
 }
