@@ -28,9 +28,10 @@ public class UnitsRuleChecker extends RuleChecker {
    */
   @Override
   protected String checkMyRule(Player player, Territory source, Territory destination, int numUnits) {
-    if (source.getUnit() < numUnits) {
-      return "This action is invalid: " + source.getName() + " does not have enough units.";
-    }
+    source.mockActions(destination, numUnits);
+//    if (source.getUnit() < numUnits) {
+//      return "This action is invalid: " + source.getName() + " does not have enough units.";
+//    }
     return null;
   }
 }

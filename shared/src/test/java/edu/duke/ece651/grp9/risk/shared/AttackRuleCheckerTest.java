@@ -63,10 +63,12 @@ public class AttackRuleCheckerTest {
     assertEquals(ruleChecker.checkAction(p1, t1, t2, 4), error1);
 
     t2.addNeighbors(t1);
-    assertEquals(ruleChecker.checkAction(p1, t1, t2, 6), error4);
+    assertEquals(ruleChecker.checkAction(p1, t1, t2, 6), null);
     assertEquals(ruleChecker.checkAction(p1, t2, t1, 3), error3);
 
     assertEquals(ruleChecker.checkAction(p1, t1, t2, 5), null);
+
+    assertFalse(t1.mockIsValid());
   }
 
 }
