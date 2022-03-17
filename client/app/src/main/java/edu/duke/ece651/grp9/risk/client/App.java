@@ -123,7 +123,6 @@ public class App {
 
       ///////////////////////end of initial placement/////////////
 
-      ActionRuleChecker arc = new ActionRuleChecker();
       System.out.println("Its next step...");
       //while(true){
       myMap = (Map) objectInputStream.readObject();
@@ -132,6 +131,26 @@ public class App {
       MapTextView mtv = new MapTextView(myMap);
       String gameStateInitial = mtv.displayGameState(null, app.findPlayer(color, myMap));
       System.out.println(gameStateInitial);
+
+      //allow client typing
+      ActionRuleChecker arc = new ActionRuleChecker();
+       while(true){//while loop until valid input
+        String action = inputSource.readLine();
+        String msg = arc.checkAction(action);
+        if(msg==null){//valid
+          System.out.println("Valid input.");
+            break;
+          }
+        else{//invalid
+          System.out.println("invalid input.");
+          System.out.print(msg);
+        }
+      }
+      if(myMap == null){//endgame signal - not yet implement
+         socket.close();
+      }
+
+      
     } catch (UnknownHostException e) {
       e.printStackTrace();
     } catch (IOException e) {
