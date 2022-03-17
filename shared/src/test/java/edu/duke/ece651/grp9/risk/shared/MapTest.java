@@ -29,4 +29,32 @@ public class MapTest {
     assertEquals(m.getPlayer(), list);    
   }
 
+
+  @Test
+  void getGameWinner_true() {
+    MapFactory mapFactory = new MapFactory();
+    Map map = mapFactory.makeMapForTwo();
+    Player playerRed = map.findPlayer("red");
+    Player playerBlue = map.findPlayer("blue");
+    map.findTerritory("C").setOwner(playerRed);
+    map.findTerritory("D").setOwner(playerRed);
+    playerRed.addTerritory(map.findTerritory("C"));
+    playerRed.addTerritory(map.findTerritory("D"));
+    playerBlue.removeTerritory(map.findTerritory("C"));
+    playerBlue.removeTerritory(map.findTerritory("D"));
+    assertEquals(playerRed, map.getGameWinner());
+  }
+
+  @Test
+  void getGameWinner_false() {
+    MapFactory mapFactory = new MapFactory();
+    Map map = mapFactory.makeMapForTwo();
+    Player playerRed = map.findPlayer("red");
+    Player playerBlue = map.findPlayer("blue");
+    map.findTerritory("C").setOwner(playerRed);
+    playerRed.addTerritory(map.findTerritory("C"));
+    playerBlue.removeTerritory(map.findTerritory("C"));
+    assertEquals(null, map.getGameWinner());
+  }
+
 }
