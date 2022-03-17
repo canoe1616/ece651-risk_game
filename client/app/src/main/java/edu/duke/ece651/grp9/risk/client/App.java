@@ -11,12 +11,13 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 //import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Scanner;
 
+import edu.duke.ece651.grp9.risk.shared.ActionRuleChecker;
 import edu.duke.ece651.grp9.risk.shared.Map;
-//import edu.duke.ece651.grp9.risk.shared.Message;
-import edu.duke.ece651.grp9.risk.shared.Territory;
+import edu.duke.ece651.grp9.risk.shared.MapTextView;
+import edu.duke.ece651.grp9.risk.shared.Player;
 
 public class App {
   private final BufferedReader inputReader;
@@ -24,6 +25,19 @@ public class App {
   public App (BufferedReader inputSource) {
     this.inputReader = inputSource;
   }
+
+  public Player findPlayer(String color, Map m){
+     HashSet<Player> list = m.getPlayer();
+     Iterator<Player> it = list.iterator();
+     while(it.hasNext()){
+       Player pyr = it.next();
+       if(pyr.getName().equals(color)){
+         return pyr;
+       }
+      }
+     return null;
+   }
+
 
   public String selectColor(BufferedReader inputSource, ObjectInputStream inStream, ObjectOutputStream outStream) throws IOException {
     String s = "";
@@ -111,8 +125,35 @@ public class App {
       String color = app.selectColor(inputSource, objectInputStream, objectOutputStream);
       String unitString = app.selectUnit(inputSource, objectInputStream, objectOutputStream);
 
-      socket.close();
-    } catch(Exception e) {
+      ///////////////////////end of initial placement/////////////
+
+      ActionRuleChecker arc = new ActionRuleChecker();
+      System.out.println("Its next step...");
+      //while(true){
+        myMap = (Map)objectInputStream.readObject();
+        System.out.println("Receive Map form server.");
+        
+        MapTextView mtv = new MapTextView(myMap);
+        mtv.displayGameState(null, app.findPlayer(color,myMap));
+        /*
+      while(true){//while loop until valid input
+        String action = inputSource.readLine();
+        String msg = arc.checkAction(action);
+        if(msg==null){//valid
+          System.out.println("Valid input.");
+            break;
+          }
+        else{//invalid
+          System.out.println("invalid input.");
+          System.out.print(msg);
+        }
+      }
+      if(myMap == null){//endgame signal - not yet implement
+         socket.close();
+      }
+       
+      }
+    catch(Exception e) {
       System.out.println(e);
     }
 
