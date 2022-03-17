@@ -15,11 +15,7 @@ import java.util.concurrent.TimeUnit;
 
 //import edu.duke.ece651.grp9.risk.shared.MapPackage;
 //import edu.duke.ece651.grp9.risk.shared.Message;
-import edu.duke.ece651.grp9.risk.shared.ActionRuleChecker;
-import edu.duke.ece651.grp9.risk.shared.Map;
-import edu.duke.ece651.grp9.risk.shared.MapFactory;
-import edu.duke.ece651.grp9.risk.shared.Player;
-import edu.duke.ece651.grp9.risk.shared.Territory;
+import edu.duke.ece651.grp9.risk.shared.*;
 
 
 public class App {
@@ -230,17 +226,13 @@ public class App {
         //socket = socketList.get(i);
         //send the map again
 
-
-        //OutputStream outputStream = socketList.get(i).getOutputStream();
-
-        System.out.println("step_1");
-        //ObjectOutputStream objectOutputStream_tmp = new ObjectOutputStream(outputStream);
-        System.out.println("step_2");
-
-
-
+        OutputList.get(i).reset();
         OutputList.get(i).writeObject(m);
-        System.out.println("step_3");
+        //To show the map in the server side- debug
+        MapTextView mtv = new MapTextView(m);
+        String gameStateInitial = mtv.displayGameState(null, app.findPlayer("red", m));
+        System.out.println(gameStateInitial);
+
         System.out.println("Sent map");
       }
       TimeUnit.SECONDS.sleep(1000);
