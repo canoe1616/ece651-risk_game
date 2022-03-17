@@ -8,12 +8,18 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.concurrent.TimeUnit;
 
-import edu.duke.ece651.grp9.risk.shared.*;
 //import edu.duke.ece651.grp9.risk.shared.MapPackage;
 //import edu.duke.ece651.grp9.risk.shared.Message;
+import edu.duke.ece651.grp9.risk.shared.ActionRuleChecker;
+import edu.duke.ece651.grp9.risk.shared.Map;
+import edu.duke.ece651.grp9.risk.shared.MapFactory;
+import edu.duke.ece651.grp9.risk.shared.Player;
+import edu.duke.ece651.grp9.risk.shared.Territory;
 
 
 public class App {
@@ -91,15 +97,20 @@ public class App {
     Map m = f.makeMapForThree();
     int player_num = 3;
     App app = new App(m);
- 
+    ArrayList<Socket> socketList = new ArrayList<Socket>();
+    Socket socket = null;
     try(ServerSocket ss = new ServerSocket(6666)){
-      
-    for(int i=0; i<player_num; i++){
+      for(int i = 0; i<player_num; i++){
+        Socket s = ss.accept();
+        socketList.add(s);
+      }
+
+      for(int i=0; i<socketList.size(); i++){
       //add the checker
       ActionRuleChecker tmp = new ActionRuleChecker();
 
-
-      Socket socket = ss.accept();
+      socket = socketList.get(i);
+      
       //send map object
       OutputStream outputStream = socket.getOutputStream();
       ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
@@ -151,26 +162,39 @@ public class App {
         //ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
 
         unitString = (String)objectInputStream.readObject();
-        System.out.print(unitString);
+        System.out.println(unitString);
         // add the checker
         while(tmp.checkUnit(unitString, app.findPlayer(color, m)) != null){
-          System.out.print(unitString);
+          System.out.println(unitString);
           unit_correct = "false";
           objectOutputStream.writeObject("false");
           unitString = (String)objectInputStream.readObject();
+          objectOutputStream.reset();
 
         }
-        //
         
         if(tmp.checkUnit(unitString, app.findPlayer(color, m)) == null) {
            unit_correct = "true";
            objectOutputStream.writeObject(unit_correct);
+           objectOutputStream.reset();
            break;
         }
       }
-      
-      socket.close();
       }
+      //-------------------end of initial placemnt----------------//
+
+      //ActionRuleChecker tmp = new ActionRuleChecker();
+
+      for(int i=0; i<socketList.size(); i++){
+        //add the rule checker
+        //socket = socketList.get(i);
+        //send the map again
+        OutputStream outputStream = socketList.get(i).getOutputStream();
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
+        objectOutputStream.writeObject(m);
+        System.out.println("Sent map");
+      }
+      TimeUnit.SECONDS.sleep(1000);
     ss.close();
   }
     catch(Exception e){
