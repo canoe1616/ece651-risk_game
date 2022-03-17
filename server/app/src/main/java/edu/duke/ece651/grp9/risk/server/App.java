@@ -90,8 +90,36 @@ public class App {
     return null;
   }
 
+
+  public void playerUnitSetting(String unitString, Player player){
+
+    ArrayList<Integer> unitList = new ArrayList<>();
+    char[] tmp = unitString.toCharArray();
+
+    //unitString -> array
+    int k = 0;
+    int digit = 0;
+    while(k < tmp.length){
+
+      if(Character.isDigit(tmp[k])){
+        digit =0 ;
+        while(k < tmp.length && Character.isDigit(tmp[k])){
+          digit = digit*10 + Character. getNumericValue(tmp[k]);
+          k++;
+        }
+      }
+      unitList.add(digit);
+      k++;
+    }
+    int i = 0;
+    for(Territory ter: player.getTerritoryList()){
+      ter.setUnit(unitList.get(i));
+      i++;
+    }
+  }
+
   //boolean
-  public static void main(String[] args) {
+  public static <objectInputStream> void main(String[] args) {
     
     MapFactory f = new MapFactory();
     Map m = f.makeMapForThree();
@@ -99,6 +127,13 @@ public class App {
     App app = new App(m);
     ArrayList<Socket> socketList = new ArrayList<Socket>();
     Socket socket = null;
+
+    //debug
+    ArrayList<ObjectInputStream> InputList = new ArrayList<ObjectInputStream>();
+    ArrayList<ObjectOutputStream> OutputList = new ArrayList<ObjectOutputStream>();
+
+
+
     try(ServerSocket ss = new ServerSocket(6666)){
       for(int i = 0; i<player_num; i++){
         Socket s = ss.accept();
@@ -115,10 +150,13 @@ public class App {
       OutputStream outputStream = socket.getOutputStream();
       ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
       objectOutputStream.writeObject(m);
+      OutputList.add(objectOutputStream);
 
       InputStream inputStream = socket.getInputStream();
       ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
-      
+      InputList.add(objectInputStream);
+
+
       app.selectColor(objectOutputStream);
       //check if the color selection is valid
       String color = "";
@@ -162,36 +200,47 @@ public class App {
         //ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
 
         unitString = (String)objectInputStream.readObject();
-        System.out.println(unitString);
+
         // add the checker
+
         while(tmp.checkUnit(unitString, app.findPlayer(color, m)) != null){
-          System.out.println(unitString);
+          //System.out.println(unitString);
           unit_correct = "false";
           objectOutputStream.writeObject("false");
           unitString = (String)objectInputStream.readObject();
-          objectOutputStream.reset();
+          //objectOutputStream.reset();
 
         }
         
         if(tmp.checkUnit(unitString, app.findPlayer(color, m)) == null) {
            unit_correct = "true";
            objectOutputStream.writeObject(unit_correct);
-           objectOutputStream.reset();
+           //objectOutputStream.reset();
+            System.out.println(unitString);
+            app.playerUnitSetting(unitString, app.findPlayer(color, m));
            break;
         }
+
       }
       }
       //-------------------end of initial placemnt----------------//
-
-      //ActionRuleChecker tmp = new ActionRuleChecker();
 
       for(int i=0; i<socketList.size(); i++){
         //add the rule checker
         //socket = socketList.get(i);
         //send the map again
-        OutputStream outputStream = socketList.get(i).getOutputStream();
-        ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
-        objectOutputStream.writeObject(m);
+
+
+        //OutputStream outputStream = socketList.get(i).getOutputStream();
+
+        System.out.println("step_1");
+        //ObjectOutputStream objectOutputStream_tmp = new ObjectOutputStream(outputStream);
+        System.out.println("step_2");
+
+
+
+        OutputList.get(i).writeObject(m);
+        System.out.println("step_3");
         System.out.println("Sent map");
       }
       TimeUnit.SECONDS.sleep(1000);
