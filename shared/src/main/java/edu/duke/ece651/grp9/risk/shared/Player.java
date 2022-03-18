@@ -8,11 +8,13 @@ public class Player implements Serializable{
   private String color;
   private HashSet<Territory> territoryList;
   private int totalUnit;
+  private String loseStatus;
   
   public Player(String color){
     this.color = color;
     this.territoryList = new HashSet<Territory>();
     this.totalUnit = 30;
+    this.loseStatus = "";
   }
   public void addTerritory(Territory ter){
     this.territoryList.add(ter);
@@ -52,6 +54,15 @@ public class Player implements Serializable{
    */
   public boolean isLose() {
     return territoryList.isEmpty();
+  }
+
+
+  public void setLoseStatus(String message) {
+    loseStatus = message;
+  }
+
+  public String getLoseStatus() {
+    return this.loseStatus;
   }
 
   /**

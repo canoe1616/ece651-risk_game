@@ -32,6 +32,10 @@ public class Map implements Serializable{
     players.add(p);
   }
 
+  public void removePlayer(Player p) {
+    players.remove(p);
+  }
+
   public void addTerritory(Territory ter){
     territoryList.add(ter);
   }
