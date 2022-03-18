@@ -213,8 +213,6 @@ public class App {
     ArrayList<ObjectInputStream> InputList = new ArrayList<ObjectInputStream>();
     ArrayList<ObjectOutputStream> OutputList = new ArrayList<ObjectOutputStream>();
 
-
-
     try(ServerSocket ss = new ServerSocket(6666)){
       for(int i = 0; i<player_num; i++){
         Socket s = ss.accept();
@@ -316,9 +314,10 @@ public class App {
       // notify the other players game over
       if (m.getGameWinner() != null) {
         int i = 0;
-        for (Player player: m.getPlayer()) {
           OutputList.get(i).reset();
           OutputList.get(i).writeObject(m);
+          System.out.println("Send map");
+        for (Player player: m.getPlayer()) {
           if (player.equals(m.getGameWinner())) {
             OutputList.get(i).reset();
             OutputList.get(i).writeObject("win");
@@ -334,9 +333,13 @@ public class App {
       } else { // no winner detected, game continuing
         int i = 0;
         for (Player player : m.getPlayer()) {
-          
+          OutputList.get(i).reset();
+          OutputList.get(i).writeObject(m);
+          System.out.println("Send map");
+
           // notify player game not over yet
           OutputList.get(i).writeObject("game continuing");
+          System.out.println("Write state");
           if (player.isLose()) {
             if (player.getLoseStatus() == "quit" && m.getPlayer().contains(player)) {
               //remove it from player list
@@ -353,8 +356,6 @@ public class App {
             HashSet<MoveAction> moveActions = new HashSet<>();
             HashSet<AttackAction> attackActions = new HashSet<>();
 
-            OutputList.get(i).reset();
-            OutputList.get(i).writeObject(m);
             actionSet = (ActionSet) InputList.get(i).readObject();
             System.out.println("Get action...");
             HashSet<String> actionListMove = actionSet.getMoveList();

@@ -151,6 +151,7 @@ public class App {
         MapTextView mtv = new MapTextView(myMap);
         //recieve win/gameover message
         String endGame = (String) objectInputStream.readObject();
+        System.out.println("Read state.");
         if (endGame.equals("win")){
           //print the map
           String gameStateInitial = mtv.displayGameState(app.findPlayer(color, myMap));
@@ -168,12 +169,13 @@ public class App {
           System.out.println("\n");
           System.out.println("The game is over now.");
         }
-        else{
+        else{//countinue
           
           if(app.findPlayer(color, myMap).isLose() && app.findPlayer(color, myMap).getLoseStatus().equals("no act")){
             System.out.println("Player " + color + ", you lose the game!"
                                + " What would you like to do?\n" +
                                " (Q)uit\n" + " (C)ontinue watching game\n");
+            
             String action = inputSource.readLine();
             app.getLoseActionString(action);
             //send selection to server
@@ -192,7 +194,7 @@ public class App {
           else{
             String gameStateInitial = mtv.displayGameState(app.findPlayer(color, myMap));
             System.out.println(gameStateInitial);
-            objectOutputStream.writeObject("no act");
+            //objectOutputStream.writeObject("no act");
             //allow client typing
             String action = null;
             ActionRuleChecker arc = new ActionRuleChecker();
@@ -212,7 +214,7 @@ public class App {
                 objectOutputStream.reset();
                 objectOutputStream.writeObject(actionSet);
                 System.out.println("Sent actionSet to the server.");
-
+                
                 String actionProblem = (String) objectInputStream.readObject();
                 if (actionProblem == null) {
                   break;
