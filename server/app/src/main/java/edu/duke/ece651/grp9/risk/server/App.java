@@ -213,6 +213,7 @@ public class App {
     int player_num = 3;
     App app = new App(m);
     ArrayList<Socket> socketList = new ArrayList<Socket>();
+    ArrayList<String> playerList = new ArrayList<String>();
     Socket socket = null;
 
     //debug
@@ -252,7 +253,6 @@ public class App {
           //InputStream inputStream = socket.getInputStream();
           //ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
           color = (String) objectInputStream.readObject();
-
           // add the checker
           //if everything is good, we will send "true" to the client
 
@@ -272,6 +272,7 @@ public class App {
             color_correct = "true";
             objectOutputStream.writeObject(color_correct);
             app.deleteColor(color);
+            playerList.add(color);
             break;
           }
         }
@@ -319,8 +320,9 @@ public class App {
       // notify the other players game over
       while (m.getGameWinner() == null) {
        // no winner detected, game continuing
-        int i = 0;
-        for (Player player : m.getPlayer()) {
+        //int i = 0;
+        //for (Player player : m.getPlayer()) {
+        for (int i = 0; i < socketList.size(); i++) {
           OutputList.get(i).reset();
           OutputList.get(i).writeObject(m);
           System.out.println("Send map");
@@ -328,6 +330,9 @@ public class App {
           // notify player game not over yet
           OutputList.get(i).writeObject("game continuing");
           System.out.println("Write state");
+
+          Player player = app.findPlayer(playerList.get(i), m);
+
           if (player.isLose()) {
             if (player.getLoseStatus().equals("quit") && m.getPlayer().contains(player)) {
               //remove it from player list
@@ -377,7 +382,6 @@ public class App {
           for (AttackAction att : allAttack) {
             att.performAction();
           }
-          i++;
         }
       }
 
