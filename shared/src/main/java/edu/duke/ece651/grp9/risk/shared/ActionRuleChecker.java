@@ -3,7 +3,16 @@ package edu.duke.ece651.grp9.risk.shared;
 import java.util.HashSet;
 
 public class ActionRuleChecker {
-
+  public String checkLoseAction( String input){
+    if(input.length() != 1){
+            return "the input length is invalid, please enter again!";
+        }
+        else if(!(input.charAt(0) == 'Q' || input.charAt(0) == 'q' || input.charAt(0) == 'C' || input.charAt(0) == 'c')){
+            return "the input character is invalid, please enter again!";
+        }
+        return null;
+  }
+  
     public String checkAction( String input){
         if(input.length() != 1){
             return "the input length is invalid, please enter again!";

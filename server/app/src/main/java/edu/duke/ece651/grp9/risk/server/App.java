@@ -219,39 +219,84 @@ public class App {
 
       }
       }
-      //-------------------end of initial placemnt----------------//
 
-      for(int i=0; i<socketList.size(); i++){
-        //add the rule checker
-        //socket = socketList.get(i);
-        //send the map again
+//-------------------end of initial placement----------------//
 
-        OutputList.get(i).reset();
-        OutputList.get(i).writeObject(m);
-        //To show the map in the server side- 【debug】
-        MapTextView mtv = new MapTextView(m);
-        String gameStateInitial = mtv.displayGameState(null, app.findPlayer("red", m));
-        System.out.println(gameStateInitial);
-
-        System.out.println("Sent map");
-      }
-
+      // initial sets for player actions
       ActionSet actionSet = new ActionSet();
       HashSet<String> actionListMove = new HashSet<>();
       HashSet<String> actionListAttack = new HashSet<>();
-      
-      for(int i=0; i<socketList.size(); i++){
-        //get the action sets from client
-        actionSet = (ActionSet)InputList.get(i).readObject();
-        System.out.println("Get action...");
-        
+
+      // if we find the winner, notify the winner he wins the game;
+      // notify the other players game over
+      if (m.getGameWinner() != null) {
+        int i = 0;
+        for (Player player: m.getPlayer()) {
+          OutputList.get(i).writeObject(m);
+          if (player.equals(m.getGameWinner())) {
+            OutputList.get(i).writeObject("win");
+          } else {
+            OutputList.get(i).writeObject("game over");
+          }
+          i++;
+        }
+        // game over, Socket disconnection
+        ss.close();
+
+      } else { // no winner detected, game continuing
+        int i = 0;
+        for (Player player : m.getPlayer()) {
+          // notify player game not over yet
+          OutputList.get(i).writeObject("game continuing");
+          if (player.isLose()) {
+            if (player.getLoseStatus() == "quit" && m.getPlayer().contains(player)) {
+              //remove it from player list
+              //auto set empty actionSet
+              m.removePlayer(player);
+            }
+            if (player.getLoseStatus() == "continue") {
+              //send map to it for each round
+              //auto set empty actionSet
+              OutputList.get(i).writeObject(m);
+            }
+          } else { // if the player still alive
+            OutputList.get(i).reset();
+            OutputList.get(i).writeObject(m);
+            actionSet = (ActionSet) InputList.get(i).readObject();
+            System.out.println("Get action...");
+          }
+          i++;
+        }
+        TimeUnit.SECONDS.sleep(1000);
       }
-      
-      TimeUnit.SECONDS.sleep(1000);
-    ss.close();
+
+//      for(int i=0; i<socketList.size(); i++){
+//        //add the rule checker
+//        //socket = socketList.get(i);
+//        //send the map again
+//
+//        OutputList.get(i).reset();
+//        OutputList.get(i).writeObject(m);
+//        //To show the map in the server side- 【debug】
+//        MapTextView mtv = new MapTextView(m);
+//        String gameStateInitial = mtv.displayGameState(app.findPlayer("red", m));
+//        System.out.println(gameStateInitial);
+//
+//        System.out.println("Sent map");
+//      }
+
+//      for(int i =0; i<socketList.size(); i++){
+//        //get the action sets from client
+//        actionSet = (ActionSet)InputList.get(i).readObject();
+//        System.out.println("Get action...");
+//      }
+//
+//      TimeUnit.SECONDS.sleep(1000);
+//    ss.close();
   }
     catch(Exception e){
       System.out.println(e);
     }
   }
-};
+}
+;
