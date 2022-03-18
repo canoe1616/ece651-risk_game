@@ -24,6 +24,24 @@ public class PlayerTest {
     assertEquals(p1.getName(), "blue");     
   }
 
+  @Test
+  public void test_getTerritoryNumber() {
+    Player p1 = new Player("blue");
+    Territory ter1 = new Territory("Test");
+    p1.addTerritory(ter1);
+    assertEquals(p1.getTerritoryNumber(), 1);
+
+    Territory ter2 = new Territory("Test2");
+    p1.addTerritory(ter2);
+    assertEquals(p1.getTerritoryNumber(), 2);
+  }
+
+  @Test
+  public void test_getUnit() {
+    Player p1 = new Player("blue");
+
+    assertEquals(p1.getUnit(), 30);
+  }
 
   @Test
   public void test_getAdjacency(){
