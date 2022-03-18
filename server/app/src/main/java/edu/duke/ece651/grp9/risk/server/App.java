@@ -363,6 +363,7 @@ public class App {
               }
 
               String actionProblem = app.validActionSet(moveActions, attackActions);
+              System.out.println("Index: " + i);
               OutputList.get(i).writeObject(actionProblem);
               if (actionProblem == null) {
                 allMoves.addAll(moveActions);
