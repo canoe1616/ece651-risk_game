@@ -191,8 +191,8 @@ public class App {
    * play all received attacks
    * @param attacks received attacks
    */
-  private void playAttacks(HashSet<AttackAction> attacks) {
-    Battle battle = new Battle();
+  private void playAttacks(Map map, HashSet<AttackAction> attacks) {
+    Battle battle = new Battle(map);
     for (AttackAction att: attacks) {
       battle.addAttackAction(att);
     }
