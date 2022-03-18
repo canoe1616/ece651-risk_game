@@ -95,7 +95,7 @@ public class Territory implements Serializable{
   public boolean equals(Object o) {
     if (o.getClass().equals(getClass())) {
       Territory t = (Territory) o;
-      return name.equals(t.name);
+      return name.equalsIgnoreCase(t.name);
     }
     return false;
   }

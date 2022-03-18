@@ -111,18 +111,9 @@ public class App {
      }
    }
   
-  public void getActionString(String action){
+  public String getActionString(String action){
     ActionRuleChecker arc = new ActionRuleChecker();
-    String msg = arc.checkAction(action);
-    while(true) {
-      if (msg == null) {//valid
-        //System.out.println("Valid input.");
-        break;
-      } else {//invalid
-        System.out.println("Invalid input: ");
-        System.out.print(msg);
-      }
-    }
+    return arc.checkAction(action);
   }
 
 
@@ -208,22 +199,37 @@ public class App {
             while(true) {//while loop until valid input
               System.out.println("You are the " + color + " Player, what would you like to do?\n  (M)ove\n  (A)ttack\n  (D)one");
               action = inputSource.readLine();
-              app.getActionString(action);
-
-              //To ask user input the action until we meet the "D"
-              
-              if (action.equals("D") || action.equals("d")) {
-                break;
+              String actionChoiceError;
+              while ((actionChoiceError = app.getActionString(action)) != null) {
+                System.out.println(actionChoiceError);
+                action = inputSource.readLine();
               }
 
+              //To ask user input the action until we meet the "D"
+              if (action.equals("D") || action.equals("d")) {
+                actionSet.actionListMove = actionListMove;
+                actionSet.actionListAttack = actionListAttack;
+                objectOutputStream.reset();
+                objectOutputStream.writeObject(actionSet);
+                System.out.println("Sent actionSet to the server.");
+
+                String actionProblem = (String) objectInputStream.readObject();
+                if (actionProblem == null) {
+                  break;
+                } else {
+                  actionListMove.clear();
+                  actionListAttack.clear();
+                  System.out.println(actionProblem);
+                  System.out.println("Please reenter your Actions again.");
+                }
+              }
               else if (action.equals("m") || action.equals("M")) {
                 //call the move function here
                 System.out.println("Please enter as this following format: Source, Destination, MoveUnits(e.g A B 10");
                 String action_input = inputSource.readLine();
                 actionListMove.add(action_input);
-
-
-              } else if (action.equals("a") || action.equals("A")) {
+              }
+              else if (action.equals("a") || action.equals("A")) {
                 //call the move function here
                 System.out.println("Please enter as this following format: Source, Destination, AttackUnits(e.g A B 10");
                 String action_input = inputSource.readLine();
@@ -231,12 +237,6 @@ public class App {
               }
 
             }
-            //send two strings for the server parts
-            actionSet.actionListMove = actionListMove;
-            actionSet.actionListAttack = actionListAttack;
-            objectOutputStream.reset();
-            objectOutputStream.writeObject(actionSet);
-            System.out.println("Sent actionSet to the server.");
           }
         }
       }
