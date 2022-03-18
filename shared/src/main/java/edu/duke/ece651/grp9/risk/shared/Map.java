@@ -42,7 +42,7 @@ public class Map implements Serializable{
 
   public Player findPlayer(String color){
     for (Player p: players){
-      if (p.getName().equals(color))
+      if (p.getName().equalsIgnoreCase(color))
         return p;
     }
     return null;
@@ -50,7 +50,7 @@ public class Map implements Serializable{
 
   public Territory findTerritory(String name){
     for (Territory t: territoryList){
-      if (t.getName().equals(name))
+      if (t.getName().equalsIgnoreCase(name))
         return t;
     }
     return null;
