@@ -162,12 +162,20 @@ public class App {
         String endGame = (String) objectInputStream.readObject();
         if (endGame.equals("win")){
           //print the map
+          String gameStateInitial = mtv.displayGameState(app.findPlayer(color, myMap));
+          System.out.println(gameStateInitial);
           //tell player you are winner!
-          //socket.close;
+          System.out.println("\n");
+          System.out.println("Congratulations! You win the game!");
+          socket.close();
         }
         else if (endGame.equals("game over")){
           //print the map
+          String gameStateInitial = mtv.displayGameState(app.findPlayer(color, myMap));
+          System.out.println(gameStateInitial);
           //tell player the game is over
+          System.out.println("\n");
+          System.out.println("The game is over now.");
         }
         else{
           

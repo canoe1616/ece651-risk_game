@@ -7,6 +7,14 @@ import org.junit.jupiter.api.Test;
 import java.util.HashSet;
 
 public class ActionRuleCheckerTest {
+
+   @Test
+  public void test_checkLoseAction() {
+    ActionRuleChecker tmp = new ActionRuleChecker();
+    assertNull(tmp.checkLoseAction("Q"));
+    assertEquals("the input character is invalid, please enter again!", tmp.checkAction("t"));
+    assertEquals("the input length is invalid, please enter again!", tmp.checkAction("Qt"));
+  }
   @Test
   public void test_checkAction() {
     ActionRuleChecker tmp = new ActionRuleChecker();
