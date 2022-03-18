@@ -15,7 +15,12 @@ import java.util.concurrent.TimeUnit;
 
 //import edu.duke.ece651.grp9.risk.shared.MapPackage;
 //import edu.duke.ece651.grp9.risk.shared.Message;
-import edu.duke.ece651.grp9.risk.shared.*;
+import edu.duke.ece651.grp9.risk.shared.ActionRuleChecker;
+import edu.duke.ece651.grp9.risk.shared.Map;
+import edu.duke.ece651.grp9.risk.shared.MapFactory;
+import edu.duke.ece651.grp9.risk.shared.MapTextView;
+import edu.duke.ece651.grp9.risk.shared.Player;
+import edu.duke.ece651.grp9.risk.shared.Territory;
 
 
 public class App {
@@ -210,10 +215,10 @@ public class App {
         
         if(tmp.checkUnit(unitString, app.findPlayer(color, m)) == null) {
            unit_correct = "true";
-           objectOutputStream.writeObject(unit_correct);
            //objectOutputStream.reset();
             System.out.println(unitString);
             app.playerUnitSetting(unitString, app.findPlayer(color, m));
+            //objectOutputStream.writeObject(unit_correct);
            break;
         }
 
@@ -222,19 +227,21 @@ public class App {
       //-------------------end of initial placemnt----------------//
 
       for(int i=0; i<socketList.size(); i++){
-        //add the rule checker
-        //socket = socketList.get(i);
-        //send the map again
-
-        OutputList.get(i).reset();
-        OutputList.get(i).writeObject(m);
-        //To show the map in the server side- 【debug】
-        MapTextView mtv = new MapTextView(m);
-        String gameStateInitial = mtv.displayGameState(null, app.findPlayer("red", m));
-        System.out.println(gameStateInitial);
-
-        System.out.println("Sent map");
-      }
+        OutputList.get(i).writeObject("true");
+        OutputList.get(i).flush();
+       }
+      MapTextView mtv = new MapTextView(m);
+      String gameStateInitial = mtv.displayGameState(null, app.findPlayer("red", m));
+      System.out.println(gameStateInitial);
+      gameStateInitial = mtv.displayGameState(null, app.findPlayer("green", m));
+      System.out.println(gameStateInitial);
+      gameStateInitial = mtv.displayGameState(null, app.findPlayer("blue", m));
+      System.out.println(gameStateInitial);
+      for(int i=0; i<socketList.size(); i++){
+         OutputList.get(i).writeObject(m);
+         OutputList.get(i).flush();
+       }
+      
       TimeUnit.SECONDS.sleep(1000);
     ss.close();
   }
