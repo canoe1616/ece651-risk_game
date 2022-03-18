@@ -8,9 +8,10 @@ public class Battle {
     // private final Map territoryMap;
     // key: territory being attacked; value: combined attacks onto the territory
     private HashMap<Territory, HashSet<AttackAction>> territoryUnderAttack;
+  private final Map territoryMap;
 
-    public Battle() {
-        //this.territoryMap = map;
+   public Battle(Map map) {
+        this.territoryMap = map;
         this.territoryUnderAttack = new HashMap<>();
     }
 
