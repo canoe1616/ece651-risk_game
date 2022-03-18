@@ -144,7 +144,7 @@ public class App {
       System.out.println("Receive Map form server.");
 
       MapTextView mtv = new MapTextView(myMap);
-      String gameStateInitial = mtv.displayGameState(null, app.findPlayer(color, myMap));
+      String gameStateInitial = mtv.displayGameState(app.findPlayer(color, myMap));
       System.out.println(gameStateInitial);
 
       //allow client typing
