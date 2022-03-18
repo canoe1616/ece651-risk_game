@@ -29,6 +29,22 @@ public class MapTest {
     assertEquals(m.getPlayer(), list);    
   }
 
+  @Test
+  public void test_findPlayer() {
+    Player p1 = new Player("blue");
+    Map map = new Map();
+    map.addPlayer(p1);
+    assertEquals(map.findPlayer("blue"), p1);
+    assertEquals(map.findPlayer("yellow"), null);
+  }
+
+  @Test
+  public void test_findTerritory() {
+    MapFactory mapFactory = new MapFactory();
+    Map map = mapFactory.makeMapForTwo();
+    assertEquals(map.findTerritory("C"), new Territory("C"));
+    assertEquals(map.findTerritory("Z"), null);
+  }
 
   @Test
   void getGameWinner_true() {
