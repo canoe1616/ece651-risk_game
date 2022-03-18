@@ -16,6 +16,7 @@ import java.util.concurrent.TimeUnit;
 //import edu.duke.ece651.grp9.risk.shared.MapPackage;
 //import edu.duke.ece651.grp9.risk.shared.Message;
 import edu.duke.ece651.grp9.risk.shared.*;
+import org.checkerframework.checker.units.qual.A;
 
 
 public class App {
@@ -30,7 +31,6 @@ public class App {
     while(it.hasNext()){
       remainingColors.add(it.next().getName());
     }
-    
   }
   
 
@@ -112,6 +112,18 @@ public class App {
       ter.setUnit(unitList.get(i));
       i++;
     }
+  }
+
+  /**
+   * play all received attacks
+   * @param attacks received attacks
+   */
+  private void playAttacks(HashSet<AttackAction> attacks) {
+    Battle battle = new Battle();
+    for (AttackAction att: attacks) {
+      battle.addAttackAction(att);
+    }
+    battle.playBattlePhase();
   }
 
   //boolean
