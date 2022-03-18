@@ -139,66 +139,94 @@ public class App {
       ///////////////////////end of initial placement/////////////
 
       System.out.println("Its next step...");
-      //while(true){
-      myMap = (Map) objectInputStream.readObject();
-      System.out.println("Receive Map form server.");
-
-      MapTextView mtv = new MapTextView(myMap);
-      String gameStateInitial = mtv.displayGameState(app.findPlayer(color, myMap));
-      System.out.println(gameStateInitial);
-
-      //allow client typing
-      String action = null;
-      ActionRuleChecker arc = new ActionRuleChecker();
-       while(true) {//while loop until valid input
-         System.out.println("You are the " + color + " Player, what would you like to do?\n  (M)ove\n  (A)ttack\n  (D)one");
-         action = inputSource.readLine();
-         app.getActionString(action);
-
-         //To ask user input the action until we meet the "D"
-
-         if (action.equals("D") || action.equals("d")) {
-           break;
-         }
-
-         else if (action.equals("m") || action.equals("M")) {
-             //call the move function here
-             System.out.println("Please enter as this following format: Source, Destination, MoveUnits(e.g A B 10");
-             String action_input = inputSource.readLine();
-             actionListMove.add(action_input);
-
-
-           } else if (action.equals("a") || action.equals("A")) {
-             //call the move function here
-             System.out.println("Please enter as this following format: Source, Destination, AttackUnits(e.g A B 10");
-             String action_input = inputSource.readLine();
-             actionListAttack.add(action_input);
-           }
-
-       }
-       //send two strings for the server parts
-       actionSet.actionListMove = actionListMove;
-       actionSet.actionListAttack = actionListAttack;
-       objectOutputStream.reset();
-       objectOutputStream.writeObject(actionSet);
-       System.out.println("Sent actionSet to the server.");
-
-
-      if(myMap == null){//endgame signal - not yet implement
-         socket.close();
-      }
-
       
-    } catch (UnknownHostException e) {
+      while(true){//until you lose or you win.
+        myMap = (Map) objectInputStream.readObject();
+        System.out.println("Receive Map form server.");
+        MapTextView mtv = new MapTextView(myMap);
+        //recieve win/gameover message
+        String endGame = (String) objectInputStream.readObject();
+        if (endGame.equals("win")){
+          //print the map
+          //tell player you are winner!
+          //socket.close;
+        }
+        else if (endGame.equals("game over")){
+          //print the map
+          //tell player the game is over
+        }
+        else{
+          
+          if(app.findPlayer(color, myMap).isLose() && app.findPlayer(color, myMap).getLoseStatus().equals("no act")){
+            System.out.println("Player " + color + ", you lose the game!"
+                               + " What would you like to do?\n" +
+                               " (Q)uit\n" + " (C)ontinue watching game\n");
+            String action = inputSource.readLine();
+            app.getActionString(action);
+            //send selection to server
+            objectOutputStream.writeObject(action);
+            //change it at local player.
+            app.findPlayer(color, myMap).setLoseStatus(action);
+          }
+          else if(app.findPlayer(color, myMap).isLose() && app.findPlayer(color, myMap).getLoseStatus().equals("quit")){
+            socket.close();
+            break;//close the game here
+          }
+          else if(app.findPlayer(color, myMap).isLose() && app.findPlayer(color, myMap).getLoseStatus().equals("continue")){
+             String gameStateInitial = mtv.displayGameState(app.findPlayer(color, myMap));
+             System.out.println(gameStateInitial);
+          }
+          else{
+            String gameStateInitial = mtv.displayGameState(app.findPlayer(color, myMap));
+            System.out.println(gameStateInitial);
+            objectOutputStream.writeObject("no act");
+            //allow client typing
+            String action = null;
+            ActionRuleChecker arc = new ActionRuleChecker();
+            while(true) {//while loop until valid input
+              System.out.println("You are the " + color + " Player, what would you like to do?\n  (M)ove\n  (A)ttack\n  (D)one");
+              action = inputSource.readLine();
+              app.getActionString(action);
+
+              //To ask user input the action until we meet the "D"
+              
+              if (action.equals("D") || action.equals("d")) {
+                break;
+              }
+
+              else if (action.equals("m") || action.equals("M")) {
+                //call the move function here
+                System.out.println("Please enter as this following format: Source, Destination, MoveUnits(e.g A B 10");
+                String action_input = inputSource.readLine();
+                actionListMove.add(action_input);
+
+
+              } else if (action.equals("a") || action.equals("A")) {
+                //call the move function here
+                System.out.println("Please enter as this following format: Source, Destination, AttackUnits(e.g A B 10");
+                String action_input = inputSource.readLine();
+                actionListAttack.add(action_input);
+              }
+
+            }
+            //send two strings for the server parts
+            actionSet.actionListMove = actionListMove;
+            actionSet.actionListAttack = actionListAttack;
+            objectOutputStream.reset();
+            objectOutputStream.writeObject(actionSet);
+            System.out.println("Sent actionSet to the server.");
+          }
+        }
+      }
+    }
+      catch (UnknownHostException e) {
       e.printStackTrace();
-    } catch (IOException e) {
+      }
+      catch (IOException e) {
       e.printStackTrace();
-    } catch (ClassNotFoundException e) {
+      }
+      catch (ClassNotFoundException e) {
       e.printStackTrace();
     }
   }
-
-
-
-
 }
