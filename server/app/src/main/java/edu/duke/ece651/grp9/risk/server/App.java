@@ -113,6 +113,79 @@ public class App {
       i++;
     }
   }
+  /**
+   * Creates an Action given String input from client
+   *
+   * @param map Map we are checking to see if Territory and Player exists
+   * @param action String input from client to be converted to Action
+   * @param isMove boolean to indicate if creating MoveAction or AttackAction
+   * @return Action as indicated by client
+   */
+  public Action createAction(Map map, String action, boolean isMove) {
+    int numUnits = -1;
+
+    String[] words = action.split(" ");
+    Player player = map.findPlayer(words[0]);
+    Territory source = map.findTerritory(words[1]);
+    Territory destination = map.findTerritory(words[2]);
+    try {
+      numUnits = Integer.parseInt(words[3]);
+    } catch (NumberFormatException e) {
+    }
+
+    if (source == null || destination == null) {
+      return null;
+    }
+
+    if (isMove) {
+      return new MoveAction(player, source, destination, numUnits);
+    } else {
+      return new AttackAction(player, source, destination, numUnits);
+    }
+  }
+  public String getPlayer(String action) {
+    String[] words = action.split(" ");
+    return words[0];
+  }
+
+  public String validActionSet(HashSet<MoveAction> moves, HashSet<AttackAction> attacks) {
+    Player player = null;
+    for (MoveAction move : moves) {
+      if (move == null) {
+        return "This action is invalid: Territory does not exist";
+      }
+      String error = move.canPerformAction();
+      if (error != null) {
+        return error;
+      }
+      player = move.getPlayer();
+    }
+
+    for (AttackAction attack : attacks) {
+      if (attack == null) {
+        return "This action is invalid: Territory does not exist";
+      }
+      String error = attack.canPerformAction();
+      if (error != null) {
+        return error;
+      }
+      player = attack.getAttacker();
+    }
+
+    if (player == null) {
+      return null;
+    }
+
+    for (Territory territory : player.getTerritoryList()) {
+      if (!territory.mockIsValid()) {
+        return "These actions are invalid: " + territory.getName()
+            + " territory ends with negative units";
+      }
+    }
+
+    return null;
+  }
+
 
   /**
    * play all received attacks
@@ -235,19 +308,22 @@ public class App {
 //-------------------end of initial placement----------------//
 
       // initial sets for player actions
-      ActionSet actionSet = new ActionSet();
-      HashSet<String> actionListMove = new HashSet<>();
-      HashSet<String> actionListAttack = new HashSet<>();
+      //ActionSet actionSet = new ActionSet();
+      HashSet<MoveAction> allMoves = new HashSet<>();
+      HashSet<AttackAction> allAttack = new HashSet<>();
 
       // if we find the winner, notify the winner he wins the game;
       // notify the other players game over
       if (m.getGameWinner() != null) {
         int i = 0;
         for (Player player: m.getPlayer()) {
+          OutputList.get(i).reset();
           OutputList.get(i).writeObject(m);
           if (player.equals(m.getGameWinner())) {
+            OutputList.get(i).reset();
             OutputList.get(i).writeObject("win");
           } else {
+            OutputList.get(i).reset();
             OutputList.get(i).writeObject("game over");
           }
           i++;
@@ -258,6 +334,7 @@ public class App {
       } else { // no winner detected, game continuing
         int i = 0;
         for (Player player : m.getPlayer()) {
+          
           // notify player game not over yet
           OutputList.get(i).writeObject("game continuing");
           if (player.isLose()) {
@@ -272,11 +349,47 @@ public class App {
               OutputList.get(i).writeObject(m);
             }
           } else { // if the player still alive
+            ActionSet actionSet = (ActionSet) InputList.get(i).readObject();
+            HashSet<MoveAction> moveActions = new HashSet<>();
+            HashSet<AttackAction> attackActions = new HashSet<>();
+
             OutputList.get(i).reset();
             OutputList.get(i).writeObject(m);
             actionSet = (ActionSet) InputList.get(i).readObject();
             System.out.println("Get action...");
-          }
+            HashSet<String> actionListMove = actionSet.getMoveList();
+            
+            for (String move : actionListMove) {
+              moveActions.add((MoveAction) app.createAction(m, move, true));
+            }
+
+            HashSet<String> actionListAttack = actionSet.getAttackList();
+            for (String attack : actionListAttack) {
+              attackActions.add((AttackAction) app.createAction(m, attack, false));
+            }
+
+            String actionProblem = app.validActionSet(moveActions, attackActions);
+            OutputList.get(i).writeObject(actionProblem);
+        if (actionProblem == null) {
+          allMoves.addAll(moveActions);
+          allAttack.addAll(attackActions);
+        } else {
+          //System.out.println(actionProblem);
+          i--;
+        }
+
+        System.out.println("Get actions...");
+      }
+
+      // real execute for thr move action
+      for(MoveAction act: allMoves){
+        act.performAction();
+      }
+
+      //real execute for te attack action
+      for(AttackAction att: allAttack){
+        att.performAction();
+      }
           i++;
         }
         TimeUnit.SECONDS.sleep(1000);
