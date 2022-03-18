@@ -5,11 +5,12 @@ import java.util.*;
 public class Battle {
     // The general methodology is to first add all players' attack actions to the hashmap, then iteratively the
     // territory and do the battles on each territory.
-    private final Map territoryMap;
+    // private final Map territoryMap;
     // key: territory being attacked; value: combined attacks onto the territory
     private HashMap<Territory, HashSet<AttackAction>> territoryUnderAttack;
+  private final Map territoryMap;
 
-    public Battle(Map map) {
+   public Battle(Map map) {
         this.territoryMap = map;
         this.territoryUnderAttack = new HashMap<>();
     }

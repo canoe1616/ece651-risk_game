@@ -34,6 +34,14 @@ public class MoveAction implements Action {
   }
 
   /**
+   * Getter for Player
+   * @return Player who is making Action
+   */
+  public Player getPlayer() {
+    return player;
+  }
+
+  /**
    * Checks chain of rules to ensure Move is valid
    * @return null if valid, if invalid a String describing error is returned
    */

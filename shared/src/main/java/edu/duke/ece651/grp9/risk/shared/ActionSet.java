@@ -10,4 +10,12 @@ public class ActionSet implements Serializable{
     this.actionListMove = new HashSet<String>();
     this.actionListAttack = new HashSet<String>();
   }
+
+  public HashSet<String> getMoveList() {
+    return actionListMove;
+  }
+
+  public HashSet<String> getAttackList() {
+    return actionListAttack;
+  }
 }
