@@ -68,8 +68,10 @@ public class MapTextView {
                     }
                     ans += "\n";
                 }
+                /*
                 ans += "You are the " + player.getName() + " Player, what would you like to do?\n" +
                         " (M)ove\n" + " (A)ttack\n" + " (D)one\n";
+                */
             }
         }
         return ans;

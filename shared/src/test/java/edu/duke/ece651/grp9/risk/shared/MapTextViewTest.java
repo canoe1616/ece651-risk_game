@@ -23,12 +23,13 @@ class MapTextViewTest {
                         "red Player:\n" +
                         "----------------------------------\n" +
                         "10 units in A(next to: B, C)\n" +
-                        "10 units in B(next to: A, D)\n" +
-                        "\n" +
+                        "10 units in B(next to: A, D)\n\n";
+          /*
                         "You are the red Player, what would you like to do?\n" +
                         " (M)ove\n" +
                         " (A)ttack\n" +
                         " (D)one\n";
+                        */
         assertEquals(exp, view.displayGameState(null, map.findPlayer("red")));
     }
 

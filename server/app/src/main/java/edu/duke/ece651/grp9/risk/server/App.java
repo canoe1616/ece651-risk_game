@@ -235,6 +235,18 @@ public class App {
 
         System.out.println("Sent map");
       }
+
+      ActionSet actionSet = new ActionSet();
+      HashSet<String> actionListMove = new HashSet<>();
+      HashSet<String> actionListAttack = new HashSet<>();
+      
+      for(int i=0; i<socketList.size(); i++){
+        //get the action sets from client
+        actionSet = (ActionSet)InputList.get(i).readObject();
+        System.out.println("Get action...");
+        
+      }
+      
       TimeUnit.SECONDS.sleep(1000);
     ss.close();
   }

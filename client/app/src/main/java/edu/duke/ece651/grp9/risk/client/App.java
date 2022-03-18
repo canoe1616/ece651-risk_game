@@ -102,10 +102,10 @@ public class App {
     String msg = arc.checkAction(action);
     while(true) {
       if (msg == null) {//valid
-        System.out.println("Valid input.");
+        //System.out.println("Valid input.");
         break;
       } else {//invalid
-        System.out.println("invalid input.");
+        System.out.println("Invalid input: ");
         System.out.print(msg);
       }
     }
@@ -120,6 +120,7 @@ public class App {
     //build be hashset<string> for actions for the server?
     HashSet<String> actionListMove = new HashSet<>();
     HashSet<String> actionListAttack = new HashSet<>();
+    ActionSet actionSet = new ActionSet();
     try {
       Socket socket = new Socket("localhost", 6666);
       //receive map from server
@@ -150,6 +151,7 @@ public class App {
       String action = null;
       ActionRuleChecker arc = new ActionRuleChecker();
        while(true) {//while loop until valid input
+         System.out.println("You are the " + color + " Player, what would you like to do?\n  (M)ove\n  (A)ttack\n  (D)one");
          action = inputSource.readLine();
          app.getActionString(action);
 
@@ -158,9 +160,8 @@ public class App {
          if (action.equals("D") || action.equals("d")) {
            break;
          }
-         while (!action.equals("D") && !action.equals("d")) {
 
-           if (action.equals("m") || action.equals("M")) {
+         else if (action.equals("m") || action.equals("M")) {
              //call the move function here
              System.out.println("Please enter as this following format: Source, Destination, MoveUnits(e.g A B 10");
              String action_input = inputSource.readLine();
@@ -174,13 +175,13 @@ public class App {
              actionListAttack.add(action_input);
            }
 
-         }
        }
        //send two strings for the server parts
-      objectOutputStream.writeObject(actionListMove);
-      System.out.println("Sent moveList to the server.");
-      objectOutputStream.writeObject(actionListAttack);
-      System.out.println("Sent attackList to the server.");
+       actionSet.actionListMove = actionListMove;
+       actionSet.actionListAttack = actionListAttack;
+       objectOutputStream.reset();
+       objectOutputStream.writeObject(actionSet);
+       System.out.println("Sent actionSet to the server.");
 
 
       if(myMap == null){//endgame signal - not yet implement
