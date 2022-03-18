@@ -29,22 +29,26 @@ public class ActionTest {
         t4.setOwner(p2);
         t4.setUnit(3);
         t2.addNeighbors(t4);
+        Territory t5 = new Territory("Tear");
+        t5.setOwner(p2);
+        t5.setUnit(5);
+        t5.addNeighbors(t4);
 
         HashSet<Action> actions = new HashSet<>();
         Action m1 = new MoveAction(p1, t1, t2, 5);
         Action m2 = new MoveAction(p1, t1, t2, 3);
         Action m3 = new MoveAction(p1, t3, t1, 7);
 
-        Action m4 = new AttackAction(p1, t2, t4, 7);
+        Action a1 = new AttackAction(p1, t2, t4, 7);
 
         actions.add(m1);
         actions.add(m2);
         actions.add(m3);
-        actions.add(m4);
 
         for (Action action : actions) {
             assertEquals(action.canPerformAction(), null);
         }
+        a1.canPerformAction();
 
         for (Territory territory : p1.getTerritoryList()) {
             assertTrue(territory.mockIsValid());
@@ -57,6 +61,11 @@ public class ActionTest {
         assertEquals(t1.getUnit(), 4);
         //assertEquals(t2.getUnit(), 0);
         assertEquals(t3.getUnit(), 3);
+
+        Action m4 = new MoveAction(p2, t4, t5, 5);
+
+        assertEquals(m4.canPerformAction(), null);
+        assertFalse(t4.mockIsValid());
     }
 }
 

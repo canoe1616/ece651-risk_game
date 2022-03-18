@@ -28,6 +28,8 @@ public class MoveAction implements Action {
     this.source = source;
     this.destination = destination;
     this.numUnits = numUnits;
+    source.syncUnits();
+    destination.syncUnits();
     this.moveChecker = new UnitsRuleChecker(new OwnerRuleChecker(new MoveRuleChecker(null)));
   }
 

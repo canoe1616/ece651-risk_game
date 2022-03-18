@@ -16,6 +16,8 @@ public class AttackAction implements Action {
         this.destination = destination;
         this.attackUnits = numUnits;
         this.attacker = player;
+        source.syncUnits();
+        destination.syncUnits();
         this.attackChecker = new UnitsRuleChecker(new OwnerRuleChecker(new AttackRuleChecker(null)));
         this.win = false;  // default battle status as false
     }
