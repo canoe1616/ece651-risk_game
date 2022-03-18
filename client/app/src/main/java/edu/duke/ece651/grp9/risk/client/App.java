@@ -15,10 +15,7 @@ import java.net.UnknownHostException;
 import java.util.HashSet;
 import java.util.Iterator;
 
-import edu.duke.ece651.grp9.risk.shared.ActionRuleChecker;
-import edu.duke.ece651.grp9.risk.shared.Map;
-import edu.duke.ece651.grp9.risk.shared.MapTextView;
-import edu.duke.ece651.grp9.risk.shared.Player;
+import edu.duke.ece651.grp9.risk.shared.*;
 
 public class App {
   private final BufferedReader inputReader;
@@ -100,12 +97,29 @@ public class App {
     return s;
   }
 
+  public void getActionString(String action){
+    ActionRuleChecker arc = new ActionRuleChecker();
+    String msg = arc.checkAction(action);
+    while(true) {
+      if (msg == null) {//valid
+        System.out.println("Valid input.");
+        break;
+      } else {//invalid
+        System.out.println("invalid input.");
+        System.out.print(msg);
+      }
+    }
+  }
+
 
   public static void main(String[] args) {
 
     BufferedReader inputSource = new BufferedReader(new InputStreamReader(System.in));
     App app = new App(inputSource);
 
+    //build be hashset<string> for actions for the server?
+    HashSet<String> actionListMove = new HashSet<>();
+    HashSet<String> actionListAttack = new HashSet<>();
     try {
       Socket socket = new Socket("localhost", 6666);
       //receive map from server
@@ -133,19 +147,42 @@ public class App {
       System.out.println(gameStateInitial);
 
       //allow client typing
+      String action = null;
       ActionRuleChecker arc = new ActionRuleChecker();
-       while(true){//while loop until valid input
-        String action = inputSource.readLine();
-        String msg = arc.checkAction(action);
-        if(msg==null){//valid
-          System.out.println("Valid input.");
-            break;
-          }
-        else{//invalid
-          System.out.println("invalid input.");
-          System.out.print(msg);
-        }
-      }
+       while(true) {//while loop until valid input
+         action = inputSource.readLine();
+         app.getActionString(action);
+
+         //To ask user input the action until we meet the "D"
+
+         if (action.equals("D") || action.equals("d")) {
+           break;
+         }
+         while (!action.equals("D") && !action.equals("d")) {
+
+           if (action.equals("m") || action.equals("M")) {
+             //call the move function here
+             System.out.println("Please enter as this following format: Source, Destination, MoveUnits(e.g A B 10");
+             String action_input = inputSource.readLine();
+             actionListMove.add(action_input);
+
+
+           } else if (action.equals("a") || action.equals("A")) {
+             //call the move function here
+             System.out.println("Please enter as this following format: Source, Destination, AttackUnits(e.g A B 10");
+             String action_input = inputSource.readLine();
+             actionListAttack.add(action_input);
+           }
+
+         }
+       }
+       //send two strings for the server parts
+      objectOutputStream.writeObject(actionListMove);
+      System.out.println("Sent moveList to the server.");
+      objectOutputStream.writeObject(actionListAttack);
+      System.out.println("Sent attackList to the server.");
+
+
       if(myMap == null){//endgame signal - not yet implement
          socket.close();
       }
@@ -159,4 +196,8 @@ public class App {
       e.printStackTrace();
     }
   }
+
+
+
+
 }

@@ -11,6 +11,8 @@ public class AttackAction implements Action {
     // TODO(rune): prefer to enum, but conflicts to clover.
     private boolean win;
 
+
+    // "A B 10"
     public AttackAction(Player player, Territory source, Territory destination, int numUnits) {
         this.source = source;
         this.destination = destination;
@@ -102,4 +104,7 @@ public class AttackAction implements Action {
     public void setAttackUnits(Integer units) {
         this.attackUnits = units;
     }
+
+
+    //public AttackAction parseInput()
 }

@@ -228,7 +228,7 @@ public class App {
 
         OutputList.get(i).reset();
         OutputList.get(i).writeObject(m);
-        //To show the map in the server side- debug
+        //To show the map in the server side- 【debug】
         MapTextView mtv = new MapTextView(m);
         String gameStateInitial = mtv.displayGameState(null, app.findPlayer("red", m));
         System.out.println(gameStateInitial);
