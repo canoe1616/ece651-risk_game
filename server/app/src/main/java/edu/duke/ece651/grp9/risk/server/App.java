@@ -125,15 +125,15 @@ public class App {
    * @param isMove boolean to indicate if creating MoveAction or AttackAction
    * @return Action as indicated by client
    */
-  public Action createAction(Map map, String action, boolean isMove) {
+  public Action createAction(Map map, String color, String action, boolean isMove) {
     int numUnits = -1;
 
     String[] words = action.split(" ");
-    Player player = map.findPlayer(words[0]);
-    Territory source = map.findTerritory(words[1]);
-    Territory destination = map.findTerritory(words[2]);
+    Player player = map.findPlayer(color);
+    Territory source = map.findTerritory(words[0]);
+    Territory destination = map.findTerritory(words[1]);
     try {
-      numUnits = Integer.parseInt(words[3]);
+      numUnits = Integer.parseInt(words[2]);
     } catch (NumberFormatException e) {
     }
 
@@ -153,8 +153,7 @@ public class App {
     return words[0];
   }
 
-  public String validActionSet(HashSet<MoveAction> moves, HashSet<AttackAction> attacks) {
-    Player player = null;
+  public String validActionSet(Player player, HashSet<MoveAction> moves, HashSet<AttackAction> attacks) {
     for (MoveAction move : moves) {
       if (move == null) {
         return "This action is invalid: Territory does not exist";
@@ -163,7 +162,6 @@ public class App {
       if (error != null) {
         return error;
       }
-      player = move.getPlayer();
     }
 
     for (AttackAction attack : attacks) {
@@ -174,11 +172,6 @@ public class App {
       if (error != null) {
         return error;
       }
-      player = attack.getAttacker();
-    }
-
-    if (player == null) {
-      return null;
     }
 
     for (Territory territory : player.getTerritoryList()) {
@@ -354,16 +347,15 @@ public class App {
               HashSet<String> actionListMove = actionSet.getMoveList();
 
               for (String move : actionListMove) {
-                moveActions.add((MoveAction) app.createAction(m, move, true));
+                moveActions.add((MoveAction) app.createAction(m, playerList.get(i), move, true));
               }
 
               HashSet<String> actionListAttack = actionSet.getAttackList();
               for (String attack : actionListAttack) {
-                attackActions.add((AttackAction) app.createAction(m, attack, false));
+                attackActions.add((AttackAction) app.createAction(m, playerList.get(i), attack, false));
               }
 
-              String actionProblem = app.validActionSet(moveActions, attackActions);
-              System.out.println("Index: " + i);
+              String actionProblem = app.validActionSet(m.findPlayer(playerList.get(i)), moveActions, attackActions);
               OutputList.get(i).writeObject(actionProblem);
               if (actionProblem == null) {
                 allMoves.addAll(moveActions);
