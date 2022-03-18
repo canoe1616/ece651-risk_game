@@ -317,25 +317,8 @@ public class App {
 
       // if we find the winner, notify the winner he wins the game;
       // notify the other players game over
-      if (m.getGameWinner() != null) {
-        int i = 0;
-        OutputList.get(i).reset();
-        OutputList.get(i).writeObject(m);
-        System.out.println("Send map");
-        for (Player player : m.getPlayer()) {
-          if (player.equals(m.getGameWinner())) {
-            OutputList.get(i).reset();
-            OutputList.get(i).writeObject("win");
-          } else {
-            OutputList.get(i).reset();
-            OutputList.get(i).writeObject("game over");
-          }
-          i++;
-        }
-        // game over, Socket disconnection
-        ss.close();
-
-      } else { // no winner detected, game continuing
+      while (m.getGameWinner() == null) {
+       // no winner detected, game continuing
         int i = 0;
         for (Player player : m.getPlayer()) {
           OutputList.get(i).reset();
@@ -358,7 +341,6 @@ public class App {
             }
           } else { // if the player still alive
             while (true) {
-              //ActionSet actionSet = (ActionSet)InputList.get(i).readObject();
               HashSet<MoveAction> moveActions = new HashSet<>();
               HashSet<AttackAction> attackActions = new HashSet<>();
 
@@ -397,9 +379,26 @@ public class App {
           }
           i++;
         }
-        TimeUnit.SECONDS.sleep(1000);
       }
 
+      for (int i = 0; i < socketList.size(); i++) {
+        OutputList.get(i).reset();
+        OutputList.get(i).writeObject(m);
+        System.out.println("Send map");
+        for (Player player : m.getPlayer()) {
+          if (player.equals(m.getGameWinner())) {
+            OutputList.get(i).reset();
+            OutputList.get(i).writeObject("win");
+          } else {
+            OutputList.get(i).reset();
+            OutputList.get(i).writeObject("game over");
+          }
+        }
+        socketList.get(i).close();
+      }
+      ss.close();
+      // game over, Socket disconnection
+      ss.close();
 //      for(int i=0; i<socketList.size(); i++){
 //        //add the rule checker
 //        //socket = socketList.get(i);
