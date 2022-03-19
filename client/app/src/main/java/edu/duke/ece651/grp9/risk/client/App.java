@@ -191,8 +191,10 @@ public class App {
             app.findPlayer(color, myMap).setLoseStatus(action);
           }
           else if(app.findPlayer(color, myMap).isLose() && app.findPlayer(color, myMap).getLoseStatus().equals("quit")){
+            System.out.println("Bye bye I quit");
+            objectOutputStream.writeObject("quit");
             socket.close();
-            break;//close the game here
+            break; //close the game here
           }
           else if(app.findPlayer(color, myMap).isLose() && app.findPlayer(color, myMap).getLoseStatus().equals("continue")){
              String gameStateInitial = mtv.displayGameState(app.findPlayer(color, myMap));

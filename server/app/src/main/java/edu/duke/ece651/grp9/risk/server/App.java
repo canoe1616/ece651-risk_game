@@ -339,7 +339,14 @@ public class App {
             if (player.getLoseStatus().equals("quit") && m.getPlayer().contains(player)) {
               //remove it from player list
               //auto set empty actionSet
-              m.removePlayer(player);
+              //m.removePlayer(player);
+              System.out.println("Bye bye I quit");
+              //m.removePlayer(player);
+              socketList.remove(i);
+              InputList.remove(i);
+              OutputList.remove(i);
+              playerList.remove(i);
+              
             }
             if (player.getLoseStatus().equals("continue")) {
    
