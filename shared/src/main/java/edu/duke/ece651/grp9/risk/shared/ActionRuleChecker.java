@@ -2,8 +2,16 @@ package edu.duke.ece651.grp9.risk.shared;
 
 import java.util.HashSet;
 
+
 public class ActionRuleChecker {
 
+  /**
+   * The method deal with the option when a gamer has lost the game.
+   * The player have two options: Q for quit or C for continuing watching.
+   * The valid inputs are: 'q' or 'Q' or 'C' or 'c'.
+   * @param input is the player's input selection
+   * @return err msg
+   */
   public String checkLoseAction(String input) {
     if (input.length() != 1) {
       return "the input length is invalid, please enter again!";
@@ -14,6 +22,13 @@ public class ActionRuleChecker {
     return null;
   }
 
+  /**
+   * The method deal with the option when a gamer has lost the game.
+   * The player has three actions: M for move, A for attack, and D for done.
+   * The valid inputs are: 'm' or 'M' or 'A' or 'a' or 'd' or 'D'.
+   * @param input is the user input
+   * @return err msg
+   */
   public String checkAction(String input) {
     if (input.length() != 1) {
       return "the input length is invalid, please enter again!";
@@ -24,7 +39,12 @@ public class ActionRuleChecker {
     return null;
   }
 
-
+  /**
+   * The method is to check it the input color is valid
+   * @param input is the user input color, eg: "red", "blue"
+   * @param remainingColors is the valid colors we have
+   * @return err msg
+   */
   public String checkColor(String input, HashSet<String> remainingColors) {
     if (!remainingColors.contains(input)) {
       return "The color you input is invalid, please enter again";
@@ -32,6 +52,12 @@ public class ActionRuleChecker {
     return null;
   }
 
+  /**
+   * The method is to check if the input unit number is valid
+   * @param input the user input unit for n territories. eg: 10 10 10 for three territories
+   * @param player the Player who does the actions
+   * @return err msg
+   */
   public String checkUnit(String input, Player player) {
     String[] words = input.split(" ");
 

@@ -2,17 +2,25 @@ package edu.duke.ece651.grp9.risk.shared;
 
 import java.util.Random;
 
+/**
+ * This class is to define player's attack Actions from his territory to the enemy's territory.
+ */
 public class AttackAction implements Action {
     private final Player attacker;
     private final Territory source;
     private final Territory destination;
     private int attackUnits;
     private final RuleChecker attackChecker;
-    // TODO(rune): prefer to enum, but conflicts to clover.
-    private boolean win;
+    private boolean win; // for testing only
 
-
-    // "A B 10"
+    /*
+     * Constructor to create an Attack
+     * @param player is the Player performing the Action
+     * @param source is the Territory we start an attack
+     * @param destination is the Territory we are going to make an attack
+     * @param numUnits is the number of units we attack from source to destination
+     * @param moveChecker checks if an Attack  is valid
+     */
     public AttackAction(Player player, Territory source, Territory destination, int numUnits) {
         this.source = source;
         this.destination = destination;
@@ -56,7 +64,8 @@ public class AttackAction implements Action {
     }
 
     /**
-     * roll two 20-sided dice for attacker and defender, and check which side wins the game.
+     * This method is to check if the attack is success or not
+     * Roll two 20-sided dice for attacker and defender, and check which side wins the game.
      * The player with larger number wins; the defender wins if in a tie.
      * @return true if attacker makes a successful attack, false if fail
      */
@@ -68,27 +77,50 @@ public class AttackAction implements Action {
         return roll1 > roll2;
     }
 
+    /**
+     * get the unit numbers for attack
+     * @return attack units
+     */
     public int getAttackUnits() {
         return attackUnits;
     }
 
+    /**
+     * get the destination territory
+     * @return the destination
+     */
     public Territory getDestination() {
         return destination;
     }
 
+    /**
+     * get the source territory
+     * @return source
+     */
     public Territory getSource() {
         return source;
     }
 
+    /**
+     * get the attacker for the attack action
+     * @return attacker
+     */
     public Player getAttacker() {
         return attacker;
     }
 
+    /**
+     * get the game status -> for testing only
+     * @return boolean status for win
+     */
     public boolean getState() {
         return win;
     }
+
     /**
-     * if player 1 attacks territory X with units from multiple of her own territories, the attacks count as a single combined force.
+     * check if attack is the same orig attack.
+     * same origin attack: if player 1 attacks territory X with units from multiple
+     * of her own territories, the attacks count as a single combined force.
      * @param att another attack
      * @return true if can be combined, false if cannot be combined
      */
@@ -97,7 +129,7 @@ public class AttackAction implements Action {
     }
 
     /**
-     * If the attacks are the sameOriAttack, the attack units should be reset.
+     * reset the attack units if the attacks are the sameOriAttack
      * eg: Player 1 attacks 5 units from territory A to D
      * Player 1 attacks 3 units from territory B to D
      * Player 1 attacks 8 units to D
@@ -107,6 +139,4 @@ public class AttackAction implements Action {
         this.attackUnits = units;
     }
 
-
-    //public AttackAction parseInput()
 }
