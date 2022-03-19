@@ -48,4 +48,15 @@ public class TerritoryTest {
     String a = "Hello";
     assertFalse(ter1.equals(a));
   }
+
+  @Test
+  public void test_addUnit() {
+    Territory ter1 = new Territory("Test1");
+    ter1.setUnit(3);
+
+    assertEquals(ter1.getUnit(), 3);
+    ter1.addUnit();
+    assertEquals(ter1.getUnit(), 4);
+  }
+
 }

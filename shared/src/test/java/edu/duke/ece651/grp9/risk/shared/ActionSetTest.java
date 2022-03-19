@@ -14,8 +14,10 @@ public class ActionSetTest {
     ActionSet s = new ActionSet();
     s.actionListMove = a;
     s.actionListAttack = b;
-    assertEquals(s.actionListMove, a);
-    assertEquals(s.actionListAttack, b); 
+    assertEquals(s.getMoveList(), a);
+    assertEquals(s.getAttackList(), b);
+
+
   }
 
 }

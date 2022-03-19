@@ -1,47 +1,85 @@
 package edu.duke.ece651.grp9.risk.shared;
+
 import java.io.Serializable;
-import java.util.HashMap;
 import java.util.HashSet;
 
-public class Territory implements Serializable{
+/**
+ * Territories are connected to other Territories and make up a Map
+ *
+ * @author PROY
+ * @since 10 March 2022
+ */
+public class Territory implements Serializable {
+
   private String name;
   private Player owner;
   private int unit;
   private HashSet<Territory> neighbors;
   private int mockUnits;
 
-  //Constructor
-  public Territory(String name){
+  /**
+   * Constructor to create a Territory
+   * @param name String - name of the Territory
+   */
+  public Territory(String name) {
     this.name = name;
     this.neighbors = new HashSet<Territory>();
   }
 
-  public void setUnit(int unit){
+  /**
+   * Setter for unit
+   * @param unit int - number of units in Territory
+   */
+  public void setUnit(int unit) {
     this.unit = unit;
     syncUnits();
   }
 
-  public void setOwner(Player owner){
+  /**
+   * Setter for owner
+   * @param owner Player who owns this Territory
+   */
+  public void setOwner(Player owner) {
     this.owner = owner;
   }
 
-  public Player getOwner(){
+  /**
+   * Getter for owner
+   * @return Player who owns this Territory
+   */
+  public Player getOwner() {
     return this.owner;
   }
-  
-  public void addNeighbors(Territory ter){
+
+  /**
+   *
+   * @param ter
+   */
+  public void addNeighbors(Territory ter) {
     this.neighbors.add(ter);
     ter.neighbors.add(this);
   }
 
-  public HashSet<Territory> getNeighbors(){
+  /**
+   * Getter for neighbors of this Territory
+   * @return HashSet of this Territory's neighbors
+   */
+  public HashSet<Territory> getNeighbors() {
     return this.neighbors;
   }
 
-  public String getName(){
+  /**
+   * Getter for name of this Territory
+   * @return String name of this territory
+   */
+  public String getName() {
     return name;
   }
 
+  /**
+   * Getter for unit
+   * @return int units in this Territory
+   */
   public int getUnit() {
     return unit;
   }
@@ -61,8 +99,8 @@ public class Territory implements Serializable{
   }
 
   /**
-   * Mock the Actions (Move and Attack). Updates mockUnits to ensure every Territory does not
-   * 0 or more units after Player executes all set of moves
+   * Mock the Actions (Move and Attack). Updates mockUnits to ensure every Territory does not 0 or
+   * more units after Player executes all set of moves
    *
    * @param unitMovement number of units moving into destination Territory
    */
@@ -73,6 +111,7 @@ public class Territory implements Serializable{
 
   /**
    * Checks so that no Territory is left with negative units count before Actions executed
+   *
    * @return boolean value if mockUnits is at least 0
    */
   public boolean mockIsValid() {
@@ -86,7 +125,8 @@ public class Territory implements Serializable{
     mockUnits = unit;
   }
 
-  /** Overrides the equals method to check if two Territories are the same
+  /**
+   * Overrides the equals method to check if two Territories are the same
    *
    * @param o is the input object to be compared with this
    * @return boolean indicating if the two objects are equal
@@ -100,7 +140,10 @@ public class Territory implements Serializable{
     return false;
   }
 
-  public void addUnit(){
+  /**
+   * Adds one unit to this Territory - used at the end of each round
+   */
+  public void addUnit() {
     unit++;
     syncUnits();
   }
