@@ -54,6 +54,9 @@ class BattleTest {
         assertEquals(2, battle.getAllAttackActions().size());
         assertEquals(2, src.getUnit());
         assertEquals(3, dst.getUnit());
+
+        assertEquals(map.findPlayer("purple"), null);
+        assertEquals(map.findTerritory("purple"), null);
     }
 
     @Test
@@ -103,9 +106,7 @@ class BattleTest {
         battle.playBattlePhase();
         List<AttackAction> attackRes = battle.getAllAttackActions();
         assertEquals(attackRes.size(), 1);
-        if (attackRes.get(0).getState()) {
-            assertEquals("red", dstC.getOwner().getName());
-        } else {
+        if (!attackRes.get(0).getState()) {
             assertEquals("blue", dstC.getOwner().getName());
         }
     }
