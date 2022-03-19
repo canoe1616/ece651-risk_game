@@ -1,20 +1,16 @@
 package edu.duke.ece651.grp9.risk.shared;
-import java.util.HashSet;
-import java.util.Iterator;
 
 public class MapFactory implements AbstractMapFactory {
   
-  /**
-   * Make a player list.
-   * 
-   * @param myMap specifies the location and orientation of the ship to make
-   * @return the player list.
-   */
-
   /*2 player map
     |A|B|
     |C|D|
    */
+
+  /** this method is to create a map for two
+   * @return a map
+   */
+
   @Override
   public Map makeMapForTwo(){
     

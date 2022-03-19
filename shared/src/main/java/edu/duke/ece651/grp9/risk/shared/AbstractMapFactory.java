@@ -5,8 +5,8 @@ package edu.duke.ece651.grp9.risk.shared;
 
 public interface AbstractMapFactory {
   /**
-   * Make a map for two people.
-   * @return the Map created for two people.
+   * Make a map for a certain number of players
+   * @return the Map created for two/three/four/five people.
    */
 
   public Map makeMapForTwo();

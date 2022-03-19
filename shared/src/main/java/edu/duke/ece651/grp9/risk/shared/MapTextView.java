@@ -2,12 +2,18 @@ package edu.duke.ece651.grp9.risk.shared;
 
 import java.util.*;
 
+/**
+ * this class is to display the game information.
+ */
 public class MapTextView {
     private final Map toDisplay;
 
+    /*
+     * Constructor to create MapTextView.
+     * @param toDisplay is the given map
+     */
     public MapTextView(Map toDisplay) {
         this.toDisplay = toDisplay;
-        // todo: check correctness?
     }
 
     /**
