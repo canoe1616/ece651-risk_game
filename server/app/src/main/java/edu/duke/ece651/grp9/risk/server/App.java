@@ -154,6 +154,10 @@ public class App {
   }
 
   public String validActionSet(Player player, HashSet<MoveAction> moves, HashSet<AttackAction> attacks) {
+    //Once we first meet the problem, then reenter with "Done", moves and attacks would be "NULL"
+    if(moves == null && attacks == null){
+      return null;
+    }
     for (MoveAction move : moves) {
       if (move == null) {
         return "This action is invalid: Territory does not exist";
@@ -362,19 +366,32 @@ public class App {
 
               for (String move : actionListMove) {
                 moveActions.add((MoveAction) app.createAction(m, playerList.get(i), move, true));
+                //debug
+                System.out.println("传回给server的move是" + move);
               }
 
               HashSet<String> actionListAttack = actionSet.getAttackList();
               for (String attack : actionListAttack) {
                 attackActions.add((AttackAction) app.createAction(m, playerList.get(i), attack, false));
+                //debug
+                System.out.println("传回给server的move是" + attack);
               }
 
+              //moveActions  attackActions need to be reset in the next round.
               String actionProblem = app.validActionSet(m.findPlayer(playerList.get(i)), moveActions, attackActions);
+              if(moveActions.isEmpty() && attackActions.isEmpty()){
+                actionProblem = null;
+              }
+              //debug：here should be reset
+              OutputList.get(i).reset();
               OutputList.get(i).writeObject(actionProblem);
               if (actionProblem == null) {
                 allMoves.addAll(moveActions);
                 allAttack.addAll(attackActions);
                 break;
+              }
+              else{
+
               }
               System.out.println("There are problems with this client's setting, send information back to the server");
             }
