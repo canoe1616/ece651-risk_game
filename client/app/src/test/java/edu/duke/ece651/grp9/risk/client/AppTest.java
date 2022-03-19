@@ -3,11 +3,49 @@
  */
 package edu.duke.ece651.grp9.risk.client;
 
+import edu.duke.ece651.grp9.risk.shared.Map;
+import edu.duke.ece651.grp9.risk.shared.Player;
+import org.checkerframework.checker.units.qual.A;
 import org.junit.jupiter.api.Test;
+
+import java.io.*;
+import java.net.Socket;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class AppTest {
-    @Test void appHasAGreeting() {
+    @Test
+    void findPlayer() {
+        BufferedReader inputReader = new BufferedReader(new InputStreamReader(System.in));
+        App app = new App(inputReader);
+        Map m = new Map();
+        Player p = new Player("red");
+        m.addPlayer(p);
+        assertEquals(p, app.findPlayer("red", m));
+        assertEquals(null, app.findPlayer("green",m));
+    }
 
+    @Test
+    void selectColor() throws IOException, ClassNotFoundException {
+    }
+
+    @Test
+    void selectUnit() {
+    }
+
+    @Test
+    void getLoseActionString() {
+        BufferedReader inputReader = new BufferedReader(new InputStreamReader(System.in));
+        App app = new App(inputReader);
+        assertEquals(null, app.getLoseActionString("Q"));
+        assertEquals("the input character is invalid, please enter again!", app.getLoseActionString("P"));
+    }
+
+    @Test
+    void getActionString() {
+        BufferedReader inputReader = new BufferedReader(new InputStreamReader(System.in));
+        App app = new App(inputReader);
+        assertEquals(null, app.getActionString("A"));
+        assertEquals("the input character is invalid, please enter again!", app.getLoseActionString("P"));
     }
 }
