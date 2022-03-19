@@ -389,10 +389,9 @@ public class App {
         OutputList.get(i).reset();
         OutputList.get(i).writeObject(m);
         System.out.println("Send map : there is a winner.");
-        //MapTextView mtv = new MapTextView();
-        //String gameStateInitial = mtv.displayGameState(app.findPlayer("red", m));
-        //System.out.println(gameStateInitial);
-
+        MapTextView mtv = new MapTextView();
+         String gameStateInitial = mtv.displayGameState(app.findPlayer(color, myMap));
+          System.out.println(gameStateInitial);
         for (Player player : m.getPlayer()) {
           if (player.equals(m.getGameWinner())) {
             OutputList.get(i).reset();
