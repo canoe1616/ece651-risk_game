@@ -70,7 +70,6 @@ public class App {
         //From server -> color_correct
         outStream.writeObject(s);
         color_correct = (String) inStream.readObject();
-
         //System.out.println(color_correct);
         if (color_correct.equals("false")) {
           System.out.println("Invalid color selection, please enter again!");

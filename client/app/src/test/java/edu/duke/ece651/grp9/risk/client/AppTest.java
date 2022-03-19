@@ -9,6 +9,7 @@ import org.checkerframework.checker.units.qual.A;
 import org.junit.jupiter.api.Test;
 
 import java.io.*;
+import java.net.ServerSocket;
 import java.net.Socket;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -25,12 +26,87 @@ class AppTest {
         assertEquals(null, app.findPlayer("green",m));
     }
 
+
     @Test
-    void selectColor() throws IOException, ClassNotFoundException {
+    void selectColor() throws IOException, InterruptedException {
+        StringReader stringReader = new StringReader("black\nred");
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        PrintStream out = new PrintStream(bytes, true);
+        BufferedReader inputReader = new BufferedReader(stringReader);
+        App app = new App(inputReader);
+        Thread th = new Thread() {
+            @Override
+            public void run() {
+                try {
+                    ServerSocket ss = new ServerSocket(6666);
+                    Socket client = ss.accept();
+                    OutputStream outputStream = client.getOutputStream();
+                    ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
+                    InputStream inputStream = client.getInputStream();
+                    ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+                    String sever2client = "false";
+                    objectOutputStream.writeObject(sever2client);
+                    outputStream.flush();
+                    sever2client = "true";
+                    objectOutputStream.writeObject(sever2client);
+                    outputStream.flush();
+                    ss.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        th.start();
+        Thread.sleep(100);
+        Socket socket = new Socket("localhost", 6666);
+        OutputStream outputStream = socket.getOutputStream();
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
+        InputStream inputStream = socket.getInputStream();
+        ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+        app.selectColor(inputReader, objectInputStream, objectOutputStream);
+        String exp = "";
+        assertEquals(exp, bytes.toString());
     }
 
     @Test
-    void selectUnit() {
+    void selectUnit() throws InterruptedException, IOException {
+        StringReader stringReader = new StringReader("0 0 -1\n10 15 5");
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        PrintStream out = new PrintStream(bytes, true);
+        BufferedReader inputReader = new BufferedReader(stringReader);
+        App app = new App(inputReader);
+        Thread th = new Thread() {
+            @Override
+            public void run() {
+                try {
+                    ServerSocket ss = new ServerSocket(6666);
+                    Socket client = ss.accept();
+                    OutputStream outputStream = client.getOutputStream();
+                    ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
+                    InputStream inputStream = client.getInputStream();
+                    ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+                    String sever2client = "false";
+                    objectOutputStream.writeObject(sever2client);
+                    outputStream.flush();
+                    sever2client = "true";
+                    objectOutputStream.writeObject(sever2client);
+                    outputStream.flush();
+                    ss.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        th.start();
+        Thread.sleep(100);
+        Socket socket = new Socket("localhost", 6666);
+        OutputStream outputStream = socket.getOutputStream();
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
+        InputStream inputStream = socket.getInputStream();
+        ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+        app.selectUnit(inputReader, objectInputStream, objectOutputStream);
+        String exp = "";
+        assertEquals(exp, bytes.toString());
     }
 
     @Test
