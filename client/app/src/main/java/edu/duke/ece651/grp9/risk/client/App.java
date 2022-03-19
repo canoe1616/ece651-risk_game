@@ -24,6 +24,12 @@ public class App {
     this.inputReader = inputSource;
   }
 
+  /**
+   * given the player color and the map, this method is to find the play
+   * @param color is the player's color
+   * @param m is the map of the game
+   * @return the player in color on map m
+   */
   public Player findPlayer(String color, Map m) {
     HashSet<Player> list = m.getPlayer();
     Iterator<Player> it = list.iterator();
@@ -36,7 +42,14 @@ public class App {
     return null;
   }
 
-
+  /**
+   * this method is to ask player select a color
+   * @param inputSource is the input buffer reader
+   * @param inStream is the input stream
+   * @param outStream is the output stream
+   * @return the player selected color
+   * @throws IOException
+   */
   public String selectColor(BufferedReader inputSource, ObjectInputStream inStream, ObjectOutputStream outStream) throws IOException {
     String s = "";
     //get prompt and print it
@@ -57,7 +70,6 @@ public class App {
         //From server -> color_correct
         outStream.writeObject(s);
         color_correct = (String) inStream.readObject();
-
         //System.out.println(color_correct);
         if (color_correct.equals("false")) {
           System.out.println("Invalid color selection, please enter again!");
@@ -69,6 +81,14 @@ public class App {
     return s;
   }
 
+  /**
+   * this method is to ask player select unit numbers
+   * @param inputSource is the input buffer reader
+   * @param inStream is the input stream
+   * @param outStream is the output stream
+   * @return the player's input unit setting
+   * @throws IOException
+   */
   public String selectUnit(BufferedReader inputSource, ObjectInputStream inStream, ObjectOutputStream outStream) throws IOException {
     String s = "";
     //get prompt and print it
@@ -97,16 +117,26 @@ public class App {
     return s;
   }
 
+  /**
+   * get player's options when a player loses a game
+   * @param action player's option, Q for quit, C for continue watching
+   * @return a string for action
+   */
    public String getLoseActionString(String action){
      ActionRuleChecker arc = new ActionRuleChecker();
      return arc.checkLoseAction(action);
    }
 
-   //try to confirm whether this action is valid or not.
-  public String getActionString(String action){
-    ActionRuleChecker arc = new ActionRuleChecker();
-    return arc.checkAction(action);
-  }
+  /**
+   * get player's actions for game
+   * @param action player's actions, A, a, M, m, D, d are valid.
+   * @return a string for action
+   */
+    public String getActionString(String action){
+      ActionRuleChecker arc = new ActionRuleChecker();
+      return arc.checkAction(action);
+    }
+
 
 
   public static void main(String[] args) {

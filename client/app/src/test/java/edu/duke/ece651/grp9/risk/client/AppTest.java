@@ -3,11 +3,131 @@
  */
 package edu.duke.ece651.grp9.risk.client;
 
+import edu.duke.ece651.grp9.risk.shared.Map;
+import edu.duke.ece651.grp9.risk.shared.Player;
+import org.checkerframework.checker.units.qual.A;
 import org.junit.jupiter.api.Test;
+
+import java.io.*;
+import java.net.ServerSocket;
+import java.net.Socket;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class AppTest {
-    @Test void appHasAGreeting() {
+    @Test
+    void findPlayer() {
+        BufferedReader inputReader = new BufferedReader(new InputStreamReader(System.in));
+        App app = new App(inputReader);
+        Map m = new Map();
+        Player p = new Player("red");
+        m.addPlayer(p);
+        assertEquals(p, app.findPlayer("red", m));
+        assertEquals(null, app.findPlayer("green",m));
+    }
 
+
+    @Test
+    void selectColor() throws IOException, InterruptedException {
+        StringReader stringReader = new StringReader("black\nred\nsss");
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        PrintStream out = new PrintStream(bytes, true);
+        BufferedReader inputReader = new BufferedReader(stringReader);
+        App app = new App(inputReader);
+        Thread th = new Thread() {
+            @Override
+            public void run() {
+                try {
+                    ServerSocket ss = new ServerSocket(6666);
+                    Socket client = ss.accept();
+                    OutputStream outputStream = client.getOutputStream();
+                    ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
+                    InputStream inputStream = client.getInputStream();
+                    ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+                    String sever2client = "false";
+                    objectOutputStream.writeObject(sever2client);
+                    outputStream.flush();
+                    sever2client = "true";
+                    objectOutputStream.writeObject(sever2client);
+                    outputStream.flush();
+                    sever2client = "false";
+                    objectOutputStream.writeObject(sever2client);
+                    outputStream.flush();
+                    ss.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        th.start();
+        Thread.sleep(100);
+        Socket socket = new Socket("localhost", 6666);
+        OutputStream outputStream = socket.getOutputStream();
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
+        InputStream inputStream = socket.getInputStream();
+        ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+        app.selectColor(inputReader, objectInputStream, objectOutputStream);
+        String exp = "";
+        assertEquals(exp, bytes.toString());
+    }
+
+    @Test
+    void selectUnit() throws InterruptedException, IOException {
+        StringReader stringReader = new StringReader("0 0 -1\n0 0 0  \n10 15 5");
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        PrintStream out = new PrintStream(bytes, true);
+        BufferedReader inputReader = new BufferedReader(stringReader);
+        App app = new App(inputReader);
+        Thread th = new Thread() {
+            @Override
+            public void run() {
+                try {
+                    ServerSocket ss = new ServerSocket(6666);
+                    Socket client = ss.accept();
+                    OutputStream outputStream = client.getOutputStream();
+                    ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
+                    InputStream inputStream = client.getInputStream();
+                    ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+                    String sever2client = "false";
+                    objectOutputStream.writeObject(sever2client);
+                    outputStream.flush();
+                    sever2client = "false";
+                    objectOutputStream.writeObject(sever2client);
+                    outputStream.flush();
+                    sever2client = "true";
+                    objectOutputStream.writeObject(sever2client);
+                    outputStream.flush();
+                    ss.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        th.start();
+        Thread.sleep(100);
+        Socket socket = new Socket("localhost", 6666);
+        OutputStream outputStream = socket.getOutputStream();
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
+        InputStream inputStream = socket.getInputStream();
+        ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+        app.selectUnit(inputReader, objectInputStream, objectOutputStream);
+        String exp = "";
+        assertEquals(exp, bytes.toString());
+    }
+
+    @Test
+    void getLoseActionString() {
+        BufferedReader inputReader = new BufferedReader(new InputStreamReader(System.in));
+        App app = new App(inputReader);
+        assertEquals(null, app.getLoseActionString("Q"));
+        assertEquals("the input character is invalid, please enter again!", app.getLoseActionString("P"));
+    }
+
+    @Test
+    void getActionString() {
+        BufferedReader inputReader = new BufferedReader(new InputStreamReader(System.in));
+        App app = new App(inputReader);
+        assertEquals(null, app.getActionString("A"));
+        assertEquals("the input character is invalid, please enter again!", app.getLoseActionString("P"));
     }
 }
