@@ -161,6 +161,7 @@ public class App {
           //tell player the game is over
           System.out.println("\n");
           System.out.println("The game is over now.");
+          socket.close();
         }
         else{//countinue
           

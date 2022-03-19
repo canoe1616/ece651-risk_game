@@ -391,22 +391,21 @@ public class App {
 
 
       //------------------------------------------Winner part-------------------------------//
+      Player winner = m.getGameWinner();
       for (int i = 0; i < socketList.size(); i++) {
         OutputList.get(i).reset();
         OutputList.get(i).writeObject(m);
         System.out.println("Send map : there is a winner.");
 
-        for (Player player : m.getPlayer()) {
-          if (player.equals(m.getGameWinner())) {
-            OutputList.get(i).reset();
-            OutputList.get(i).writeObject("win");
-            System.out.println("write win to player");
+        if (winner.equals(playerList.get(i))) {
+          OutputList.get(i).reset();
+          OutputList.get(i).writeObject("win");
+          System.out.println("write win to player");
           } 
-          else {
-            OutputList.get(i).reset();
-            OutputList.get(i).writeObject("game over");
-            System.out.println("write game over to player");
-          }
+        else{  
+          OutputList.get(i).reset();
+          OutputList.get(i).writeObject("game over");
+          System.out.println("write game over to player");
         }
         socketList.get(i).close();
       }
