@@ -144,6 +144,7 @@ public class App {
         String endGame = (String) objectInputStream.readObject();//
         System.out.println("Read state.");
         if (endGame.equals("win")){
+          System.out.println("end_game = win");
           //print the map
           String gameStateInitial = mtv.displayGameState(app.findPlayer(color, myMap));
           System.out.println(gameStateInitial);
@@ -154,6 +155,7 @@ public class App {
         }
         else if (endGame.equals("game over")){
           //print the map
+          System.out.println("end_game = game over");
           String gameStateInitial = mtv.displayGameState(app.findPlayer(color, myMap));
           System.out.println(gameStateInitial);
           //tell player the game is over
@@ -192,7 +194,7 @@ public class App {
           else if(app.findPlayer(color, myMap).isLose() && app.findPlayer(color, myMap).getLoseStatus().equals("continue")){
              String gameStateInitial = mtv.displayGameState(app.findPlayer(color, myMap));
              System.out.println(gameStateInitial);
-             objectOutputStream.writeObject("no act");
+             objectOutputStream.writeObject("continue");
           }
           else{
             String gameStateInitial = mtv.displayGameState(app.findPlayer(color, myMap));
