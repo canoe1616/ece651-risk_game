@@ -97,18 +97,9 @@ public class App {
     return s;
   }
 
-   public void getLoseActionString(String action){
+   public String getLoseActionString(String action){
      ActionRuleChecker arc = new ActionRuleChecker();
-     String msg = arc.checkLoseAction(action);
-     while(true) {
-       if (msg == null) {//valid                                                                                                                                         
-         //System.out.println("Valid input.");                                                                                                                           
-         break;
-       } else {//invalid                                                                                                                                                 
-         System.out.println("Invalid input: ");
-         System.out.print(msg);
-       }
-     }
+     return arc.checkLoseAction(action);
    }
   
   public String getActionString(String action){
@@ -146,11 +137,11 @@ public class App {
       System.out.println("Its next step...");
       
       while(true){//until you lose or you win.
-        myMap = (Map) objectInputStream.readObject();
+        myMap = (Map) objectInputStream.readObject();//
         System.out.println("Receive Map form server.");
         MapTextView mtv = new MapTextView(myMap);
         //recieve win/gameover message
-        String endGame = (String) objectInputStream.readObject();
+        String endGame = (String) objectInputStream.readObject();//
         System.out.println("Read state.");
         if (endGame.equals("win")){
           //print the map
@@ -177,7 +168,12 @@ public class App {
                                " (Q)uit\n" + " (C)ontinue watching game\n");
             
             String action = inputSource.readLine();
-            app.getLoseActionString(action);
+            String checker = app.getLoseActionString(action);
+            while(checker != null){
+              action = inputSource.readLine();
+              checker = app.getLoseActionString(action);
+              System.out.println("Not a valid input, type again:");
+            }
             //send selection to server
             if (action.equals("Q") || action.equals("q")){
               action = "quit";

@@ -322,7 +322,8 @@ public class App {
         }
         for(int i = 0 ; i < socketList.size(); i++) {
           // notify player game not over yet
-          OutputList.get(i).writeObject("game continuing");
+          OutputList.get(i).writeObject("no act");
+
           System.out.println("Write state");
           String action = (String)InputList.get(i).readObject();
 
@@ -338,6 +339,7 @@ public class App {
             if (player.getLoseStatus().equals("continue")) {
               //send map to it for each round
               //auto set empty actionSet
+              OutputList.get(i).reset();
               OutputList.get(i).writeObject(m);
             }
           } else { // if the player still alive
@@ -396,7 +398,8 @@ public class App {
           if (player.equals(m.getGameWinner())) {
             OutputList.get(i).reset();
             OutputList.get(i).writeObject("win");
-          } else {
+          } 
+          else {
             OutputList.get(i).reset();
             OutputList.get(i).writeObject("game over");
           }
