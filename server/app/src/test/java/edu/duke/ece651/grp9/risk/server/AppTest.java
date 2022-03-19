@@ -10,7 +10,14 @@ import edu.duke.ece651.grp9.risk.shared.Map;
 import edu.duke.ece651.grp9.risk.shared.MoveAction;
 import edu.duke.ece651.grp9.risk.shared.Player;
 import edu.duke.ece651.grp9.risk.shared.Territory;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
+import java.net.Socket;
 import java.util.HashSet;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
@@ -26,24 +33,43 @@ class AppTest {
     App app1 = new App(map);
   }
 
-  /*@Test
+  @Test
   @Timeout(5)
-  public void test_selectColor() throws IOException, InterruptedException {
+  public void test_selectColor() throws IOException, InterruptedException, ClassNotFoundException {
+    MapFactory factory = new MapFactory();
+    Map map = factory.makeMapForTwo();
+    App app = new App(map);
     Thread th = new Thread() {
       @Override()
       public void run() {
         try {
-          App.main(new String[0]);
+          Socket s = new Socket("localhost", 1651);
+          OutputStream outputStream = s.getOutputStream();
+          ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
+          app.selectColor(objectOutputStream);
         } catch (Exception e) {
         }
       }
     };
     th.start();
+    Thread.sleep(100);
 
 
-    th.interrupt();
-    th.join();
-  }*/
+    //app.selectColor(objectOutputStream);
+
+    /*s.getOutputStream().write("red".getBytes());
+    s.getOutputStream().flush();
+    s.shutdownOutput();
+    BufferedReader br =
+        new BufferedReader(new InputStreamReader(s.getInputStream()));*/
+    Socket socket = new Socket("localhost", 1651);
+    InputStream inputStream = socket.getInputStream();
+    ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+    String networkMessage = (String) objectInputStream.readObject();
+
+    String message = "Please select what color you would like to play as: red blue";
+    assertEquals(networkMessage, message);
+  }
 
   @Test
   public void test_findPlayer() {
