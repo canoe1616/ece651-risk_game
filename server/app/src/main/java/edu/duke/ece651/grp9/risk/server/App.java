@@ -211,7 +211,6 @@ public class App {
     ArrayList<String> playerList = new ArrayList<String>();
     Socket socket = null;
 
-    //debug
     ArrayList<ObjectInputStream> InputList = new ArrayList<ObjectInputStream>();
     ArrayList<ObjectOutputStream> OutputList = new ArrayList<ObjectOutputStream>();
 
@@ -222,7 +221,6 @@ public class App {
       }
 
       for (int i = 0; i < socketList.size(); i++) {
-        //add the checker
         ActionRuleChecker tmp = new ActionRuleChecker();
 
         socket = socketList.get(i);
@@ -245,20 +243,12 @@ public class App {
           //boolean for color checking
 
           String color_correct = "true";
-          //InputStream inputStream = socket.getInputStream();
-          //ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
           color = (String) objectInputStream.readObject();
           // add the checker
           //if everything is good, we will send "true" to the client
-
-          //System.out.println(color);
           while (tmp.checkColor(color, remainingColors) != null) {
 
-            //System.out.println(tmp.checkColor(color, remainingColors));
-            color_correct = "false";
-
             objectOutputStream.writeObject("false");
-
             //read the new color from the client
             color = (String) objectInputStream.readObject();
           }
@@ -276,26 +266,18 @@ public class App {
         String unitString = "";
         while (true) {
           String unit_correct = "true";
-          //InputStream inputStream = socket.getInputStream();
-          //ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
-
           unitString = (String) objectInputStream.readObject();
 
           // add the checker
-
           while (tmp.checkUnit(unitString, app.findPlayer(color, m)) != null) {
-            //System.out.println(unitString);
-            unit_correct = "false";
             objectOutputStream.writeObject("false");
             unitString = (String) objectInputStream.readObject();
-            //objectOutputStream.reset();
 
           }
 
           if (tmp.checkUnit(unitString, app.findPlayer(color, m)) == null) {
             unit_correct = "true";
             objectOutputStream.writeObject(unit_correct);
-            //objectOutputStream.reset();
             System.out.println(unitString);
             app.playerUnitSetting(unitString, app.findPlayer(color, m));
             break;
@@ -307,7 +289,6 @@ public class App {
 //-------------------end of initial placement----------------//
 
       // initial sets for player actions
-      //ActionSet actionSet = new ActionSet();
       HashSet<MoveAction> allMoves = new HashSet<>();
       HashSet<AttackAction> allAttack = new HashSet<>();
 
@@ -327,23 +308,15 @@ public class App {
 
           String action = (String)InputList.get(i).readObject();
 
-          //debug
-          System.out.println("the action is：" + action);
-
 
           Player player = app.findPlayer(playerList.get(i), m);
           player.setLoseStatus(action);
-
-          //debug
-          System.out.println("player's setLoseStatus:" + player.getLoseStatus());
 
           if (player.isLose()) {
             if (player.getLoseStatus().equals("quit") && m.getPlayer().contains(player)) {
               //remove it from player list
               //auto set empty actionSet
-              //m.removePlayer(player);
               System.out.println("Bye bye I quit");
-              //m.removePlayer(player);
               socketList.remove(i);
               InputList.remove(i);
               OutputList.remove(i);
@@ -351,7 +324,6 @@ public class App {
               
             }
             if (player.getLoseStatus().equals("continue")) {
-   
             }
           } else { // if the player still alive
             while (true) {
@@ -364,15 +336,11 @@ public class App {
 
               for (String move : actionListMove) {
                 moveActions.add((MoveAction) app.createAction(m, playerList.get(i), move, true));
-                //debug
-                System.out.println("传回给server的move是" + move);
               }
 
               HashSet<String> actionListAttack = actionSet.getAttackList();
               for (String attack : actionListAttack) {
                 attackActions.add((AttackAction) app.createAction(m, playerList.get(i), attack, false));
-                //debug
-                System.out.println("传回给server的move是" + attack);
               }
 
               //moveActions  attackActions need to be reset in the next round.
@@ -386,15 +354,11 @@ public class App {
                 allAttack.addAll(attackActions);
                 break;
               }
-              else{
-
-              }
               System.out.println("There are problems with this client's setting, send information back to the server");
             }
           }
 
-          // real execute for thr move action
-          //
+
         }
 
         for (MoveAction act : allMoves) {
