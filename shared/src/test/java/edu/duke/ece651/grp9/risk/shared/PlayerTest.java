@@ -46,7 +46,7 @@ public class PlayerTest {
   @Test
   public void test_loseStatus() {
     Player p1 = new Player("blue");
-    assertEquals(p1.getLoseStatus(), "");
+    assertEquals(p1.getLoseStatus(), "no act");
 
     p1.setLoseStatus("Lost");
     assertEquals(p1.getLoseStatus(), "Lost");
