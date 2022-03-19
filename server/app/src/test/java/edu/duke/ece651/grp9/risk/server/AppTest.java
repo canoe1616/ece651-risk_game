@@ -33,7 +33,7 @@ class AppTest {
     App app1 = new App(map);
   }
 
-  @Test
+  /*@Test
   @Timeout(5)
   public void test_selectColor() throws IOException, InterruptedException, ClassNotFoundException {
     MapFactory factory = new MapFactory();
@@ -43,33 +43,28 @@ class AppTest {
       @Override()
       public void run() {
         try {
-          Socket s = new Socket("localhost", 1651);
-          OutputStream outputStream = s.getOutputStream();
-          ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
-          app.selectColor(objectOutputStream);
+          App.main(new String[0]);
         } catch (Exception e) {
+          System.out.println("Connection error.");
         }
       }
     };
     th.start();
     Thread.sleep(100);
 
+    Socket socket = new Socket("localhost", 6666);
 
-    //app.selectColor(objectOutputStream);
-
-    /*s.getOutputStream().write("red".getBytes());
-    s.getOutputStream().flush();
-    s.shutdownOutput();
-    BufferedReader br =
-        new BufferedReader(new InputStreamReader(s.getInputStream()));*/
-    Socket socket = new Socket("localhost", 1651);
     InputStream inputStream = socket.getInputStream();
     ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
-    String networkMessage = (String) objectInputStream.readObject();
+    Map map1 = (Map) objectInputStream.readObject();
 
+    String networkMessage = (String) objectInputStream.readObject();
     String message = "Please select what color you would like to play as: red blue";
     assertEquals(networkMessage, message);
-  }
+
+    th.interrupt();
+    th.join();
+  }*/
 
   @Test
   public void test_findPlayer() {
