@@ -14,10 +14,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.concurrent.TimeUnit;
 
-//import edu.duke.ece651.grp9.risk.shared.MapPackage;
-//import edu.duke.ece651.grp9.risk.shared.Message;
 import edu.duke.ece651.grp9.risk.shared.*;
-import org.checkerframework.checker.units.qual.A;
+
 
 
 public class App {
@@ -155,7 +153,7 @@ public class App {
 
   public String validActionSet(Player player, HashSet<MoveAction> moves, HashSet<AttackAction> attacks) {
     //Once we first meet the problem, then reenter with "Done", moves and attacks would be "NULL"
-    if(moves == null && attacks == null){
+    if(moves.isEmpty() && attacks.isEmpty()){
       return null;
     }
     for (MoveAction move : moves) {
@@ -379,9 +377,7 @@ public class App {
 
               //moveActions  attackActions need to be reset in the next round.
               String actionProblem = app.validActionSet(m.findPlayer(playerList.get(i)), moveActions, attackActions);
-              if(moveActions.isEmpty() && attackActions.isEmpty()){
-                actionProblem = null;
-              }
+
               //debug：here should be reset
               OutputList.get(i).reset();
               OutputList.get(i).writeObject(actionProblem);
