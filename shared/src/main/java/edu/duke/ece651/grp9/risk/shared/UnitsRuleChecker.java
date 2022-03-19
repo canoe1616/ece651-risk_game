@@ -18,12 +18,12 @@ public class UnitsRuleChecker extends RuleChecker {
   }
 
   /**
-   * Checks if source Territory has enough units in it
+   * Performs mockActions to make sure Territories have enough units after all moves are made
    *
    * @param player is the Player performing the Action
    * @param source is the Territory we are moving units from
    * @param destination is the Territory we are moving units to
-   * @param numUnits is the number of units we are moving from source to desination
+   * @param numUnits is the number of units we are moving from source to destination
    * @return String description of error if invalid move, or null if okay
    */
   @Override
