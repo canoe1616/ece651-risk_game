@@ -324,8 +324,10 @@ public class App {
           // notify player game not over yet
           OutputList.get(i).writeObject("game continuing");
           System.out.println("Write state");
+          String action = (String)InputList.get(i).readObject();
 
           Player player = app.findPlayer(playerList.get(i), m);
+          player.setLoseStatus(action);
 
           if (player.isLose()) {
             if (player.getLoseStatus().equals("quit") && m.getPlayer().contains(player)) {
@@ -386,7 +388,11 @@ public class App {
       for (int i = 0; i < socketList.size(); i++) {
         OutputList.get(i).reset();
         OutputList.get(i).writeObject(m);
-        System.out.println("Send map");
+        System.out.println("Send map : there is a winner.");
+        //MapTextView mtv = new MapTextView();
+        //String gameStateInitial = mtv.displayGameState(app.findPlayer("red", m));
+        //System.out.println(gameStateInitial);
+
         for (Player player : m.getPlayer()) {
           if (player.equals(m.getGameWinner())) {
             OutputList.get(i).reset();

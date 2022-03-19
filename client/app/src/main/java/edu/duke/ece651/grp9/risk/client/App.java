@@ -179,6 +179,12 @@ public class App {
             String action = inputSource.readLine();
             app.getLoseActionString(action);
             //send selection to server
+            if (action.equals("Q") || action.equals("q")){
+              action = "quit";
+            }
+            else if (action.equals("C") || action.equals("c")){
+              action = "continue";
+            }
             objectOutputStream.writeObject(action);
             //change it at local player.
             app.findPlayer(color, myMap).setLoseStatus(action);
@@ -194,7 +200,7 @@ public class App {
           else{
             String gameStateInitial = mtv.displayGameState(app.findPlayer(color, myMap));
             System.out.println(gameStateInitial);
-            //objectOutputStream.writeObject("no act");
+            objectOutputStream.writeObject("no act");
             //allow client typing
             String action = null;
             ActionRuleChecker arc = new ActionRuleChecker();

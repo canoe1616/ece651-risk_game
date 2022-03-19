@@ -14,7 +14,7 @@ public class Player implements Serializable{
     this.color = color;
     this.territoryList = new HashSet<Territory>();
     this.totalUnit = 30;
-    this.loseStatus = "";
+    this.loseStatus = "no act";
   }
   public void addTerritory(Territory ter){
     this.territoryList.add(ter);
