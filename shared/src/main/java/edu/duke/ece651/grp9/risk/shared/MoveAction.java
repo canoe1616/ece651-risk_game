@@ -15,15 +15,14 @@ public class MoveAction implements Action {
   private final RuleChecker moveChecker;
 
 
-  /*
+  /**
    * Constructor to create a Move
    * @param player is the Player performing the Action
    * @param source is the Territory we are moving units from
    * @param destination is the Territory we are moving units to
    * @param numUnits is the number of units we are moving from source to destination
-   * @param moveChecker checks if a Move is valid
    */
-  public MoveAction (Player player, Territory source, Territory destination, int numUnits) {
+  public MoveAction(Player player, Territory source, Territory destination, int numUnits) {
     this.player = player;
     this.source = source;
     this.destination = destination;
@@ -35,6 +34,7 @@ public class MoveAction implements Action {
 
   /**
    * Getter for Player
+   *
    * @return Player who is making Action
    */
   public Player getPlayer() {
@@ -43,6 +43,7 @@ public class MoveAction implements Action {
 
   /**
    * Checks chain of rules to ensure Move is valid
+   *
    * @return null if valid, if invalid a String describing error is returned
    */
   public String canPerformAction() {

@@ -4,63 +4,123 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.HashSet;
 
-public class Player implements Serializable{
+/**
+ * Player's play the game of RISC
+ *
+ * @author PROY
+ * @since 10 March 2022
+ */
+public class Player implements Serializable {
+
   private String color;
   private HashSet<Territory> territoryList;
   private int totalUnit;
   private String loseStatus;
-  
-  public Player(String color){
+
+  /**
+   * Constructor to create a Player
+   *
+   * @param color String - what color this Player is playing as
+   */
+  public Player(String color) {
     this.color = color;
     this.territoryList = new HashSet<Territory>();
     this.totalUnit = 30;
     this.loseStatus = "no act";
   }
-  public void addTerritory(Territory ter){
+
+  /**
+   * Adds a Territory to this Player's list of Territories
+   *
+   * @param ter Territory being added to Player's list
+   */
+  public void addTerritory(Territory ter) {
     this.territoryList.add(ter);
   }
+
+  /**
+   * Removes a Territory from this Player's list of Territories
+   *
+   * @param ter Territory being removed to Player's list
+   */
   public void removeTerritory(Territory ter) {
     this.territoryList.remove(ter);
   }
-  public HashSet<Territory> getTerritoryList(){
+
+  /**
+   * Getter for this Player's territoryList
+   *
+   * @return HashSet of all Territories owned by this Player
+   */
+  public HashSet<Territory> getTerritoryList() {
     return this.territoryList;
   }
 
+  /**
+   * Getter for color this Player is playing as
+   *
+   * @return String - color this player is playing as
+   */
   public String getName() {
     return color;
   }
 
-  public int getUnit(){
+  /**
+   * Getter for number of units this Player owns
+   *
+   * @return int - number of units this Player owns
+   */
+  public int getUnit() {
     return this.totalUnit;
   }
 
-  public int getTerritoryNumber(){
+  /**
+   * Getter for number of Territories this Player owns
+   *
+   * @return number of Territories this Player owns
+   */
+  public int getTerritoryNumber() {
     return this.territoryList.size();
   }
 
-  public HashMap<Territory, HashSet<Territory>> getAdjacency(){
+  /**
+   * Returns the adjacency list for each Territory that this Player owns
+   *
+   * @return HashMap : Key is each Territory owned by Player Value is HashSet of neighbors of Key
+   */
+  public HashMap<Territory, HashSet<Territory>> getAdjacency() {
     HashMap<Territory, HashSet<Territory>> ans = new HashMap<>();
-    for(Territory t : getTerritoryList()){
+    for (Territory t : getTerritoryList()) {
       HashSet<Territory> tmp = new HashSet<Territory>();
       tmp = t.getNeighbors();
-      ans.put(t,tmp);
+      ans.put(t, tmp);
     }
     return ans;
   }
 
   /**
    * check if the player lose the game, aka lose all territories
+   *
    * @return true if the player lose the game
    */
   public boolean isLose() {
     return territoryList.isEmpty();
   }
 
-
+  /**
+   * Setter for lose message
+   *
+   * @param message lose message if Player has lost
+   */
   public void setLoseStatus(String message) {
     loseStatus = message;
   }
 
+  /**
+   * Getter for this Player's lose message
+   *
+   * @return String lose message for this Player
+   */
   public String getLoseStatus() {
     return this.loseStatus;
   }

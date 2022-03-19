@@ -12,8 +12,8 @@ public class ActionRuleCheckerTest {
   public void test_checkLoseAction() {
     ActionRuleChecker tmp = new ActionRuleChecker();
     assertNull(tmp.checkLoseAction("Q"));
-    assertEquals("the input character is invalid, please enter again!", tmp.checkAction("t"));
-    assertEquals("the input length is invalid, please enter again!", tmp.checkAction("Qt"));
+    assertEquals("the input character is invalid, please enter again!", tmp.checkLoseAction("t"));
+    assertEquals("the input length is invalid, please enter again!", tmp.checkLoseAction("Qt"));
   }
   @Test
   public void test_checkAction() {
@@ -45,13 +45,16 @@ public class ActionRuleCheckerTest {
     a.addTerritory(ter_2);
     a.addTerritory(ter_3);
     assertNull(tmp.checkUnit("15 5 10",a));
-    assertEquals("The input is not valid, please enter again",tmp.checkUnit("15 5 ",a));
-    assertEquals("The input is not valid, please enter again",tmp.checkUnit("15 5 10 ",a));
-    assertEquals("The input is not valid, please enter again",tmp.checkUnit(" ",a));
-    assertEquals("The input is not valid, please enter again",tmp.checkUnit(" 15 5 10",a));
-    assertEquals("The input is not valid, please enter again",tmp.checkUnit(" 16 5 10",a));
+
+    String error1 = "The input is invalid: input must only be numbers.";
+    String error2 = "The input is invalid: Must enter 3 separate numbers.";
+    String error3 = "This input is invalid: Sum of units must equal 30.";
+
+    assertEquals(tmp.checkUnit("15 5 ",a), error2);
+    assertEquals(tmp.checkUnit("15 5 10 ",a), null);
+    assertEquals(tmp.checkUnit("15 4 a",a), error1);
+    assertEquals(tmp.checkUnit(" 15 5 10",a), error2);
+    assertEquals(tmp.checkUnit("16 5 10",a), error3);
+    assertEquals(tmp.checkUnit(" ", a), error2);
   }
-
-
-
 }

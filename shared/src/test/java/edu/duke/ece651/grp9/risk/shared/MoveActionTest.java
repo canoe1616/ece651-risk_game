@@ -23,6 +23,8 @@ public class MoveActionTest {
     t2.addNeighbors(t1);
     assertEquals(m1.canPerformAction(), null);
 
+    assertEquals(m1.getPlayer(), p1);
+
     assertEquals(t1.getUnit(), 5);
     assertEquals(t2.getUnit(), 0);
     m1.performAction();
