@@ -301,7 +301,12 @@ public class App {
           OutputList.get(i).writeObject(m);
           System.out.println("Send map");
         }
-        for(int i = 0 ; i < socketList.size(); i++) {
+        int socketNum =  socketList.size();
+        for(int i = 0 ; i < socketNum; i++) {
+          if(i>=socketList.size()){
+            break;
+          }
+
           // notify player game not over yet
           OutputList.get(i).writeObject("game continuing");
           System.out.println("Write end game flag to player");
@@ -321,6 +326,7 @@ public class App {
               InputList.remove(i);
               OutputList.remove(i);
               playerList.remove(i);
+              i--;
               
             }
             if (player.getLoseStatus().equals("continue")) {

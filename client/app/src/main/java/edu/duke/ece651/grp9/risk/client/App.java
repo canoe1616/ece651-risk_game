@@ -221,26 +221,11 @@ public class App {
               //To ask user input the action until we meet the "D"
               if (action.equals("D") || action.equals("d")) {
                 actionSet.actionListMove = actionListMove;
-                //debug
-                for(String tmp: actionSet.getMoveList()){
-                  System.out.println("debug过程中的：actionSet中actionListMove的元素"+ tmp);
-                }
-
-
-
                 actionSet.actionListAttack = actionListAttack;
-
-                //debug
-                for(String tmp: actionSet.getAttackList()){
-                  System.out.println("debug过程中的：actionSet中actionListMove的元素"+ tmp);
-                }
-
-
 
                 objectOutputStream.reset();
                 objectOutputStream.writeObject(actionSet);
                 System.out.println("Sent actionSet to the server.");
-                //actionProblem 在下一轮的时候没有被更新
                 String actionProblem = (String) objectInputStream.readObject();
                 if (actionProblem == null) {
                   actionListMove.clear();
