@@ -152,6 +152,7 @@ public class App {
           System.out.println("\n");
           System.out.println("Congratulations! You win the game!");
           socket.close();
+          break;
         }
         else if (endGame.equals("game over")){
           //print the map
@@ -162,6 +163,7 @@ public class App {
           System.out.println("\n");
           System.out.println("The game is over now.");
           socket.close();
+          break;
         }
         else{//countinue
           

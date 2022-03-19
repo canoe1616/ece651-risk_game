@@ -397,7 +397,7 @@ public class App {
         OutputList.get(i).writeObject(m);
         System.out.println("Send map : there is a winner.");
 
-        if (winner.equals(playerList.get(i))) {
+        if (winner.equals(app.findPlayer(playerList.get(i), m))) {
           OutputList.get(i).reset();
           OutputList.get(i).writeObject("win");
           System.out.println("write win to player");
