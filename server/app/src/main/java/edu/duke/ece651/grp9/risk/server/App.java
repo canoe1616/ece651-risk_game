@@ -14,19 +14,13 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.concurrent.TimeUnit;
 
-//import edu.duke.ece651.grp9.risk.shared.MapPackage;
-//import edu.duke.ece651.grp9.risk.shared.Message;
 import edu.duke.ece651.grp9.risk.shared.*;
-import org.checkerframework.checker.units.qual.A;
+
 
 
 public class App {
 
   private static HashSet<String> remainingColors;
-
-  public App() {
-    remainingColors = new HashSet<>();
-  }
 
   public App(Map m) {
     remainingColors = new HashSet<>();
@@ -36,7 +30,10 @@ public class App {
     }
   }
 
-
+  /**
+   * Allows client to select they color they want to play as
+   * @param stream socket connection to client from server
+   */
   public void selectColor(ObjectOutputStream stream) {
     StringBuilder sb = new StringBuilder();
     sb.append("Please select what color you would like to play as: ");
@@ -50,6 +47,12 @@ public class App {
     }
   }
 
+  /**
+   * Removes a color from remainingColors
+   *
+   * @param color
+   * @return
+   */
   public boolean deleteColor(String color) {
     for (String c : remainingColors) {
       if (c.equals(color)) {
@@ -77,6 +80,12 @@ public class App {
     }
   }
 
+  /**
+   * Find Player bin map based on color input
+   * @param color String color input
+   * @param m Map we are searching for Player
+   * @return returns null if no Player found, returns Player if found
+   */
   public Player findPlayer(String color, Map m) {
     HashSet<Player> list = m.getPlayer();
     Iterator<Player> it = list.iterator();
@@ -89,10 +98,23 @@ public class App {
     return null;
   }
 
-
+  /**
+   * Set units for player's Territories based on input from Client
+   * @param unitString String of unit values from client
+   * @param player Player whose units are being added to their Territories
+   */
   public void playerUnitSetting(String unitString, Player player) {
 
-    ArrayList<Integer> unitList = new ArrayList<>();
+    String[] words = unitString.split(" ");
+
+    int i = 0;
+    for (Territory ter : player.getTerritoryList()) {
+      ter.setUnit(Integer.parseInt(words[i]));
+      i++;
+    }
+  }
+
+    /*ArrayList<Integer> unitList = new ArrayList<>();
     char[] tmp = unitString.toCharArray();
 
     //unitString -> array
@@ -114,8 +136,7 @@ public class App {
     for (Territory ter : player.getTerritoryList()) {
       ter.setUnit(unitList.get(i));
       i++;
-    }
-  }
+    }*/
 
   /**
    * Creates an Action given String input from client
@@ -148,12 +169,11 @@ public class App {
     }
   }
 
-  public String getPlayer(String action) {
-    String[] words = action.split(" ");
-    return words[0];
-  }
-
   public String validActionSet(Player player, HashSet<MoveAction> moves, HashSet<AttackAction> attacks) {
+    //Once we first meet the problem, then reenter with "Done", moves and attacks would be "NULL"
+    if(moves.isEmpty() && attacks.isEmpty()){
+      return null;
+    }
     for (MoveAction move : moves) {
       if (move == null) {
         return "This action is invalid: Territory does not exist";
@@ -313,8 +333,6 @@ public class App {
       // notify the other players game over
       while (m.getGameWinner() == null) {
        // no winner detected, game continuing
-        //int i = 0;
-        //for (Player player : m.getPlayer()) {
         for (int i = 0; i < socketList.size(); i++) {
           OutputList.get(i).reset();
           OutputList.get(i).writeObject(m);
@@ -322,25 +340,36 @@ public class App {
         }
         for(int i = 0 ; i < socketList.size(); i++) {
           // notify player game not over yet
-          OutputList.get(i).writeObject("no act");
+          OutputList.get(i).writeObject("game continuing");
+          System.out.println("Write end game flag to player");
 
-          System.out.println("Write state");
           String action = (String)InputList.get(i).readObject();
+
+          //debug
+          System.out.println("the action is：" + action);
+
 
           Player player = app.findPlayer(playerList.get(i), m);
           player.setLoseStatus(action);
+
+          //debug
+          System.out.println("player's setLoseStatus:" + player.getLoseStatus());
 
           if (player.isLose()) {
             if (player.getLoseStatus().equals("quit") && m.getPlayer().contains(player)) {
               //remove it from player list
               //auto set empty actionSet
-              m.removePlayer(player);
+              //m.removePlayer(player);
+              System.out.println("Bye bye I quit");
+              //m.removePlayer(player);
+              socketList.remove(i);
+              InputList.remove(i);
+              OutputList.remove(i);
+              playerList.remove(i);
+              
             }
             if (player.getLoseStatus().equals("continue")) {
-              //send map to it for each round
-              //auto set empty actionSet
-              OutputList.get(i).reset();
-              OutputList.get(i).writeObject(m);
+   
             }
           } else { // if the player still alive
             while (true) {
@@ -353,21 +382,32 @@ public class App {
 
               for (String move : actionListMove) {
                 moveActions.add((MoveAction) app.createAction(m, playerList.get(i), move, true));
+                //debug
+                System.out.println("传回给server的move是" + move);
               }
 
               HashSet<String> actionListAttack = actionSet.getAttackList();
               for (String attack : actionListAttack) {
                 attackActions.add((AttackAction) app.createAction(m, playerList.get(i), attack, false));
+                //debug
+                System.out.println("传回给server的move是" + attack);
               }
 
+              //moveActions  attackActions need to be reset in the next round.
               String actionProblem = app.validActionSet(m.findPlayer(playerList.get(i)), moveActions, attackActions);
+
+              //debug：here should be reset
+              OutputList.get(i).reset();
               OutputList.get(i).writeObject(actionProblem);
               if (actionProblem == null) {
                 allMoves.addAll(moveActions);
                 allAttack.addAll(attackActions);
                 break;
               }
-              System.out.println("Get actions...");
+              else{
+
+              }
+              System.out.println("There are problems with this client's setting, send information back to the server");
             }
           }
 
@@ -387,51 +427,30 @@ public class App {
         }
       }
 
+
+      //------------------------------------------Winner part-------------------------------//
+      Player winner = m.getGameWinner();
       for (int i = 0; i < socketList.size(); i++) {
         OutputList.get(i).reset();
         OutputList.get(i).writeObject(m);
         System.out.println("Send map : there is a winner.");
-         //MapTextView mtv = new MapTextView();
-         //String gameStateInitial = mtv.displayGameState(app.findPlayer(color, myMap));
-         //System.out.println(gameStateInitial);
-        for (Player player : m.getPlayer()) {
-          if (player.equals(m.getGameWinner())) {
-            OutputList.get(i).reset();
-            OutputList.get(i).writeObject("win");
+
+        if (winner.equals(app.findPlayer(playerList.get(i), m))) {
+          OutputList.get(i).reset();
+          OutputList.get(i).writeObject("win");
+          System.out.println("write win to player");
           } 
-          else {
-            OutputList.get(i).reset();
-            OutputList.get(i).writeObject("game over");
-          }
+        else{  
+          OutputList.get(i).reset();
+          OutputList.get(i).writeObject("game over");
+          System.out.println("write game over to player");
         }
         socketList.get(i).close();
       }
+      System.out.println("Final point");
+      TimeUnit.SECONDS.sleep(20);
       ss.close();
-      // game over, Socket disconnection
-      ss.close();
-//      for(int i=0; i<socketList.size(); i++){
-//        //add the rule checker
-//        //socket = socketList.get(i);
-//        //send the map again
-//
-//        OutputList.get(i).reset();
-//        OutputList.get(i).writeObject(m);
-//        //To show the map in the server side- 【debug】
-//        MapTextView mtv = new MapTextView(m);
-//        String gameStateInitial = mtv.displayGameState(app.findPlayer("red", m));
-//        System.out.println(gameStateInitial);
-//
-//        System.out.println("Sent map");
-//      }
 
-//      for(int i =0; i<socketList.size(); i++){
-//        //get the action sets from client
-//        actionSet = (ActionSet)InputList.get(i).readObject();
-//        System.out.println("Get action...");
-//      }
-//
-//      TimeUnit.SECONDS.sleep(1000);
-//    ss.close();
     } catch (Exception e) {
       System.out.println(e);
     }

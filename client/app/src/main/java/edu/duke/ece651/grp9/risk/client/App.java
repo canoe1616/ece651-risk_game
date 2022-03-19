@@ -81,6 +81,14 @@ public class App {
     return s;
   }
 
+  /**
+   * this method is to ask player select unit numbers
+   * @param inputSource is the input buffer reader
+   * @param inStream is the input stream
+   * @param outStream is the output stream
+   * @return the player's input unit setting
+   * @throws IOException
+   */
   public String selectUnit(BufferedReader inputSource, ObjectInputStream inStream, ObjectOutputStream outStream) throws IOException {
     String s = "";
     //get prompt and print it
@@ -130,6 +138,7 @@ public class App {
     }
 
 
+
   public static void main(String[] args) {
 
     BufferedReader inputSource = new BufferedReader(new InputStreamReader(System.in));
@@ -166,6 +175,7 @@ public class App {
         String endGame = (String) objectInputStream.readObject();//
         System.out.println("Read state.");
         if (endGame.equals("win")){
+          System.out.println("end_game = win");
           //print the map
           String gameStateInitial = mtv.displayGameState(app.findPlayer(color, myMap));
           System.out.println(gameStateInitial);
@@ -173,14 +183,18 @@ public class App {
           System.out.println("\n");
           System.out.println("Congratulations! You win the game!");
           socket.close();
+          break;
         }
         else if (endGame.equals("game over")){
           //print the map
+          System.out.println("end_game = game over");
           String gameStateInitial = mtv.displayGameState(app.findPlayer(color, myMap));
           System.out.println(gameStateInitial);
           //tell player the game is over
           System.out.println("\n");
           System.out.println("The game is over now.");
+          socket.close();
+          break;
         }
         else{//countinue
           
@@ -208,12 +222,15 @@ public class App {
             app.findPlayer(color, myMap).setLoseStatus(action);
           }
           else if(app.findPlayer(color, myMap).isLose() && app.findPlayer(color, myMap).getLoseStatus().equals("quit")){
+            System.out.println("Bye bye I quit");
+            objectOutputStream.writeObject("quit");
             socket.close();
-            break;//close the game here
+            break; //close the game here
           }
           else if(app.findPlayer(color, myMap).isLose() && app.findPlayer(color, myMap).getLoseStatus().equals("continue")){
              String gameStateInitial = mtv.displayGameState(app.findPlayer(color, myMap));
              System.out.println(gameStateInitial);
+             objectOutputStream.writeObject("continue");
           }
           else{
             String gameStateInitial = mtv.displayGameState(app.findPlayer(color, myMap));
@@ -234,11 +251,26 @@ public class App {
               //To ask user input the action until we meet the "D"
               if (action.equals("D") || action.equals("d")) {
                 actionSet.actionListMove = actionListMove;
+                //debug
+                for(String tmp: actionSet.getMoveList()){
+                  System.out.println("debug过程中的：actionSet中actionListMove的元素"+ tmp);
+                }
+
+
+
                 actionSet.actionListAttack = actionListAttack;
+
+                //debug
+                for(String tmp: actionSet.getAttackList()){
+                  System.out.println("debug过程中的：actionSet中actionListMove的元素"+ tmp);
+                }
+
+
+
                 objectOutputStream.reset();
                 objectOutputStream.writeObject(actionSet);
                 System.out.println("Sent actionSet to the server.");
-                
+                //actionProblem 在下一轮的时候没有被更新
                 String actionProblem = (String) objectInputStream.readObject();
                 if (actionProblem == null) {
                   actionListMove.clear();

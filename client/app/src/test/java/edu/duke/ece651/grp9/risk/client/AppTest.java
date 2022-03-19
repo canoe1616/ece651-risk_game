@@ -29,7 +29,7 @@ class AppTest {
 
     @Test
     void selectColor() throws IOException, InterruptedException {
-        StringReader stringReader = new StringReader("black\nred");
+        StringReader stringReader = new StringReader("black\nred\nsss");
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         PrintStream out = new PrintStream(bytes, true);
         BufferedReader inputReader = new BufferedReader(stringReader);
@@ -48,6 +48,9 @@ class AppTest {
                     objectOutputStream.writeObject(sever2client);
                     outputStream.flush();
                     sever2client = "true";
+                    objectOutputStream.writeObject(sever2client);
+                    outputStream.flush();
+                    sever2client = "false";
                     objectOutputStream.writeObject(sever2client);
                     outputStream.flush();
                     ss.close();
@@ -70,7 +73,7 @@ class AppTest {
 
     @Test
     void selectUnit() throws InterruptedException, IOException {
-        StringReader stringReader = new StringReader("0 0 -1\n10 15 5");
+        StringReader stringReader = new StringReader("0 0 -1\n0 0 0  \n10 15 5");
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         PrintStream out = new PrintStream(bytes, true);
         BufferedReader inputReader = new BufferedReader(stringReader);
@@ -86,6 +89,9 @@ class AppTest {
                     InputStream inputStream = client.getInputStream();
                     ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
                     String sever2client = "false";
+                    objectOutputStream.writeObject(sever2client);
+                    outputStream.flush();
+                    sever2client = "false";
                     objectOutputStream.writeObject(sever2client);
                     outputStream.flush();
                     sever2client = "true";
