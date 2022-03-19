@@ -192,6 +192,7 @@ public class App {
           else if(app.findPlayer(color, myMap).isLose() && app.findPlayer(color, myMap).getLoseStatus().equals("continue")){
              String gameStateInitial = mtv.displayGameState(app.findPlayer(color, myMap));
              System.out.println(gameStateInitial);
+             objectOutputStream.writeObject("no act");
           }
           else{
             String gameStateInitial = mtv.displayGameState(app.findPlayer(color, myMap));

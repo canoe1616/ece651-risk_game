@@ -324,11 +324,18 @@ public class App {
           // notify player game not over yet
           OutputList.get(i).writeObject("no act");
 
-          System.out.println("Write state");
+          System.out.println("Write state to player");
           String action = (String)InputList.get(i).readObject();
+
+          //debug
+          System.out.println("传过来的action是：" + action);
+
 
           Player player = app.findPlayer(playerList.get(i), m);
           player.setLoseStatus(action);
+
+          //debug
+          System.out.println("player是否有setLoseStatus 成功：" + player.getLoseStatus());
 
           if (player.isLose()) {
             if (player.getLoseStatus().equals("quit") && m.getPlayer().contains(player)) {
@@ -339,8 +346,9 @@ public class App {
             if (player.getLoseStatus().equals("continue")) {
               //send map to it for each round
               //auto set empty actionSet
-              OutputList.get(i).reset();
-              OutputList.get(i).writeObject(m);
+              //debug 的时候拿掉了
+//              OutputList.get(i).reset();
+//              OutputList.get(i).writeObject(m);
             }
           } else { // if the player still alive
             while (true) {
@@ -367,7 +375,7 @@ public class App {
                 allAttack.addAll(attackActions);
                 break;
               }
-              System.out.println("Get actions...");
+              System.out.println("There are problems with this client's setting, send information back to the server");
             }
           }
 
@@ -387,6 +395,8 @@ public class App {
         }
       }
 
+
+      //------------------------------------------Winner part-------------------------------//
       for (int i = 0; i < socketList.size(); i++) {
         OutputList.get(i).reset();
         OutputList.get(i).writeObject(m);
