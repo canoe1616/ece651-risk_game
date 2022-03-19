@@ -17,6 +17,7 @@ import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashSet;
 import org.junit.jupiter.api.Test;
@@ -33,38 +34,67 @@ class AppTest {
     App app1 = new App(map);
   }
 
-  /*@Test
+  //ss.accept() and send object flush close - client mimic server inside
+  //only have to receive and make sure it is expected - don't worry about what is sent
+  //server we mimic client side inside thread and create server socket first outside thread
+  //set up byte array to receive outcome
+  @Test
   @Timeout(5)
   public void test_selectColor() throws IOException, InterruptedException, ClassNotFoundException {
+    ServerSocket ss = new ServerSocket(6666);
     MapFactory factory = new MapFactory();
     Map map = factory.makeMapForTwo();
-    App app = new App(map);
+    App app1 = new App(map);
+
     Thread th = new Thread() {
       @Override()
       public void run() {
         try {
-          App.main(new String[0]);
+          Socket client = new Socket("localhost", 6666);
+
+          OutputStream outputStream = client.getOutputStream();
+          ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
+
+          //String message = (String) objectInputStream.readObject();
+          System.out.println("Sending red");
+
+          objectOutputStream.writeObject("red");
+
+          InputStream inputStream = client.getInputStream();
+          ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+
+          String receive = (String) objectInputStream.readObject();
+
+          String expected = "Please select what color you would like to play as: red blue ";
+          assertEquals(receive, expected);
+
         } catch (Exception e) {
           System.out.println("Connection error.");
         }
       }
     };
     th.start();
-    Thread.sleep(100);
+    Thread.sleep(1000);
 
-    Socket socket = new Socket("localhost", 6666);
+    //create new socket
+    Socket s = ss.accept();
+    System.out.println("connection");
 
-    InputStream inputStream = socket.getInputStream();
+    InputStream inputStream = s.getInputStream();
     ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
-    Map map1 = (Map) objectInputStream.readObject();
+    OutputStream outputStream = s.getOutputStream();
+    ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
 
-    String networkMessage = (String) objectInputStream.readObject();
-    String message = "Please select what color you would like to play as: red blue";
-    assertEquals(networkMessage, message);
+
+    app1.selectColor(objectOutputStream);
+    System.out.println("Receiving red");
+    String color = (String)objectInputStream.readObject();
+
+    assertEquals(color, "red");
 
     th.interrupt();
     th.join();
-  }*/
+  }
 
   @Test
   public void test_findPlayer() {
