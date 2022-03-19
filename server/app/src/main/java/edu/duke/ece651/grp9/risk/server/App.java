@@ -319,7 +319,8 @@ public class App {
           OutputList.get(i).reset();
           OutputList.get(i).writeObject(m);
           System.out.println("Send map");
-
+        }
+        for(int i = 0 ; i < socketList.size(); i++) {
           // notify player game not over yet
           OutputList.get(i).writeObject("game continuing");
           System.out.println("Write state");
@@ -367,14 +368,18 @@ public class App {
           }
 
           // real execute for thr move action
-          for (MoveAction act : allMoves) {
-            act.performAction();
-          }
+          //
+        }
 
-          //real execute for te attack action
-          for (AttackAction att : allAttack) {
-            att.performAction();
-          }
+        for (MoveAction act : allMoves) {
+          act.performAction();
+        }
+        allMoves.clear();
+        //real execute for te attack action
+        app.playAttacks(m,allAttack);
+        allAttack.clear();
+        for (Territory territory : m.getList()) {
+          territory.addUnit();
         }
       }
 

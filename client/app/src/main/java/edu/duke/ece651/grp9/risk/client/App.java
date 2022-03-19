@@ -217,6 +217,8 @@ public class App {
                 
                 String actionProblem = (String) objectInputStream.readObject();
                 if (actionProblem == null) {
+                  actionListMove.clear();
+                  actionListAttack.clear();
                   break;
                 } else {
                   actionListMove.clear();

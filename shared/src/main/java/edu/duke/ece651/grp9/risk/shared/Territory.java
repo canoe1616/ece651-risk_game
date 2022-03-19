@@ -99,4 +99,9 @@ public class Territory implements Serializable{
     }
     return false;
   }
+
+  public void addUnit(){
+    unit++;
+    syncUnits();
+  }
 }
