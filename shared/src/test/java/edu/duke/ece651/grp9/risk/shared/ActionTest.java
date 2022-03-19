@@ -11,25 +11,31 @@ public class ActionTest {
     public void test_performAction() {
         Player p1 = new Player("red");
         Territory t1 = new Territory("Two Rivers");
+        p1.addTerritory(t1);
         t1.setOwner(p1);
         t1.setUnit(5);
 
         Territory t2 = new Territory("Tar Valon");
+        p1.addTerritory(t2);
         t2.setOwner(p1);
         t2.setUnit(0);
         t2.addNeighbors(t1);
 
         Territory t3 = new Territory("Falme");
+        p1.addTerritory(t3);
         t3.setOwner(p1);
         t3.setUnit(10);
         t3.addNeighbors(t1);
 
         Player p2 = new Player("green");
         Territory t4 = new Territory("Andor");
+        p2.addTerritory(t4);
         t4.setOwner(p2);
         t4.setUnit(3);
         t2.addNeighbors(t4);
+
         Territory t5 = new Territory("Tear");
+        p2.addTerritory(t5);
         t5.setOwner(p2);
         t5.setUnit(5);
         t5.addNeighbors(t4);

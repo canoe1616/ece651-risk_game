@@ -44,6 +44,15 @@ public class PlayerTest {
   }
 
   @Test
+  public void test_loseStatus() {
+    Player p1 = new Player("blue");
+    assertEquals(p1.getLoseStatus(), "");
+
+    p1.setLoseStatus("Lost");
+    assertEquals(p1.getLoseStatus(), "Lost");
+  }
+
+  @Test
   public void test_getAdjacency(){
     Player p1 = new Player("blue");
     Territory ter_1 = new Territory("Test_1");
