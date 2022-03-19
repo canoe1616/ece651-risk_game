@@ -17,12 +17,14 @@ public class UnitsRuleCheckerTest {
     t2.setOwner(p1);
     t2.setUnit(3);
 
-    String error1 = "This action is invalid: Tar Valon does not have enough units.";
+    String error1 = "This action is invalid: number of units must be positive int.";
 
     RuleChecker ruleChecker = new UnitsRuleChecker(null);
 
     assertEquals(ruleChecker.checkMyRule(p1, t1, t2, 4), null);
     assertEquals(ruleChecker.checkMyRule(p1, t2, t1, 8), null);
+
+    assertEquals(ruleChecker.checkMyRule(p1, t2, t1, -3), error1);
 
     assertFalse(t2.mockIsValid());
   }

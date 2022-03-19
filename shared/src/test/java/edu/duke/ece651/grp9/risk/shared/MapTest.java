@@ -47,6 +47,23 @@ public class MapTest {
   }
 
   @Test
+  public void test_removePlayer() {
+    Map map = new Map();
+    Player p1 = new Player("blue");
+    map.addPlayer(p1);
+    Player p2 = new Player("red");
+    map.addPlayer(p2);
+
+    assertEquals(map.findPlayer("blue"), p1);
+    assertEquals(map.findPlayer("red"), p2);
+
+    map.removePlayer(p1);
+    assertEquals(map.findPlayer("blue"), null);
+    map.removePlayer(p2);
+    assertEquals(map.findPlayer("red"), null);
+  }
+
+  @Test
   void getGameWinner_true() {
     MapFactory mapFactory = new MapFactory();
     Map map = mapFactory.makeMapForTwo();
