@@ -22,10 +22,6 @@ public class App {
 
   private static HashSet<String> remainingColors;
 
-  public App() {
-    remainingColors = new HashSet<>();
-  }
-
   public App(Map m) {
     remainingColors = new HashSet<>();
     Iterator<Player> it = m.getPlayer().iterator();
@@ -34,7 +30,10 @@ public class App {
     }
   }
 
-
+  /**
+   * Allows client to select they color they want to play as
+   * @param stream socket connection to client from server
+   */
   public void selectColor(ObjectOutputStream stream) {
     StringBuilder sb = new StringBuilder();
     sb.append("Please select what color you would like to play as: ");
@@ -48,6 +47,12 @@ public class App {
     }
   }
 
+  /**
+   * Removes a color from remainingColors
+   *
+   * @param color
+   * @return
+   */
   public boolean deleteColor(String color) {
     for (String c : remainingColors) {
       if (c.equals(color)) {
@@ -75,6 +80,12 @@ public class App {
     }
   }
 
+  /**
+   * Find Player bin map based on color input
+   * @param color String color input
+   * @param m Map we are searching for Player
+   * @return returns null if no Player found, returns Player if found
+   */
   public Player findPlayer(String color, Map m) {
     HashSet<Player> list = m.getPlayer();
     Iterator<Player> it = list.iterator();
@@ -87,10 +98,23 @@ public class App {
     return null;
   }
 
-
+  /**
+   * Set units for player's Territories based on input from Client
+   * @param unitString String of unit values from client
+   * @param player Player whose units are being added to their Territories
+   */
   public void playerUnitSetting(String unitString, Player player) {
 
-    ArrayList<Integer> unitList = new ArrayList<>();
+    String[] words = unitString.split(" ");
+
+    int i = 0;
+    for (Territory ter : player.getTerritoryList()) {
+      ter.setUnit(Integer.parseInt(words[i]));
+      i++;
+    }
+  }
+
+    /*ArrayList<Integer> unitList = new ArrayList<>();
     char[] tmp = unitString.toCharArray();
 
     //unitString -> array
@@ -112,8 +136,7 @@ public class App {
     for (Territory ter : player.getTerritoryList()) {
       ter.setUnit(unitList.get(i));
       i++;
-    }
-  }
+    }*/
 
   /**
    * Creates an Action given String input from client
@@ -144,11 +167,6 @@ public class App {
     } else {
       return new AttackAction(player, source, destination, numUnits);
     }
-  }
-
-  public String getPlayer(String action) {
-    String[] words = action.split(" ");
-    return words[0];
   }
 
   public String validActionSet(Player player, HashSet<MoveAction> moves, HashSet<AttackAction> attacks) {
