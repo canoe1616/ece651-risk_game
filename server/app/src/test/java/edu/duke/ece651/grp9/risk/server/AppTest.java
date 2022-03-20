@@ -94,6 +94,7 @@ class AppTest {
 
     th.interrupt();
     th.join();
+    ss.close();
   }
 
   @Test
@@ -210,16 +211,18 @@ class AppTest {
     HashSet<MoveAction> moves = app1.receiveActions(moveList, true);
   }*/
 
-  /*@Test
+  @Test
   @Timeout(5)
   public void test_gameWinner() throws IOException, InterruptedException {
     MapFactory factory = new MapFactory();
     Map map = new Map();
     Territory t1 = new Territory("Two Rivers");
     Player p1 = new Player("red");
+    Player p2 = new Player("blue");
     p1.addTerritory(t1);
     map.addTerritory(t1);
     map.addPlayer(p1);
+    map.addPlayer(p2);
     App app1 = new App(map);
     ServerSocket ss = new ServerSocket(6666);
 
@@ -250,7 +253,7 @@ class AppTest {
 
     OutputStream outputStream = s.getOutputStream();
     ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
-    app1.gameWinner(objectOutputStream, p1, map);
+    app1.gameWinner(objectOutputStream, p1.getName(), map);
 
     Thread th2 = new Thread() {
       @Override()
@@ -279,8 +282,16 @@ class AppTest {
 
     OutputStream outputStream2 = s2.getOutputStream();
     ObjectOutputStream objectOutputStream2 = new ObjectOutputStream(outputStream2);
-    app1.gameWinner(objectOutputStream2, new Player("blue"), map);
-  }*/
+    app1.gameWinner(objectOutputStream2, "blue", map);
+
+    th.interrupt();
+    th.join();
+
+    th2.interrupt();
+    th2.join();
+
+    ss.close();
+  }
 
   @Test
   public void test_playAttacks() {

@@ -3,6 +3,7 @@
  */
 package edu.duke.ece651.grp9.risk.server;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -186,6 +187,30 @@ public class App {
     }
 
     return null;
+  }
+
+  /**
+   * Sends message to client to indicate win or lose
+   * @param stream OutputStream for client
+   * @param color String indicating which Player
+   * @param map Map
+   */
+  public void gameWinner(ObjectOutputStream stream, String color, Map map) throws IOException {
+    stream.reset();
+    stream.writeObject(map);
+    System.out.println("Send map : there is a winner.");
+
+    Player winner = map.getGameWinner();
+    if (winner.equals(findPlayer(color, map))) {
+      stream.reset();
+      stream.writeObject("win");
+      System.out.println("write win to player");
+    } else {
+      stream.reset();
+      stream.writeObject("game over");
+      System.out.println("write game over to player");
+    }
+    stream.close();
   }
 
 
@@ -413,22 +438,8 @@ public class App {
       }
 
       //------------------------------------------Winner part-------------------------------//
-      Player winner = m.getGameWinner();
       for (int i = 0; i < socketList.size(); i++) {
-        OutputList.get(i).reset();
-        OutputList.get(i).writeObject(m);
-        System.out.println("Send map : there is a winner.");
-
-        if (winner.equals(app.findPlayer(playerList.get(i), m))) {
-          OutputList.get(i).reset();
-          OutputList.get(i).writeObject("win");
-          System.out.println("write win to player");
-        } else {
-          OutputList.get(i).reset();
-          OutputList.get(i).writeObject("game over");
-          System.out.println("write game over to player");
-        }
-        socketList.get(i).close();
+        app.gameWinner(OutputList.get(i), playerList.get(i), m);
       }
       System.out.println("Final point");
       TimeUnit.SECONDS.sleep(20);
