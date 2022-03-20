@@ -42,8 +42,10 @@ public class App {
     return null;
   }
 
-
-  public static String displayWinInfo(String color, Map map) {
+  /**
+   * this method is to generate info send to Winner
+   */
+  public static String sendInfoWinner(String color, Map map) {
     String res = "";
     MapTextView mtv = new MapTextView(map);
     res += "end_game = win\n";
@@ -53,7 +55,10 @@ public class App {
     return res;
   }
 
-  public static String displayGameOverInfo(String color, Map map) {
+  /**
+   * this method is to generate info send to loser (game over)
+   */
+  public static String sendInfoLoser(String color, Map map) {
     String res = "";
     MapTextView mtv = new MapTextView(map);
     res += "end_game = game over\n";
@@ -138,6 +143,28 @@ public class App {
     return s;
   }
 
+
+  public String selectStateAfterLose(BufferedReader inputSource, String color) throws IOException {
+    System.out.println(color + ", you lose the game!"
+            + " What would you like to do?\n" +
+            " (Q)uit\n" + " (C)ontinue watching game\n");
+    String action = inputSource.readLine();
+    String checker = getLoseActionString(action);
+    while(checker != null){
+      action = inputSource.readLine();
+      checker = getLoseActionString(action);
+      System.out.println("Not a valid input, type again:");
+    }
+    //send selection to server
+    if (action.equals("Q") || action.equals("q")){
+      action = "quit";
+    }
+    else if (action.equals("C") || action.equals("c")){
+      action = "continue";
+    }
+    return action;
+  }
+
   /**
    * get player's options when a player loses a game
    * @param action player's option, Q for quit, C for continue watching
@@ -187,7 +214,7 @@ public class App {
       ///////////////////////end of initial placement/////////////
 
       System.out.println("Its next step...");
-      
+
       while(true){//until you lose or you win.
         myMap = (Map) objectInputStream.readObject();//
         System.out.println("Receive Map form server.");
@@ -196,13 +223,13 @@ public class App {
         String endGame = (String) objectInputStream.readObject();//
         System.out.println("Read state.");
         if (endGame.equals("win")){
-          String res = displayWinInfo(color, myMap);
+          String res = sendInfoWinner(color, myMap);
           System.out.println(res);
           socket.close();
           break;
         }
         else if (endGame.equals("game over")){
-          String res = displayGameOverInfo(color, myMap);
+          String res = sendInfoLoser(color, myMap);
           System.out.println(res);
           socket.close();
           break;
@@ -210,24 +237,7 @@ public class App {
         else{//countinue
           
           if(app.findPlayer(color, myMap).isLose() && app.findPlayer(color, myMap).getLoseStatus().equals("no act")){
-            System.out.println("Player " + color + ", you lose the game!"
-                               + " What would you like to do?\n" +
-                               " (Q)uit\n" + " (C)ontinue watching game\n");
-            
-            String action = inputSource.readLine();
-            String checker = app.getLoseActionString(action);
-            while(checker != null){
-              action = inputSource.readLine();
-              checker = app.getLoseActionString(action);
-              System.out.println("Not a valid input, type again:");
-            }
-            //send selection to server
-            if (action.equals("Q") || action.equals("q")){
-              action = "quit";
-            }
-            else if (action.equals("C") || action.equals("c")){
-              action = "continue";
-            }
+            String action = app.selectStateAfterLose(inputSource, color);
             objectOutputStream.writeObject(action);
             //change it at local player.
             app.findPlayer(color, myMap).setLoseStatus(action);
@@ -268,13 +278,11 @@ public class App {
                 objectOutputStream.writeObject(actionSet);
                 System.out.println("Sent actionSet to the server.");
                 String actionProblem = (String) objectInputStream.readObject();
+                actionListMove.clear();
+                actionListAttack.clear();
                 if (actionProblem == null) {
-                  actionListMove.clear();
-                  actionListAttack.clear();
                   break;
                 } else {
-                  actionListMove.clear();
-                  actionListAttack.clear();
                   System.out.println(actionProblem);
                   System.out.println("Please reenter your Actions again.");
                 }

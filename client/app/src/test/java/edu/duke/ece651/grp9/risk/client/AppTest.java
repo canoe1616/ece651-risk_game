@@ -7,7 +7,6 @@ import edu.duke.ece651.grp9.risk.shared.Map;
 import edu.duke.ece651.grp9.risk.shared.MapTextView;
 import edu.duke.ece651.grp9.risk.shared.Player;
 import edu.duke.ece651.grp9.risk.shared.Territory;
-import org.checkerframework.checker.units.qual.A;
 import org.junit.jupiter.api.Test;
 
 import java.io.*;
@@ -25,7 +24,7 @@ class AppTest {
         Player p = new Player("red");
         m.addPlayer(p);
         assertEquals(p, app.findPlayer("red", m));
-        assertEquals(null, app.findPlayer("green",m));
+        assertEquals(null, app.findPlayer("green", m));
     }
 
 
@@ -151,7 +150,7 @@ class AppTest {
                 "\n" +
                 "\n" +
                 "Congratulations! You win the game!\n";
-        assertEquals(exp, app.displayWinInfo("blue",map));
+        assertEquals(exp, app.sendInfoWinner("blue", map));
 
     }
 
@@ -170,32 +169,24 @@ class AppTest {
                 "\n" +
                 "\n" +
                 "The game is over now.\n";
-        assertEquals(exp, app.displayGameOverInfo("blue",map));
+        assertEquals(exp, app.sendInfoLoser("blue", map));
     }
 
-    //    @Test
-//    void test_displayPlayerLose() {
-//        Player p1 = new Player("blue");
-//        Territory ter = new Territory("NC");
-//        Map map = new Map();
-//        map.addPlayer(p1);
-//        MapTextView view = new MapTextView(map);
-//        String exp = "Player blue, you lose the game!"
-//                + " What would you like to do?\n" +
-//                " (Q)uit\n" + " (C)ontinue watching game\n";
-//        assertEquals(exp, view.displayGameState(p1));
-//
-//    }
-//
-//    @Test
-//    void test_displayGameOver() {
-//        Player p1 = new Player("blue");
-//        Territory ter = new Territory("NC");
-//        Map map = new Map();
-//        map.addPlayer(p1);
-//        MapTextView view = new MapTextView(map);
-//        String exp ="Game Over! Player blue wins the game!";
-//        assertEquals(exp, view.displayGameState(p1));
-//
-//    }
+    @Test
+    void selectStateAfterLose() throws IOException {
+        // test quit
+        StringReader stringReader = new StringReader("h\nQ\n");
+        BufferedReader inputReader = new BufferedReader(stringReader);
+        App app = new App(inputReader);
+        String color = "blue";
+        String action = app.selectStateAfterLose(inputReader, color);
+        assertEquals("quit", action);
+        // test continue
+        StringReader stringReader2 = new StringReader("h\nc\n");
+        BufferedReader inputReader2 = new BufferedReader(stringReader2);
+        App app2 = new App(inputReader);
+        String action2 = app.selectStateAfterLose(inputReader2, color);
+        assertEquals("continue", action2);
+    }
+
 }
