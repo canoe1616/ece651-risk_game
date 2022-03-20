@@ -222,8 +222,8 @@ public class App {
   public static <objectInputStream> void main(String[] args) {
 
     MapFactory f = new MapFactory();
-    Map m = f.makeMapForThree();
-    int player_num = 3;
+    Map m = f.makeMapForFour();
+    int player_num = 4;
     App app = new App(m);
     ArrayList<Socket> socketList = new ArrayList<Socket>();
     ArrayList<String> playerList = new ArrayList<String>();

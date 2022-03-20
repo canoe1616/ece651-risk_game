@@ -203,7 +203,7 @@ public class MapFactory implements AbstractMapFactory {
     ter_F.addNeighbors(ter_H);
     ter_G.addNeighbors(ter_E);
     ter_G.addNeighbors(ter_H);
-    ter_H.addNeighbors(ter_E);
+    ter_H.addNeighbors(ter_F);
     ter_H.addNeighbors(ter_G);
     //set territories to player
     p1.addTerritory(ter_A);
