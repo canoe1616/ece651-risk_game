@@ -13,15 +13,20 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
+import java.io.IOException;
 
 import edu.duke.ece651.grp9.risk.shared.*;
-
 
 
 public class App {
 
   private static HashSet<String> remainingColors;
+  private static ArrayList<Socket> socketList;
+  private static ArrayList<String> playerList;
+  private static ArrayList<ObjectInputStream> InputList;
+  private static ArrayList<ObjectOutputStream> OutputList;
 
   public App(Map m) {
     remainingColors = new HashSet<>();
@@ -29,10 +34,15 @@ public class App {
     while (it.hasNext()) {
       remainingColors.add(it.next().getName());
     }
+    socketList = new ArrayList<Socket>();
+    playerList = new ArrayList<String>();
+    InputList = new ArrayList<ObjectInputStream>();
+    OutputList = new ArrayList<ObjectOutputStream>();
   }
 
   /**
    * Allows client to select they color they want to play as
+   *
    * @param stream socket connection to client from server
    */
   public void selectColor(ObjectOutputStream stream) {
@@ -50,9 +60,6 @@ public class App {
 
   /**
    * Removes a color from remainingColors
-   *
-   * @param color
-   * @return
    */
   public boolean deleteColor(String color) {
     for (String c : remainingColors) {
@@ -83,6 +90,7 @@ public class App {
 
   /**
    * Find Player bin map based on color input
+   *
    * @param color String color input
    * @param m Map we are searching for Player
    * @return returns null if no Player found, returns Player if found
@@ -101,6 +109,7 @@ public class App {
 
   /**
    * Set units for player's Territories based on input from Client
+   *
    * @param unitString String of unit values from client
    * @param player Player whose units are being added to their Territories
    */
@@ -114,30 +123,6 @@ public class App {
       i++;
     }
   }
-
-    /*ArrayList<Integer> unitList = new ArrayList<>();
-    char[] tmp = unitString.toCharArray();
-
-    //unitString -> array
-    int k = 0;
-    int digit = 0;
-    while (k < tmp.length) {
-
-      if (Character.isDigit(tmp[k])) {
-        digit = 0;
-        while (k < tmp.length && Character.isDigit(tmp[k])) {
-          digit = digit * 10 + Character.getNumericValue(tmp[k]);
-          k++;
-        }
-      }
-      unitList.add(digit);
-      k++;
-    }
-    int i = 0;
-    for (Territory ter : player.getTerritoryList()) {
-      ter.setUnit(unitList.get(i));
-      i++;
-    }*/
 
   /**
    * Creates an Action given String input from client
@@ -170,9 +155,18 @@ public class App {
     }
   }
 
-  public String validActionSet(Player player, HashSet<MoveAction> moves, HashSet<AttackAction> attacks) {
+  /**
+   * Checks is a set of Actions from client is valid
+   *
+   * @param player Player who made actions
+   * @param moves MoveActions that are checked
+   * @param attacks AttackActions that are checked
+   * @return null if no error, String describing problem if there is error
+   */
+  public String validActionSet(Player player, HashSet<MoveAction> moves,
+      HashSet<AttackAction> attacks) {
     //Once we first meet the problem, then reenter with "Done", moves and attacks would be "NULL"
-    if(moves.isEmpty() && attacks.isEmpty()){
+    if (moves.isEmpty() && attacks.isEmpty()) {
       return null;
     }
     for (MoveAction move : moves) {
@@ -205,13 +199,37 @@ public class App {
     return null;
   }
 
+  /**
+   * Sends message to client to indicate win or lose
+   * @param stream OutputStream for client
+   * @param color String indicating which Player
+   * @param map Map
+   */
+  public void gameWinner(ObjectOutputStream stream, String color, Map map) throws IOException {
+    stream.reset();
+    stream.writeObject(map);
+    System.out.println("Send map : there is a winner.");
+
+    Player winner = map.getGameWinner();
+    if (winner.equals(findPlayer(color, map))) {
+      stream.reset();
+      stream.writeObject("win");
+      System.out.println("write win to player");
+    } else {
+      stream.reset();
+      stream.writeObject("game over");
+      System.out.println("write game over to player");
+    }
+    stream.close();
+  }
+
 
   /**
    * play all received attacks
    *
    * @param attacks received attacks
    */
-  private void playAttacks(Map map, HashSet<AttackAction> attacks) {
+  public void playAttacks(Map map, HashSet<AttackAction> attacks) {
     Battle battle = new Battle(map);
     for (AttackAction att : attacks) {
       battle.addAttackAction(att);
@@ -221,27 +239,32 @@ public class App {
 
   //boolean
   public static <objectInputStream> void main(String[] args) {
-    // BufferedReader inputSource = new BufferedReader(new InputStreamReader(System.in));
-    // int player_num = Integer.parseInt(inputSource.readLine());
-    // while(player_num<2 || player_num>5){
-    //   System.out.println("Must be 2-5. Please enter again");
-    //   player_num = Integer.parseInt(inputSource.readLine());
-    // }
+     System.out.println("Please input the number of players you want, and should be 2-5");
+     BufferedReader inputSource = new BufferedReader(new InputStreamReader(System.in));
+     int player_num = 0;
+     try {
+       player_num = Integer.parseInt(inputSource.readLine());
+       while (player_num < 2 || player_num > 5) {
+         System.out.println("Must be 2-5. Please enter again");
+         player_num = Integer.parseInt(inputSource.readLine());
+       }
+     }
+     catch(Exception e) {
+       System.out.println(e);
+       }
 
-    // MapFactory f = new MapFactory();
-    // Map m = f.makeMap(player_num);
-    MapFactory f = new MapFactory();
-  Map m = f.makeMapForFour();
-  int player_num = 4;
 
-    
+     MapFactory f = new MapFactory();
+     Map m = f.makeMap(player_num);
+
     App app = new App(m);
-    ArrayList<Socket> socketList = new ArrayList<Socket>();
-    ArrayList<String> playerList = new ArrayList<String>();
+    //ArrayList<Socket> socketList = new ArrayList<Socket>();
+    //ArrayList<String> playerList = new ArrayList<String>();
     Socket socket = null;
 
-    ArrayList<ObjectInputStream> InputList = new ArrayList<ObjectInputStream>();
-    ArrayList<ObjectOutputStream> OutputList = new ArrayList<ObjectOutputStream>();
+    //debug
+    //ArrayList<ObjectInputStream> InputList = new ArrayList<ObjectInputStream>();
+    //ArrayList<ObjectOutputStream> OutputList = new ArrayList<ObjectOutputStream>();
 
     try (ServerSocket ss = new ServerSocket(6666)) {
       for (int i = 0; i < player_num; i++) {
@@ -324,7 +347,7 @@ public class App {
       // if we find the winner, notify the winner he wins the game;
       // notify the other players game over
       while (m.getGameWinner() == null) {
-       // no winner detected, game continuing
+        // no winner detected, game continuing
         for (int i = 0; i < socketList.size(); i++) {
           OutputList.get(i).reset();
           OutputList.get(i).writeObject(m);
@@ -340,7 +363,7 @@ public class App {
           OutputList.get(i).writeObject("game continuing");
           System.out.println("Write end game flag to player");
 
-          String action = (String)InputList.get(i).readObject();
+          String action = (String) InputList.get(i).readObject();
 
 
           Player player = app.findPlayer(playerList.get(i), m);
@@ -379,7 +402,8 @@ public class App {
               }
 
               //moveActions  attackActions need to be reset in the next round.
-              String actionProblem = app.validActionSet(m.findPlayer(playerList.get(i)), moveActions, attackActions);
+              String actionProblem = app.validActionSet(m.findPlayer(playerList.get(i)),
+                  moveActions, attackActions);
 
               //debug：here should be reset
               OutputList.get(i).reset();
@@ -401,32 +425,16 @@ public class App {
         }
         allMoves.clear();
         //real execute for te attack action
-        app.playAttacks(m,allAttack);
+        app.playAttacks(m, allAttack);
         allAttack.clear();
         for (Territory territory : m.getList()) {
           territory.addUnit();
         }
       }
 
-
       //------------------------------------------Winner part-------------------------------//
-      Player winner = m.getGameWinner();
       for (int i = 0; i < socketList.size(); i++) {
-        OutputList.get(i).reset();
-        OutputList.get(i).writeObject(m);
-        System.out.println("Send map : there is a winner.");
-
-        if (winner.equals(app.findPlayer(playerList.get(i), m))) {
-          OutputList.get(i).reset();
-          OutputList.get(i).writeObject("win");
-          System.out.println("write win to player");
-          } 
-        else{  
-          OutputList.get(i).reset();
-          OutputList.get(i).writeObject("game over");
-          System.out.println("write game over to player");
-        }
-        socketList.get(i).close();
+        app.gameWinner(OutputList.get(i), playerList.get(i), m);
       }
       System.out.println("Final point");
       TimeUnit.SECONDS.sleep(20);
