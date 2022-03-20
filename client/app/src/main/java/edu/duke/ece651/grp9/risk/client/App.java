@@ -42,6 +42,27 @@ public class App {
     return null;
   }
 
+
+  public static String displayWinInfo(String color, Map map) {
+    String res = "";
+    MapTextView mtv = new MapTextView(map);
+    res += "end_game = win\n";
+    String gameStateInitial = mtv.displayGameState(map.findPlayer(color));
+    res += gameStateInitial;
+    res += "\nCongratulations! You win the game!\n";
+    return res;
+  }
+
+  public static String displayGameOverInfo(String color, Map map) {
+    String res = "";
+    MapTextView mtv = new MapTextView(map);
+    res += "end_game = game over\n";
+    String gameStateInitial = mtv.displayGameState(map.findPlayer(color));
+    res += gameStateInitial;
+    res += "\nThe game is over now.\n";
+    return res;
+  }
+
   /**
    * this method is to ask player select a color
    * @param inputSource is the input buffer reader
@@ -175,24 +196,14 @@ public class App {
         String endGame = (String) objectInputStream.readObject();//
         System.out.println("Read state.");
         if (endGame.equals("win")){
-          System.out.println("end_game = win");
-          //print the map
-          String gameStateInitial = mtv.displayGameState(app.findPlayer(color, myMap));
-          System.out.println(gameStateInitial);
-          //tell player you are winner!
-          System.out.println("\n");
-          System.out.println("Congratulations! You win the game!");
+          String res = displayWinInfo(color, myMap);
+          System.out.println(res);
           socket.close();
           break;
         }
         else if (endGame.equals("game over")){
-          //print the map
-          System.out.println("end_game = game over");
-          String gameStateInitial = mtv.displayGameState(app.findPlayer(color, myMap));
-          System.out.println(gameStateInitial);
-          //tell player the game is over
-          System.out.println("\n");
-          System.out.println("The game is over now.");
+          String res = displayGameOverInfo(color, myMap);
+          System.out.println(res);
           socket.close();
           break;
         }
