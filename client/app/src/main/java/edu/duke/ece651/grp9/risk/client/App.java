@@ -24,7 +24,6 @@ public class App {
     this.inputReader = inputSource;
   }
 
-
   /**
    * this method is to ask player select a color
    * @param inputSource is the input buffer reader
@@ -141,7 +140,6 @@ public class App {
       ActionRuleChecker arc = new ActionRuleChecker();
       return arc.checkAction(action);
     }
-
 
 
   public static void main(String[] args) {
