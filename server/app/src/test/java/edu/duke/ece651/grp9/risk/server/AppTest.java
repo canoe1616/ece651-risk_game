@@ -98,6 +98,51 @@ class AppTest {
   }
 
   @Test
+  public void test_unitSetting() throws InterruptedException, IOException {
+    ServerSocket ss = new ServerSocket(6666);
+    MapFactory factory = new MapFactory();
+    Map map = factory.makeMapForTwo();
+    App app1 = new App(map);
+
+    Thread th = new Thread() {
+      @Override()
+      public void run() {
+        try {
+          Socket client = new Socket("localhost", 6666);
+
+          InputStream inputStream = client.getInputStream();
+          ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+
+          String receive = (String) objectInputStream.readObject();
+
+          String expected = "You have 2 territories: A B \nYou have 30 total units, how do you want to place the units?";
+          assertEquals(receive, expected);
+
+        } catch (Exception e) {
+          System.out.println("Connection error.");
+        }
+      }
+    };
+    th.start();
+    Thread.sleep(1000);
+
+    //create new socket
+    Socket s = ss.accept();
+    System.out.println("connection");
+
+    OutputStream outputStream = s.getOutputStream();
+    ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
+
+
+    app1.unitSetting(objectOutputStream, map.findPlayer("red"));
+    System.out.println("Receiving red");
+
+    th.interrupt();
+    th.join();
+    ss.close();
+  }
+
+  @Test
   public void test_findPlayer() {
     MapFactory factory = new MapFactory();
     Map map = factory.makeMapForTwo();

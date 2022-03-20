@@ -21,6 +21,10 @@ import edu.duke.ece651.grp9.risk.shared.*;
 public class App {
 
   private static HashSet<String> remainingColors;
+  private static ArrayList<Socket> socketList;
+  private static ArrayList<String> playerList;
+  private static ArrayList<ObjectInputStream> InputList;
+  private static ArrayList<ObjectOutputStream> OutputList;
 
   public App(Map m) {
     remainingColors = new HashSet<>();
@@ -28,6 +32,10 @@ public class App {
     while (it.hasNext()) {
       remainingColors.add(it.next().getName());
     }
+    socketList = new ArrayList<Socket>();
+    playerList = new ArrayList<String>();
+    InputList = new ArrayList<ObjectInputStream>();
+    OutputList = new ArrayList<ObjectOutputStream>();
   }
 
   /**
@@ -234,13 +242,13 @@ public class App {
     Map m = f.makeMapForThree();
     int player_num = 3;
     App app = new App(m);
-    ArrayList<Socket> socketList = new ArrayList<Socket>();
-    ArrayList<String> playerList = new ArrayList<String>();
+    //ArrayList<Socket> socketList = new ArrayList<Socket>();
+    //ArrayList<String> playerList = new ArrayList<String>();
     Socket socket = null;
 
     //debug
-    ArrayList<ObjectInputStream> InputList = new ArrayList<ObjectInputStream>();
-    ArrayList<ObjectOutputStream> OutputList = new ArrayList<ObjectOutputStream>();
+    //ArrayList<ObjectInputStream> InputList = new ArrayList<ObjectInputStream>();
+    //ArrayList<ObjectOutputStream> OutputList = new ArrayList<ObjectOutputStream>();
 
     try (ServerSocket ss = new ServerSocket(6666)) {
       for (int i = 0; i < player_num; i++) {
