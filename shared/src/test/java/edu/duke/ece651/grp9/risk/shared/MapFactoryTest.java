@@ -25,4 +25,21 @@ public class MapFactoryTest {
     Map m = f.makeMapForThree();
     assertEquals(3, m.getPlayerNum());
   }
+
+
+  @Test
+  public void test_fourmap(){
+    MapFactory f = new MapFactory();
+    Map m = f.makeMapForFour();
+    assertEquals(4, m.getPlayerNum());
+  }
+
+
+  @Test
+  public void test_fivemap(){
+    MapFactory f = new MapFactory();
+    Map m = f.makeMapForFive();
+    assertEquals(5, m.getPlayerNum());
+  }
+
 }
