@@ -17,7 +17,6 @@ import java.util.concurrent.TimeUnit;
 import edu.duke.ece651.grp9.risk.shared.*;
 
 
-
 public class App {
 
   private static HashSet<String> remainingColors;
@@ -32,6 +31,7 @@ public class App {
 
   /**
    * Allows client to select they color they want to play as
+   *
    * @param stream socket connection to client from server
    */
   public void selectColor(ObjectOutputStream stream) {
@@ -49,9 +49,6 @@ public class App {
 
   /**
    * Removes a color from remainingColors
-   *
-   * @param color
-   * @return
    */
   public boolean deleteColor(String color) {
     for (String c : remainingColors) {
@@ -82,6 +79,7 @@ public class App {
 
   /**
    * Find Player bin map based on color input
+   *
    * @param color String color input
    * @param m Map we are searching for Player
    * @return returns null if no Player found, returns Player if found
@@ -100,6 +98,7 @@ public class App {
 
   /**
    * Set units for player's Territories based on input from Client
+   *
    * @param unitString String of unit values from client
    * @param player Player whose units are being added to their Territories
    */
@@ -113,30 +112,6 @@ public class App {
       i++;
     }
   }
-
-    /*ArrayList<Integer> unitList = new ArrayList<>();
-    char[] tmp = unitString.toCharArray();
-
-    //unitString -> array
-    int k = 0;
-    int digit = 0;
-    while (k < tmp.length) {
-
-      if (Character.isDigit(tmp[k])) {
-        digit = 0;
-        while (k < tmp.length && Character.isDigit(tmp[k])) {
-          digit = digit * 10 + Character.getNumericValue(tmp[k]);
-          k++;
-        }
-      }
-      unitList.add(digit);
-      k++;
-    }
-    int i = 0;
-    for (Territory ter : player.getTerritoryList()) {
-      ter.setUnit(unitList.get(i));
-      i++;
-    }*/
 
   /**
    * Creates an Action given String input from client
@@ -169,9 +144,18 @@ public class App {
     }
   }
 
-  public String validActionSet(Player player, HashSet<MoveAction> moves, HashSet<AttackAction> attacks) {
+  /**
+   * Checks is a set of Actions from client is valid
+   *
+   * @param player Player who made actions
+   * @param moves MoveActions that are checked
+   * @param attacks AttackActions that are checked
+   * @return null if no error, String describing problem if there is error
+   */
+  public String validActionSet(Player player, HashSet<MoveAction> moves,
+      HashSet<AttackAction> attacks) {
     //Once we first meet the problem, then reenter with "Done", moves and attacks would be "NULL"
-    if(moves.isEmpty() && attacks.isEmpty()){
+    if (moves.isEmpty() && attacks.isEmpty()) {
       return null;
     }
     for (MoveAction move : moves) {
@@ -332,22 +316,21 @@ public class App {
       // if we find the winner, notify the winner he wins the game;
       // notify the other players game over
       while (m.getGameWinner() == null) {
-       // no winner detected, game continuing
+        // no winner detected, game continuing
         for (int i = 0; i < socketList.size(); i++) {
           OutputList.get(i).reset();
           OutputList.get(i).writeObject(m);
           System.out.println("Send map");
         }
-        for(int i = 0 ; i < socketList.size(); i++) {
+        for (int i = 0; i < socketList.size(); i++) {
           // notify player game not over yet
           OutputList.get(i).writeObject("game continuing");
           System.out.println("Write end game flag to player");
 
-          String action = (String)InputList.get(i).readObject();
+          String action = (String) InputList.get(i).readObject();
 
           //debug
           System.out.println("the action is：" + action);
-
 
           Player player = app.findPlayer(playerList.get(i), m);
           player.setLoseStatus(action);
@@ -366,10 +349,10 @@ public class App {
               InputList.remove(i);
               OutputList.remove(i);
               playerList.remove(i);
-              
+
             }
             if (player.getLoseStatus().equals("continue")) {
-   
+
             }
           } else { // if the player still alive
             while (true) {
@@ -388,13 +371,15 @@ public class App {
 
               HashSet<String> actionListAttack = actionSet.getAttackList();
               for (String attack : actionListAttack) {
-                attackActions.add((AttackAction) app.createAction(m, playerList.get(i), attack, false));
+                attackActions.add(
+                    (AttackAction) app.createAction(m, playerList.get(i), attack, false));
                 //debug
                 System.out.println("传回给server的move是" + attack);
               }
 
               //moveActions  attackActions need to be reset in the next round.
-              String actionProblem = app.validActionSet(m.findPlayer(playerList.get(i)), moveActions, attackActions);
+              String actionProblem = app.validActionSet(m.findPlayer(playerList.get(i)),
+                  moveActions, attackActions);
 
               //debug：here should be reset
               OutputList.get(i).reset();
@@ -403,11 +388,11 @@ public class App {
                 allMoves.addAll(moveActions);
                 allAttack.addAll(attackActions);
                 break;
-              }
-              else{
+              } else {
 
               }
-              System.out.println("There are problems with this client's setting, send information back to the server");
+              System.out.println(
+                  "There are problems with this client's setting, send information back to the server");
             }
           }
 
@@ -420,13 +405,12 @@ public class App {
         }
         allMoves.clear();
         //real execute for te attack action
-        app.playAttacks(m,allAttack);
+        app.playAttacks(m, allAttack);
         allAttack.clear();
         for (Territory territory : m.getList()) {
           territory.addUnit();
         }
       }
-
 
       //------------------------------------------Winner part-------------------------------//
       Player winner = m.getGameWinner();
@@ -439,8 +423,7 @@ public class App {
           OutputList.get(i).reset();
           OutputList.get(i).writeObject("win");
           System.out.println("write win to player");
-          } 
-        else{  
+        } else {
           OutputList.get(i).reset();
           OutputList.get(i).writeObject("game over");
           System.out.println("write game over to player");
