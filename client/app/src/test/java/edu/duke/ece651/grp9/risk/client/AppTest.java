@@ -16,23 +16,22 @@ import java.net.Socket;
 import static org.junit.jupiter.api.Assertions.*;
 
 class AppTest {
-//    @Test
-//    void findPlayer() {
-//        BufferedReader inputReader = new BufferedReader(new InputStreamReader(System.in));
-//        App app = new App(inputReader);
-//        Map m = new Map();
-//        Player p = new Player("red");
-//        m.addPlayer(p);
-//        assertEquals(p, app.findPlayer("red", m));
-//        assertEquals(null, app.findPlayer("green", m));
-//    }
+    @Test
+    void findPlayer() {
+        BufferedReader inputReader = new BufferedReader(new InputStreamReader(System.in));
+        App app = new App(inputReader);
+        Map m = new Map();
+        Player p = new Player("red");
+        m.addPlayer(p);
+        assertEquals(p, app.findPlayer("red", m));
+        assertEquals(null, app.findPlayer("green", m));
+    }
 
 
     @Test
     void selectColor() throws IOException, InterruptedException {
-        StringReader stringReader = new StringReader("black\nred\nsss");
+        StringReader stringReader = new StringReader("black\nred\n\n");
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        PrintStream out = new PrintStream(bytes, true);
         BufferedReader inputReader = new BufferedReader(stringReader);
         App app = new App(inputReader);
         Thread th = new Thread() {
@@ -48,10 +47,10 @@ class AppTest {
                     String sever2client = "false";
                     objectOutputStream.writeObject(sever2client);
                     outputStream.flush();
-                    sever2client = "true";
+                    sever2client = "false";
                     objectOutputStream.writeObject(sever2client);
                     outputStream.flush();
-                    sever2client = "false";
+                    sever2client = "true";
                     objectOutputStream.writeObject(sever2client);
                     outputStream.flush();
                     ss.close();
@@ -67,16 +66,14 @@ class AppTest {
         ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
         InputStream inputStream = socket.getInputStream();
         ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
-        app.selectColor(inputReader, objectInputStream, objectOutputStream);
-        String exp = "";
-        assertEquals(exp, bytes.toString());
+        String res = app.selectColor(inputReader, objectInputStream, objectOutputStream);
+        assertEquals("red", res);
     }
 
     @Test
     void selectUnit() throws InterruptedException, IOException {
-        StringReader stringReader = new StringReader("0 0 -1\n0 0 0  \n10 15 5");
+        StringReader stringReader = new StringReader("0 0 -1\n10 15 5\n\n");
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        PrintStream out = new PrintStream(bytes, true);
         BufferedReader inputReader = new BufferedReader(stringReader);
         App app = new App(inputReader);
         Thread th = new Thread() {
@@ -111,9 +108,8 @@ class AppTest {
         ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
         InputStream inputStream = socket.getInputStream();
         ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
-        app.selectUnit(inputReader, objectInputStream, objectOutputStream);
-        String exp = "";
-        assertEquals(exp, bytes.toString());
+        String res = app.selectUnit(inputReader, objectInputStream, objectOutputStream);
+        assertEquals("10 15 5", res);
     }
 
     @Test

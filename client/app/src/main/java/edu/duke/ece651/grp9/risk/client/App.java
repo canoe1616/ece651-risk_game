@@ -99,7 +99,28 @@ public class App {
     return s;
   }
 
+  /**
+   * given the player color and the map, this method is to find the play
+   * @param color is the player's color
+   * @param m is the map of the game
+   * @return the player in color on map m
+   */
+  public Player findPlayer(String color, Map m) {
+    HashSet<Player> list = m.getPlayer();
+    Iterator<Player> it = list.iterator();
+    while (it.hasNext()) {
+      Player pyr = it.next();
+      if (pyr.getName().equals(color)) {
+        return pyr;
+      }
+    }
+    return null;
+  }
 
+
+  /**
+   * this method is to ask the player select his option after losing the game
+   */
   public String selectStateAfterLose(BufferedReader inputSource, String color) throws IOException {
     System.out.println(color + ", you lose the game!"
             + " What would you like to do?\n" +
