@@ -71,5 +71,31 @@ public class MapTextView {
         */
         return ans;
     }
+
+    /**
+     * this method is to generate info send to Winner
+     */
+    public static String sendInfoWinner(String color, Map map) {
+        String res = "";
+        MapTextView mtv = new MapTextView(map);
+        res += "end_game = win\n";
+        String gameStateInitial = mtv.displayGameState(map.findPlayer(color));
+        res += gameStateInitial;
+        res += "\nCongratulations! You win the game!\n";
+        return res;
+    }
+
+    /**
+     * this method is to generate info send to loser (game over)
+     */
+    public static String sendInfoLoser(String color, Map map) {
+        String res = "";
+        MapTextView mtv = new MapTextView(map);
+        res += "end_game = game over\n";
+        String gameStateInitial = mtv.displayGameState(map.findPlayer(color));
+        res += gameStateInitial;
+        res += "\nThe game is over now.\n";
+        return res;
+    }
   
 }

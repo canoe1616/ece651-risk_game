@@ -24,49 +24,6 @@ public class App {
     this.inputReader = inputSource;
   }
 
-  /**
-   * given the player color and the map, this method is to find the play
-   * @param color is the player's color
-   * @param m is the map of the game
-   * @return the player in color on map m
-   */
-  public Player findPlayer(String color, Map m) {
-    HashSet<Player> list = m.getPlayer();
-    Iterator<Player> it = list.iterator();
-    while (it.hasNext()) {
-      Player pyr = it.next();
-      if (pyr.getName().equals(color)) {
-        return pyr;
-      }
-    }
-    return null;
-  }
-
-  /**
-   * this method is to generate info send to Winner
-   */
-  public static String sendInfoWinner(String color, Map map) {
-    String res = "";
-    MapTextView mtv = new MapTextView(map);
-    res += "end_game = win\n";
-    String gameStateInitial = mtv.displayGameState(map.findPlayer(color));
-    res += gameStateInitial;
-    res += "\nCongratulations! You win the game!\n";
-    return res;
-  }
-
-  /**
-   * this method is to generate info send to loser (game over)
-   */
-  public static String sendInfoLoser(String color, Map map) {
-    String res = "";
-    MapTextView mtv = new MapTextView(map);
-    res += "end_game = game over\n";
-    String gameStateInitial = mtv.displayGameState(map.findPlayer(color));
-    res += gameStateInitial;
-    res += "\nThe game is over now.\n";
-    return res;
-  }
 
   /**
    * this method is to ask player select a color
@@ -219,42 +176,41 @@ public class App {
         myMap = (Map) objectInputStream.readObject();//
         System.out.println("Receive Map form server.");
         MapTextView mtv = new MapTextView(myMap);
-        //recieve win/gameover message
         String endGame = (String) objectInputStream.readObject();//
         System.out.println("Read state.");
         if (endGame.equals("win")){
-          String res = sendInfoWinner(color, myMap);
+          String res = mtv.sendInfoWinner(color, myMap);
           System.out.println(res);
           socket.close();
           break;
         }
         else if (endGame.equals("game over")){
-          String res = sendInfoLoser(color, myMap);
+          String res = mtv.sendInfoLoser(color, myMap);
           System.out.println(res);
           socket.close();
           break;
         }
         else{//countinue
           
-          if(app.findPlayer(color, myMap).isLose() && app.findPlayer(color, myMap).getLoseStatus().equals("no act")){
+          if(myMap.findPlayer(color).isLose() && myMap.findPlayer(color).getLoseStatus().equals("no act")){
             String action = app.selectStateAfterLose(inputSource, color);
             objectOutputStream.writeObject(action);
             //change it at local player.
-            app.findPlayer(color, myMap).setLoseStatus(action);
+            myMap.findPlayer(color).setLoseStatus(action);
           }
-          else if(app.findPlayer(color, myMap).isLose() && app.findPlayer(color, myMap).getLoseStatus().equals("quit")){
+          else if(myMap.findPlayer(color).isLose() && myMap.findPlayer(color).getLoseStatus().equals("quit")){
             System.out.println("Bye bye I quit");
             objectOutputStream.writeObject("quit");
             socket.close();
             break; //close the game here
           }
-          else if(app.findPlayer(color, myMap).isLose() && app.findPlayer(color, myMap).getLoseStatus().equals("continue")){
-             String gameStateInitial = mtv.displayGameState(app.findPlayer(color, myMap));
+          else if(myMap.findPlayer(color).isLose() && myMap.findPlayer(color).getLoseStatus().equals("continue")){
+             String gameStateInitial = mtv.displayGameState(myMap.findPlayer(color));
              System.out.println(gameStateInitial);
              objectOutputStream.writeObject("continue");
           }
           else{
-            String gameStateInitial = mtv.displayGameState(app.findPlayer(color, myMap));
+            String gameStateInitial = mtv.displayGameState(myMap.findPlayer(color));
             System.out.println(gameStateInitial);
             objectOutputStream.writeObject("no act");
             //allow client typing
@@ -283,8 +239,7 @@ public class App {
                 if (actionProblem == null) {
                   break;
                 } else {
-                  System.out.println(actionProblem);
-                  System.out.println("Please reenter your Actions again.");
+                  System.out.println(actionProblem + "\nPlease reenter your Actions again.");
                 }
               }
               else if (action.equals("m") || action.equals("M")) {
