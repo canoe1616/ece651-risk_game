@@ -230,6 +230,10 @@ public class App {
 
     // MapFactory f = new MapFactory();
     // Map m = f.makeMap(player_num);
+    MapFactory f = new MapFactory();
+  Map m = f.makeMapForFour();
+  int player_num = 4;
+
     
     App app = new App(m);
     ArrayList<Socket> socketList = new ArrayList<Socket>();
