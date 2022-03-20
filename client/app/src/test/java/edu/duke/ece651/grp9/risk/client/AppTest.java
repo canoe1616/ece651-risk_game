@@ -4,7 +4,9 @@
 package edu.duke.ece651.grp9.risk.client;
 
 import edu.duke.ece651.grp9.risk.shared.Map;
+import edu.duke.ece651.grp9.risk.shared.MapTextView;
 import edu.duke.ece651.grp9.risk.shared.Player;
+import edu.duke.ece651.grp9.risk.shared.Territory;
 import org.checkerframework.checker.units.qual.A;
 import org.junit.jupiter.api.Test;
 
@@ -130,4 +132,70 @@ class AppTest {
         assertEquals(null, app.getActionString("A"));
         assertEquals("the input character is invalid, please enter again!", app.getLoseActionString("P"));
     }
+
+    @Test
+    void displayWinInfo() {
+        BufferedReader inputReader = new BufferedReader(new InputStreamReader(System.in));
+        App app = new App(inputReader);
+        Player p1 = new Player("blue");
+        Territory ter = new Territory("NC");
+        Map map = new Map();
+        map.addPlayer(p1);
+        map.addTerritory(ter);
+        p1.addTerritory(ter);
+        ter.setUnit(15);
+        String exp = "end_game = win\n" +
+                "blue Player:\n" +
+                "----------------------------------\n" +
+                "15 units in NC(next to)\n" +
+                "\n" +
+                "\n" +
+                "Congratulations! You win the game!\n";
+        assertEquals(exp, app.displayWinInfo("blue",map));
+
+    }
+
+    @Test
+    void displayGameOverInfo() {
+        BufferedReader inputReader = new BufferedReader(new InputStreamReader(System.in));
+        App app = new App(inputReader);
+        Player p1 = new Player("blue");
+        Territory ter = new Territory("NC");
+        Map map = new Map();
+        map.addPlayer(p1);
+        MapTextView view = new MapTextView(map);
+        String exp = "end_game = game over\n" +
+                "blue Player:\n" +
+                "----------------------------------\n" +
+                "\n" +
+                "\n" +
+                "The game is over now.\n";
+        assertEquals(exp, app.displayGameOverInfo("blue",map));
+    }
+
+    //    @Test
+//    void test_displayPlayerLose() {
+//        Player p1 = new Player("blue");
+//        Territory ter = new Territory("NC");
+//        Map map = new Map();
+//        map.addPlayer(p1);
+//        MapTextView view = new MapTextView(map);
+//        String exp = "Player blue, you lose the game!"
+//                + " What would you like to do?\n" +
+//                " (Q)uit\n" + " (C)ontinue watching game\n";
+//        assertEquals(exp, view.displayGameState(p1));
+//
+//    }
+//
+//    @Test
+//    void test_displayGameOver() {
+//        Player p1 = new Player("blue");
+//        Territory ter = new Territory("NC");
+//        Map map = new Map();
+//        map.addPlayer(p1);
+//        MapTextView view = new MapTextView(map);
+//        String exp ="Game Over! Player blue wins the game!";
+//        assertEquals(exp, view.displayGameState(p1));
+//
+//    }
 }
