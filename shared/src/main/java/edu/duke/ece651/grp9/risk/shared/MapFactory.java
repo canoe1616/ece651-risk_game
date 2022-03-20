@@ -2,6 +2,25 @@ package edu.duke.ece651.grp9.risk.shared;
 
 public class MapFactory implements AbstractMapFactory {
   
+
+  public Map makeMap(int num){
+    if (num == 2){
+      return makeMapForTwo();
+    }
+    else if (num == 3){
+      return makeMapForThree();
+    }
+    else if (num == 4){
+      return makeMapForFour();
+    }
+    else if (num == 5){
+      return makeMapForFive();
+    }
+    else{
+      return null;
+    }
+  }
+
   /*2 player map
     |A|B|
     |C|D|
