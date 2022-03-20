@@ -26,17 +26,13 @@ public class MapFactoryTest {
     assertEquals(3, m.getPlayerNum());
   }
 
-<<<<<<< HEAD
 
-=======
->>>>>>> acb3419199b99f9fed2060c0f3e15be72caa4064
   @Test
   public void test_fourmap(){
     MapFactory f = new MapFactory();
     Map m = f.makeMapForFour();
     assertEquals(4, m.getPlayerNum());
   }
-<<<<<<< HEAD
 
 
   @Test
@@ -46,6 +42,5 @@ public class MapFactoryTest {
     assertEquals(5, m.getPlayerNum());
   }
 
-=======
->>>>>>> acb3419199b99f9fed2060c0f3e15be72caa4064
+
 }
