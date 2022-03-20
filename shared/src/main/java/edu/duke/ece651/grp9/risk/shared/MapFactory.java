@@ -156,10 +156,78 @@ public class MapFactory implements AbstractMapFactory {
 
     return mapForThree;
   }
-  /*
+  
   @Override
   public Map makeMapForFour(){
     Map mapForFour = new Map();
+    mapForFour.setPlayerNum(4);
+    //create player
+    Player p1 = new Player("red");
+    Player p2 = new Player("green");
+    Player p3 = new Player("blue");
+    Player p4 = new Player("orange");
+    //create territory
+    Territory ter_A = new Territory("A");
+    Territory ter_B = new Territory("B");
+    Territory ter_C = new Territory("C");
+    Territory ter_D = new Territory("D");
+    Territory ter_E = new Territory("E");
+    Territory ter_F = new Territory("F");
+    Territory ter_G = new Territory("G");
+    Territory ter_H = new Territory("H");
+    //set owner
+    ter_A.setOwner(p1);
+    ter_B.setOwner(p1);
+    ter_C.setOwner(p2);
+    ter_D.setOwner(p2);
+    ter_E.setOwner(p3);
+    ter_F.setOwner(p3);
+    ter_G.setOwner(p4);
+    ter_H.setOwner(p4);
+    //set neighbors
+    ter_A.addNeighbors(ter_B);
+    ter_A.addNeighbors(ter_C);
+    ter_B.addNeighbors(ter_A);
+    ter_B.addNeighbors(ter_D);
+    ter_C.addNeighbors(ter_A);
+    ter_C.addNeighbors(ter_D);
+    ter_C.addNeighbors(ter_E);
+    ter_D.addNeighbors(ter_B);
+    ter_D.addNeighbors(ter_C);
+    ter_D.addNeighbors(ter_F);
+    ter_E.addNeighbors(ter_C);
+    ter_E.addNeighbors(ter_F);
+    ter_E.addNeighbors(ter_G);
+    ter_F.addNeighbors(ter_D);
+    ter_F.addNeighbors(ter_E);
+    ter_F.addNeighbors(ter_H);
+    ter_G.addNeighbors(ter_E);
+    ter_G.addNeighbors(ter_H);
+    ter_H.addNeighbors(ter_E);
+    ter_H.addNeighbors(ter_G);
+    //set territories to player
+    p1.addTerritory(ter_A);
+    p1.addTerritory(ter_B);
+    p2.addTerritory(ter_C);
+    p2.addTerritory(ter_D);
+    p3.addTerritory(ter_E);
+    p3.addTerritory(ter_F);
+    p4.addTerritory(ter_G);
+    p4.addTerritory(ter_H);
+    //add to territory list in map
+    mapForFour.addTerritory(ter_A);
+    mapForFour.addTerritory(ter_B);
+    mapForFour.addTerritory(ter_C);
+    mapForFour.addTerritory(ter_D);
+    mapForFour.addTerritory(ter_E);
+    mapForFour.addTerritory(ter_F);
+    mapForFour.addTerritory(ter_G);
+    mapForFour.addTerritory(ter_H);
+    //add player to player list in map
+    mapForFour.addPlayer(p1);
+    mapForFour.addPlayer(p2);
+    mapForFour.addPlayer(p3);
+    mapForFour.addPlayer(p4);
     return mapForFour;
   }
 
@@ -168,5 +236,5 @@ public class MapFactory implements AbstractMapFactory {
    Map mapForFive = new Map();
    return mapForFive;
   }
-  */
+  
 }
