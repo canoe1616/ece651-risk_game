@@ -210,7 +210,7 @@ public class App {
    *
    * @param attacks received attacks
    */
-  private void playAttacks(Map map, HashSet<AttackAction> attacks) {
+  public void playAttacks(Map map, HashSet<AttackAction> attacks) {
     Battle battle = new Battle(map);
     for (AttackAction att : attacks) {
       battle.addAttackAction(att);

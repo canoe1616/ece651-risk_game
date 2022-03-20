@@ -197,8 +197,109 @@ class AppTest {
     assertEquals(app1.validActionSet(p1, moves, attacks), null);
   }
 
+  /*@Test
+  public void test_receiveActions() {
+    MapFactory factory = new MapFactory();
+    Map map = factory.makeMapForTwo();
+    Player p1 = map.findPlayer("red");
+    App app1 = new App(map);
+
+    HashSet<String> moveList = new HashSet<>();
+    actionList.add("A B 10");
+
+    HashSet<MoveAction> moves = app1.receiveActions(moveList, true);
+  }*/
+
+  /*@Test
+  @Timeout(5)
+  public void test_gameWinner() throws IOException, InterruptedException {
+    MapFactory factory = new MapFactory();
+    Map map = new Map();
+    Territory t1 = new Territory("Two Rivers");
+    Player p1 = new Player("red");
+    p1.addTerritory(t1);
+    map.addTerritory(t1);
+    map.addPlayer(p1);
+    App app1 = new App(map);
+    ServerSocket ss = new ServerSocket(6666);
+
+    Thread th = new Thread() {
+      @Override()
+      public void run() {
+        try {
+          Socket client = new Socket("localhost", 6666);
+
+          InputStream inputStream = client.getInputStream();
+          ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+
+          Map map = (Map) objectInputStream.readObject();
+          String winner = (String) objectInputStream.readObject();
+
+          assertEquals(winner, "win");
+
+        } catch (Exception e) {
+          System.out.println("Connection error.");
+        }
+      }
+    };
+    th.start();
+    Thread.sleep(1000);
+
+    Socket s = ss.accept();
+    System.out.println("connection");
+
+    OutputStream outputStream = s.getOutputStream();
+    ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
+    app1.gameWinner(objectOutputStream, p1, map);
+
+    Thread th2 = new Thread() {
+      @Override()
+      public void run() {
+        try {
+          Socket client = new Socket("localhost", 6666);
+
+          InputStream inputStream = client.getInputStream();
+          ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+
+          Map map = (Map) objectInputStream.readObject();
+          String loser = (String) objectInputStream.readObject();
+
+          assertEquals(loser, "game over");
+
+        } catch (Exception e) {
+          System.out.println("Connection error.");
+        }
+      }
+    };
+    th2.start();
+    Thread.sleep(1000);
+
+    Socket s2 = ss.accept();
+    System.out.println("connection");
+
+    OutputStream outputStream2 = s2.getOutputStream();
+    ObjectOutputStream objectOutputStream2 = new ObjectOutputStream(outputStream2);
+    app1.gameWinner(objectOutputStream2, new Player("blue"), map);
+  }*/
+
   @Test
   public void test_playAttacks() {
+    MapFactory factory = new MapFactory();
+    Map map = factory.makeMapForTwo();
 
+    Player p1 = map.findPlayer("red");
+    Territory t1 = map.findTerritory("A");
+    Territory t2 = map.findTerritory("C");
+
+    App app1 = new App(map);
+    app1.playerUnitSetting("10 10", p1);
+
+    HashSet<AttackAction> attacks = new HashSet<>();
+    attacks.add(new AttackAction(p1, t1, t2, 3));
+    assertEquals(t1.getUnit(), 10);
+
+    app1.playAttacks(map, attacks);
+
+    assertEquals(t1.getUnit(), 7);
   }
 }
