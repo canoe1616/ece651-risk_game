@@ -4,8 +4,9 @@
 package edu.duke.ece651.grp9.risk.client;
 
 import edu.duke.ece651.grp9.risk.shared.Map;
+import edu.duke.ece651.grp9.risk.shared.MapTextView;
 import edu.duke.ece651.grp9.risk.shared.Player;
-import org.checkerframework.checker.units.qual.A;
+import edu.duke.ece651.grp9.risk.shared.Territory;
 import org.junit.jupiter.api.Test;
 
 import java.io.*;
@@ -15,16 +16,16 @@ import java.net.Socket;
 import static org.junit.jupiter.api.Assertions.*;
 
 class AppTest {
-    @Test
-    void findPlayer() {
-        BufferedReader inputReader = new BufferedReader(new InputStreamReader(System.in));
-        App app = new App(inputReader);
-        Map m = new Map();
-        Player p = new Player("red");
-        m.addPlayer(p);
-        assertEquals(p, app.findPlayer("red", m));
-        assertEquals(null, app.findPlayer("green",m));
-    }
+//    @Test
+//    void findPlayer() {
+//        BufferedReader inputReader = new BufferedReader(new InputStreamReader(System.in));
+//        App app = new App(inputReader);
+//        Map m = new Map();
+//        Player p = new Player("red");
+//        m.addPlayer(p);
+//        assertEquals(p, app.findPlayer("red", m));
+//        assertEquals(null, app.findPlayer("green", m));
+//    }
 
 
     @Test
@@ -130,4 +131,22 @@ class AppTest {
         assertEquals(null, app.getActionString("A"));
         assertEquals("the input character is invalid, please enter again!", app.getLoseActionString("P"));
     }
+
+    @Test
+    void selectStateAfterLose() throws IOException {
+        // test quit
+        StringReader stringReader = new StringReader("h\nQ\n");
+        BufferedReader inputReader = new BufferedReader(stringReader);
+        App app = new App(inputReader);
+        String color = "blue";
+        String action = app.selectStateAfterLose(inputReader, color);
+        assertEquals("quit", action);
+        // test continue
+        StringReader stringReader2 = new StringReader("h\nc\n");
+        BufferedReader inputReader2 = new BufferedReader(stringReader2);
+        App app2 = new App(inputReader);
+        String action2 = app.selectStateAfterLose(inputReader2, color);
+        assertEquals("continue", action2);
+    }
+
 }
