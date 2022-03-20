@@ -321,7 +321,7 @@ public class MapFactory implements AbstractMapFactory {
     ter_I.addNeighbors(ter_G);
     ter_I.addNeighbors(ter_J);
     ter_J.addNeighbors(ter_I);
-    ter_J.addNeighbors(ter_I);
+    ter_J.addNeighbors(ter_J);
 
 
     //set territories to player
@@ -346,6 +346,8 @@ public class MapFactory implements AbstractMapFactory {
       mapForFive.addTerritory(ter_F);
       mapForFive.addTerritory(ter_G);
       mapForFive.addTerritory(ter_H);
+      mapForFive.addTerritory(ter_I);
+      mapForFive.addTerritory(ter_J);
 
       //add player to player list in map
       mapForFive.addPlayer(p1);

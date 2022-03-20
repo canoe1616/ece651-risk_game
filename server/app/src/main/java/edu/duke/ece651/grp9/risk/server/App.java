@@ -13,6 +13,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 import edu.duke.ece651.grp9.risk.shared.*;
@@ -221,20 +222,24 @@ public class App {
 
   //boolean
   public static <objectInputStream> void main(String[] args) {
-    // BufferedReader inputSource = new BufferedReader(new InputStreamReader(System.in));
-    // int player_num = Integer.parseInt(inputSource.readLine());
-    // while(player_num<2 || player_num>5){
-    //   System.out.println("Must be 2-5. Please enter again");
-    //   player_num = Integer.parseInt(inputSource.readLine());
-    // }
+     System.out.println("Please input the number of players you want, and should be 2-5");
+     BufferedReader inputSource = new BufferedReader(new InputStreamReader(System.in));
+     int player_num = 0;
+     try {
+       player_num = Integer.parseInt(inputSource.readLine());
+       while (player_num < 2 || player_num > 5) {
+         System.out.println("Must be 2-5. Please enter again");
+         player_num = Integer.parseInt(inputSource.readLine());
+       }
+     }
+     catch(Exception e) {
+       System.out.println(e);
+       }
 
-    // MapFactory f = new MapFactory();
-    // Map m = f.makeMap(player_num);
-    MapFactory f = new MapFactory();
-  Map m = f.makeMapForFour();
-  int player_num = 4;
 
-    
+     MapFactory f = new MapFactory();
+     Map m = f.makeMap(player_num);
+
     App app = new App(m);
     ArrayList<Socket> socketList = new ArrayList<Socket>();
     ArrayList<String> playerList = new ArrayList<String>();
