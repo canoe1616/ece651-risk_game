@@ -86,4 +86,20 @@ public class PlayerTest {
       p1.addTerritory(ter);
       assertEquals(false, p1.isLose());
     }
+
+  @Test
+  void updatePlayerResource() {
+    Player player = new Player("blue");
+    player.updatePlayerResource();
+    assertEquals(500, player.getFoodQuantity());
+    assertEquals(500, player.getMoneyQuantity());
+    Territory ter1 = new Territory("NC");
+    Territory ter2 = new Territory("CA");
+    player.addTerritory(ter1);
+    player.addTerritory(ter2);
+    player.updatePlayerResource();
+    assertEquals(700, player.getFoodQuantity());
+    assertEquals(600, player.getMoneyQuantity());
+  }
+
 }

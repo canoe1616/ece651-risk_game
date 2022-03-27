@@ -16,6 +16,9 @@ public class Player implements Serializable {
   private HashSet<Territory> territoryList;
   private int totalUnit;
   private String loseStatus;
+  private Food food;
+  private Money money;
+  private int playerTechLevel;
 
   /**
    * Constructor to create a Player
@@ -27,6 +30,8 @@ public class Player implements Serializable {
     this.territoryList = new HashSet<Territory>();
     this.totalUnit = 30;
     this.loseStatus = "no act";
+    this.food = new Food(500);
+    this.money = new Money(500);
   }
 
   /**
@@ -139,4 +144,24 @@ public class Player implements Serializable {
     }
     return false;
   }
+
+  /**
+   * this method is to update player's resources
+   * each territory can produce a certain number of resources(food and money) each round
+   */
+  public void updatePlayerResource() {
+    for (Territory terr: territoryList) {
+      food.addResource(terr.produceFood().getQuantity());
+      money.addResource(terr.productMoney().getQuantity());
+    }
+  }
+
+  public int getFoodQuantity() {
+    return food.getQuantity();
+  }
+
+  public int getMoneyQuantity() {
+    return money.getQuantity();
+  }
+
 }
