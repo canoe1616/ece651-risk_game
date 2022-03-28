@@ -58,7 +58,7 @@ public class AttackAction implements Action {
     @Override
     //TODO alternate between highest level and lowest level for each Territory
     public void performAction() {
-        source.setUnits(source.getUnits(unitLevel) - attackUnits, unitLevel);
+        //source.setUnits(source.getUnits(unitLevel) - attackUnits, unitLevel);
         int defenderUnit = destination.getUnits(unitLevel);
         Player defender = destination.getOwner();
 

@@ -69,6 +69,8 @@ public class Battle {
     }
   }
 
+  //Attack AB = if A attacks B -> Battle(AB)
+
   /**
    * The method is to play the battles on each territory. On each territory, there might be multiple
    * players attack the same destination. The hashset ensures the order on each territory is random

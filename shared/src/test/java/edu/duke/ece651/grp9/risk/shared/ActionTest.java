@@ -85,6 +85,8 @@ public class ActionTest {
         assertEquals(t1.getUnit(), 4);
         assertEquals(t1.getUnits(0), 4);
 
+        assertEquals(t2.getUnits(0), 8);
+
         assertEquals(t3.getUnit(), 3);
         assertEquals(t3.getUnits(0), 3);
 
@@ -96,11 +98,21 @@ public class ActionTest {
         assertFalse(t4.mockIsValid());
         assertEquals(t4.getUnits(0), 3);
 
+        Map map = new Map();
+        map.addTerritory(t1);
+        map.addTerritory(t2);
+        map.addTerritory(t3);
+        map.addTerritory(t4);
+        map.addTerritory(t5);
+        map.addPlayer(p1);
+        map.addPlayer(p2);
 
-        assertEquals(t2.getUnits(0), 8);
-        a1.performAction();
+        Battle battle = new Battle(map);
+        battle.addAttackAction((AttackAction) a1);
+
+        battle.playBattlePhase();
+
         assertEquals(t2.getUnits(0), 1);
-        //TODO Unit class not yet incorporated into attack actions
     }
 }
 
