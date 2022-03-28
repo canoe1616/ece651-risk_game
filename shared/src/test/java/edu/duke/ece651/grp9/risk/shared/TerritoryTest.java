@@ -59,4 +59,59 @@ public class TerritoryTest {
     assertEquals(ter1.getUnit(), 4);
   }
 
+  @Test
+  public void test_moveUnits() {
+    Territory t1 = new Territory("Tar Valon");
+    t1.setUnits(3);
+    assertEquals(t1.getUnits(0), 3);
+    assertEquals(t1.getUnits(2), 0);
+
+    Territory t2 = new Territory("Andor");
+    t1.moveUnits(t2, 2, 0);
+
+    assertEquals(t1.getUnits(0), 1);
+    assertEquals(t2.getUnits(0), 2);
+  }
+
+  @Test
+  public void test_canUpgrade() {
+    Territory t1 = new Territory("Tar Valon");
+    Player player = new Player("red");
+    t1.setOwner(player);
+
+    Unit unit0 = new Level0Unit();
+    Unit unit2 = new Level2Unit();
+
+    String error1 = "Invalid upgrade: Must upgrade tech level before upgrading Unit level.";
+
+    assertEquals(error1, t1.canUpgradeUnits(0, 1, 1));
+
+    String error2 = "Invalid upgrade: You can only increase a Unit's level.";
+    assertEquals(error2, t1.canUpgradeUnits(0, 0, 1));
+
+
+    player.upgradeTechLevel();
+
+    assertEquals(null, t1.canUpgradeUnits(0, 1, 1));
+  }
+
+  @Test
+  public void test_upgradeUnits() {
+    Territory t1 = new Territory("Tar Valon");
+    t1.setUnits(3);
+    assertEquals(t1.getUnits(0), 3);
+
+    t1.upgradeUnits(0, 3, 2);
+    assertEquals(t1.getUnits(0), 1);
+    assertEquals(t1.getUnits(3), 2);
+  }
+
+  @Test
+  public void test_addLevel0Unit() {
+    Territory t1 = new Territory("Tar Valon");
+    assertEquals(t1.getUnits(0), 0);
+    t1.addUnit(0);
+    t1.addUnit(0);
+    assertEquals(t1.getUnits(0), 2);
+  }
 }
