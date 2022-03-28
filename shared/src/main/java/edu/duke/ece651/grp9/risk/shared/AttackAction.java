@@ -12,6 +12,7 @@ public class AttackAction implements Action {
     private int attackUnits;
     private final RuleChecker attackChecker;
     private boolean win; // for testing only
+    private int unitLevel;
 
     /*
      * Constructor to create an Attack
@@ -30,11 +31,26 @@ public class AttackAction implements Action {
         destination.syncUnits();
         this.attackChecker = new UnitsRuleChecker(new OwnerRuleChecker(new AttackRuleChecker(null)));
         this.win = false;  // default battle status as false
+        this.unitLevel = 0;
+    }
+
+    /*
+     * Constructor to create an Attack
+     * @param player is the Player performing the Action
+     * @param source is the Territory we start an attack
+     * @param destination is the Territory we are going to make an attack
+     * @param numUnits is the number of units we attack from source to destination
+     * @param moveChecker checks if an Attack  is valid
+     * @param unitLevel is the Unit level we are attacking with
+     */
+    public AttackAction(Player player, Territory source, Territory destination, int numUnits, int unitLevel) {
+        this(player, source, destination, numUnits);
+        this.unitLevel = unitLevel;
     }
 
     @Override
     public String canPerformAction() {
-        return attackChecker.checkAction(attacker, source, destination, attackUnits);
+        return attackChecker.checkAction(attacker, source, destination, attackUnits, unitLevel);
     }
 
     @Override
@@ -138,5 +154,4 @@ public class AttackAction implements Action {
     public void setAttackUnits(int units) {
         this.attackUnits = units;
     }
-
 }

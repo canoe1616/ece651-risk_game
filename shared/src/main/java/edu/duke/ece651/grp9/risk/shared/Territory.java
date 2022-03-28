@@ -26,6 +26,7 @@ public class Territory implements Serializable {
   public Territory(String name) {
     this.name = name;
     this.neighbors = new HashSet<Territory>();
+    //Add factory to create HashMap of units
     this.units = new HashMap<>();
     units.put(0, new Level0Unit());
     units.put(1, new Level1Unit());
@@ -191,6 +192,21 @@ public class Territory implements Serializable {
     destination.mockUnits += unitMovement;
   }
 
+  //EVOLUTION 2
+  /**
+   * Mock the Actions (Move and Attack). Updates mockUnits to ensure every Territory does not 0 or
+   * more units after Player executes all set of moves
+   *
+   * @param unitMovement number of units moving into destination Territory
+   */
+  public void mockActions(Territory destination, int unitMovement, int unitLevel) {
+    units.get(unitLevel).mockAction(-unitMovement);
+    //If an upgrade action these units are not available for another Territory
+    if (!this.equals(destination)) {
+      destination.units.get(unitLevel).mockAction(unitMovement);
+    }
+  }
+
   /**
    * Checks so that no Territory is left with negative units count before Actions executed
    *
@@ -198,6 +214,13 @@ public class Territory implements Serializable {
    */
   public boolean mockIsValid() {
     return mockUnits >= 0;
+    //TODO get this working for new Units map
+    /*for (Unit unit : units.values()) {
+      if (unit.getMockUnits() < 0) {
+        return false;
+      }
+    }
+    return true;*/
   }
 
   /**

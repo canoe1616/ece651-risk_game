@@ -13,7 +13,7 @@ public class MoveAction implements Action {
   private final Territory destination;
   private final int numUnits;
   private final RuleChecker moveChecker;
-
+  private int unitLevel;
 
   /**
    * Constructor to create a Move
@@ -30,6 +30,20 @@ public class MoveAction implements Action {
     source.syncUnits();
     destination.syncUnits();
     this.moveChecker = new UnitsRuleChecker(new OwnerRuleChecker(new MoveRuleChecker(null)));
+    this.unitLevel = 0;
+  }
+
+  /**
+   * Constructor to create a Move
+   * @param player is the Player performing the Action
+   * @param source is the Territory we are moving units from
+   * @param destination is the Territory we are moving units to
+   * @param numUnits is the number of units we are moving from source to destination
+   * @param unitLevel is the Unit level we are moving
+   */
+  public MoveAction(Player player, Territory source, Territory destination, int numUnits, int unitLevel) {
+    this(player, source, destination, numUnits);
+    this.unitLevel = unitLevel;
   }
 
   /**
@@ -47,7 +61,7 @@ public class MoveAction implements Action {
    * @return null if valid, if invalid a String describing error is returned
    */
   public String canPerformAction() {
-    return moveChecker.checkAction(player, source, destination, numUnits);
+    return moveChecker.checkAction(player, source, destination, numUnits, unitLevel);
   }
 
   /**
@@ -55,5 +69,6 @@ public class MoveAction implements Action {
    */
   public void performAction() {
     source.moveUnits(destination, numUnits);
+    source.moveUnits(destination, numUnits, unitLevel); //EVOLUTION 2
   }
 }

@@ -27,11 +27,12 @@ public class MoveRuleChecker extends RuleChecker {
    * @param player is the Player performing the Action
    * @param source is the Territory we are moving units from
    * @param destination is the Territory we are moving units to
-   * @param numUnits is the number of units we are moving from source to desination
+   * @param numUnits is the number of units we are moving from source to destination
+   * @param unitLevel is the Unit level we are moving
    * @return String description of error if invalid move, or null if okay
    */
   @Override
-  protected String checkMyRule(Player player, Territory source, Territory destination, int numUnits) {
+  protected String checkMyRule(Player player, Territory source, Territory destination, int numUnits, int unitLevel) {
     Queue<Territory> queue = new LinkedList<Territory>();
     HashSet<Territory> visited = new HashSet<Territory>();
     queue.add(source);

@@ -12,6 +12,7 @@ public class Unit implements Serializable {
 
   private String name;
   private int numUnits;
+  private int mockUnits;
   private int level;
   private int bonus;
   private int upgradeCost;
@@ -26,18 +27,28 @@ public class Unit implements Serializable {
   public Unit(String name, int level, int bonus, int upgradeCost) {
     this.name = name;
     this.numUnits = 0;
+    this.mockUnits = numUnits;
     this.level = level;
     this.bonus = bonus;
     this.upgradeCost = upgradeCost;
   }
 
   /**
-   * Getter for count of this Unit level
+   * Getter for numUnits of this Unit level
    *
-   * @return count for this Unit level
+   * @return numUnits for this Unit level
    */
   public int getNumUnits() {
     return numUnits;
+  }
+
+  /**
+   * Getter for mockUnits of this Unit level
+   *
+   * @return mockUnits for this Unit level
+   */
+  public int getMockUnits() {
+    return mockUnits;
   }
 
   /**
@@ -47,15 +58,33 @@ public class Unit implements Serializable {
    */
   public void setNumUnits(int numUnits) {
     this.numUnits = numUnits;
+    syncUnits();
   }
 
   /**
-   * Add count to this Unit level
+   * Sets mockUnits to unit so that they are synced for next round of Action's check
+   */
+  public void syncUnits() {
+    mockUnits = numUnits;
+  }
+
+  /**
+   * Add newUnits to this Unit level
    *
    * @param newUnits int for number of Unit's being added
    */
   public void addUnits(int newUnits) {
     numUnits += newUnits;
+    syncUnits();
+  }
+
+  /**
+   * Update mockUnits to be used as part of RuleChecker
+   *
+   * @param movedUnits int for number of Unit's being relocated
+   */
+  public void mockAction(int movedUnits) {
+    mockUnits += movedUnits;
   }
 
   /**
