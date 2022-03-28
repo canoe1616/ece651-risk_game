@@ -27,11 +27,11 @@ public class AttackAction implements Action {
         this.destination = destination;
         this.attackUnits = numUnits;
         this.attacker = player;
-        source.syncUnits();
-        destination.syncUnits();
         this.attackChecker = new UnitsRuleChecker(new OwnerRuleChecker(new AttackRuleChecker(null)));
         this.win = false;  // default battle status as false
         this.unitLevel = 0;
+        source.syncUnits();
+        destination.syncUnits();
     }
 
     /*
@@ -46,6 +46,8 @@ public class AttackAction implements Action {
     public AttackAction(Player player, Territory source, Territory destination, int numUnits, int unitLevel) {
         this(player, source, destination, numUnits);
         this.unitLevel = unitLevel;
+        source.syncUnits(unitLevel);
+        destination.syncUnits(unitLevel);
     }
 
     @Override

@@ -27,10 +27,10 @@ public class MoveAction implements Action {
     this.source = source;
     this.destination = destination;
     this.numUnits = numUnits;
-    source.syncUnits();
-    destination.syncUnits();
     this.moveChecker = new UnitsRuleChecker(new OwnerRuleChecker(new MoveRuleChecker(null)));
     this.unitLevel = 0;
+    source.syncUnits();
+    destination.syncUnits();
   }
 
   /**
@@ -44,6 +44,8 @@ public class MoveAction implements Action {
   public MoveAction(Player player, Territory source, Territory destination, int numUnits, int unitLevel) {
     this(player, source, destination, numUnits);
     this.unitLevel = unitLevel;
+    source.syncUnits(unitLevel);
+    destination.syncUnits(unitLevel);
   }
 
   /**

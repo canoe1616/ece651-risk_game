@@ -71,7 +71,10 @@ public class ActionRuleChecker {
       try {
         numUnits = Integer.parseInt(words[i]);
       } catch (NumberFormatException e) {
-        return "The input is invalid: input must only be numbers.";
+        return "The input is invalid: Input must only be numbers.";
+      }
+      if (numUnits < 0) {
+        return "The input is invalid: Territory cannot have negative units.";
       }
       sum += numUnits;
     }

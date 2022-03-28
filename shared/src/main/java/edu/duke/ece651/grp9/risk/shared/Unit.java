@@ -34,6 +34,15 @@ public class Unit implements Serializable {
   }
 
   /**
+   * Getter for name of this Unit level
+   *
+   * @return name of this Unit level
+   */
+  public String getName() {
+    return name;
+  }
+
+  /**
    * Getter for numUnits of this Unit level
    *
    * @return numUnits for this Unit level

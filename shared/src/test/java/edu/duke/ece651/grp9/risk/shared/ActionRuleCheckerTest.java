@@ -46,7 +46,7 @@ public class ActionRuleCheckerTest {
     a.addTerritory(ter_3);
     assertNull(tmp.checkUnit("15 5 10",a));
 
-    String error1 = "The input is invalid: input must only be numbers.";
+    String error1 = "The input is invalid: Input must only be numbers.";
     String error2 = "The input is invalid: Must enter 3 separate numbers.";
     String error3 = "This input is invalid: Sum of units must equal 30.";
 

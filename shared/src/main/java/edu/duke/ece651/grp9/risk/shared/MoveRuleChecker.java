@@ -41,6 +41,7 @@ public class MoveRuleChecker extends RuleChecker {
       Territory front = queue.poll();
       if (front.equals(destination)) {
         return null;
+        //TODO String value of shortest path?
       }
       for (Territory t : front.getNeighbors()) {
         if (t.getOwner().equals(player) && !visited.contains(t)) {

@@ -123,10 +123,10 @@ public class Territory implements Serializable {
   /**
    * Setter for Level 0 units
    *
-   * @param count int number of Unit's of level 0
+   * @param numUnits int number of Unit's of level 0
    */
-  public void setUnits(int count) {
-    units.get(0).setNumUnits(count);
+  public void setUnits(int numUnits) {
+    units.get(0).setNumUnits(numUnits);
   }
 
   //EVOLUTION 2
@@ -213,14 +213,13 @@ public class Territory implements Serializable {
    * @return boolean value if mockUnits is at least 0
    */
   public boolean mockIsValid() {
-    return mockUnits >= 0;
-    //TODO get this working for new Units map
-    /*for (Unit unit : units.values()) {
+    //return mockUnits >= 0;
+    for (Unit unit : units.values()) {
       if (unit.getMockUnits() < 0) {
         return false;
       }
     }
-    return true;*/
+    return true;
   }
 
   /**
@@ -228,6 +227,14 @@ public class Territory implements Serializable {
    */
   public void syncUnits() {
     mockUnits = unit;
+  }
+
+  /**
+   * Sets this level Unit's mockUnits equal to this level Unit's units so
+   * that they are synced for next round of Action's check
+   */
+  public void syncUnits(int level) {
+    units.get(level).syncUnits();
   }
 
   /**
