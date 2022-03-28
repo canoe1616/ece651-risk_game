@@ -59,4 +59,17 @@ public class TerritoryTest {
     assertEquals(ter1.getUnit(), 4);
   }
 
+  @Test
+  void produceFood() {
+    Territory ter = new Territory("red");
+    assertEquals(100, ter.produceFood().getQuantity());
+  }
+
+  @Test
+  void productMoney() {
+    Territory ter = new Territory("red");
+    assertEquals(50, ter.productMoney().getQuantity());
+  }
+
+
 }
