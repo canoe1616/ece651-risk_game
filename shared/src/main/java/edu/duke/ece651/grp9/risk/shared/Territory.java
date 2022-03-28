@@ -224,7 +224,6 @@ public class Territory implements Serializable {
    */
   public boolean mockIsValid() {
     for (Unit unit : units.values()) {
-      System.out.println(unit.getName() + ": " + unit.getMockUnits());
       if (unit.getMockUnits() < 0) {
         return false;
       }
