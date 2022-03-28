@@ -121,12 +121,22 @@ public class Territory implements Serializable {
   }
 
   /**
-   * Setter for Level 0 units
+   * Setter for Level 0 Units
    *
    * @param numUnits int number of Unit's of level 0
    */
   public void setUnits(int numUnits) {
     units.get(0).setNumUnits(numUnits);
+  }
+
+  /**
+   * Setter for all level of Units
+   *
+   * @param numUnits int number of Unit's of level 0
+   * @param level int Unit level
+   */
+  public void setUnits(int numUnits, int level) {
+    units.get(level).setNumUnits(numUnits);
   }
 
   //EVOLUTION 2
@@ -202,7 +212,7 @@ public class Territory implements Serializable {
   public void mockActions(Territory destination, int unitMovement, int unitLevel) {
     units.get(unitLevel).mockAction(-unitMovement);
     //If an upgrade action these units are not available for another Territory
-    if (!this.equals(destination)) {
+    if (!this.equals(destination)) {// && !destination.getOwner().equals(owner)) {
       destination.units.get(unitLevel).mockAction(unitMovement);
     }
   }
@@ -213,8 +223,8 @@ public class Territory implements Serializable {
    * @return boolean value if mockUnits is at least 0
    */
   public boolean mockIsValid() {
-    //return mockUnits >= 0;
     for (Unit unit : units.values()) {
+      System.out.println(unit.getName() + ": " + unit.getMockUnits());
       if (unit.getMockUnits() < 0) {
         return false;
       }

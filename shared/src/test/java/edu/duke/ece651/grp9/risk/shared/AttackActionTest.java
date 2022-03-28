@@ -14,14 +14,14 @@ class AttackActionTest {
         Territory t2 = new Territory("CA");
         t1.setOwner(p1);
         t2.setOwner(p2);
-        t1.setUnit(10);
-        t2.setUnit(0);
+        t1.setUnits(10);
+        t2.setUnits(0);
         // not neighbors
-        AttackAction att = new AttackAction(p1, t1, t2, 6);
+        AttackAction att = new AttackAction(p1, t1, t2, 6, 0);
         String err = att.canPerformAction();
         assertNotEquals(null, err);
         // units out of bound
-        AttackAction att2 = new AttackAction(p1, t1, t2, 100);
+        AttackAction att2 = new AttackAction(p1, t1, t2, 100, 0);
         err = att2.canPerformAction();
         assertNotEquals(null, err);
     }
@@ -36,9 +36,9 @@ class AttackActionTest {
         t1.addNeighbors(t2);
         t1.setOwner(p1);
         t2.setOwner(p2);
-        t1.setUnit(10);
-        t2.setUnit(0);
-        AttackAction att = new AttackAction(p1, t1, t2, 6);
+        t1.setUnits(10);
+        t2.setUnits(0);
+        AttackAction att = new AttackAction(p1, t1, t2, 6, 0);
         String err = att.canPerformAction();
         assertEquals(null, err);
     }
@@ -68,12 +68,14 @@ class AttackActionTest {
         Territory t2 = new Territory("CA");
         t1.setOwner(p1);
         t2.setOwner(p2);
-        t1.setUnit(10);
-        t2.setUnit(0);
-        AttackAction att = new AttackAction(p1, t1, t2, 6);
+        t1.setUnits(10, 3);
+        t2.setUnits(0, 3);
+        AttackAction att = new AttackAction(p1, t1, t2, 6, 3);
         att.performAction();
         assertEquals(p1, t2.getOwner());
-        assertEquals(6, t2.getUnit());
+        assertEquals(6, t2.getUnits(3));
+        assertEquals(0, t2.getUnits(0));
+        assertEquals(4, t1.getUnits(3));
     }
 
 
@@ -83,12 +85,24 @@ class AttackActionTest {
         Player p2 = new Player("blue");
         Territory t1 = new Territory("NC");
         Territory t2 = new Territory("CA");
+        t1.addNeighbors(t2);
         t1.setOwner(p1);
         t2.setOwner(p2);
-        t1.setUnit(10);
-        t2.setUnit(1);
-        AttackAction att = new AttackAction(p1, t1, t2, 0);
-        att.performAction();
-        assertEquals(p2, t2.getOwner());
+        t1.setUnits(10);
+        t2.setUnits(1);
+        AttackAction att1 = new AttackAction(p1, t1, t2, 10, 0);
+        AttackAction att2 = new AttackAction(p2, t2, t1, 1, 0);
+
+        assertNull(att1.canPerformAction());
+        assertNull(att2.canPerformAction());
+
+        att1.performAction();
+        att2.performAction();
+        assertEquals(p2, t1.getOwner());
+        assertEquals(t1.getUnits(0), 1);
+        assertEquals(p1, t2.getOwner());
+
+        //TODO failing because the single unit in t2 is staying to defend
+        assertEquals(t2.getUnits(0), 10);
     }
 }

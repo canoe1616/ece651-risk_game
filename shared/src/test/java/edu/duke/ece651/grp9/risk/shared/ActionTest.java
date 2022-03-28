@@ -15,12 +15,14 @@ public class ActionTest {
         t1.setOwner(p1);
         t1.setUnit(5);
         t1.setUnits(5);
+        assertEquals(t1.getUnits(0), 5);
 
         Territory t2 = new Territory("Tar Valon");
         p1.addTerritory(t2);
         t2.setOwner(p1);
         t2.setUnit(0);
         t2.addNeighbors(t1);
+        assertEquals(t2.getUnits(0), 0);
 
         Territory t3 = new Territory("Falme");
         p1.addTerritory(t3);
@@ -28,6 +30,7 @@ public class ActionTest {
         t3.setUnit(10);
         t3.setUnits(10);
         t3.addNeighbors(t1);
+        assertEquals(t3.getUnits(0), 10);
 
         Player p2 = new Player("green");
         Territory t4 = new Territory("Andor");
@@ -36,6 +39,7 @@ public class ActionTest {
         t4.setUnit(3);
         t4.setUnits(3);
         t2.addNeighbors(t4);
+        assertEquals(t4.getUnits(0), 3);
 
         Territory t5 = new Territory("Tear");
         p2.addTerritory(t5);
@@ -63,7 +67,7 @@ public class ActionTest {
         for (Action action : actions) {
             assertEquals(action.canPerformAction(), null);
         }
-        a1.canPerformAction();
+        assertEquals(a1.canPerformAction(), null);
         //t1 = 4
         //t2 = 1
         //t3 = 3
@@ -84,11 +88,19 @@ public class ActionTest {
         assertEquals(t3.getUnit(), 3);
         assertEquals(t3.getUnits(0), 3);
 
-        Action m4 = new MoveAction(p2, t4, t5, 5);
+
+        Action m4 = new MoveAction(p2, t4, t5, 10, 0);
+        assertEquals(t4.getUnits(0), 3);
 
         assertEquals(m4.canPerformAction(), null);
+        assertFalse(t4.mockIsValid());
+        assertEquals(t4.getUnits(0), 3);
+
+
+        assertEquals(t2.getUnits(0), 8);
+        a1.performAction();
         assertEquals(t2.getUnits(0), 1);
-        assertFalse(t4.mockIsValid()); //TODO Unit class not yet incorporated into attack actions
+        //TODO Unit class not yet incorporated into attack actions
     }
 }
 
