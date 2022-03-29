@@ -15,14 +15,13 @@ import edu.duke.ece651.grp9.risk.shared.Map;
 public class App {
 
   private static HashSet<String> remainingColors;
-<<<<<<< HEAD
   private static HashMap<String, String> userPassPairs;
-=======
+
   private static ArrayList<Socket> socketList;
   private static ArrayList<String> playerList;
   private static ArrayList<ObjectInputStream> InputList;
   private static ArrayList<ObjectOutputStream> OutputList;
->>>>>>> c5bbf79d6d272ebf7b5b296d2c6c94febed4fe07
+
 
   public App(Map m) {
     remainingColors = new HashSet<>();

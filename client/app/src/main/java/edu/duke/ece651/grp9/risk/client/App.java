@@ -185,7 +185,6 @@ public class App extends Application{
     }
 
 
-<<<<<<< HEAD
 
     /**
      * to record each player's username and password
@@ -223,8 +222,7 @@ public class App extends Application{
     }
 
 
-=======
->>>>>>> c5bbf79d6d272ebf7b5b296d2c6c94febed4fe07
+
   public static void main(String[] args) {
 
     BufferedReader inputSource = new BufferedReader(new InputStreamReader(System.in));
