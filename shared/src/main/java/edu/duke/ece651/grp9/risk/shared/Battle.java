@@ -110,27 +110,6 @@ public class Battle {
     }
   }
 
-  private Unit makeUnit(int level, int num) {
-    Unit unit = null;
-    if (level == 0) {
-      unit = new Level0Unit();
-    } else if (level == 1) {
-      unit = new Level1Unit();
-    } else if (level == 2) {
-      unit = new Level2Unit();
-    } else if (level == 3) {
-      unit = new Level3Unit();
-    } else if (level == 4) {
-      unit = new Level4Unit();
-    } else if (level == 5) {
-      unit = new Level5Unit();
-    } else if (level == 6) {
-      unit = new Level6Unit();
-    }
-    unit.setNumUnits(num);
-    return unit;
-  }
-
   /**
    * convert the attackAction to Unit hashmap
    * @param attacks
@@ -141,7 +120,11 @@ public class Battle {
     for (AttackAction att: attacks) {
       int level = att.getUnitLevel();
       int attackUnitNum = att.getAttackUnits();
-      allAttacks.put(att.getUnitLevel(), makeUnit(level, attackUnitNum));
+      Territory terr = att.getSource();
+      Unit unit = terr.getUnitClass(level);
+      Unit unitAttack = new Unit(unit);
+      unitAttack.setNumUnits(attackUnitNum);
+      allAttacks.put(level, unitAttack);
     }
     return allAttacks;
   }
@@ -238,16 +221,19 @@ public class Battle {
     // check the winner of the game
     // if the attacker make a success attack, reset owner and units
     if (attackerUnitSum > 0) {
+      // reset territory owner, unit info
       destination.setOwner(attacker);
       for (Integer level: attackerUnits.keySet()) {
        destination.setUnits(attackerUnits.get(level).getNumUnits(), level);
       }
+      destination.setUnit(attackerUnitSum);
       attacker.addTerritory(destination);
       defender.removeTerritory(destination);
     } else {
       for (Integer level: defenderUnits.keySet()) {
         destination.setUnits(defenderUnits.get(level).getNumUnits(), level);
       }
+      destination.setUnit(defenderUnitSum);
     }
   }
 

@@ -154,11 +154,58 @@ class BattleTest {
         int lowestLevel = battle.getLowestLevelUnit(unitHashMap).getLevel();
         assertEquals(1, lowestLevel);
         assertEquals(5, highestLevel);
-
     }
 
     @Test
-    void getAllUnits() {
+    void BattleBasicCases() {
+        Map map = new Map();
+        Player p1 = new Player("red");
+        Player p2 = new Player("blue");
+        Player p3 = new Player("green");
+        Territory ter1 = new Territory("NC");
+        ter1.setUnits(10);
+        Territory ter2 = new Territory("CA");
+        ter2.setUnits(10);
+        Territory ter3 = new Territory("WA");
+        ter3.setUnits(0);
+        Territory ter4 = new Territory("MI");
+        ter4.setUnits(10);
+
+        ter1.setOwner(p1);
+        ter2.setOwner(p1);
+        ter3.setOwner(p2);
+        ter4.setOwner(p3);
+        map.addTerritory(ter1);
+        map.addTerritory(ter2);
+        map.addTerritory(ter3);
+        map.addTerritory(ter4);
+        map.addPlayer(p1);
+        map.addPlayer(p2);
+        map.addPlayer(p3);
+
+
+        AttackAction att1 = new AttackAction(p1,ter1, ter3, 5, 0);
+        AttackAction att2 = new AttackAction(p1,ter2, ter3, 10, 0);
+        AttackAction att3 = new AttackAction(p1,ter1, ter3, 3, 1);
+        Battle battle = new Battle(map);
+
+        assertEquals(p2, ter3.getOwner());
+
+        battle.addAttackAction(att1);
+        battle.addAttackAction(att2);
+        battle.addAttackAction(att3);
+        battle.playBattlePhase();
+
+        assertEquals(p1, ter3.getOwner());
+        assertEquals(18, ter3.getUnit());
+        assertEquals(15, ter3.getUnits(0));
+        assertEquals(3, ter3.getUnits(1));
+
+        AttackAction att4 = new AttackAction(p3, ter4, ter3,0, 0);
+        Battle battle1 = new Battle(map);
+        battle1.addAttackAction(att4);
+        battle1.playBattlePhase();
+        assertEquals(p1, ter3.getOwner());
 
     }
 }

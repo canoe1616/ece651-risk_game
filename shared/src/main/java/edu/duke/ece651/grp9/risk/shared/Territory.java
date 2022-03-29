@@ -142,6 +142,10 @@ public class Territory implements Serializable {
     units.get(level).setNumUnits(numUnits);
   }
 
+  public Unit getUnitClass(int level) {
+    return units.get(level);
+  }
+
   //EVOLUTION 2
   /**
    * Move Units from this Territory to destination Territory

@@ -56,7 +56,11 @@ public class MapTextView {
                     "----------------------------------\n";
             for (String terrName : getSortedTerr(p.getTerritoryList())) {
                 Territory ter = toDisplay.findTerritory(terrName);
-                ans += ter.getUnit() + " units in " + terrName + "(next to: ";
+                for (int i = 0; i <= 6; i++) {
+                    ans += ter.getUnits(i) + " level" + i + " units, ";
+                }
+                ans = ans.substring(0, ans.length() - 2);
+                ans += " in " + terrName + "(next to: ";
                 for (String s : getSortedTerr(ter.getNeighbors())) {
                     ans += s + ", ";
                 }

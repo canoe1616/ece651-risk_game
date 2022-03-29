@@ -14,7 +14,17 @@ public class Unit implements Serializable {
   private int numUnits;
   private int mockUnits;
   private int level;
+
+  public int getBonus() {
+    return bonus;
+  }
+
   private int bonus;
+
+  public int getUpgradeCost() {
+    return upgradeCost;
+  }
+
   private int upgradeCost;
 
   /**
@@ -31,6 +41,15 @@ public class Unit implements Serializable {
     this.level = level;
     this.bonus = bonus;
     this.upgradeCost = upgradeCost;
+  }
+
+  public Unit(Unit unit) {
+    this.name = unit.getName();
+    this.numUnits = unit.getNumUnits();
+    this.mockUnits = unit.getMockUnits();
+    this.level = unit.getLevel();
+    this.bonus = unit.getBonus();
+    this.upgradeCost = unit.getUpgradeCost();
   }
 
   /**
