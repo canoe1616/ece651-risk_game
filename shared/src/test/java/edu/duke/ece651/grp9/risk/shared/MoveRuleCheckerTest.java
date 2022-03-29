@@ -42,12 +42,12 @@ public class MoveRuleCheckerTest {
 
     t4.addNeighbors(t5);
 
-    assertEquals(ruleChecker.checkMyRule(p1, t1, t2, 4), error1);
-    assertEquals(ruleChecker.checkMyRule(p1, t1, t3, 4), null);
-    assertEquals(ruleChecker.checkMyRule(p1, t1, t5, 4), error2);
+    assertEquals(ruleChecker.checkMyRule(p1, t1, t2, 4, 0), error1);
+    assertEquals(ruleChecker.checkMyRule(p1, t1, t3, 4, 0), null);
+    assertEquals(ruleChecker.checkMyRule(p1, t1, t5, 4, 0), error2);
 
     t4.addNeighbors(t3);
-    assertEquals(ruleChecker.checkMyRule(p1, t1, t5, 4), null);
+    assertEquals(ruleChecker.checkMyRule(p1, t1, t5, 4, 0), null);
   }
 }
 

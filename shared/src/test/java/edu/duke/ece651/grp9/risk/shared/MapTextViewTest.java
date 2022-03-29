@@ -2,6 +2,9 @@ package edu.duke.ece651.grp9.risk.shared;
 
 import org.junit.jupiter.api.Test;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class MapTextViewTest {
@@ -33,29 +36,42 @@ class MapTextViewTest {
         assertEquals(exp, view.displayGameState(map.findPlayer("red")));
     }
 
-//    @Test
-//    void test_displayPlayerLose() {
-//        Player p1 = new Player("blue");
-//        Territory ter = new Territory("NC");
-//        Map map = new Map();
-//        map.addPlayer(p1);
-//        MapTextView view = new MapTextView(map);
-//        String exp = "Player blue, you lose the game!"
-//                + " What would you like to do?\n" +
-//                " (Q)uit\n" + " (C)ontinue watching game\n";
-//        assertEquals(exp, view.displayGameState(p1));
-//
-//    }
-//
-//    @Test
-//    void test_displayGameOver() {
-//        Player p1 = new Player("blue");
-//        Territory ter = new Territory("NC");
-//        Map map = new Map();
-//        map.addPlayer(p1);
-//        MapTextView view = new MapTextView(map);
-//        String exp ="Game Over! Player blue wins the game!";
-//        assertEquals(exp, view.displayGameState(p1));
-//
-//    }
+    @Test
+    void displayWinInfo() {
+        BufferedReader inputReader = new BufferedReader(new InputStreamReader(System.in));
+        Player p1 = new Player("blue");
+        Territory ter = new Territory("NC");
+        Map map = new Map();
+        map.addPlayer(p1);
+        map.addTerritory(ter);
+        p1.addTerritory(ter);
+        ter.setUnit(15);
+        MapTextView view = new MapTextView(map);
+        String exp = "end_game = win\n" +
+                "blue Player:\n" +
+                "----------------------------------\n" +
+                "15 units in NC(next to)\n" +
+                "\n" +
+                "\n" +
+                "Congratulations! You win the game!\n";
+        assertEquals(exp, view.sendInfoWinner("blue", map));
+
+    }
+
+    @Test
+    void displayGameOverInfo() {
+        BufferedReader inputReader = new BufferedReader(new InputStreamReader(System.in));
+        Player p1 = new Player("blue");
+        Territory ter = new Territory("NC");
+        Map map = new Map();
+        map.addPlayer(p1);
+        MapTextView view = new MapTextView(map);
+        String exp = "end_game = game over\n" +
+                "blue Player:\n" +
+                "----------------------------------\n" +
+                "\n" +
+                "\n" +
+                "The game is over now.\n";
+        assertEquals(exp, view.sendInfoLoser("blue", map));
+    }
 }

@@ -118,13 +118,16 @@ class BattleTest {
         Player playerRed = findPlayer(map, "red");
         Player playerBlue = findPlayer(map, "blue");
         Territory srcA = findTerritory(map, "A");
-        srcA.setUnit(5);
+        srcA.setUnits(5);
+        assertEquals(srcA.getUnits(0), 5);
         srcA.setOwner(playerRed);
         Territory dstD = findTerritory(map, "D");
-        dstD.setUnit(10);
+        dstD.setUnits(10);
+        assertEquals(dstD.getUnits(0), 10);
         srcA.setOwner(playerBlue);
-        AttackAction attack0 = new AttackAction(playerRed, srcA, dstD, srcA.getUnit());
-        AttackAction attack1 = new AttackAction(playerBlue, dstD, srcA, dstD.getUnit());
+
+        AttackAction attack0 = new AttackAction(playerRed, srcA, dstD, 5, 0);
+        AttackAction attack1 = new AttackAction(playerBlue, dstD, srcA, 10, 0);
 
         Battle battle = new Battle(map);
         battle.addAttackAction(attack0);
@@ -133,9 +136,9 @@ class BattleTest {
 
         battle.playBattlePhase();
         assertEquals("blue", srcA.getOwner().getName());
-        assertEquals(10, srcA.getUnit());
+        assertEquals(10, srcA.getUnits(0));
         assertEquals("red", dstD.getOwner().getName());
-        assertEquals(5, dstD.getUnit());
+        assertEquals(5, dstD.getUnits(0));
     }
 
 }

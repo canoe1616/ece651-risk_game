@@ -4,8 +4,9 @@
 package edu.duke.ece651.grp9.risk.client;
 
 import edu.duke.ece651.grp9.risk.shared.Map;
+import edu.duke.ece651.grp9.risk.shared.MapTextView;
 import edu.duke.ece651.grp9.risk.shared.Player;
-import org.checkerframework.checker.units.qual.A;
+import edu.duke.ece651.grp9.risk.shared.Territory;
 import org.junit.jupiter.api.Test;
 
 import java.io.*;
@@ -23,15 +24,14 @@ class AppTest {
         Player p = new Player("red");
         m.addPlayer(p);
         assertEquals(p, app.findPlayer("red", m));
-        assertEquals(null, app.findPlayer("green",m));
+        assertEquals(null, app.findPlayer("green", m));
     }
 
 
     @Test
     void selectColor() throws IOException, InterruptedException {
-        StringReader stringReader = new StringReader("black\nred\nsss");
+        StringReader stringReader = new StringReader("black\nred\n\n");
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        PrintStream out = new PrintStream(bytes, true);
         BufferedReader inputReader = new BufferedReader(stringReader);
         App app = new App(inputReader);
         Thread th = new Thread() {
@@ -47,10 +47,10 @@ class AppTest {
                     String sever2client = "false";
                     objectOutputStream.writeObject(sever2client);
                     outputStream.flush();
-                    sever2client = "true";
+                    sever2client = "false";
                     objectOutputStream.writeObject(sever2client);
                     outputStream.flush();
-                    sever2client = "false";
+                    sever2client = "true";
                     objectOutputStream.writeObject(sever2client);
                     outputStream.flush();
                     ss.close();
@@ -66,16 +66,14 @@ class AppTest {
         ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
         InputStream inputStream = socket.getInputStream();
         ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
-        app.selectColor(inputReader, objectInputStream, objectOutputStream);
-        String exp = "";
-        assertEquals(exp, bytes.toString());
+        String res = app.selectColor(inputReader, objectInputStream, objectOutputStream);
+        assertEquals("red", res);
     }
 
     @Test
     void selectUnit() throws InterruptedException, IOException {
-        StringReader stringReader = new StringReader("0 0 -1\n0 0 0  \n10 15 5");
+        StringReader stringReader = new StringReader("0 0 -1\n10 15 5\n\n");
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        PrintStream out = new PrintStream(bytes, true);
         BufferedReader inputReader = new BufferedReader(stringReader);
         App app = new App(inputReader);
         Thread th = new Thread() {
@@ -110,9 +108,8 @@ class AppTest {
         ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
         InputStream inputStream = socket.getInputStream();
         ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
-        app.selectUnit(inputReader, objectInputStream, objectOutputStream);
-        String exp = "";
-        assertEquals(exp, bytes.toString());
+        String res = app.selectUnit(inputReader, objectInputStream, objectOutputStream);
+        assertEquals("10 15 5", res);
     }
 
     @Test
@@ -130,4 +127,22 @@ class AppTest {
         assertEquals(null, app.getActionString("A"));
         assertEquals("the input character is invalid, please enter again!", app.getLoseActionString("P"));
     }
+
+    @Test
+    void selectStateAfterLose() throws IOException {
+        // test quit
+        StringReader stringReader = new StringReader("h\nQ\n");
+        BufferedReader inputReader = new BufferedReader(stringReader);
+        App app = new App(inputReader);
+        String color = "blue";
+        String action = app.selectStateAfterLose(inputReader, color);
+        assertEquals("quit", action);
+        // test continue
+        StringReader stringReader2 = new StringReader("h\nc\n");
+        BufferedReader inputReader2 = new BufferedReader(stringReader2);
+        App app2 = new App(inputReader);
+        String action2 = app.selectStateAfterLose(inputReader2, color);
+        assertEquals("continue", action2);
+    }
+
 }

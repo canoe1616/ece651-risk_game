@@ -1,7 +1,6 @@
 package edu.duke.ece651.grp9.risk.shared;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.HashSet;
 
@@ -46,7 +45,12 @@ public class TerritoryTest {
   public void test_equals(){
     Territory ter1 = new Territory("Test1");
     String a = "Hello";
+    Territory ter2 = new Territory("Hello");
+
     assertFalse(ter1.equals(a));
+
+    Territory ter3 = new Territory("test1");
+    assertTrue(ter1.equals(ter3));
   }
 
   @Test
@@ -59,4 +63,91 @@ public class TerritoryTest {
     assertEquals(ter1.getUnit(), 4);
   }
 
+  @Test
+  public void test_moveUnits() {
+    Territory t1 = new Territory("Tar Valon");
+    t1.setUnits(3);
+    assertEquals(t1.getUnits(0), 3);
+    assertEquals(t1.getUnits(2), 0);
+
+    Territory t2 = new Territory("Andor");
+    t1.moveUnits(t2, 2, 0);
+
+    assertEquals(t1.getUnits(0), 1);
+    assertEquals(t2.getUnits(0), 2);
+  }
+
+  @Test
+  public void test_canUpgrade() {
+    Territory t1 = new Territory("Tar Valon");
+    Player player = new Player("red");
+    t1.setOwner(player);
+
+    Unit unit0 = new Level0Unit();
+    Unit unit2 = new Level2Unit();
+
+    String error1 = "Invalid upgrade: Must upgrade tech level before upgrading Unit level.";
+
+    assertEquals(error1, t1.canUpgradeUnits(0, 1, 1));
+
+    String error2 = "Invalid upgrade: You can only increase a Unit's level.";
+    assertEquals(error2, t1.canUpgradeUnits(0, 0, 1));
+
+
+    player.upgradeTechLevel();
+
+    assertEquals(null, t1.canUpgradeUnits(0, 1, 1));
+  }
+
+  @Test
+  public void test_upgradeUnits() {
+    Territory t1 = new Territory("Tar Valon");
+    t1.setUnits(3);
+    assertEquals(t1.getUnits(0), 3);
+
+    t1.upgradeUnits(0, 3, 2);
+    assertEquals(t1.getUnits(0), 1);
+    assertEquals(t1.getUnits(3), 2);
+  }
+
+  @Test
+  public void test_addLevel0Unit() {
+    Territory t1 = new Territory("Tar Valon");
+    assertEquals(t1.getUnits(0), 0);
+    t1.addUnit(0);
+    t1.addUnit(0);
+    assertEquals(t1.getUnits(0), 2);
+  }
+
+  @Test
+  public void test_mockAction() {
+    Territory t1 = new Territory("Tar Valon");
+    t1.setUnits(10);
+    Territory t2 = new Territory("Two Rivers");
+    t2.setUnits(4);
+
+    assertEquals(t1.getUnits(0), 10);
+    assertEquals(t2.getUnits(0), 4);
+
+    t1.mockActions(t2, 1, 0);
+
+    assertTrue(t1.mockIsValid());
+
+    t1.mockActions(t2, 10, 0);
+    assertFalse(t1.mockIsValid());
+
+    //Mock units should reset when this occurs
+    //assertTrue(t1.mockIsValid());
+  }
+
+  void produceFood() {
+    Territory ter = new Territory("red");
+    assertEquals(100, ter.produceFood().getQuantity());
+  }
+
+  @Test
+  void productMoney() {
+    Territory ter = new Territory("red");
+    assertEquals(50, ter.productMoney().getQuantity());
+  }
 }
