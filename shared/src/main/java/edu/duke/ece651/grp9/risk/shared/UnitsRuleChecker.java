@@ -36,7 +36,6 @@ public class UnitsRuleChecker extends RuleChecker {
     source.mockActions(destination, numUnits);
 
     source.mockActions(destination, numUnits, unitLevel); //EVOLUTION 2
-    //TODO perform mock actions for each unitLevel?
     return null;
   }
 }

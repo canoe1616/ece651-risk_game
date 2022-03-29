@@ -52,7 +52,8 @@ public abstract class RuleChecker {
    * @param unitLevel is the Unit level we are performing action on
    * @return String description of error if invalid move, or null if okay
    */
-  protected abstract String checkMyRule(Player player, Territory source, Territory destination, int numUnits, int unitLevel);
+  protected abstract String checkMyRule(Player player, Territory source, Territory destination,
+      int numUnits, int unitLevel);
 }
 
 
