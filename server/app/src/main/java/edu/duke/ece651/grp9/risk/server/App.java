@@ -149,9 +149,9 @@ public class App {
     }
 
     if (isMove) {
-      return new MoveAction(player, source, destination, numUnits);
+      return new MoveAction(player, source, destination, numUnits, 0);
     } else {
-      return new AttackAction(player, source, destination, numUnits);
+      return new AttackAction(player, source, destination, numUnits, 0);
     }
   }
 

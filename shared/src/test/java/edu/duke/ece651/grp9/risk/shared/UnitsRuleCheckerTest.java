@@ -21,10 +21,10 @@ public class UnitsRuleCheckerTest {
 
     RuleChecker ruleChecker = new UnitsRuleChecker(null);
 
-    assertEquals(ruleChecker.checkMyRule(p1, t1, t2, 4), null);
-    assertEquals(ruleChecker.checkMyRule(p1, t2, t1, 8), null);
+    assertEquals(ruleChecker.checkMyRule(p1, t1, t2, 4,0), null);
+    assertEquals(ruleChecker.checkMyRule(p1, t2, t1, 8, 0), null);
 
-    assertEquals(ruleChecker.checkMyRule(p1, t2, t1, -3), error1);
+    assertEquals(ruleChecker.checkMyRule(p1, t2, t1, -3, 0), error1);
 
     assertFalse(t2.mockIsValid());
   }

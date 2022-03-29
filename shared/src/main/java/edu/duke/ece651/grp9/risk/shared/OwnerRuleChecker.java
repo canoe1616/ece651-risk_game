@@ -23,11 +23,12 @@ public class OwnerRuleChecker extends RuleChecker {
    * @param player is the Player performing the Action
    * @param source is the Territory we are moving units from
    * @param destination is the Territory we are moving units to
-   * @param numUnits is the number of units we are moving from source to desination
+   * @param numUnits is the number of units we are moving from source to destination
+   * @param unitLevel is the Unit level we are moving
    * @return String description of error if invalid move, or null if okay
    */
   @Override
-  protected String checkMyRule(Player player, Territory source, Territory destination, int numUnits) {
+  protected String checkMyRule(Player player, Territory source, Territory destination, int numUnits, int unitLevel) {
     if (!source.getOwner().equals(player)) {
       return "This action is invalid: you do not own " + source.getName() + ".";
     }

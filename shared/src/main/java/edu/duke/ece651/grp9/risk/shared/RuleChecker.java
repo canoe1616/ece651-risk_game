@@ -24,18 +24,19 @@ public abstract class RuleChecker {
    * @param player is the Player performing the Action
    * @param source is the Territory we are moving units from
    * @param destination is the Territory we are moving units to
-   * @param numUnits is the number of units we are moving from source to desination
+   * @param numUnits is the number of units we are moving from source to destination
+   * @param unitLevel is the Unit level we are performing action on
    * @return String description of error if invalid move, or null if okay
    */
-  public String checkAction(Player player, Territory source, Territory destination, int numUnits) {
+  public String checkAction(Player player, Territory source, Territory destination, int numUnits, int unitLevel) {
     //if we fail our own rule: stop the move is not legal
-    String actionProblem = checkMyRule(player, source, destination, numUnits);
+    String actionProblem = checkMyRule(player, source, destination, numUnits, unitLevel);
     if (actionProblem != null) {
       return actionProblem;
     }
     //otherwise, ask the rest of the chain.
     if (next != null) {
-      return next.checkAction(player, source, destination, numUnits);
+      return next.checkAction(player, source, destination, numUnits, unitLevel);
     }
     //if there are no more rules, then the action is legal
     return null;
@@ -47,10 +48,11 @@ public abstract class RuleChecker {
    * @param player is the Player performing the Action
    * @param source is the Territory we are moving units from
    * @param destination is the Territory we are moving units to
-   * @param numUnits is the number of units we are moving from source to desination
+   * @param numUnits is the number of units we are moving from source to destination
+   * @param unitLevel is the Unit level we are performing action on
    * @return String description of error if invalid move, or null if okay
    */
-  protected abstract String checkMyRule(Player player, Territory source, Territory destination, int numUnits);
+  protected abstract String checkMyRule(Player player, Territory source, Territory destination, int numUnits, int unitLevel);
 }
 
 
