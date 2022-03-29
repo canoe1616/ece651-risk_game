@@ -18,7 +18,7 @@ public class Player implements Serializable {
   private String loseStatus;
   private Food food;
   private Money money;
-  private int playerTechLevel;
+  private int techLevel;
 
   /**
    * Constructor to create a Player
@@ -30,7 +30,7 @@ public class Player implements Serializable {
     this.territoryList = new HashSet<Territory>();
     this.totalUnit = 30;
     this.loseStatus = "no act";
-    this.playerTechLevel = 0;
+    this.techLevel = 0;
     this.food = new Food(500);
     this.money = new Money(500);
   }
@@ -147,7 +147,7 @@ public class Player implements Serializable {
    */
   public void upgradeTechLevel() {
     techLevel += 1;
-    //decrement Money
+    //TODO decrement Money
   }
 
   /**
