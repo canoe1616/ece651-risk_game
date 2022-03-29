@@ -61,6 +61,15 @@ public class Unit implements Serializable {
   }
 
   /**
+   * Getter for upgradeCost of this Unit level
+   *
+   * @return upgrade cost for this Unit level
+   */
+  public int getUpgradeCost() {
+    return upgradeCost;
+  }
+
+  /**
    * Setter for count of this Unit level
    *
    * @param numUnits int indicating amount of units of this Unit level

@@ -58,12 +58,57 @@ public class MoveAction implements Action {
   }
 
   /**
+   * Getter for source Territory
+   *
+   * @return source Territory
+   */
+  public Territory getSource() {
+    return source;
+  }
+
+  /**
+   * Getter for destination Territory
+   *
+   * @return destination Territory
+   */
+  public Territory getDestination() {
+    return destination;
+  }
+
+  /**
+   * Getter for number of Units
+   *
+   * @return int number of Units performing Action
+   */
+  public int getNumUnits() {
+    return numUnits;
+  }
+
+  /**
+   * Getter for Unit level
+   *
+   * @return int level of Units performing Action
+   */
+  public int getUnitLevel() {
+    return unitLevel;
+  }
+
+  /**
+   * Getter for Unit end level
+   *
+   * @return int target level for Units performing Action
+   */
+  public int getEndLevel() {
+    return -1;
+  }
+
+  /**
    * Checks chain of rules to ensure Move is valid
    *
    * @return null if valid, if invalid a String describing error is returned
    */
   public String canPerformAction() {
-    return moveChecker.checkAction(player, source, destination, numUnits, unitLevel);
+    return moveChecker.checkAction(this);
   }
 
   /**

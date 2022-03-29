@@ -20,22 +20,19 @@ public class UnitsRuleChecker extends RuleChecker {
   /**
    * Performs mockActions to make sure Territories have enough units after all moves are made
    *
-   * @param player is the Player performing the Action
-   * @param source is the Territory we are moving units from
-   * @param destination is the Territory we are moving units to
-   * @param numUnits is the number of units we are moving from source to destination
-   * @param unitLevel is the Unit level we are moving
+   * @param action Action we are checking rules against
    * @return String description of error if invalid move, or null if okay
    */
   @Override
-  protected String checkMyRule(Player player, Territory source, Territory destination, int numUnits, int unitLevel) {
-    if (numUnits < 0) {
+  protected String checkMyRule(Action action) {
+    if (action.getNumUnits() < 0) {
       return "This action is invalid: number of units must be positive int.";
     }
 
-    source.mockActions(destination, numUnits);
+    action.getSource().mockActions(action.getDestination(), action.getNumUnits());
 
-    source.mockActions(destination, numUnits, unitLevel); //EVOLUTION 2
+    action.getSource().mockActions(action.getDestination(), action.getNumUnits(),
+        action.getUnitLevel()); //EVOLUTION 2
     return null;
   }
 }

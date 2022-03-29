@@ -11,11 +11,11 @@ public class MoveActionTest {
     Player p1 = new Player("red");
     Territory t1 = new Territory("Two Rivers");
     t1.setOwner(p1);
-    t1.setUnit(5);
+    t1.setUnits(5);
 
     Territory t2 = new Territory("Tar Valon");
     t2.setOwner(p1);
-    t2.setUnit(0);
+    t2.setUnits(0);
     String error1 = "This action is invalid: Two Rivers is not connected to Tar Valon.";
 
     MoveAction m1 = new MoveAction(p1, t1, t2, 5);
@@ -25,11 +25,11 @@ public class MoveActionTest {
 
     assertEquals(m1.getPlayer(), p1);
 
-    assertEquals(t1.getUnit(), 5);
-    assertEquals(t2.getUnit(), 0);
+    assertEquals(t1.getUnits(0), 5);
+    assertEquals(t2.getUnits(0), 0);
     m1.performAction();
-    assertEquals(t1.getUnit(), 0);
-    assertEquals(t2.getUnit(), 5);
+    assertEquals(t1.getUnits(0), 0);
+    assertEquals(t2.getUnits(0), 5);
   }
 }
 

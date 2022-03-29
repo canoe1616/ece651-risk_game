@@ -24,26 +24,22 @@ public class UpgradeRuleChecker extends RuleChecker {
   /**
    * Checks if source Territory is connected to destination Territory
    *
-   * @param player is the Player performing the Action
-   * @param source is the Territory we are upgrading Units in
-   * @param numUnits is the number of units we are upgrading
-   * @param unitLevel is the Unit level we are upgrading
+   * @param action Action we are checking rules against
    * @return String description of error if invalid move, or null if okay
    */
   @Override
-  protected String checkMyRule(Player player, Territory source, Territory destination, int numUnits,
-      int unitLevel) {
-    /*if (player.getTechLevel() < endLevel) { //TODO change to endLevel
-      return "This action is invalid: Your technology level is not yet at level " + endLevel + ".";
+  protected String checkMyRule(Action action) {
+    if (action.getPlayer().getTechLevel() < action.getEndLevel()) {
+      return "This action is invalid: Your technology level is not yet at level " + action.getEndLevel() + ".";
     }
-    if (startLevel >= endLevel) {
+    if (action.getUnitLevel() >= action.getEndLevel()) {
       return "This action is invalid: Unit can only increase in level.";
     }
     //Enough Money to upgrade - mock money?
 //    if (action.computeCost() < player.getMoney()) {
 //      return null;
 //    }
-    player.mockMoney(action.computeCost());*/
+    //TODO action.getPlayer().mockMoney(action.computeCost());
 
     return null;
   }

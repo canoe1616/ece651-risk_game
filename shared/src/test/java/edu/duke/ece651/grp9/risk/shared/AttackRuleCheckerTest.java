@@ -27,12 +27,12 @@ public class AttackRuleCheckerTest {
 
     RuleChecker ruleChecker = new AttackRuleChecker(null);
 
-    assertEquals(ruleChecker.checkMyRule(p1, t1, t2, 4, 0), error1);
+    assertEquals(ruleChecker.checkMyRule(new AttackAction(p1, t1, t2, 4, 0)), error1);
 
     t1.addNeighbors(t2);
-    assertEquals(ruleChecker.checkMyRule(p1, t1, t2, 4, 0), null);
+    assertEquals(ruleChecker.checkMyRule(new AttackAction(p1, t1, t2, 4, 0)), null);
     t1.addNeighbors(t3);
-    assertEquals(ruleChecker.checkMyRule(p1, t1, t3, 4, 0), error2);
+    assertEquals(ruleChecker.checkMyRule(new AttackAction(p1, t1, t3, 4, 0)), error2);
   }
 
   @Test
@@ -59,14 +59,14 @@ public class AttackRuleCheckerTest {
     RuleChecker ruleChecker = new UnitsRuleChecker(new OwnerRuleChecker(new AttackRuleChecker(null)));
 
     t3.addNeighbors(t1);
-    assertEquals(ruleChecker.checkAction(p1, t1, t3, 4, 0), error2);
-    assertEquals(ruleChecker.checkAction(p1, t1, t2, 4, 0), error1);
+    assertEquals(ruleChecker.checkAction(new AttackAction(p1, t1, t3, 4, 0)), error2);
+    assertEquals(ruleChecker.checkAction(new AttackAction(p1, t1, t2, 4, 0)), error1);
 
     t2.addNeighbors(t1);
-    assertEquals(ruleChecker.checkAction(p1, t1, t2, 6, 0), null);
-    assertEquals(ruleChecker.checkAction(p1, t2, t1, 3, 0), error3);
+    assertEquals(ruleChecker.checkAction(new AttackAction(p1, t1, t2, 6, 0)), null);
+    assertEquals(ruleChecker.checkAction(new AttackAction(p1, t2, t1, 3, 0)), error3);
 
-    assertEquals(ruleChecker.checkAction(p1, t1, t2, 5, 0), null);
+    assertEquals(ruleChecker.checkAction(new AttackAction(p1, t1, t2, 5, 0)), null);
 
     assertFalse(t1.mockIsValid());
   }
