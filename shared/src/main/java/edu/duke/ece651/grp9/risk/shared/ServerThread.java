@@ -16,14 +16,12 @@ public class ServerThread extends Thread{
     private ArrayList<ServerThread> threadList;
     private PrintWriter output;
     private static HashSet<String> remainingColors;
-    public ServerThread(Socket socket, ArrayList<ServerThread> threads, Map m) {
+    private Map m;
+    public ServerThread(Socket socket, ArrayList<ServerThread> threads, HashSet<String> tmp , Map m) {
         this.socket = socket;
         this.threadList = threads;
-        remainingColors = new HashSet<>();
-        Iterator<Player> it = m.getPlayer().iterator();
-        while(it.hasNext()){
-            remainingColors.add(it.next().getName());
-        }
+        remainingColors = tmp;
+        this.m = m;
     }
     public void selectColor(ObjectOutputStream stream) {
         StringBuilder sb = new StringBuilder();
@@ -74,9 +72,6 @@ public class ServerThread extends Thread{
     @Override
     public void run() {
         try{
-            MapFactory f = new MapFactory();
-            Map m = f.makeMapForThree();
-            int player_num = 3;
             ActionRuleChecker tmp = new ActionRuleChecker();
             //send map object
             OutputStream outputStream = socket.getOutputStream();
@@ -87,30 +82,13 @@ public class ServerThread extends Thread{
             selectColor(objectOutputStream);
             //check if the color selection is valid
             String color = "";
-            while(true){
-                //boolean for color checking
-                String color_correct = "true";
-                //InputStream inputStream = socket.getInputStream();
-                //ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
-                color = (String)objectInputStream.readObject();
-                // add the checker
-                //if everything is good, we will send "true" to the client
-                //System.out.println(color);
-                while(tmp.checkColor(color, remainingColors) != null){
-                    //System.out.println(tmp.checkColor(color, remainingColors));
-                    color_correct = "false";
-                    objectOutputStream.writeObject("false");
-                    //read the new color from the client
-                    color = (String)objectInputStream.readObject();
-                }
-                if(tmp.checkColor(color, remainingColors) == null) {
-                    color_correct = "true";
-                    objectOutputStream.writeObject(color_correct);
-                    deleteColor(color);
-                    break;
-                }
-            }
+            color = remainingColors.iterator().next();
+            objectOutputStream.writeObject(color);
+            deleteColor(color);
+
+
             //read unit assignment
+
             unitSetting(objectOutputStream, findPlayer(color, m));
             String unitString = "";
             while(true){
@@ -133,6 +111,7 @@ public class ServerThread extends Thread{
                     break;
                 }
             }
+
             socket.close();
         }
         catch(Exception e){

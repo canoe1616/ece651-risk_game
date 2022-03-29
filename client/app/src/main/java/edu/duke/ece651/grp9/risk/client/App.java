@@ -245,7 +245,10 @@ public class App extends Application{
       OutputStream outputStream = socket.getOutputStream();
       ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
 
-      String color = app.selectColor(inputSource, objectInputStream, objectOutputStream);
+
+      //debug 3.28
+      //String color = app.selectColor(inputSource, objectInputStream, objectOutputStream);
+      String color = (String) objectInputStream.readObject();
       String unitString = app.selectUnit(inputSource, objectInputStream, objectOutputStream);
 
       ///////////////////////end of initial placement/////////////

@@ -258,20 +258,44 @@ public class App {
 
   //boolean
   public static <objectInputStream> void main(String[] args) {
-    ArrayList<ServerThread> threadList = new ArrayList<>();
-    try (ServerSocket ss = new ServerSocket(6666)) {
-      while (true) {
-        //add the checker
-        MapFactory f = new MapFactory();
-        Map m = f.makeMapForThree();
-        Socket socket = ss.accept();
-        ServerThread serverThread = new ServerThread(socket, threadList, m);
-        threadList.add(serverThread);
-        serverThread.start();
+    //no multi-threads the server should enter the number of players
+    System.out.println("Please input the number of players you want, and should be 2-5");
+    BufferedReader inputSource = new BufferedReader(new InputStreamReader(System.in));
+    int player_num = 0;
+    try {
+      player_num = Integer.parseInt(inputSource.readLine());
+      while (player_num < 2 || player_num > 5) {
+        System.out.println("Must be 2-5. Please enter again");
+        player_num = Integer.parseInt(inputSource.readLine());
       }
     } catch (Exception e) {
       System.out.println(e);
     }
+    //remaining color 必须要是全局变量
+    MapFactory f = new MapFactory();
+    Map m = f.makeMap(player_num);
+    remainingColors = new HashSet<>();
+    Iterator<Player> it = m.getPlayer().iterator();
+    while(it.hasNext()){
+      remainingColors.add(it.next().getName());
+    }
+
+
+    ArrayList<ServerThread> threadList = new ArrayList<>();
+
+
+      try (ServerSocket ss = new ServerSocket(6666)) {
+        while (true) {
+          //add the checker
+          Socket socket = ss.accept();
+          ServerThread serverThread = new ServerThread(socket, threadList, remainingColors,m);
+          threadList.add(serverThread);
+          serverThread.start();
+        }
+      } catch (Exception e) {
+        System.out.println(e);
+      }
+
   }
 }
 
