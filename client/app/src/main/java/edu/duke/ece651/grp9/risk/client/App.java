@@ -14,14 +14,36 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.HashSet;
 import java.util.Iterator;
-
 import edu.duke.ece651.grp9.risk.shared.*;
 
-public class App {
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
+
+
+
+public class App extends Application{
   private final BufferedReader inputReader;
+  private String username;
+  private String password;
 
   public App(BufferedReader inputSource) {
     this.inputReader = inputSource;
+  }
+
+
+  @Override
+  public void start(Stage stage) {
+    String javaVersion = System.getProperty("java.version");
+    String javafxVersion = System.getProperty("javafx.version");
+    Label l = new Label("Hello, JavaFX " + javafxVersion +
+            ", running on Java " +
+            javaVersion + ".");
+    Scene scene = new Scene(new StackPane(l), 640, 480);
+    stage.setScene(scene);
+    stage.show();
   }
 
   /**
@@ -132,17 +154,54 @@ public class App {
    * @param action player's actions, A, a, M, m, D, d are valid.
    * @return a string for action
    */
-    public String getActionString(String action){
+    public String getActionString(String action) {
       ActionRuleChecker arc = new ActionRuleChecker();
       return arc.checkAction(action);
     }
 
 
 
+    /**
+     * to record each player's username and password
+    Q:是否需要考虑多个空格的情况
+     */
+    public String getUsername(BufferedReader inputSource,ObjectOutputStream outStream) throws IOException{
+      try {
+        System.out.println("please enter the username and the password (e.g Lucy 123456");
+        String s = inputSource.readLine();
+        String[] words = s.split(" ");
+        this.username = words[0];
+        this.password = words[1];
+        while(username == null || password == null){
+          System.out.println("input invalid, please enter again");
+          s = inputSource.readLine();
+          words = s.split(" ");
+          this.username = words[0];
+          this.password = words[1];
+        }
+      }
+      catch (Exception exception) {
+        System.out.println(exception.getMessage());
+      }
+      //sending username and password to the server
+      outStream.reset();
+      outStream.writeObject(username);
+      outStream.reset();
+      outStream.writeObject(password);
+
+
+      //if the username and the password, they are not match with each other
+
+      return null;
+
+    }
+
+
   public static void main(String[] args) {
 
     BufferedReader inputSource = new BufferedReader(new InputStreamReader(System.in));
     App app = new App(inputSource);
+
 
     //build be hashset<string> for actions for the server?
     HashSet<String> actionListMove = new HashSet<>();
