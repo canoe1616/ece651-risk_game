@@ -276,4 +276,20 @@ public class Territory implements Serializable {
   public void addUnit(int level) {
     units.get(level).addUnits(1);
   }
+
+  /**
+   * each territory can produce 100 Food after each game round
+   * @return Food that values 100
+   */
+  public Food produceFood() {
+    return new Food(100);
+  }
+
+  /**
+   * each territory can produce 50 Money after each game round
+   * @return Food that values 50
+   */
+  public Money productMoney() {
+    return new Money(50);
+  }
 }

@@ -139,4 +139,15 @@ public class TerritoryTest {
     //Mock units should reset when this occurs
     //assertTrue(t1.mockIsValid());
   }
+
+  void produceFood() {
+    Territory ter = new Territory("red");
+    assertEquals(100, ter.produceFood().getQuantity());
+  }
+
+  @Test
+  void productMoney() {
+    Territory ter = new Territory("red");
+    assertEquals(50, ter.productMoney().getQuantity());
+  }
 }
