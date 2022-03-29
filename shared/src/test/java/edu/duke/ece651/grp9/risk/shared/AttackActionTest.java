@@ -95,6 +95,12 @@ class AttackActionTest {
         Player p2 = new Player("blue");
         Territory t1 = new Territory("NC");
         Territory t2 = new Territory("CA");
+        Map map= new Map();
+        map.addPlayer(p1);
+        map.addPlayer(p2);
+        map.addTerritory(t1);
+        map.addTerritory(t2);
+
         t1.addNeighbors(t2);
         t1.setOwner(p1);
         t2.setOwner(p2);
@@ -102,16 +108,19 @@ class AttackActionTest {
         t2.setUnits(0);
         AttackAction att1 = new AttackAction(p1, t1, t2, 10, 0);
         AttackAction att2 = new AttackAction(p2, t2, t1, 0, 0);
-
         assertNull(att1.canPerformAction());
         assertNull(att2.canPerformAction());
 
-        att1.performAction();
-        att2.performAction();
+//        att1.performAction();
+//        att2.performAction();
+
+        Battle battle = new Battle(map);
+        battle.addAttackAction(att1);
+        battle.addAttackAction(att2);
+        battle.playBattlePhase();
         assertEquals(p1, t1.getOwner());
         //assertEquals(t1.getUnits(0), 2);
         assertEquals(p1, t2.getOwner());
-
         //TODO failing because the single unit in t2 is staying to defend
         //assertEquals(t2.getUnits(0), 10);
     }

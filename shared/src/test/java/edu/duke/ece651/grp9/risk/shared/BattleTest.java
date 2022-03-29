@@ -93,7 +93,7 @@ class BattleTest {
         srcB.setUnit(5);
         srcB.setOwner(playerRed);
         Territory dstC = findTerritory(map,"C");
-        dstC.setUnit(5);
+        dstC.setUnit(0);
         dstC.setOwner(playerBlue);
         AttackAction attack0 = new AttackAction(playerRed, srcA, dstC, 1);
         AttackAction attack1 = new AttackAction(playerRed, srcB, dstC, 4);
@@ -106,9 +106,9 @@ class BattleTest {
         battle.playBattlePhase();
         List<AttackAction> attackRes = battle.getAllAttackActions();
         assertEquals(attackRes.size(), 1);
-        if (!attackRes.get(0).getState()) {
-            assertEquals("blue", dstC.getOwner().getName());
-        }
+        //if (!attackRes.get(0).getState()) {
+            assertEquals("red", dstC.getOwner().getName());
+        //}
     }
 
     @Test

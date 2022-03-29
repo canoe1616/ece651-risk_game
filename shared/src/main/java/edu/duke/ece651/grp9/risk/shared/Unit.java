@@ -105,4 +105,8 @@ public class Unit implements Serializable {
   public int applyBonus(int roll) {
     return roll + bonus;
   }
+
+  public int getLevel() {
+    return level;
+  }
 }

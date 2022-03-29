@@ -58,29 +58,29 @@ public class AttackAction implements Action {
     @Override
     //TODO alternate between highest level and lowest level for each Territory
     public void performAction() {
-        //source.setUnits(source.getUnits(unitLevel) - attackUnits, unitLevel);
-        int defenderUnit = destination.getUnits(unitLevel);
-        Player defender = destination.getOwner();
-
-        while (defenderUnit > 0 && attackUnits> 0) {
-            if (isSuccessAttack()) {
-                defenderUnit--;
-            } else {
-                attackUnits--;
-            }
-        }
-        if (attackUnits > 0) {
-            win = true;
-            // if attacker wins the round, reset the unit and owner
-            destination.setOwner(attacker);
-            destination.setUnits(attackUnits, unitLevel);
-            // if attacker wins the round, add the unit to attacker territory list
-            attacker.addTerritory(destination);
-            defender.removeTerritory(destination);
-        } else {
-            // if defender wins the round, reset the unit
-            destination.setUnits(defenderUnit, unitLevel);
-        }
+//        //source.setUnits(source.getUnits(unitLevel) - attackUnits, unitLevel);
+//        int defenderUnit = destination.getUnits(unitLevel);
+//        Player defender = destination.getOwner();
+//
+//        while (defenderUnit > 0 && attackUnits> 0) {
+//            if (isSuccessAttack()) {
+//                defenderUnit--;
+//            } else {
+//                attackUnits--;
+//            }
+//        }
+//        if (attackUnits > 0) {
+//            win = true;
+//            // if attacker wins the round, reset the unit and owner
+//            destination.setOwner(attacker);
+//            destination.setUnits(attackUnits, unitLevel);
+//            // if attacker wins the round, add the unit to attacker territory list
+//            attacker.addTerritory(destination);
+//            defender.removeTerritory(destination);
+//        } else {
+//            // if defender wins the round, reset the unit
+//            destination.setUnits(defenderUnit, unitLevel);
+//        }
     }
 
     /**
@@ -89,13 +89,13 @@ public class AttackAction implements Action {
      * The player with larger number wins; the defender wins if in a tie.
      * @return true if attacker makes a successful attack, false if fail
      */
-    private boolean isSuccessAttack() {
-        Random attackRoll = new Random();
-        Random defenderRoll = new Random();
-        int roll1 = attackRoll.nextInt(20); //TODO call applyBonus()
-        int roll2 = defenderRoll.nextInt(20); //TODO call applyBonus()
-        return roll1 > roll2;
-    }
+//    private boolean isSuccessAttack() {
+//        Random attackRoll = new Random();
+//        Random defenderRoll = new Random();
+//        int roll1 = attackRoll.nextInt(20); //TODO call applyBonus()
+//        int roll2 = defenderRoll.nextInt(20); //TODO call applyBonus()
+//        return roll1 > roll2;
+//    }
 
     /**
      * get the unit numbers for attack

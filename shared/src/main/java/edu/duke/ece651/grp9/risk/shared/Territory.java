@@ -295,4 +295,9 @@ public class Territory implements Serializable {
   public Money productMoney() {
     return new Money(50);
   }
+
+
+  public HashMap<Integer, Unit> getAllUnits() {
+    return units;
+  }
 }
