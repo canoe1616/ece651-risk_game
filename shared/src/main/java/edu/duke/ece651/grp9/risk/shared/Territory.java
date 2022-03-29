@@ -18,6 +18,7 @@ public class Territory implements Serializable {
   private int unit;
   private HashSet<Territory> neighbors;
   private int mockUnits;
+  private int size;
 
   /**
    * Constructor to create a Territory
@@ -35,6 +36,8 @@ public class Territory implements Serializable {
     units.put(4, new Level4Unit());
     units.put(5, new Level5Unit());
     units.put(6, new Level6Unit());
+    // size of territory default as 10
+    this.size = 10;
   }
 
   /**

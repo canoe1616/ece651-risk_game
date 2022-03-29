@@ -55,7 +55,7 @@ public class Battle {
     if (territoryUnderAttack.containsKey(destination)) {
       for (AttackAction att : territoryUnderAttack.get(destination)) {
         // combine attack actions from the same player.
-        if (att.isSameOriAttack(oneAttack)) {
+        if (att.isSameOriAttack(oneAttack) && oneAttack.getUnitLevel() == att.getUnitLevel()) {
           att.setAttackUnits(att.getAttackUnits() + oneAttack.getAttackUnits());
           return;
         }
@@ -63,9 +63,9 @@ public class Battle {
       // new attack from a new player.
       territoryUnderAttack.get(destination).add(oneAttack);
     } else {
-      HashSet<AttackAction> attackSet = new HashSet<>();
-      attackSet.add(oneAttack);
-      territoryUnderAttack.put(destination, attackSet);
+      HashSet<AttackAction> attackMap = new HashSet<>();
+      attackMap.add(oneAttack);
+      territoryUnderAttack.put(destination, attackMap);
     }
   }
 
