@@ -124,4 +124,5 @@ class AttackActionTest {
         //TODO failing because the single unit in t2 is staying to defend
         //assertEquals(t2.getUnits(0), 10);
     }
+
 }

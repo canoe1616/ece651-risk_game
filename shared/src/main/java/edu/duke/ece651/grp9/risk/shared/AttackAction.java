@@ -133,9 +133,9 @@ public class AttackAction implements Action {
      * get the game status -> for testing only
      * @return boolean status for win
      */
-    public boolean getState() {
-        return win;
-    }
+//    public boolean getState() {
+//        return win;
+//    }
 
     /**
      * Getter for the Unit level of this Attack

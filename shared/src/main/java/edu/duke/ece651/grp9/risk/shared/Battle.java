@@ -105,7 +105,7 @@ public class Battle {
         Territory destination = attack.getDestination();
         HashMap<Integer, Unit> defenderUnits = destination.getAllUnits();
         HashMap<Integer, Unit> attackerUnits = getAllUnits(attacks);
-        doAttacks(attackerUnits,defenderUnits, attacker, defender, destination);
+        doOneAttack(attackerUnits,defenderUnits, attacker, defender, destination);
       }
     }
   }
@@ -152,11 +152,12 @@ public class Battle {
    * @param unitMap
    * @return
    */
-  private Unit getHighestLevelUnit(HashMap<Integer, Unit> unitMap) {
+  public Unit getHighestLevelUnit(HashMap<Integer, Unit> unitMap) {
     Unit unit = null;
     for (int i = 6; i >= 0; i--) {
       if (unitMap.get(i) != null && unitMap.get(i).getNumUnits() > 0) {
         unit = unitMap.get(i);
+        break;
       }
     }
     return unit;
@@ -167,16 +168,22 @@ public class Battle {
    * @param unitMap
    * @return
    */
-  private Unit getLowestLevelUnit(HashMap<Integer, Unit> unitMap) {
+  public Unit getLowestLevelUnit(HashMap<Integer, Unit> unitMap) {
     Unit unit = null;
     for (int i = 0; i <= 6; i++) {
       if (unitMap.get(i) != null && unitMap.get(i).getNumUnits() > 0) {
         unit = unitMap.get(i);
+        break;
       }
     }
     return unit;
   }
 
+  /**
+   * this method is to calculate the total number of Units for a given Unit hashset
+   * @param playerUnits is the player's total units for this battle round
+   * @return the num of the total units for this round
+   */
   private int getBattleUnitNum(HashMap<Integer, Unit> playerUnits) {
     int battleUnitNum = 0;
     for (Integer i : playerUnits.keySet()) {
@@ -185,18 +192,30 @@ public class Battle {
     return battleUnitNum;
   }
 
-  public void doAttacks(HashMap<Integer, Unit> attackerUnits, HashMap<Integer, Unit> defenderUnits, Player attacker, Player defender, Territory destination) {
+  /**
+   * this method plays one attack from a attacker to a defender after combing attack force.
+   * The attacker and the defender iteratively dominates the roll die
+   * @param attackerUnits is the attacker's attack unit set
+   * @param defenderUnits is the defender's defend unit set
+   * @param attacker is the attacker player
+   * @param defender is the defender player
+   * @param destination is the attacked territory
+   */
+  public void doOneAttack(HashMap<Integer, Unit> attackerUnits, HashMap<Integer, Unit> defenderUnits, Player attacker, Player defender, Territory destination) {
     int iterIndex = 0;
     int defenderUnitSum = getBattleUnitNum(defenderUnits);
     int attackerUnitSum = getBattleUnitNum(attackerUnits);;
 
+    // if two players both has unit left
     while (defenderUnitSum > 0 && attackerUnitSum > 0) {
       Unit attackUnit;
       Unit defendUnit;
-      if (iterIndex++ % 2 == 0) { // iteratively do the attacks
+      if (iterIndex++ % 2 == 0) { // iteratively attack
+        // attacker dominates with the highest level unit
         attackUnit = getHighestLevelUnit(attackerUnits);
         defendUnit = getLowestLevelUnit(defenderUnits);
       } else {
+        // defender dominates with the highest level unit
         attackUnit = getLowestLevelUnit(attackerUnits);
         defendUnit = getHighestLevelUnit(defenderUnits);
       }
@@ -209,13 +228,16 @@ public class Battle {
         // attacker's unit decreased by 1
         int level = attackUnit.getLevel();
         int unitNum = attackUnit.getNumUnits() - 1;
-        attackerUnits.get(level).setNumUnits(unitNum);
+        attackerUnits.get(level).setNumUnits(unitNum); // update unitNum
       }
+      // update the total units for the defender and the attacker
       defenderUnitSum = getBattleUnitNum(defenderUnits);
       attackerUnitSum = getBattleUnitNum(attackerUnits);;
     }
 
-    if (defenderUnitSum == 0 && attackerUnitSum > 0) { // make a successful attack
+    // check the winner of the game
+    // if the attacker make a success attack, reset owner and units
+    if (attackerUnitSum > 0) {
       destination.setOwner(attacker);
       for (Integer level: attackerUnits.keySet()) {
        destination.setUnits(attackerUnits.get(level).getNumUnits(), level);
@@ -231,8 +253,8 @@ public class Battle {
 
   /**
    * check if the attack from player A to territory x is success or not
-   * @param attack
-   * @param defender
+   * @param attack is the attacker's unit
+   * @param defender is the defender's unit
    * @return
    */
   private boolean isSuccessBattle(Unit attack, Unit defender) {
