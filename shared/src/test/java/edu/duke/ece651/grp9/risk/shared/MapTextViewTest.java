@@ -12,21 +12,21 @@ class MapTextViewTest {
     void test_displayGeneralInfo() {
         MapFactory mapFactory = new MapFactory();
         Map map = mapFactory.makeMapForTwo();
-        map.findTerritory("A").setUnit(10);
-        map.findTerritory("B").setUnit(10);
-        map.findTerritory("C").setUnit(10);
-        map.findTerritory("D").setUnit(10);
+        map.findTerritory("A").setUnits(10,0);
+        map.findTerritory("B").setUnits(10, 0);
+        map.findTerritory("C").setUnits(10, 0);
+        map.findTerritory("D").setUnits(10,0);
         MapTextView view = new MapTextView(map);
         String exp =
                 "blue Player:\n" +
                         "----------------------------------\n" +
-                        "10 units in C(next to: A, D)\n" +
-                        "10 units in D(next to: B, C)\n" +
+                       "10 level0 units, 0 level1 units, 0 level2 units, 0 level3 units, 0 level4 units, 0 level5 units, 0 level6 units in C(next to: A, D)\n" +
+                        "10 level0 units, 0 level1 units, 0 level2 units, 0 level3 units, 0 level4 units, 0 level5 units, 0 level6 units in D(next to: B, C)\n" +
                         "\n" +
                         "red Player:\n" +
                         "----------------------------------\n" +
-                        "10 units in A(next to: B, C)\n" +
-                        "10 units in B(next to: A, D)\n\n";
+                        "10 level0 units, 0 level1 units, 0 level2 units, 0 level3 units, 0 level4 units, 0 level5 units, 0 level6 units in A(next to: B, C)\n" +
+                        "10 level0 units, 0 level1 units, 0 level2 units, 0 level3 units, 0 level4 units, 0 level5 units, 0 level6 units in B(next to: A, D)\n\n";
           /*
                         "You are the red Player, what would you like to do?\n" +
                         " (M)ove\n" +
@@ -45,12 +45,12 @@ class MapTextViewTest {
         map.addPlayer(p1);
         map.addTerritory(ter);
         p1.addTerritory(ter);
-        ter.setUnit(15);
+        ter.setUnits(15, 0);
         MapTextView view = new MapTextView(map);
         String exp = "end_game = win\n" +
                 "blue Player:\n" +
                 "----------------------------------\n" +
-                "15 units in NC(next to)\n" +
+                "15 level0 units, 0 level1 units, 0 level2 units, 0 level3 units, 0 level4 units, 0 level5 units, 0 level6 units in NC(next to)\n" +
                 "\n" +
                 "\n" +
                 "Congratulations! You win the game!\n";
