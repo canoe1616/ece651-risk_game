@@ -69,7 +69,7 @@ public class App extends Application{
     while (!color_correct.equals("true")) {
       try {
         s = inputSource.readLine();
-        System.out.println(s);
+        //System.out.println(s);
         //check color valid
         //From server -> color_correct
         outStream.writeObject(s);
@@ -98,7 +98,7 @@ public class App extends Application{
     //get prompt and print it
     try {
       String unitPrompt = (String) inStream.readObject();
-      System.out.println(unitPrompt);
+      System.out.println("看看是不是这行print 出来的颜色："+unitPrompt);
     } catch (Exception exception) {
       System.out.println(exception.getMessage());
     }
@@ -110,6 +110,7 @@ public class App extends Application{
         s = inputSource.readLine();
         System.out.println(s);
         outStream.writeObject(s);
+        //这个readObject 没有找到
         unit_correct = (String) inStream.readObject();
         if (unit_correct.equals("false")) {
           System.out.println("Invalid unit selection, please enter again!");
@@ -238,6 +239,7 @@ public class App extends Application{
       //receive map from server
       InputStream inputStream = socket.getInputStream();
       ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+      //这里的myMap 只是一个全局变量;
       Map myMap = (Map) objectInputStream.readObject();
       System.out.println("Receive Map form server.");
 
@@ -249,6 +251,7 @@ public class App extends Application{
       //debug 3.28
       //String color = app.selectColor(inputSource, objectInputStream, objectOutputStream);
       String color = (String) objectInputStream.readObject();
+      System.out.println("test中的color 是什么颜色 " + color);
       String unitString = app.selectUnit(inputSource, objectInputStream, objectOutputStream);
 
       ///////////////////////end of initial placement/////////////
@@ -256,7 +259,8 @@ public class App extends Application{
       System.out.println("Its next step...");
 
       while(true){//until you lose or you win.
-        myMap = (Map) objectInputStream.readObject();//
+        myMap = (Map) objectInputStream.
+                readObject();//
         System.out.println("Receive Map form server.");
         MapTextView mtv = new MapTextView(myMap);
         String endGame = (String) objectInputStream.readObject();//

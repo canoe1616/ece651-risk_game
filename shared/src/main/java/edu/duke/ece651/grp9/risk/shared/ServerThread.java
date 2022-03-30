@@ -79,8 +79,7 @@ public class ServerThread extends Thread{
             objectOutputStream.writeObject(m);
             InputStream inputStream = socket.getInputStream();
             ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
-            selectColor(objectOutputStream);
-            //check if the color selection is valid
+            //check if the color selection is valid -- [done]
             String color = "";
             color = remainingColors.iterator().next();
             objectOutputStream.writeObject(color);
@@ -93,12 +92,11 @@ public class ServerThread extends Thread{
             String unitString = "";
             while(true){
                 String unit_correct = "true";
-                //InputStream inputStream = socket.getInputStream();
-                //ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
                 unitString = (String)objectInputStream.readObject();
-                System.out.print(unitString);
+                System.out.print("server端接收到的unitString是：" + unitString);
                 // add the checker
                 while(tmp.checkUnit(unitString, findPlayer(color, m)) != null){
+                    //debug
                     System.out.print(unitString);
                     unit_correct = "false";
                     objectOutputStream.writeObject("false");
@@ -111,6 +109,8 @@ public class ServerThread extends Thread{
                     break;
                 }
             }
+            //send map from the client to the server
+
 
             socket.close();
         }
