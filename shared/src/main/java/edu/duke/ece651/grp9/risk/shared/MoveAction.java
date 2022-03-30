@@ -31,7 +31,7 @@ public class MoveAction implements Action {
     this.source = source;
     this.destination = destination;
     this.numUnits = numUnits;
-    this.moveChecker = new UnitsRuleChecker(new OwnerRuleChecker(new MoveRuleChecker(new FoodRuleChecker(null))));
+    this.moveChecker = new UnitsRuleChecker(new OwnerRuleChecker(new MoveRuleChecker(null)));
     this.unitLevel = 0;
     source.syncUnits();
     destination.syncUnits();
@@ -122,7 +122,7 @@ public class MoveAction implements Action {
     source.moveUnits(destination, numUnits);
     source.moveUnits(destination, numUnits, unitLevel); //EVOLUTION 2
 
-    // TODO: update food resource here?
+    // TODO: update food resource here? is it correct?
     player.setFoodQuantity(player.getFoodQuantity() - this.computeCost());
   }
 
@@ -135,23 +135,29 @@ public class MoveAction implements Action {
   // may need use Dijkstra’s Algorithm if territory has different size
   public int computeCost() {
     int passTerrSize = 0;
+    boolean found = false;
     // bfs for shortest path
     Queue<Territory> queue = new LinkedList<Territory>();
     HashSet<Territory> visited = new HashSet<Territory>();
     queue.add(source);
     visited.add(source);
     while (!queue.isEmpty()) {
-      Territory front = queue.poll();
-      passTerrSize += front.getSize();
-      if (front.equals(destination)) {
-        break;
-      }
-      for (Territory t : front.getNeighbors()) {
-        if (t.getOwner().equals(player) && !visited.contains(t)) {
-          queue.add(t);
-          visited.add(source);
+      passTerrSize += queue.peek().getSize();
+      int sz = queue.size();
+      for (int i = 0; i < sz; i++) {
+        Territory front = queue.poll();
+        if (front.equals(destination)) {
+          found = true;
+          break;
+        }
+        for (Territory t : front.getNeighbors()) {
+          if (t.getOwner().equals(player) && !visited.contains(t)) {
+            queue.add(t);
+            visited.add(source);
+          }
         }
       }
+      if (found) break;
     }
     return passTerrSize * numUnits;
   }
