@@ -1,51 +1,50 @@
 package edu.duke.ece651.grp9.risk.shared;
 
 /**
- * Class to handle Move Action
+ * Class to handle Upgrade Action
  *
  * @author PROY
- * @since 11 March 2022
+ * @since 29 March 2022
  */
-public class MoveAction implements Action {
+public class UpgradeAction implements Action {
 
   private final Player player;
   private final Territory source;
-  private final Territory destination;
   private final int numUnits;
   private final RuleChecker moveChecker;
-  private int unitLevel;
+  private int startLevel;
+  private int endLevel;
 
   /**
    * Constructor to create a Move
    * @param player is the Player performing the Action
    * @param source is the Territory we are moving units from
-   * @param destination is the Territory we are moving units to
    * @param numUnits is the number of units we are moving from source to destination
    */
-  public MoveAction(Player player, Territory source, Territory destination, int numUnits) {
+  public UpgradeAction(Player player, Territory source, int numUnits) {
     this.player = player;
     this.source = source;
-    this.destination = destination;
     this.numUnits = numUnits;
-    this.moveChecker = new UnitsRuleChecker(new OwnerRuleChecker(new MoveRuleChecker(null)));
-    this.unitLevel = 0;
+    this.moveChecker = new UnitsRuleChecker(new OwnerRuleChecker(new UpgradeRuleChecker(null)));
+    this.startLevel = 0;
+    this.endLevel = 0;
     source.syncUnits();
-    destination.syncUnits();
   }
 
   /**
-   * Constructor to create a Move
+   * Constructor to create an Upgrade
    * @param player is the Player performing the Action
-   * @param source is the Territory we are moving units from
-   * @param destination is the Territory we are moving units to
-   * @param numUnits is the number of units we are moving from source to destination
-   * @param unitLevel is the Unit level we are moving
+   * @param source is the Territory we are upgrading Units in
+   * @param numUnits is the number of units we are upgrading
+   * @param startLevel is the Unit level we are upgrading
+   * @param endLevel is the Unit level we are upgrading to
    */
-  public MoveAction(Player player, Territory source, Territory destination, int numUnits, int unitLevel) {
-    this(player, source, destination, numUnits);
-    this.unitLevel = unitLevel;
-    source.syncUnits(unitLevel);
-    destination.syncUnits(unitLevel);
+  public UpgradeAction(Player player, Territory source, int numUnits, int startLevel, int endLevel) {
+    this(player, source, numUnits);
+    this.startLevel = startLevel;
+    this.endLevel = endLevel;
+    source.syncUnits(startLevel);
+    source.syncUnits(endLevel);
   }
 
   /**
@@ -72,7 +71,7 @@ public class MoveAction implements Action {
    * @return destination Territory
    */
   public Territory getDestination() {
-    return destination;
+    return source;
   }
 
   /**
@@ -85,12 +84,12 @@ public class MoveAction implements Action {
   }
 
   /**
-   * Getter for Unit level
+   * Getter for Unit start level
    *
    * @return int level of Units performing Action
    */
   public int getUnitLevel() {
-    return unitLevel;
+    return startLevel;
   }
 
   /**
@@ -99,7 +98,7 @@ public class MoveAction implements Action {
    * @return int target level for Units performing Action
    */
   public int getEndLevel() {
-    return -1;
+    return endLevel;
   }
 
   /**
@@ -112,10 +111,19 @@ public class MoveAction implements Action {
   }
 
   /**
-   * Perform move on source and destination Territories
+   * Perform upgrade on source Territories of Unit startLevel
    */
   public void performAction() {
-    source.moveUnits(destination, numUnits);
-    source.moveUnits(destination, numUnits, unitLevel); //EVOLUTION 2
+    source.upgradeUnits(numUnits, startLevel, endLevel); //EVOLUTION 2
+  }
+
+  /**
+   * Computes the cost of an Upgrade Action
+   *
+   * @return cost of this Upgrade Action
+   */
+  public int computeCost() {
+    return (source.getUnitClass(endLevel).getUpgradeCost() -
+        source.getUnitClass(startLevel).getUpgradeCost()) * numUnits;
   }
 }

@@ -24,33 +24,29 @@ public class MoveRuleChecker extends RuleChecker {
   /**
    * Checks if source Territory is connected to destination Territory
    *
-   * @param player is the Player performing the Action
-   * @param source is the Territory we are moving units from
-   * @param destination is the Territory we are moving units to
-   * @param numUnits is the number of units we are moving from source to destination
-   * @param unitLevel is the Unit level we are moving
+   * @param action Action we are checking rules against
    * @return String description of error if invalid move, or null if okay
    */
   @Override
-  protected String checkMyRule(Player player, Territory source, Territory destination, int numUnits, int unitLevel) {
+  protected String checkMyRule(Action action) {
     Queue<Territory> queue = new LinkedList<Territory>();
     HashSet<Territory> visited = new HashSet<Territory>();
-    queue.add(source);
-    visited.add(source);
+    queue.add(action.getSource());
+    visited.add(action.getSource());
     while (!queue.isEmpty()) {
       Territory front = queue.poll();
-      if (front.equals(destination)) {
+      if (front.equals(action.getDestination())) {
         return null;
         //TODO String value of shortest path?
       }
       for (Territory t : front.getNeighbors()) {
-        if (t.getOwner().equals(player) && !visited.contains(t)) {
+        if (t.getOwner().equals(action.getPlayer()) && !visited.contains(t)) {
           queue.add(t);
-          visited.add(source);
+          visited.add(action.getSource());
         }
       }
     }
-    return "This action is invalid: " + source.getName() + " is not connected to " + destination.getName() + ".";
+    return "This action is invalid: " + action.getSource().getName() + " is not connected to " + action.getDestination().getName() + ".";
   }
 }
 

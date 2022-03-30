@@ -20,18 +20,14 @@ public class AttackRuleChecker extends RuleChecker {
   /**
    * Checks if source Territory is adjacent to destination Territory
    *
-   * @param player is the Player performing the Action
-   * @param source is the Territory we are moving units from
-   * @param destination is the Territory we are moving units to
-   * @param numUnits is the number of units we are moving from source to destination
-   * @param unitLevel is the Unit level we are attacking with
+   * @param action Action we are checking rules against
    * @return String description of error if invalid move, or null if okay
    */
   @Override
-  protected String checkMyRule(Player player, Territory source, Territory destination, int numUnits, int unitLevel) {
-    if (!source.getNeighbors().contains(destination)) {
-      return "This action is invalid: " + source.getName() + " is not adjacent to " + destination.getName() + ".";
-    } else if (destination.getOwner().equals(player)) {
+  protected String checkMyRule(Action action) {
+    if (!action.getSource().getNeighbors().contains(action.getDestination())) {
+      return "This action is invalid: " + action.getSource().getName() + " is not adjacent to " + action.getDestination().getName() + ".";
+    } else if (action.getDestination().getOwner().equals(action.getPlayer())) {
       return "This action is invalid: you cannot attack your own Territory.";
     }
     return null;

@@ -22,8 +22,8 @@ public class OwnerRuleCheckerTest {
 
     RuleChecker ruleChecker = new OwnerRuleChecker(null);
 
-    assertEquals(ruleChecker.checkMyRule(p1, t1, t2, 4, 0), null);
-    assertEquals(ruleChecker.checkMyRule(p1, t2, t1, 4, 0), error);
+    assertEquals(ruleChecker.checkMyRule(new MoveAction(p1, t1, t2, 4, 0)), null);
+    assertEquals(ruleChecker.checkMyRule(new MoveAction(p1, t2, t1, 4, 0)), error);
   }
 }
 

@@ -139,6 +139,10 @@ public class Territory implements Serializable {
     units.get(level).setNumUnits(numUnits);
   }
 
+  public Unit getUnitClass(int level) {
+    return units.get(level);
+  }
+
   //EVOLUTION 2
   /**
    * Move Units from this Territory to destination Territory
@@ -181,13 +185,13 @@ public class Territory implements Serializable {
   /**
    * Upgrade Unit's using Money Resource
    *
+   * @param numUnits number of units to upgrade
    * @param beginLevel which Unit level to upgrade
    * @param endLevel what Unit level to upgrade to
-   * @param numUnits number of units to upgrade
    */
-  public void upgradeUnits(int beginLevel, int endLevel, int numUnits) {
+  public void upgradeUnits(int numUnits, int startLevel, int endLevel) {
     //TODO Need to add rule checking and compute cost of action
-    units.get(beginLevel).addUnits(-numUnits);
+    units.get(startLevel).addUnits(-numUnits);
     units.get(endLevel).addUnits(numUnits);
   }
 

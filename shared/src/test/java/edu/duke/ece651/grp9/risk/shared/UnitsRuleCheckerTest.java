@@ -11,21 +11,28 @@ public class UnitsRuleCheckerTest {
     Player p1 = new Player("red");
     Territory t1 = new Territory("Two Rivers");
     t1.setOwner(p1);
-    t1.setUnit(5);
+    t1.setUnits(5, 0);
 
     Territory t2 = new Territory("Tar Valon");
     t2.setOwner(p1);
-    t2.setUnit(3);
+    t2.setUnits(3, 0);
 
     String error1 = "This action is invalid: number of units must be positive int.";
 
     RuleChecker ruleChecker = new UnitsRuleChecker(null);
 
-    assertEquals(ruleChecker.checkMyRule(p1, t1, t2, 4,0), null);
-    assertEquals(ruleChecker.checkMyRule(p1, t2, t1, 8, 0), null);
+    assertEquals(t1.getUnits(0), 5);
+    assertEquals(t2.getUnits(0), 3);
 
-    assertEquals(ruleChecker.checkMyRule(p1, t2, t1, -3, 0), error1);
+    MoveAction m1 = new MoveAction(p1, t1, t2, 4, 0);
+    MoveAction m2 = new MoveAction(p1, t2, t1, 8, 0);
 
+    assertEquals(ruleChecker.checkMyRule(m1), null);
+    assertEquals(ruleChecker.checkMyRule(m2), null);
+
+    assertTrue(t1.mockIsValid());
     assertFalse(t2.mockIsValid());
+
+    assertEquals(ruleChecker.checkMyRule(new MoveAction(p1, t2, t1, -3, 0)), error1);
   }
 }

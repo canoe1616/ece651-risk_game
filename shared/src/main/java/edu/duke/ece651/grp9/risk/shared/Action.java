@@ -16,6 +16,18 @@ public interface Action extends Serializable {
    */
   public String canPerformAction();
 
+  public Player getPlayer();
+
+  public Territory getSource();
+
+  public Territory getDestination();
+
+  public int getNumUnits();
+
+  public int getUnitLevel();
+
+  public int getEndLevel();
+
   /**
    * Perform action on source and destination Territories
    */
