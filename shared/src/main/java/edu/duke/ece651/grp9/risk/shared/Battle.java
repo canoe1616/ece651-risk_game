@@ -45,6 +45,11 @@ public class Battle {
    * @param oneAttack is the new attack action
    */
   public void addAttackAction(AttackAction oneAttack) {
+    // consume food for each attack
+    Player attacker = oneAttack.getPlayer();
+    int foodQuantity = attacker.getFoodQuantity();
+    attacker.setFoodQuantity(foodQuantity - oneAttack.computeCost());
+
     // Update the units in source defender.
     Territory source = oneAttack.getSource();
     source.setUnits(source.getUnits(oneAttack.getUnitLevel()) - oneAttack.getNumUnits(),

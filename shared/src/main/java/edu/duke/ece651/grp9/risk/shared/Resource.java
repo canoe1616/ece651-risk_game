@@ -6,5 +6,8 @@ public interface Resource extends Serializable {
 
     public int getQuantity();
 
-    public void addResource(int addFoodQuantity);
+    public void setResource(int resourceQuantity);
+
+    public void addResource(int addResourceQuantity);
+
 }

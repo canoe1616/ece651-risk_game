@@ -32,4 +32,6 @@ public interface Action extends Serializable {
    * Perform action on source and destination Territories
    */
   public void performAction();
+
+  public int computeCost();
 }

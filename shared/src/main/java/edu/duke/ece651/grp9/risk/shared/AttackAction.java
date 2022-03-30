@@ -27,7 +27,7 @@ public class AttackAction implements Action {
         this.destination = destination;
         this.attackUnits = numUnits;
         this.attacker = player;
-        this.attackChecker = new UnitsRuleChecker(new OwnerRuleChecker(new AttackRuleChecker(null)));
+        this.attackChecker = new UnitsRuleChecker(new OwnerRuleChecker(new AttackRuleChecker(new FoodRuleChecker(null))));
         this.win = false;  // default battle status as false
         this.unitLevel = 0;
         source.syncUnits();
@@ -176,5 +176,13 @@ public class AttackAction implements Action {
     //TODO how to handle this for different Unit types?
     public void setAttackUnits(int units) {
         this.attackUnits = units;
+    }
+
+    /**
+     * cost 1 food per attack unit
+     * @return the # of food consumption
+     */
+    public int computeCost() {
+        return attackUnits;
     }
 }

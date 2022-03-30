@@ -16,4 +16,10 @@ public class Money implements Resource{
     public void addResource(int addMoneyQuantity){
         this.quantity = this.quantity + addMoneyQuantity;
     }
+
+    @Override
+    public void setResource(int moneyQuantity) {
+        this.quantity = moneyQuantity;
+    }
+
 }

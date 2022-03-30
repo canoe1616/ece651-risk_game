@@ -132,6 +132,7 @@ public class Player implements Serializable {
   }
 
   //EVOLUTION 2
+
   /**
    * Getter for this Player's tech level
    *
@@ -142,6 +143,7 @@ public class Player implements Serializable {
   }
 
   //EVOLUTION 2
+
   /**
    * Upgrade tech level of this Player
    */
@@ -170,18 +172,42 @@ public class Player implements Serializable {
    * each territory can produce a certain number of resources(food and money) each round
    */
   public void updatePlayerResource() {
-    for (Territory terr: territoryList) {
+    for (Territory terr : territoryList) {
       food.addResource(terr.produceFood().getQuantity());
       money.addResource(terr.productMoney().getQuantity());
     }
   }
 
+  /**
+   * getter of food quantity
+   * @return the player's food quantity
+   */
   public int getFoodQuantity() {
     return food.getQuantity();
   }
 
+  /**
+   * getter of food quantity
+   * @return the player's money quantity
+   */
   public int getMoneyQuantity() {
     return money.getQuantity();
+  }
+
+  /**
+   * set the player's food resources
+   * @param foodQuantity is the given food resource
+   */
+  public void setFoodQuantity(int foodQuantity) {
+    food.setResource(foodQuantity);
+  }
+
+  /**
+   * set the player's money resources
+   * @param moneyQuantity is the given money resource
+   */
+  public void setMoneyQuantity(int moneyQuantity) {
+    money.setResource(moneyQuantity);
   }
 
 }

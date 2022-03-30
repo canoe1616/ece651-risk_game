@@ -304,4 +304,8 @@ public class Territory implements Serializable {
   public HashMap<Integer, Unit> getAllUnits() {
     return units;
   }
+
+  public int getSize() {
+    return size;
+  }
 }
