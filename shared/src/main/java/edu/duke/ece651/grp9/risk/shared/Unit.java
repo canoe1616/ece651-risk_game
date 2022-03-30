@@ -14,17 +14,7 @@ public class Unit implements Serializable {
   private int numUnits;
   private int mockUnits;
   private int level;
-
-  public int getBonus() {
-    return bonus;
-  }
-
   private int bonus;
-
-  public int getUpgradeCost() {
-    return upgradeCost;
-  }
-
   private int upgradeCost;
 
   /**
@@ -80,6 +70,15 @@ public class Unit implements Serializable {
   }
 
   /**
+   * Getter for upgradeCost of this Unit level
+   *
+   * @return upgrade cost for this Unit level
+   */
+  public int getUpgradeCost() {
+    return upgradeCost;
+  }
+
+  /**
    * Setter for count of this Unit level
    *
    * @param numUnits int indicating amount of units of this Unit level
@@ -127,5 +126,9 @@ public class Unit implements Serializable {
 
   public int getLevel() {
     return level;
+  }
+
+  public int getBonus() {
+    return bonus;
   }
 }

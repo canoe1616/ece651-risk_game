@@ -105,7 +105,7 @@ public class TerritoryTest {
     t1.setUnits(3);
     assertEquals(t1.getUnits(0), 3);
 
-    t1.upgradeUnits(0, 3, 2);
+    t1.upgradeUnits(2, 0, 3);
     assertEquals(t1.getUnits(0), 1);
     assertEquals(t1.getUnits(3), 2);
   }

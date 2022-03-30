@@ -21,22 +21,18 @@ public abstract class RuleChecker {
   /**
    * Recursively checks if chain of rules are valid
    *
-   * @param player is the Player performing the Action
-   * @param source is the Territory we are moving units from
-   * @param destination is the Territory we are moving units to
-   * @param numUnits is the number of units we are moving from source to destination
-   * @param unitLevel is the Unit level we are performing action on
+   * @param action Action we are checking rules against
    * @return String description of error if invalid move, or null if okay
    */
-  public String checkAction(Player player, Territory source, Territory destination, int numUnits, int unitLevel) {
+  public String checkAction(Action action) {
     //if we fail our own rule: stop the move is not legal
-    String actionProblem = checkMyRule(player, source, destination, numUnits, unitLevel);
+    String actionProblem = checkMyRule(action);
     if (actionProblem != null) {
       return actionProblem;
     }
     //otherwise, ask the rest of the chain.
     if (next != null) {
-      return next.checkAction(player, source, destination, numUnits, unitLevel);
+      return next.checkAction(action);
     }
     //if there are no more rules, then the action is legal
     return null;
@@ -45,14 +41,10 @@ public abstract class RuleChecker {
   /**
    * Checks if this rule is valid
    *
-   * @param player is the Player performing the Action
-   * @param source is the Territory we are moving units from
-   * @param destination is the Territory we are moving units to
-   * @param numUnits is the number of units we are moving from source to destination
-   * @param unitLevel is the Unit level we are performing action on
+   * @param action Action we are checking rules against
    * @return String description of error if invalid move, or null if okay
    */
-  protected abstract String checkMyRule(Player player, Territory source, Territory destination, int numUnits, int unitLevel);
+  protected abstract String checkMyRule(Action action);
 }
 
 

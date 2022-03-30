@@ -50,14 +50,14 @@ class AttackActionTest {
         Player player = new Player("Luna");
         AttackAction attackAction = new AttackAction(player, src, dst,10);
 
-        assertEquals(10, attackAction.getAttackUnits());
+        assertEquals(10, attackAction.getNumUnits());
         assertEquals(dst, attackAction.getDestination());
         assertEquals(src, attackAction.getSource());
-        assertEquals(player, attackAction.getAttacker());
+        assertEquals(player, attackAction.getPlayer());
         assertTrue(attackAction.isSameOriAttack(attackAction));
 
         attackAction.setAttackUnits(20);
-        assertEquals(20, attackAction.getAttackUnits());
+        assertEquals(20, attackAction.getNumUnits());
     }
 
     @Test

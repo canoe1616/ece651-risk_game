@@ -52,7 +52,7 @@ public class AttackAction implements Action {
 
     @Override
     public String canPerformAction() {
-        return attackChecker.checkAction(attacker, source, destination, attackUnits, unitLevel);
+        return attackChecker.checkAction(this);
     }
 
     @Override
@@ -101,7 +101,7 @@ public class AttackAction implements Action {
      * get the unit numbers for attack
      * @return attack units
      */
-    public int getAttackUnits() {
+    public int getNumUnits() {
         return attackUnits;
     }
 
@@ -125,7 +125,7 @@ public class AttackAction implements Action {
      * get the attacker for the attack action
      * @return attacker
      */
-    public Player getAttacker() {
+    public Player getPlayer() {
         return attacker;
     }
 
@@ -147,6 +147,15 @@ public class AttackAction implements Action {
     }
 
     /**
+     * Getter for Unit end level
+     *
+     * @return int target level for Units performing Action
+     */
+    public int getEndLevel() {
+        return -1;
+    }
+
+    /**
      * check if attack is the same orig attack.
      * same origin attack: if player 1 attacks territory X with units from multiple
      * of her own territories, the attacks count as a single combined force.
@@ -154,7 +163,7 @@ public class AttackAction implements Action {
      * @return true if can be combined, false if cannot be combined
      */
     public boolean isSameOriAttack(AttackAction att) {
-        return this.attacker.equals(att.getAttacker()) && this.destination.equals(att.getDestination());
+        return this.attacker.equals(att.getPlayer()) && this.destination.equals(att.getDestination());
     }
 
     /**

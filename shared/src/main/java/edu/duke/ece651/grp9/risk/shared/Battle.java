@@ -47,16 +47,16 @@ public class Battle {
   public void addAttackAction(AttackAction oneAttack) {
     // Update the units in source defender.
     Territory source = oneAttack.getSource();
-    source.setUnits(source.getUnits(oneAttack.getUnitLevel()) - oneAttack.getAttackUnits(),
+    source.setUnits(source.getUnits(oneAttack.getUnitLevel()) - oneAttack.getNumUnits(),
         oneAttack.getUnitLevel());
-    source.setUnit(source.getUnit() - oneAttack.getAttackUnits());
+    source.setUnit(source.getUnit() - oneAttack.getNumUnits());
     // Add attack action to map
     Territory destination = oneAttack.getDestination();
     if (territoryUnderAttack.containsKey(destination)) {
       for (AttackAction att : territoryUnderAttack.get(destination)) {
         // combine attack actions from the same player of same tech level.
         if (att.isSameOriAttack(oneAttack) && oneAttack.getUnitLevel() == att.getUnitLevel()) {
-          att.setAttackUnits(att.getAttackUnits() + oneAttack.getAttackUnits());
+          att.setAttackUnits(att.getNumUnits() + oneAttack.getNumUnits());
           return;
         }
       }
@@ -78,9 +78,9 @@ public class Battle {
   private HashMap<Player, HashSet<AttackAction>> getAttacksByPlayer(HashSet<AttackAction> attacks ) {
     HashMap<Player, HashSet<AttackAction>> attacksByPlayer = new HashMap<>();
     for (AttackAction att: attacks) {
-      Player p = att.getAttacker();
+      Player p = att.getPlayer();
       if (attacksByPlayer.containsKey(p)) {
-        attacksByPlayer.get(att.getAttacker()).add(att);
+        attacksByPlayer.get(att.getPlayer()).add(att);
       } else {
         HashSet<AttackAction> attackActions = new HashSet<>();
         attackActions.add(att);
@@ -100,7 +100,7 @@ public class Battle {
       // a player starts a battle on a territory
       for (HashSet<AttackAction> attacks: attacksByPlayer.values()) {
         AttackAction attack = attacks.iterator().next();
-        Player attacker = attack.getAttacker();
+        Player attacker = attack.getPlayer();
         Player defender = attack.getDestination().getOwner();
         Territory destination = attack.getDestination();
         HashMap<Integer, Unit> defenderUnits = destination.getAllUnits();
@@ -119,7 +119,7 @@ public class Battle {
     HashMap<Integer, Unit> allAttacks = new HashMap<>();
     for (AttackAction att: attacks) {
       int level = att.getUnitLevel();
-      int attackUnitNum = att.getAttackUnits();
+      int attackUnitNum = att.getNumUnits();
       Territory terr = att.getSource();
       Unit unit = terr.getUnitClass(level);
       Unit unitAttack = new Unit(unit);
