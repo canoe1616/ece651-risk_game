@@ -115,6 +115,7 @@ public class UpgradeAction implements Action {
    */
   public void performAction() {
     source.upgradeUnits(numUnits, startLevel, endLevel); //EVOLUTION 2
+    player.setMoneyQuantity(player.getMoneyQuantity() - this.computeCost());
   }
 
   /**

@@ -32,6 +32,22 @@ public class MoveActionTest {
     assertEquals(t2.getUnits(0), 5);
   }
 
+  @Test
+  public void test_getSet() {
+    Player p1 = new Player("red");
+    Territory t1 = new Territory("Two Rivers");
+    t1.setOwner(p1);
+    t1.setUnits(5);
+
+    Territory t2 = new Territory("Tar Valon");
+    t2.setOwner(p1);
+    t2.setUnits(0);
+
+    MoveAction m1 = new MoveAction(p1, t1, t2, 5);
+
+    assertEquals(m1.getEndLevel(), -1);
+  }
+
   // 1: {1,2,3}
   // 2: {2,4}
   // 3: {1,4,5,6}

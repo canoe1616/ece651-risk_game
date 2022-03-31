@@ -26,6 +26,21 @@ class AttackActionTest {
         assertNotEquals(null, err);
     }
 
+    @Test
+    public void test_getSet() {
+        Player p1 = new Player("red");
+        Territory t1 = new Territory("Two Rivers");
+        t1.setOwner(p1);
+        t1.setUnits(5);
+
+        Territory t2 = new Territory("Tar Valon");
+        t2.setOwner(p1);
+        t2.setUnits(0);
+
+        AttackAction a1 = new AttackAction(p1, t1, t2, 5, 0);
+
+        assertEquals(a1.getEndLevel(), -1);
+    }
 
     @Test
     void canPerformAction_valid() {
