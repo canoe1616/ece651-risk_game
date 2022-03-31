@@ -240,7 +240,7 @@ public class App extends Application{
       InputStream inputStream = socket.getInputStream();
       ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
       //这里的myMap 只是一个全局变量;
-      Map myMap = (Map) objectInputStream.readObject();
+      Map myMap = (Map) objectInputStream.readObject(); // recv #001
       System.out.println("Receive Map form server.");
 
       //sent color

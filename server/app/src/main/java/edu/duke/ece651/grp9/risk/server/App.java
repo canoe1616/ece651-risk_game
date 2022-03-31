@@ -298,7 +298,6 @@ public class App {
         }
 
 
-
         //socket 是固定的一个
         //Q: 一个client 对应一个socket & multi-threads
 //        Socket socket = ss.accept();
@@ -324,7 +323,7 @@ public class App {
           socket = socketList.get(i);
           OutputStream outputStream = socket.getOutputStream();
           ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
-          objectOutputStream.writeObject(m);
+          objectOutputStream.writeObject(m); // send #001
           OutputList.add(objectOutputStream);
 
           InputStream inputStream = socket.getInputStream();
@@ -340,22 +339,18 @@ public class App {
           i++;
         }
  //for part 2 - for action part
-
+        while (){
         int j = 0;
-        while (j < player_num) {
 
-          ActionThread actionThread = new ActionThread(socket, ActionThreadList, m);
-
-
-          ActionThreadList.add(actionThread);
-        }
-//after all the actions, they should be merged
-
-
-        .join();
-        while(){
-          
-
+          while (j < player_num) {
+            //how to update
+            ActionThread actionThread = new ActionThread(socket, ActionThreadList, m, objectInputStream, objectOutputStream);
+            ActionThreadList.add(actionThread);
+            ActionThreadThread.start();
+            j++;
+            //after all the actions, they should be merged
+            ActionThread.join();
+          }
         }
 
 
