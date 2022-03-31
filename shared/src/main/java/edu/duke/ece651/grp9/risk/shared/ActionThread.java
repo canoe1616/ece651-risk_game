@@ -13,11 +13,11 @@ import java.util.Iterator;
 
 public class ActionThread extends Thread{
     private Socket socket;
-    private ArrayList<ServerThread> threadList;
+    private ArrayList<ActionThread> threadList;
     
     private static HashSet<String> remainingColors;
     private Map m;
-    public ActionThread(Socket socket, ArrayList<ServerThread> threads , Map m) {
+    public ActionThread(Socket socket, ArrayList<ActionThread> threads , Map m) {
         this.socket = socket;
         this.threadList = threads;
         this.m = m;

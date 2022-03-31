@@ -284,20 +284,27 @@ public class App {
       remainingColors.add(it.next().getName());
     }
 
-
+/******************************************************************************************************/
     ArrayList<ServerThread> serverThreadList = new ArrayList<>();
-    ArrayList<ServerThread> ActionThreadList = new ArrayList<>();
+    ArrayList<ActionThread> ActionThreadList = new ArrayList<>();
 
 
 
 
       try (ServerSocket ss = new ServerSocket(6666)) {
+        for (int i = 0; i < player_num; i++) {
+          Socket s = ss.accept();
+          socketList.add(s);
+        }
 
 
-        Socket socket = ss.accept();
-        //input outputStream, inputStream,
-        OutputStream outputStream = socket.getOutputStream();
-        ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
+
+        //socket 是固定的一个
+        //Q: 一个client 对应一个socket & multi-threads
+//        Socket socket = ss.accept();
+//        //input outputStream, inputStream,
+//        OutputStream outputStream = socket.getOutputStream();
+//        ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
 
 
 
@@ -311,12 +318,23 @@ public class App {
           //add the checker
 
 
-          objectOutputStream.reset();
+//          objectOutputStream.reset();
+//          objectOutputStream.writeObject(m);
+
+          socket = socketList.get(i);
+          OutputStream outputStream = socket.getOutputStream();
+          ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
           objectOutputStream.writeObject(m);
-          
+          OutputList.add(objectOutputStream);
+
           InputStream inputStream = socket.getInputStream();
           ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
-          ServerThread serverThread = new ServerThread(socket, serverThreadList, remainingColors,m);
+          InputList.add(objectInputStream);
+
+
+          InputStream inputStream = socket.getInputStream();
+          ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+          ServerThread serverThread = new ServerThread(socket, serverThreadList, remainingColors,m,objectInputStream,objectOutputStream);
           serverThreadList.add(serverThread);
           serverThread.start();
           i++;
@@ -326,10 +344,10 @@ public class App {
         int j = 0;
         while (j < player_num) {
 
-          ActionThread actionThread = new ActionThread(socket, serverThreadList, remainingColors,m);
+          ActionThread actionThread = new ActionThread(socket, ActionThreadList, m);
 
 
-          ActionThreadList.add()
+          ActionThreadList.add(actionThread);
         }
 //after all the actions, they should be merged
 
