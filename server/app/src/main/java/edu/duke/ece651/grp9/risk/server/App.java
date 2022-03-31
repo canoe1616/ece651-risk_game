@@ -287,7 +287,7 @@ public class App {
 /******************************************************************************************************/
     ArrayList<ServerThread> serverThreadList = new ArrayList<>();
     ArrayList<ActionThread> ActionThreadList = new ArrayList<>();
-
+    Socket socket = null;
 
 
 
@@ -332,8 +332,6 @@ public class App {
           InputList.add(objectInputStream);
 
 
-          InputStream inputStream = socket.getInputStream();
-          ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
           ServerThread serverThread = new ServerThread(socket, serverThreadList, remainingColors,m,objectInputStream,objectOutputStream);
           serverThreadList.add(serverThread);
           serverThread.start();
