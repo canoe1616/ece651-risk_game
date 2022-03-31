@@ -339,7 +339,8 @@ public class App {
           i++;
         }
  //for part 2 - for action part
-        while (){
+        //while the game is not over?
+        while (true){
         int j = 0;
 
           while (j < player_num) {

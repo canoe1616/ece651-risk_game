@@ -14,10 +14,12 @@ import java.util.Iterator;
 public class ServerThread extends Thread{
     private Socket socket;
     private ArrayList<ServerThread> threadList;
-    private PrintWriter output;
+    private ObjectInputStream objectInputStream;
+    private ObjectOutputStream objectOutputStream;
     private static HashSet<String> remainingColors;
     private Map m;
-    public ServerThread(Socket socket, ArrayList<ServerThread> threads, HashSet<String> tmp , Map m) {
+    public ServerThread(Socket socket, ArrayList<ServerThread> threads, HashSet<String> tmp , Map m\
+    ObjectInputStream objectInputStream, ObjectOutputStream objectOutputStream) {
         this.socket = socket;
         this.threadList = threads;
         remainingColors = tmp;

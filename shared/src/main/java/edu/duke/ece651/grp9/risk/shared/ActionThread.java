@@ -14,13 +14,17 @@ import java.util.Iterator;
 public class ActionThread extends Thread{
     private Socket socket;
     private ArrayList<ActionThread> threadList;
-    
+    private ObjectInputStream objectInputStream;
+    private ObjectOutputStream objectOutputStream;
     private static HashSet<String> remainingColors;
     private Map m;
-    public ActionThread(Socket socket, ArrayList<ActionThread> threads , Map m) {
+    public ActionThread(Socket socket, ArrayList<ActionThread> threads , Map m, \
+    ObjectInputStream objectInputStream, ObjectOutputStream objectOutputStream) {
         this.socket = socket;
         this.threadList = threads;
         this.m = m;
+        this.objectInputStream = objectInputStream;
+        this.objectOutputStream = objectOutputStream;
     }
 
     @Override
