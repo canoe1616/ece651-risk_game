@@ -74,11 +74,7 @@ public class ServerThread extends Thread{
         try{
             ActionRuleChecker tmp = new ActionRuleChecker();
             //send map object
-            OutputStream outputStream = socket.getOutputStream();
-            ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
-            objectOutputStream.writeObject(m);
-            InputStream inputStream = socket.getInputStream();
-            ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+            
             //check if the color selection is valid -- [done]
             String color = "";
             color = remainingColors.iterator().next();

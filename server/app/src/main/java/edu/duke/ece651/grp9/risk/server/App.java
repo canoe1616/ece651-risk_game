@@ -9,6 +9,11 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.io.IOException;
 
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
+
 import edu.duke.ece651.grp9.risk.shared.*;
 import edu.duke.ece651.grp9.risk.shared.Map;
 
@@ -16,7 +21,6 @@ public class App {
 
   private static HashSet<String> remainingColors;
   private static HashMap<String, String> userPassPairs;
-
   private static ArrayList<Socket> socketList;
   private static ArrayList<String> playerList;
   private static ArrayList<ObjectInputStream> InputList;
@@ -285,17 +289,39 @@ public class App {
 
 
       try (ServerSocket ss = new ServerSocket(6666)) {
-        while (true) {
+        int i = 0;
+        
+
+
+
+
+        while (i < player_num) {
           //add the checker
           Socket socket = ss.accept();
+          //input outputStream, inputStream,
+          OutputStream outputStream = socket.getOutputStream();
+          ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
+          objectOutputStream.writeObject(m);
+          
+          InputStream inputStream = socket.getInputStream();
+          ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
           ServerThread serverThread = new ServerThread(socket, threadList, remainingColors,m);
           threadList.add(serverThread);
           serverThread.start();
+          i++;
         }
+        while (i < player_num) {
+          threadList[i].join();
+        }
+        while(){
+          
+
+        }
+
+
       } catch (Exception e) {
         System.out.println(e);
       }
-
   }
 }
 
