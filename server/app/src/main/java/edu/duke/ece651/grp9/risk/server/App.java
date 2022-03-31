@@ -285,34 +285,56 @@ public class App {
     }
 
 
-    ArrayList<ServerThread> threadList = new ArrayList<>();
+    ArrayList<ServerThread> serverThreadList = new ArrayList<>();
+    ArrayList<ServerThread> ActionThreadList = new ArrayList<>();
+
+
 
 
       try (ServerSocket ss = new ServerSocket(6666)) {
+
+
+        Socket socket = ss.accept();
+        //input outputStream, inputStream,
+        OutputStream outputStream = socket.getOutputStream();
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
+
+
+
         int i = 0;
         
 
 
 
-
+//for part 1 - initial placement
         while (i < player_num) {
           //add the checker
-          Socket socket = ss.accept();
-          //input outputStream, inputStream,
-          OutputStream outputStream = socket.getOutputStream();
-          ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
+
+
+          objectOutputStream.reset();
           objectOutputStream.writeObject(m);
           
           InputStream inputStream = socket.getInputStream();
           ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
-          ServerThread serverThread = new ServerThread(socket, threadList, remainingColors,m);
-          threadList.add(serverThread);
+          ServerThread serverThread = new ServerThread(socket, serverThreadList, remainingColors,m);
+          serverThreadList.add(serverThread);
           serverThread.start();
           i++;
         }
-        while (i < player_num) {
-          threadList[i].join();
+ //for part 2 - for action part
+
+        int j = 0;
+        while (j < player_num) {
+
+          ActionThread actionThread = new ActionThread(socket, serverThreadList, remainingColors,m);
+
+
+          ActionThreadList.add()
         }
+//after all the actions, they should be merged
+
+
+        .join();
         while(){
           
 
