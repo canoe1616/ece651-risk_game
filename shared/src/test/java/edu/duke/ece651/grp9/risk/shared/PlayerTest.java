@@ -100,6 +100,11 @@ public class PlayerTest {
     player.updatePlayerResource();
     assertEquals(700, player.getFoodQuantity());
     assertEquals(600, player.getMoneyQuantity());
-  }
 
+    player.setFoodQuantity(500);
+    player.setMoneyQuantity(400);
+
+    assertEquals(500, player.getFoodQuantity());
+    assertEquals(400, player.getMoneyQuantity());
+  }
 }

@@ -49,6 +49,7 @@ public class ActionRuleCheckerTest {
     String error1 = "The input is invalid: Input must only be numbers.";
     String error2 = "The input is invalid: Must enter 3 separate numbers.";
     String error3 = "This input is invalid: Sum of units must equal 30.";
+    String error4 = "The input is invalid: Territory cannot have negative units.";
 
     assertEquals(tmp.checkUnit("15 5 ",a), error2);
     assertEquals(tmp.checkUnit("15 5 10 ",a), null);
@@ -56,5 +57,6 @@ public class ActionRuleCheckerTest {
     assertEquals(tmp.checkUnit(" 15 5 10",a), error2);
     assertEquals(tmp.checkUnit("16 5 10",a), error3);
     assertEquals(tmp.checkUnit(" ", a), error2);
+    assertEquals(tmp.checkUnit("-1 30 1", a), error4);
   }
 }

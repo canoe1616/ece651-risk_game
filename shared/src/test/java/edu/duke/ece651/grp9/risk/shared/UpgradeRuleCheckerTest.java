@@ -33,5 +33,9 @@ public class UpgradeRuleCheckerTest {
 
     assertEquals(t1.getUnits(0), 2);
     assertEquals(t1.getUnits(1), 3);
+
+    String error2 = "This action is invalid: Unit can only increase in level.";
+    UpgradeAction u2 = new UpgradeAction(p1, t1, 3, 1 ,1);
+    assertEquals(error2, ruleChecker.checkMyRule(u2));
   }
 }
