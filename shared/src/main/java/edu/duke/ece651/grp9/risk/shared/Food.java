@@ -16,4 +16,9 @@ public class Food implements Resource {
     public void addResource(int addFoodQuantity){
         this.quantity = this.quantity + addFoodQuantity;
     }
+
+    @Override
+    public void setResource(int foodQuantity) {
+        this.quantity = foodQuantity;
+    }
 }

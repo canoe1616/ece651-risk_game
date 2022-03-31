@@ -1,5 +1,9 @@
 package edu.duke.ece651.grp9.risk.shared;
 
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Queue;
+
 /**
  * Class to handle Move Action
  *
@@ -117,5 +121,44 @@ public class MoveAction implements Action {
   public void performAction() {
     source.moveUnits(destination, numUnits);
     source.moveUnits(destination, numUnits, unitLevel); //EVOLUTION 2
+
+    // TODO: update food resource here? is it correct?
+    player.setFoodQuantity(player.getFoodQuantity() - this.computeCost());
+  }
+
+  /**
+   * compute the lowest cost for moving units
+   * cost =  unitsNum * passing territories' size
+   * @return
+   */
+  // TODO: now the assumption is all territories have the same size, can use bfs
+  // may need use Dijkstra’s Algorithm if territory has different size
+  public int computeCost() {
+    int passTerrSize = 0;
+    boolean found = false;
+    // bfs for shortest path
+    Queue<Territory> queue = new LinkedList<Territory>();
+    HashSet<Territory> visited = new HashSet<Territory>();
+    queue.add(source);
+    visited.add(source);
+    while (!queue.isEmpty()) {
+      passTerrSize += queue.peek().getSize();
+      int sz = queue.size();
+      for (int i = 0; i < sz; i++) {
+        Territory front = queue.poll();
+        if (front.equals(destination)) {
+          found = true;
+          break;
+        }
+        for (Territory t : front.getNeighbors()) {
+          if (t.getOwner().equals(player) && !visited.contains(t)) {
+            queue.add(t);
+            visited.add(source);
+          }
+        }
+      }
+      if (found) break;
+    }
+    return passTerrSize * numUnits;
   }
 }

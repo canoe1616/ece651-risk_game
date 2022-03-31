@@ -177,4 +177,12 @@ public class AttackAction implements Action {
     public void setAttackUnits(int units) {
         this.attackUnits = units;
     }
+
+    /**
+     * cost 1 food per attack unit
+     * @return the # of food consumption
+     */
+    public int computeCost() {
+        return attackUnits;
+    }
 }
