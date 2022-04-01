@@ -302,16 +302,21 @@ public class App {
           InputList.add(objectInputStream);
 
 
-          ServerThread serverThread = new ServerThread(socket, serverThreadList, remainingColors,m,objectInputStream,objectOutputStream);
+          ServerThread serverThread = new ServerThread(socket, serverThreadList, m,objectInputStream,objectOutputStream, remainingColors.get(i));
           serverThreadList.add(serverThread);
           serverThread.start();
           i++;
+          System.out.print("i is " + i);
         }
 
 
+        System.out.println("第一个unit setting 的部分结束了");
 
+//
         for(int n = 0 ; n < serverThreadList.size();++n){
-          serverThreadList.get(n).stop();
+          System.out.println("server thread join");
+
+          serverThreadList.get(n).join();
         }
 
 

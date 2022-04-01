@@ -98,7 +98,7 @@ public class App extends Application{
     //get prompt and print it
     try {
       String unitPrompt = (String) inStream.readObject();
-      System.out.println("看看是不是这行print 出来的颜色："+unitPrompt);
+      System.out.println("unitPrompt是否有被打印出来："+unitPrompt);
     } catch (Exception exception) {
       System.out.println(exception.getMessage());
     }

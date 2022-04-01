@@ -18,14 +18,16 @@ public class ServerThread extends Thread{
     private ObjectOutputStream objectOutputStream;
     private ArrayList<String> remainingColors;
     private Map m;
-    public ServerThread(Socket socket, ArrayList<ServerThread> threads, ArrayList<String> tmp , Map m,
-    ObjectInputStream objectInputStream, ObjectOutputStream objectOutputStream) {
+    private String color;
+    public ServerThread(Socket socket, ArrayList<ServerThread> threads, Map m,
+    ObjectInputStream objectInputStream, ObjectOutputStream objectOutputStream, String color) {
         this.socket = socket;
         this.threadList = threads;
-        remainingColors = tmp;
+       // remainingColors = tmp;
         this.m = m;
         this.objectInputStream = objectInputStream;
         this.objectOutputStream = objectOutputStream;
+        this.color = color;
     }
     @Override
     public void run() {
@@ -35,11 +37,7 @@ public class ServerThread extends Thread{
             //send map object
             
             //check if the color selection is valid -- [done]
-            String color = "";
-            for(int i = 0 ; i < remainingColors.size();++i){
-                color = remainingColors.get(i);
-                objectOutputStream.writeObject(color);
-            }
+            objectOutputStream.writeObject(color);
 
 
 
@@ -55,22 +53,22 @@ public class ServerThread extends Thread{
                 // add the checker
                 while(tmp.checkUnit(unitString, gamePlay.findPlayer(color, m)) != null){
                     //debug
-                    System.out.print(unitString);
+                    System.out.print("是否进入到了unit报错环节" + unitString);
                     unit_correct = "false";
+                    objectOutputStream.reset();
                     objectOutputStream.writeObject("false");
                     unitString = (String)objectInputStream.readObject();
                 }
                 //
                 if(tmp.checkUnit(unitString, gamePlay.findPlayer(color, m)) == null) {
                     unit_correct = "true";
+                    objectOutputStream.reset();
                     objectOutputStream.writeObject(unit_correct);
+                    System.out.print("server thread 结束了");
                     break;
                 }
             }
-            //send map from the client to the server
 
-
-            socket.close();
         }
         catch(Exception e){
             System.out.println("Error occured " + e.getMessage());
