@@ -16,84 +16,44 @@ public class ServerThread extends Thread{
     private ArrayList<ServerThread> threadList;
     private ObjectInputStream objectInputStream;
     private ObjectOutputStream objectOutputStream;
-    private static HashSet<String> remainingColors;
+    private ArrayList<String> remainingColors;
     private Map m;
-    public ServerThread(Socket socket, ArrayList<ServerThread> threads, HashSet<String> tmp , Map m\
+    public ServerThread(Socket socket, ArrayList<ServerThread> threads, ArrayList<String> tmp , Map m,
     ObjectInputStream objectInputStream, ObjectOutputStream objectOutputStream) {
         this.socket = socket;
         this.threadList = threads;
         remainingColors = tmp;
         this.m = m;
-    }
-    public void selectColor(ObjectOutputStream stream) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Please select what color you would like to play as: ");
-        for (String color : remainingColors) {
-            sb.append(color + " ");
-        }
-        try {
-            stream.writeObject(sb.toString());
-        } catch(Exception e) {
-            System.out.println(e);
-        }
-    }
-    public boolean deleteColor(String color){
-        for (String c : remainingColors) {
-            if(c.equals(color)){
-                remainingColors.remove(color);
-                return true;
-            }
-        }
-        return false;
-    }
-    public void unitSetting(ObjectOutputStream stream, Player player){
-        StringBuilder sb = new StringBuilder();
-        sb.append("You have " + player.getTerritoryNumber()+ " territories: ");
-        for(Territory ter : player.getTerritoryList()){
-            sb.append(ter.getName()+ " ");
-        }
-        sb.append("\n");
-        sb.append("You have 30 total units, how do you want to place the units?");
-        try {
-            stream.writeObject(sb.toString());
-        } catch(Exception e) {
-            System.out.println(e);
-        }
-    }
-    public Player findPlayer(String color, Map m){
-        HashSet<Player> list = m.getPlayer();
-        Iterator<Player> it = list.iterator();
-        while(it.hasNext()){
-            Player pyr = it.next();
-            if(pyr.getName().equals(color)){
-                return pyr;
-            }
-        }
-        return null;
+        this.objectInputStream = objectInputStream;
+        this.objectOutputStream = objectOutputStream;
     }
     @Override
     public void run() {
+        GamePlay gamePlay =new GamePlay();
         try{
             ActionRuleChecker tmp = new ActionRuleChecker();
             //send map object
             
             //check if the color selection is valid -- [done]
             String color = "";
-            color = remainingColors.iterator().next();
-            objectOutputStream.writeObject(color);
-            deleteColor(color);
+            for(int i = 0 ; i < remainingColors.size();++i){
+                color = remainingColors.get(i);
+                objectOutputStream.writeObject(color);
+            }
+
+
 
 
             //read unit assignment
 
-            unitSetting(objectOutputStream, findPlayer(color, m));
+            gamePlay.unitSetting(objectOutputStream, gamePlay.findPlayer(color, m));
             String unitString = "";
             while(true){
                 String unit_correct = "true";
                 unitString = (String)objectInputStream.readObject();
                 System.out.print("server端接收到的unitString是：" + unitString);
                 // add the checker
-                while(tmp.checkUnit(unitString, findPlayer(color, m)) != null){
+                while(tmp.checkUnit(unitString, gamePlay.findPlayer(color, m)) != null){
                     //debug
                     System.out.print(unitString);
                     unit_correct = "false";
@@ -101,7 +61,7 @@ public class ServerThread extends Thread{
                     unitString = (String)objectInputStream.readObject();
                 }
                 //
-                if(tmp.checkUnit(unitString, findPlayer(color, m)) == null) {
+                if(tmp.checkUnit(unitString, gamePlay.findPlayer(color, m)) == null) {
                     unit_correct = "true";
                     objectOutputStream.writeObject(unit_correct);
                     break;

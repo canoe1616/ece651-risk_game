@@ -19,7 +19,7 @@ import edu.duke.ece651.grp9.risk.shared.Map;
 
 public class App {
 
-  private static HashSet<String> remainingColors;
+  private static ArrayList<String> remainingColors;
   private static HashMap<String, String> userPassPairs;
   private static ArrayList<Socket> socketList;
   private static ArrayList<String> playerList;
@@ -28,7 +28,7 @@ public class App {
 
 
   public App(Map m) {
-    remainingColors = new HashSet<>();
+    remainingColors = new ArrayList<>();
     Iterator<Player> it = m.getPlayer().iterator();
     while (it.hasNext()) {
       remainingColors.add(it.next().getName());
@@ -39,36 +39,6 @@ public class App {
     OutputList = new ArrayList<ObjectOutputStream>();
   }
 
-  /**
-   * Allows client to select they color they want to play as
-   *
-   * @param stream socket connection to client from server
-   */
-  public void selectColor(ObjectOutputStream stream) {
-    StringBuilder sb = new StringBuilder();
-    sb.append("Please select what color you would like to play as: ");
-    for (String color : remainingColors) {
-      sb.append(color + " ");
-    }
-    try {
-      stream.writeObject(sb.toString());
-    } catch (Exception e) {
-      System.out.println(e);
-    }
-  }
-
-  /**
-   * Removes a color from remainingColors
-   */
-  public boolean deleteColor(String color) {
-    for (String c : remainingColors) {
-      if (c.equals(color)) {
-        remainingColors.remove(color);
-        return true;
-      }
-    }
-    return false;
-  }
 
 
   public void unitSetting(ObjectOutputStream stream, Player player) {
@@ -94,7 +64,7 @@ public class App {
    * @param m     Map we are searching for Player
    * @return returns null if no Player found, returns Player if found
    */
-  public Player findPlayer(String color, Map m) {
+  public static Player findPlayer(String color, Map m) {
     HashSet<Player> list = m.getPlayer();
     Iterator<Player> it = list.iterator();
     while (it.hasNext()) {
@@ -262,6 +232,7 @@ public class App {
 
   //boolean
   public static <objectInputStream> void main(String[] args) {
+
     //no multi-threads the server should enter the number of players
     System.out.println("Please input the number of players you want, and should be 2-5");
     BufferedReader inputSource = new BufferedReader(new InputStreamReader(System.in));
@@ -278,7 +249,10 @@ public class App {
     //remaining color 必须要是全局变量
     MapFactory f = new MapFactory();
     Map m = f.makeMap(player_num);
-    remainingColors = new HashSet<>();
+    App app = new App(m);
+
+
+    remainingColors = new ArrayList<>();
     Iterator<Player> it = m.getPlayer().iterator();
     while(it.hasNext()){
       remainingColors.add(it.next().getName());
@@ -288,7 +262,7 @@ public class App {
     ArrayList<ServerThread> serverThreadList = new ArrayList<>();
     ArrayList<ActionThread> ActionThreadList = new ArrayList<>();
     Socket socket = null;
-
+    GamePlay gamePlay = new GamePlay();
 
 
       try (ServerSocket ss = new ServerSocket(6666)) {
@@ -333,6 +307,14 @@ public class App {
           serverThread.start();
           i++;
         }
+
+
+
+        for(int n = 0 ; n < serverThreadList.size();++n){
+          serverThreadList.get(n).stop();
+        }
+
+
  //for part 2 - for action part
         //while the game is not over?
         while (true){
@@ -340,12 +322,14 @@ public class App {
 
           while (j < player_num) {
             //how to update
-            ActionThread actionThread = new ActionThread(socket, ActionThreadList, m, objectInputStream, objectOutputStream);
+            ActionThread actionThread = new ActionThread(m, InputList.get(j), OutputList.get(j),gamePlay.findPlayer(remainingColors.get(j),m));
             ActionThreadList.add(actionThread);
-            ActionThreadThread.start();
+            actionThread.start();
             j++;
-            //after all the actions, they should be merged
-            ActionThread.join();
+          }
+          //after all the actions, they should be merged
+          for(int k = 0 ; k < ActionThreadList.size();++j){
+            ActionThreadList.get(k).join();
           }
         }
 
