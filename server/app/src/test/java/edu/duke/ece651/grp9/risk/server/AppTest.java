@@ -38,64 +38,64 @@ class AppTest {
   //only have to receive and make sure it is expected - don't worry about what is sent
   //server we mimic client side inside thread and create server socket first outside thread
   //set up byte array to receive outcome
-  @Test
-  @Timeout(5)
-  public void test_selectColor() throws IOException, InterruptedException, ClassNotFoundException {
-    ServerSocket ss = new ServerSocket(6666);
-    MapFactory factory = new MapFactory();
-    Map map = factory.makeMapForTwo();
-    App app1 = new App(map);
-
-    Thread th = new Thread() {
-      @Override()
-      public void run() {
-        try {
-          Socket client = new Socket("localhost", 6666);
-
-          OutputStream outputStream = client.getOutputStream();
-          ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
-
-          //String message = (String) objectInputStream.readObject();
-          System.out.println("Sending red");
-
-          objectOutputStream.writeObject("red");
-
-          InputStream inputStream = client.getInputStream();
-          ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
-
-          String receive = (String) objectInputStream.readObject();
-
-          String expected = "Please select what color you would like to play as: red blue ";
-          assertEquals(receive, expected);
-
-        } catch (Exception e) {
-          System.out.println("Connection error.");
-        }
-      }
-    };
-    th.start();
-    Thread.sleep(1000);
-
-    //create new socket
-    Socket s = ss.accept();
-    System.out.println("connection");
-
-    InputStream inputStream = s.getInputStream();
-    ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
-    OutputStream outputStream = s.getOutputStream();
-    ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
-
-
-    app1.selectColor(objectOutputStream);
-    System.out.println("Receiving red");
-    String color = (String)objectInputStream.readObject();
-
-    assertEquals(color, "red");
-
-    th.interrupt();
-    th.join();
-    ss.close();
-  }
+//  @Test
+//  @Timeout(5)
+//  public void test_selectColor() throws IOException, InterruptedException, ClassNotFoundException {
+//    ServerSocket ss = new ServerSocket(6666);
+//    MapFactory factory = new MapFactory();
+//    Map map = factory.makeMapForTwo();
+//    App app1 = new App(map);
+//
+//    Thread th = new Thread() {
+//      @Override()
+//      public void run() {
+//        try {
+//          Socket client = new Socket("localhost", 6666);
+//
+//          OutputStream outputStream = client.getOutputStream();
+//          ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
+//
+//          //String message = (String) objectInputStream.readObject();
+//          System.out.println("Sending red");
+//
+//          objectOutputStream.writeObject("red");
+//
+//          InputStream inputStream = client.getInputStream();
+//          ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+//
+//          String receive = (String) objectInputStream.readObject();
+//
+//          String expected = "Please select what color you would like to play as: red blue ";
+//          assertEquals(receive, expected);
+//
+//        } catch (Exception e) {
+//          System.out.println("Connection error.");
+//        }
+//      }
+//    };
+//    th.start();
+//    Thread.sleep(1000);
+//
+//    //create new socket
+//    Socket s = ss.accept();
+//    System.out.println("connection");
+//
+//    InputStream inputStream = s.getInputStream();
+//    ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+//    OutputStream outputStream = s.getOutputStream();
+//    ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
+//
+//
+//    app1.selectColor(objectOutputStream);
+//    System.out.println("Receiving red");
+//    String color = (String)objectInputStream.readObject();
+//
+//    assertEquals(color, "red");
+//
+//    th.interrupt();
+//    th.join();
+//    ss.close();
+//  }
 
   @Test
   public void test_unitSetting() throws InterruptedException, IOException {
@@ -153,16 +153,16 @@ class AppTest {
     assertEquals(app.findPlayer("yellow", map), null);
   }
 
-  @Test
-  public void test_deleteColor() {
-    MapFactory factory = new MapFactory();
-    Map map = factory.makeMapForTwo();
-    App app = new App(map);
-
-    assertTrue(app.deleteColor("red"));
-    assertFalse(app.deleteColor("yellow"));
-    assertTrue(app.deleteColor("blue"));
-  }
+//  @Test
+//  public void test_deleteColor() {
+//    MapFactory factory = new MapFactory();
+//    Map map = factory.makeMapForTwo();
+//    App app = new App(map);
+//
+//    assertTrue(app.deleteColor("red"));
+//    assertFalse(app.deleteColor("yellow"));
+//    assertTrue(app.deleteColor("blue"));
+//  }
 
   @Test
   public void test_playerUnitSetting() {
