@@ -20,13 +20,19 @@ class MapTextViewTest {
         String exp =
                 "blue Player:\n" +
                         "----------------------------------\n" +
-                       "10 level0 units, 0 level1 units, 0 level2 units, 0 level3 units, 0 level4 units, 0 level5 units, 0 level6 units in C(next to: A, D)\n" +
-                        "10 level0 units, 0 level1 units, 0 level2 units, 0 level3 units, 0 level4 units, 0 level5 units, 0 level6 units in D(next to: B, C)\n" +
+                        "10(l-0), 0(l-1), 0(l-2), 0(l-3), 0(l-4), 0(l-5), 0(l-6) units in C(next to: A, D)\n" +
+                        "10(l-0), 0(l-1), 0(l-2), 0(l-3), 0(l-4), 0(l-5), 0(l-6) units in D(next to: B, C)\n" +
+                        "Remaining food: 500\n" +
+                        "Remaining money: 500\n" +
+                        "You tech level: 0\n" +
                         "\n" +
                         "red Player:\n" +
                         "----------------------------------\n" +
-                        "10 level0 units, 0 level1 units, 0 level2 units, 0 level3 units, 0 level4 units, 0 level5 units, 0 level6 units in A(next to: B, C)\n" +
-                        "10 level0 units, 0 level1 units, 0 level2 units, 0 level3 units, 0 level4 units, 0 level5 units, 0 level6 units in B(next to: A, D)\n\n";
+                        "10(l-0), 0(l-1), 0(l-2), 0(l-3), 0(l-4), 0(l-5), 0(l-6) units in A(next to: B, C)\n" +
+                        "10(l-0), 0(l-1), 0(l-2), 0(l-3), 0(l-4), 0(l-5), 0(l-6) units in B(next to: A, D)\n" +
+                        "Remaining food: 500\n" +
+                        "Remaining money: 500\n" +
+                        "You tech level: 0\n\n";
           /*
                         "You are the red Player, what would you like to do?\n" +
                         " (M)ove\n" +
@@ -50,7 +56,10 @@ class MapTextViewTest {
         String exp = "end_game = win\n" +
                 "blue Player:\n" +
                 "----------------------------------\n" +
-                "15 level0 units, 0 level1 units, 0 level2 units, 0 level3 units, 0 level4 units, 0 level5 units, 0 level6 units in NC(next to)\n" +
+                "15(l-0), 0(l-1), 0(l-2), 0(l-3), 0(l-4), 0(l-5), 0(l-6) units in NC(next to)\n" +
+                "Remaining food: 500\n" +
+                "Remaining money: 500\n" +
+                "You tech level: 0\n" +
                 "\n" +
                 "\n" +
                 "Congratulations! You win the game!\n";
@@ -69,6 +78,9 @@ class MapTextViewTest {
         String exp = "end_game = game over\n" +
                 "blue Player:\n" +
                 "----------------------------------\n" +
+                "Remaining food: 500\n" +
+                "Remaining money: 500\n" +
+                "You tech level: 0\n" +
                 "\n" +
                 "\n" +
                 "The game is over now.\n";
