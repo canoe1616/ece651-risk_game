@@ -57,18 +57,22 @@ public class MapTextView {
             for (String terrName : getSortedTerr(p.getTerritoryList())) {
                 Territory ter = toDisplay.findTerritory(terrName);
                 for (int i = 0; i <= 6; i++) {
-                    ans += ter.getUnits(i) + " level" + i + " units, ";
+                    ans += ter.getUnits(i) + "(l-" + i + "), ";
                 }
                 ans = ans.substring(0, ans.length() - 2);
-                ans += " in " + terrName + "(next to: ";
+                ans += " units in " + terrName + "(next to: ";
                 for (String s : getSortedTerr(ter.getNeighbors())) {
                     ans += s + ", ";
                 }
                 ans = ans.substring(0, ans.length() - 2);
                 ans += ")\n";
             }
+            ans += "Remaining food: " + p.getFoodQuantity() + "\n";
+            ans += "Remaining money: " + p.getMoneyQuantity() + "\n";
+            ans += "You tech level: " + p.getTechLevel() + "\n";
             ans += "\n";
         }
+
         /*
         ans += "You are the " + player.getName() + " Player, what would you like to do?\n" +
                 " (M)ove\n" + " (A)ttack\n" + " (D)one\n";
