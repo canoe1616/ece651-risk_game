@@ -25,6 +25,9 @@ public class App {
   private static ArrayList<String> playerList;
   private static ArrayList<ObjectInputStream> InputList;
   private static ArrayList<ObjectOutputStream> OutputList;
+  private static HashSet<MoveAction> allMoves = new HashSet<>();
+  private static HashSet<AttackAction> allAttack = new HashSet<>();
+
 
 
   public App(Map m) {
@@ -37,6 +40,8 @@ public class App {
     playerList = new ArrayList<String>();
     InputList = new ArrayList<ObjectInputStream>();
     OutputList = new ArrayList<ObjectOutputStream>();
+    allMoves = new HashSet<MoveAction>();
+    allAttack = new HashSet<AttackAction>();
   }
 
 
@@ -323,24 +328,46 @@ public class App {
 
  //for part 2 - for action part
         //while the game is not over?
-        while (true){
-        int j = 0;
+        while (true) {
+          int j = 0;
+          while (m.getGameWinner() == null) {
 
-          while (j < player_num) {
-            //how to update
-            OutputList.get(j).reset();
-            OutputList.get(j).writeObject(m);
-            OutputList.get(j).reset();
-            OutputList.get(j).writeObject("keep going");
 
-            ActionThread actionThread = new ActionThread(m, InputList.get(j), OutputList.get(j),gamePlay.findPlayer(remainingColors.get(j),m));
-            ActionThreadList.add(actionThread);
-            actionThread.start();
-            j++;
-          }
-          //after all the actions, they should be merged
-          for(int k = 0 ; k < ActionThreadList.size();++j){
-            ActionThreadList.get(k).join();
+            while (j < player_num) {
+              //how to update
+              OutputList.get(j).reset();
+              OutputList.get(j).writeObject(m);
+              OutputList.get(j).reset();
+              OutputList.get(j).writeObject("keep going");
+
+              String action = (String) InputList.get(j).readObject();
+              findPlayer(remainingColors.get(j), m).setLoseStatus(action);
+
+
+              ActionThread actionThread = new ActionThread(m, InputList.get(j), OutputList.get(j), gamePlay.findPlayer(remainingColors.get(j), m),allMoves,allAttack);
+              ActionThreadList.add(actionThread);
+              actionThread.start();
+              allMoves = actionThread.allMoves;
+              allAttack = actionThread.allAttack;
+              j++;
+            }
+            //after all the actions, they should be merged
+            for (int k = 0; k < ActionThreadList.size(); ++k) {
+              ActionThreadList.get(k).join();
+            }
+            j =0;
+            System.out.println("在这一个round perform action");
+            for (MoveAction act : allMoves) {
+              act.performAction();
+            }
+            allMoves.clear();
+            //real execute for te attack action
+            app.playAttacks(m, allAttack);
+            allAttack.clear();
+            for (Territory territory : m.getList()) {
+              territory.addUnit();
+            }
+
           }
         }
 
