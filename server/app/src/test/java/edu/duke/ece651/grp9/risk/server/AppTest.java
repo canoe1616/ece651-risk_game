@@ -153,16 +153,7 @@ class AppTest {
     assertEquals(app.findPlayer("yellow", map), null);
   }
 
-//  @Test
-//  public void test_deleteColor() {
-//    MapFactory factory = new MapFactory();
-//    Map map = factory.makeMapForTwo();
-//    App app = new App(map);
-//
-//    assertTrue(app.deleteColor("red"));
-//    assertFalse(app.deleteColor("yellow"));
-//    assertTrue(app.deleteColor("blue"));
-//  }
+
 
   @Test
   public void test_playerUnitSetting() {

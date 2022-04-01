@@ -67,6 +67,7 @@ public class ServerThread extends Thread{
                     objectOutputStream.reset();
                     objectOutputStream.writeObject(unit_correct);
                     System.out.print("server thread 结束了");
+                    gamePlay.playerUnitSetting(unitString, gamePlay.findPlayer(color, m));
                     break;
                 }
             }
