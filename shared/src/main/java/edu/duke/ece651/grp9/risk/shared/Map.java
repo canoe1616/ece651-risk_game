@@ -126,7 +126,6 @@ public class Map implements Serializable{
       ter.setUnits(ter.getUnits(0)+1, 0);
       ter.setUnit(ter.getUnit() + 1);
     }
-
     for (Player player: players) {
       player.updatePlayerResource();
     }

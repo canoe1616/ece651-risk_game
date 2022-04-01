@@ -6,6 +6,7 @@ import java.io.ObjectOutputStream;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.TreeSet;
 
 public class GamePlay {
   private HashMap<String, String> userPassPairs;
@@ -13,7 +14,6 @@ public class GamePlay {
     this.userPassPairs = new HashMap<String, String>();
   }
 
-  
   /**
    * Set units for player's Territories based on input from Client
    *
@@ -34,7 +34,6 @@ public class GamePlay {
 
   
   public void unitSetting(ObjectOutputStream stream, Player player) {
-
     StringBuilder sb = new StringBuilder();
     sb.append("You have " + player.getTerritoryNumber() + " territories: ");
     for (Territory ter : player.getTerritoryList()) {
@@ -138,7 +137,6 @@ public class GamePlay {
     }
 
     return new UpgradeAction(player, source, numUnits, unitLevelStart, unitLevelEnd);
-
   }
 
   /**
@@ -245,6 +243,18 @@ public class GamePlay {
       battle.addAttackAction(att);
     }
     battle.playBattlePhase();
+  }
+
+  public void playMoves(HashSet<MoveAction> moves) {
+    for (MoveAction move : moves) {
+      move.performAction();
+    }
+  }
+
+  public void playUpgrades(HashSet<UpgradeAction> allUpgrades) {
+    for (UpgradeAction upgrade: allUpgrades) {
+      upgrade.performAction();
+    }
   }
 
   /**

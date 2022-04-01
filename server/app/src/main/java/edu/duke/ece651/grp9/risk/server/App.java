@@ -44,207 +44,8 @@ public class App {
     allUpgrades = new HashSet<UpgradeAction>();
   }
 
-
-//
-//  public void unitSetting(ObjectOutputStream stream, Player player) {
-//
-//    StringBuilder sb = new StringBuilder();
-//    sb.append("You have " + player.getTerritoryNumber() + " territories: ");
-//    for (Territory ter : player.getTerritoryList()) {
-//      sb.append(ter.getName() + " ");
-//    }
-//    sb.append("\n");
-//    sb.append("You have 30 total units, how do you want to place the units?");
-//    try {
-//      stream.writeObject(sb.toString());
-//    } catch (Exception e) {
-//      System.out.println(e);
-//    }
-//  }
-//
-//  /**
-//   * Find Player bin map based on color input
-//   *
-//   * @param color String color input
-//   * @param m     Map we are searching for Player
-//   * @return returns null if no Player found, returns Player if found
-//   */
-//  public static Player findPlayer(String color, Map m) {
-//    HashSet<Player> list = m.getPlayer();
-//    Iterator<Player> it = list.iterator();
-//    while (it.hasNext()) {
-//      Player pyr = it.next();
-//      if (pyr.getName().equals(color)) {
-//        return pyr;
-//      }
-//    }
-//    return null;
-//  }
-//
-//  /**
-//   * Set units for player's Territories based on input from Client
-//   *
-//   * @param unitString String of unit values from client
-//   * @param player     Player whose units are being added to their Territories
-//   */
-//  public void playerUnitSetting(String unitString, Player player) {
-//
-//    String[] words = unitString.split(" ");
-//
-//    int i = 0;
-//    for (Territory ter : player.getTerritoryList()) {
-//      ter.setUnit(Integer.parseInt(words[i]));
-//      i++;
-//    }
-//  }
-//
-//  /**
-//   * Creates an Action given String input from client
-//   *
-//   * @param map    Map we are checking to see if Territory and Player exists
-//   * @param action String input from client to be converted to Action
-//   * @param isMove boolean to indicate if creating MoveAction or AttackAction
-//   * @return Action as indicated by client
-//   */
-//  public Action createAction(Map map, String color, String action, boolean isMove) {
-//    int numUnits = 0;
-//    int unitLevel = 0;
-//
-//    String[] words = action.split(" ");
-//    Player player = map.findPlayer(color);
-//    Territory source = map.findTerritory(words[0]);
-//    Territory destination = map.findTerritory(words[1]);
-//    try {
-//      numUnits = Integer.parseInt(words[2]);
-//    } catch (NumberFormatException e) {
-//    }
-//
-//    try {
-//      unitLevel = Integer.parseInt(words[3]);
-//    } catch (NumberFormatException e) {
-//    }
-//
-//    if (source == null || destination == null) {
-//      return null;
-//    }
-//
-//    if (isMove) {
-//      return new MoveAction(player, source, destination, numUnits, unitLevel);
-//    } else {
-//      return new AttackAction(player, source, destination, numUnits, unitLevel);
-//    }
-//  }
-//
-//
-//  /**
-//   * Checks is a set of Actions from client is valid
-//   *
-//   * @param player  Player who made actions
-//   * @param moves   MoveActions that are checked
-//   * @param attacks AttackActions that are checked
-//   * @return null if no error, String describing problem if there is error
-//   */
-//  public String validActionSet(Player player, HashSet<MoveAction> moves,
-//                               HashSet<AttackAction> attacks) {
-//    //Once we first meet the problem, then reenter with "Done", moves and attacks would be "NULL"
-//    if (moves.isEmpty() && attacks.isEmpty()) {
-//      return null;
-//    }
-//    for (MoveAction move : moves) {
-//      if (move == null) {
-//        return "This action is invalid: Territory does not exist";
-//      }
-//      String error = move.canPerformAction();
-//      if (error != null) {
-//        return error;
-//      }
-//    }
-//
-//    for (AttackAction attack : attacks) {
-//      if (attack == null) {
-//        return "This action is invalid: Territory does not exist";
-//      }
-//      String error = attack.canPerformAction();
-//      if (error != null) {
-//        return error;
-//      }
-//    }
-//
-//    for (Territory territory : player.getTerritoryList()) {
-//      if (!territory.mockIsValid()) {
-//        return "These actions are invalid: " + territory.getName()
-//                + " territory ends with negative units";
-//      }
-//    }
-//
-//    return null;
-//  }
-//
-//  /**
-//   * Sends message to client to indicate win or lose
-//   *
-//   * @param stream OutputStream for client
-//   * @param color  String indicating which Player
-//   * @param map    Map
-//   */
-//  public void gameWinner(ObjectOutputStream stream, String color, Map map) throws IOException {
-//    stream.reset();
-//    stream.writeObject(map);
-//    System.out.println("Send map : there is a winner.");
-//
-//    Player winner = map.getGameWinner();
-//    if (winner.equals(findPlayer(color, map))) {
-//      stream.reset();
-//      stream.writeObject("win");
-//      System.out.println("write win to player");
-//    } else {
-//      stream.reset();
-//      stream.writeObject("game over");
-//      System.out.println("write game over to player");
-//    }
-//    stream.close();
-//  }
-//
-//
-  /**
-   * play all received attacks
-   *
-   * @param attacks received attacks
-   */
-  public void playAttacks(Map map, HashSet<AttackAction> attacks) {
-    Battle battle = new Battle(map);
-    for (AttackAction att : attacks) {
-      battle.addAttackAction(att);
-    }
-    battle.playBattlePhase();
-  }
-//
-//
-//  /**
-//   * to store the user_name and password that sent by the client
-//   */
-//  public String storeUserNameAndPassword(ObjectInputStream objectInputStream) throws IOException {
-//    try {
-//      String username = (String) objectInputStream.readObject();
-//      String password = (String) objectInputStream.readObject();
-//      //to test whether we have this username before or not and the password are matched or not.
-//      if (userPassPairs.containsKey(username)) {
-//        if (!userPassPairs.get(username).equals(password)) {
-//          return "the password you enter is invalid, please enter again";
-//        }
-//      } else {
-//        userPassPairs.put(username, password);
-//      }
-//    } catch (Exception e) {
-//      System.out.println(e);
-//    }
-//    return null;
-//  }
-
-
   //boolean
   public static <objectInputStream> void main(String[] args) {
-
     //no multi-threads the server should enter the number of players
     System.out.println("Please input the number of players you want, and should be 2-5");
     BufferedReader inputSource = new BufferedReader(new InputStreamReader(System.in));
@@ -258,11 +59,10 @@ public class App {
     } catch (Exception e) {
       System.out.println(e);
     }
-    //remaining color 必须要是全局变量
+
     MapFactory f = new MapFactory();
     Map m = f.makeMap(player_num);
     App app = new App(m);
-
 
     remainingColors = new ArrayList<>();
     Iterator<Player> it = m.getPlayer().iterator();
@@ -276,13 +76,11 @@ public class App {
     Socket socket = null;
     GamePlay gamePlay = new GamePlay();
 
-
       try (ServerSocket ss = new ServerSocket(6666)) {
         for (int i = 0; i < player_num; i++) {
           Socket s = ss.accept();
           socketList.add(s);
         }
-
 
         //socket 是固定的一个
         //Q: 一个client 对应一个socket & multi-threads
@@ -291,18 +89,11 @@ public class App {
 //        OutputStream outputStream = socket.getOutputStream();
 //        ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
 
-
-
         int i = 0;
-        
-
-
 
 //for part 1 - initial placement
         while (i < player_num) {
           //add the checker
-
-
           socket = socketList.get(i);
           OutputStream outputStream = socket.getOutputStream();
           ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
@@ -313,7 +104,6 @@ public class App {
           ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
           InputList.add(objectInputStream);
 
-
           ServerThread serverThread = new ServerThread(socket, serverThreadList, m,objectInputStream,objectOutputStream, remainingColors.get(i));
           serverThreadList.add(serverThread);
           serverThread.start();
@@ -322,23 +112,18 @@ public class App {
           System.out.print("i is " + i);
         }
 
-
         System.out.println("第一个unit setting 的部分结束了");
 
-//
         for(int n = 0 ; n < serverThreadList.size();++n){
           System.out.println("server thread join");
-
           serverThreadList.get(n).join();
         }
-
 
  //for part 2 - for action part
         //while the game is not over?
         while (true) {
           int j = 0;
           while (m.getGameWinner() == null) {
-
 
             while (j < player_num) {
               //how to update
@@ -351,7 +136,6 @@ public class App {
               gamePlay.findPlayer(remainingColors.get(j), m).setLoseStatus(action);
               Player tmp = gamePlay.findPlayer(remainingColors.get(j), m);
 
-
               /*************adding new parts***/
               if (tmp.isLose()) {
                 if (tmp.getLoseStatus().equals("quit") && m.getPlayer().contains(tmp)) {
@@ -361,13 +145,10 @@ public class App {
                   InputList.remove(j);
                   OutputList.remove(j);
                   player_num --;
-
                 }
                 if (tmp.getLoseStatus().equals("continue")) {
                 }
               } else {
-
-
                 ActionThread actionThread = new ActionThread(m, InputList.get(j), OutputList.get(j), tmp, allMoves, allAttacks,allUpgrades);
                 ActionThreadList.add(actionThread);
                 actionThread.start();
@@ -378,36 +159,23 @@ public class App {
               }
             }
 
-
             //after all the actions, they should be merged
             for (int k = 0; k < ActionThreadList.size(); ++k) {
               ActionThreadList.get(k).join();
             }
-            j =0;
-            System.out.println("在这一个round perform all actions");
 
-            for (MoveAction act : allMoves) {
-              act.performAction();
-            }
-            allMoves.clear();
-
-            //real execute for te attack action
-            app.playAttacks(m, allAttacks);
-            allAttacks.clear();
-
-            // call upgrades
-            for (UpgradeAction upgrade: allUpgrades) {
-              upgrade.performAction();
-            }
-            allUpgrades.clear();
-
-            // abstract for upgrade after each turn
+            j = 0;
+            System.out.println("perform all actions");
+            gamePlay.playMoves(allMoves);
+            gamePlay.playAttacks(m, allAttacks);
+            gamePlay.playUpgrades(allUpgrades);
+            // increase the basic unit per terr, produce resource
             m.upgradeMapPerRound();
-
-
+            allMoves.clear();
+            allAttacks.clear();
+            allUpgrades.clear();
           }
         }
-
 
       } catch (Exception e) {
         System.out.println(e);

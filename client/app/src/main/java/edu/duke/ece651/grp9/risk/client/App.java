@@ -23,7 +23,6 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 
-
 public class App extends Application{
   private final BufferedReader inputReader;
   private String username;
@@ -32,7 +31,6 @@ public class App extends Application{
   public App(BufferedReader inputSource) {
     this.inputReader = inputSource;
   }
-
 
   @Override
   public void start(Stage stage) {

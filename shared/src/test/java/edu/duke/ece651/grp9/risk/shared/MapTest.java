@@ -93,6 +93,8 @@ public class MapTest {
   @Test
   void upgradeMapPerRound() {
     Map map = new Map();
+    Player player = new Player("red");
+    map.addPlayer(player);
     Territory ter1 = new Territory("NC");
     Territory ter2 = new Territory("CA");
     map.addTerritory(ter1);
