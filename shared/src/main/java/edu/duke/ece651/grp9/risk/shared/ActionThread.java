@@ -1,31 +1,27 @@
 package edu.duke.ece651.grp9.risk.shared;
 
 
-import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.OutputStream;
-import java.io.PrintWriter;
-import java.net.Socket;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 
 public class ActionThread extends Thread{
   private ObjectInputStream objectInputStream;
   private ObjectOutputStream objectOutputStream;
   private Map m;
   private Player player;
-  public HashSet<MoveAction> allMoves = new HashSet<>();
+  public HashSet<MoveAction> allMove = new HashSet<>();
   public HashSet<AttackAction> allAttack = new HashSet<>();
+  public HashSet<UpgradeAction> allUpgrade = new HashSet<>();
 
-  public ActionThread(Map m, ObjectInputStream objectInputStream, ObjectOutputStream objectOutputStream, Player player, HashSet<MoveAction> allMoves, HashSet<AttackAction>allAttack) {
+  public ActionThread(Map m, ObjectInputStream objectInputStream, ObjectOutputStream objectOutputStream, Player player, HashSet<MoveAction> allMoves, HashSet<AttackAction>allAttack, HashSet<UpgradeAction> allUpgrade) {
     this.m = m;
     this.objectInputStream = objectInputStream;
     this.objectOutputStream = objectOutputStream;
     this.player = player;
-    this.allMoves = allMoves;
+    this.allMove = allMoves;
     this.allAttack = allAttack;
+    this.allUpgrade = allUpgrade;
   }
 
   @Override
@@ -35,11 +31,12 @@ public class ActionThread extends Thread{
         while (true) {
           HashSet<MoveAction> moveActions = new HashSet<>();
           HashSet<AttackAction> attackActions = new HashSet<>();
+          HashSet<UpgradeAction> upgradeActions = new HashSet<>();
 
           ActionSet actionSet = (ActionSet) objectInputStream.readObject();
           System.out.println("Get action...");
-          HashSet<String> actionListMove = actionSet.getMoveList();
 
+          HashSet<String> actionListMove = actionSet.getMoveList();
           for (String move : actionListMove) {
             moveActions.add((MoveAction) gamePlay.createAction(m, player.getName(), move, true));
           }
@@ -49,15 +46,22 @@ public class ActionThread extends Thread{
             attackActions.add((AttackAction) gamePlay.createAction(m, player.getName(), attack, false));
           }
 
+          HashSet<String> actionListUpgrade = actionSet.getUpgradeList();
+          for (String upgrade : actionListUpgrade) {
+            upgradeActions.add((UpgradeAction) gamePlay.createUpgrade(m, player.getName(), upgrade));
+          }
+
+
           //moveActions  attackActions need to be reset in the next round.
-          String actionProblem = gamePlay.validActionSet(player, moveActions, attackActions);
-          System.out.println("actionProblem是" +actionProblem );
+          String actionProblem = gamePlay.validActionSet(player, moveActions, attackActions, upgradeActions);
+          System.out.println("actionProblem: " +actionProblem );
           //debug：here should be reset
           objectOutputStream.reset();
           objectOutputStream.writeObject(actionProblem);
           if (actionProblem == null) {
-            allMoves.addAll(moveActions);
+            allMove.addAll(moveActions);
             allAttack.addAll(attackActions);
+            allUpgrade.addAll(upgradeActions);
             break;
           }
 

@@ -29,7 +29,7 @@ public class UnitsRuleChecker extends RuleChecker {
       return "This action is invalid: number of units must be positive int.";
     }
 
-    action.getSource().mockActions(action.getDestination(), action.getNumUnits());
+   // action.getSource().mockActions(action.getDestination(), action.getNumUnits());
 
     action.getSource().mockActions(action.getDestination(), action.getNumUnits(),
         action.getUnitLevel()); //EVOLUTION 2

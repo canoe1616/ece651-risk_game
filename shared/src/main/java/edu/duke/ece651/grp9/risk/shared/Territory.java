@@ -189,7 +189,7 @@ public class Territory implements Serializable {
    * Upgrade Unit's using Money Resource
    *
    * @param numUnits number of units to upgrade
-   * @param beginLevel which Unit level to upgrade
+   * @param startLevel which Unit level to upgrade
    * @param endLevel what Unit level to upgrade to
    */
   public void upgradeUnits(int numUnits, int startLevel, int endLevel) {
@@ -250,7 +250,10 @@ public class Territory implements Serializable {
    * that they are synced for next round of Action's check
    */
   public void syncUnits(int level) {
-    units.get(level).syncUnits();
+    // TODO: confirm with Owen, syn all level
+    for (Unit unit: units.values()) {
+      unit.syncUnits();
+    }
   }
 
   /**

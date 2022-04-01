@@ -10,12 +10,14 @@ import java.util.HashSet;
 public class ActionSet implements Serializable{
   public HashSet<String> actionListMove;
   public HashSet<String> actionListAttack;
+  public HashSet<String> actionListUpgrade;
   /**
    * A construct for an ActionSet that contains a set for moves and a set for attacks.
    */
   public ActionSet(){
     this.actionListMove = new HashSet<String>();
     this.actionListAttack = new HashSet<String>();
+    this.actionListUpgrade= new HashSet<String>();
   }
 
   public HashSet<String> getMoveList() {
@@ -24,5 +26,9 @@ public class ActionSet implements Serializable{
 
   public HashSet<String> getAttackList() {
     return actionListAttack;
+  }
+
+  public HashSet<String> getUpgradeList() {
+    return actionListUpgrade;
   }
 }

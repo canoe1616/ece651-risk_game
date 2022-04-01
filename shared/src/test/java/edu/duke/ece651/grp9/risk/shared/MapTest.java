@@ -90,4 +90,32 @@ public class MapTest {
     assertEquals(null, map.getGameWinner());
   }
 
+  @Test
+  void upgradeMapPerRound() {
+    Map map = new Map();
+    Territory ter1 = new Territory("NC");
+    Territory ter2 = new Territory("CA");
+    map.addTerritory(ter1);
+    map.addTerritory(ter2);
+    ter1.setUnit(10);
+    ter1.setUnits(5,0);
+    ter1.setUnits(5, 2);
+
+    ter2.setUnit(12);
+    ter2.setUnits(5,0);
+    ter2.setUnits(5, 2);
+    ter2.setUnits(2, 5);
+    map.upgradeMapPerRound();
+
+    assertEquals(11, ter1.getUnit());
+    assertEquals(6, ter1.getUnits(0));
+    assertEquals(5, ter1.getUnits(2));
+
+    assertEquals(13, ter2.getUnit());
+    assertEquals(6, ter2.getUnits(0));
+    assertEquals(5, ter2.getUnits(2));
+    assertEquals(2, ter2.getUnits(5));
+  }
+
+
 }

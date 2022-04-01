@@ -27,6 +27,7 @@ public class GamePlay {
     int i = 0;
     for (Territory ter : player.getTerritoryList()) {
       ter.setUnit(Integer.parseInt(words[i]));
+      ter.setUnits(Integer.parseInt(words[i]), 0);
       i++;
     }
   }
@@ -76,7 +77,8 @@ public class GamePlay {
    * @return Action as indicated by client
    */
   public Action createAction(Map map, String color, String action, boolean isMove) {
-    int numUnits = -1;
+    int numUnits = 0;
+    int unitLevel = 0;
 
     String[] words = action.split(" ");
     Player player = map.findPlayer(color);
@@ -87,15 +89,56 @@ public class GamePlay {
     } catch (NumberFormatException e) {
     }
 
+    try {
+      unitLevel = Integer.parseInt(words[3]);
+    } catch (NumberFormatException e) {
+    }
+
     if (source == null || destination == null) {
       return null;
     }
 
     if (isMove) {
-      return new MoveAction(player, source, destination, numUnits, 0);
+      return new MoveAction(player, source, destination, numUnits, unitLevel);
     } else {
-      return new AttackAction(player, source, destination, numUnits, 0);
+      return new AttackAction(player, source, destination, numUnits, unitLevel);
     }
+  }
+
+
+  /**
+   * create a upgrade action
+   * @param map
+   * @param color
+   * @param action
+   * @return
+   */
+  public Action createUpgrade(Map map, String color, String action) {
+    int numUnits = 0;
+    int unitLevelStart = 0;
+    int unitLevelEnd = 0;
+
+    String[] words = action.split(" ");
+    Player player = map.findPlayer(color);
+    Territory source = map.findTerritory(words[0]);
+
+    try {
+      unitLevelStart = Integer.parseInt(words[1]);
+    } catch (NumberFormatException e) {
+    }
+
+    try {
+      unitLevelEnd = Integer.parseInt(words[2]);
+    } catch (NumberFormatException e) {
+    }
+
+    try {
+      numUnits = Integer.parseInt(words[3]);
+    } catch (NumberFormatException e) {
+    }
+
+    return new UpgradeAction(player, source, numUnits, unitLevelStart, unitLevelEnd);
+
   }
 
   /**
@@ -106,10 +149,11 @@ public class GamePlay {
    * @param attacks AttackActions that are checked
    * @return null if no error, String describing problem if there is error
    */
-  public String validActionSet(Player player, HashSet<MoveAction> moves,
-                               HashSet<AttackAction> attacks) {
+  public String validActionSet(Player player, HashSet<MoveAction> moves, HashSet<AttackAction> attacks, HashSet<UpgradeAction> upgrades) {
+    int foodCost = 0;
+    int moneyCost = 0;
     //Once we first meet the problem, then reenter with "Done", moves and attacks would be "NULL"
-    if (moves.isEmpty() && attacks.isEmpty()) {
+    if (moves.isEmpty() && attacks.isEmpty() && upgrades.isEmpty()) {
       return null;
     }
     for (MoveAction move : moves) {
@@ -117,6 +161,7 @@ public class GamePlay {
         return "This action is invalid: Territory does not exist";
       }
       String error = move.canPerformAction();
+      foodCost += move.computeCost();
       if (error != null) {
         return error;
       }
@@ -127,14 +172,33 @@ public class GamePlay {
         return "This action is invalid: Territory does not exist";
       }
       String error = attack.canPerformAction();
+      foodCost += attack.computeCost();
       if (error != null) {
         return error;
       }
     }
 
+    for (UpgradeAction upgrade: upgrades) {
+      if (upgrade == null) {
+        return "This action is invalid: Territory does not exist";
+      }
+      String error = upgrade.canPerformAction();
+      moneyCost += upgrade.computeCost();
+      if (error != null) {
+        return error;
+      }
+    }
+
+    // check if have enough resource
+    if (foodCost > player.getFoodQuantity()) {
+      return "Do not have enough food to do move or attack orders";
+    }
+    if (moneyCost > player.getMoneyQuantity()) {
+      return "Do not have enough money to do upgrade orders";
+    }
+
     for (Territory territory : player.getTerritoryList()) {
       if (!territory.mockIsValid()) {
-        System.out.println("现在的unit是" +territory.getName() +" " +  territory.getUnit());
         return "These actions are invalid: " + territory.getName()
                 + " territory ends with negative units";
       }
@@ -142,6 +206,8 @@ public class GamePlay {
 
     return null;
   }
+
+
 
   /**
    * Sends message to client to indicate win or lose

@@ -233,6 +233,7 @@ public class App extends Application{
     //build be hashset<string> for actions for the server?
     HashSet<String> actionListMove = new HashSet<>();
     HashSet<String> actionListAttack = new HashSet<>();
+    HashSet<String> actionListUpgrade = new HashSet<>();
     ActionSet actionSet = new ActionSet();
     try {
       Socket socket = new Socket("localhost", 6666);
@@ -304,7 +305,7 @@ public class App extends Application{
             String action = null;
             ActionRuleChecker arc = new ActionRuleChecker();
             while(true) {//while loop until valid input
-              System.out.println("You are the " + color + " Player, what would you like to do?\n  (M)ove\n  (A)ttack\n  (D)one");
+              System.out.println("You are the " + color + " Player, what would you like to do?\n  (M)ove\n  (A)ttack\n  (U)pgrade\n  (D)one");
               action = inputSource.readLine();
               String actionChoiceError;
               while ((actionChoiceError = app.getActionString(action)) != null) {
@@ -316,6 +317,7 @@ public class App extends Application{
               if (action.equals("D") || action.equals("d")) {
                 actionSet.actionListMove = actionListMove;
                 actionSet.actionListAttack = actionListAttack;
+                actionSet.actionListUpgrade = actionListUpgrade;
 
                 objectOutputStream.reset();
                 objectOutputStream.writeObject(actionSet);
@@ -323,6 +325,7 @@ public class App extends Application{
                 String actionProblem = (String) objectInputStream.readObject();
                 actionListMove.clear();
                 actionListAttack.clear();
+                actionListUpgrade.clear();
                 if (actionProblem == null) {
                   break;
                 } else {
@@ -331,15 +334,20 @@ public class App extends Application{
               }
               else if (action.equals("m") || action.equals("M")) {
                 //call the move function here
-                System.out.println("Please enter as this following format: Source, Destination, MoveUnits(e.g A B 10");
+                System.out.println("Please enter as this following format: Source, Destination, UnitNumber, UnitLevel(e.g A B 10 0)");
                 String action_input = inputSource.readLine();
                 actionListMove.add(action_input);
               }
               else if (action.equals("a") || action.equals("A")) {
                 //call the move function here
-                System.out.println("Please enter as this following format: Source, Destination, AttackUnits(e.g A B 10");
+                System.out.println("Please enter as this following format: Source, Destination, UnitNumber, UnitLevel(e.g A B 10 0)");
                 String action_input = inputSource.readLine();
                 actionListAttack.add(action_input);
+              } else if (action.equals("u") || action.equals("U")) {
+                //call the move function here
+                System.out.println("Please enter as this following format: Source, StartLevel, EndLevel, UnitNumber (e.g A 0 2 5)");
+                String action_input = inputSource.readLine();
+                actionListUpgrade.add(action_input);
               }
 
             }

@@ -33,7 +33,8 @@ public class ActionRuleChecker {
     if (input.length() != 1) {
       return "the input length is invalid, please enter again!";
     } else if (!(input.charAt(0) == 'M' || input.charAt(0) == 'A' || input.charAt(0) == 'D'
-        || input.charAt(0) == 'm' || input.charAt(0) == 'a' || input.charAt(0) == 'd')) {
+        || input.charAt(0) == 'm' || input.charAt(0) == 'a' || input.charAt(0) == 'd'
+        || input.charAt(0) == 'u' || input.charAt(0) == 'U')) {
       return "the input character is invalid, please enter again!";
     }
     return null;
