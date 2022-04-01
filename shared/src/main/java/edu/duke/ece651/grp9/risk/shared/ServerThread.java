@@ -17,7 +17,7 @@ public class ServerThread extends Thread{
     private ObjectInputStream objectInputStream;
     private ObjectOutputStream objectOutputStream;
     private ArrayList<String> remainingColors;
-    private Map m;
+    public Map m;
     private String color;
     public ServerThread(Socket socket, ArrayList<ServerThread> threads, Map m,
     ObjectInputStream objectInputStream, ObjectOutputStream objectOutputStream, String color) {
@@ -29,6 +29,8 @@ public class ServerThread extends Thread{
         this.objectOutputStream = objectOutputStream;
         this.color = color;
     }
+
+
     @Override
     public void run() {
         GamePlay gamePlay =new GamePlay();

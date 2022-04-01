@@ -305,6 +305,7 @@ public class App {
           ServerThread serverThread = new ServerThread(socket, serverThreadList, m,objectInputStream,objectOutputStream, remainingColors.get(i));
           serverThreadList.add(serverThread);
           serverThread.start();
+          m = serverThread.m;
           i++;
           System.out.print("i is " + i);
         }
@@ -327,6 +328,11 @@ public class App {
 
           while (j < player_num) {
             //how to update
+            OutputList.get(j).reset();
+            OutputList.get(j).writeObject(m);
+            OutputList.get(j).reset();
+            OutputList.get(j).writeObject("keep going");
+
             ActionThread actionThread = new ActionThread(m, InputList.get(j), OutputList.get(j),gamePlay.findPlayer(remainingColors.get(j),m));
             ActionThreadList.add(actionThread);
             actionThread.start();
