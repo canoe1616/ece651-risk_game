@@ -33,8 +33,6 @@ public class ActionThread extends Thread{
     GamePlay gamePlay =new GamePlay();
       try{
         while (true) {
-          HashSet<MoveAction> correctMoveActions = new HashSet<>();
-          HashSet<AttackAction> correctAttackActions = new HashSet<>();
           HashSet<MoveAction> moveActions = new HashSet<>();
           HashSet<AttackAction> attackActions = new HashSet<>();
 
@@ -53,15 +51,16 @@ public class ActionThread extends Thread{
 
           //moveActions  attackActions need to be reset in the next round.
           String actionProblem = gamePlay.validActionSet(player, moveActions, attackActions);
-
+          System.out.println("actionProblem是" +actionProblem );
           //debug：here should be reset
           objectOutputStream.reset();
           objectOutputStream.writeObject(actionProblem);
           if (actionProblem == null) {
-            correctMoveActions.addAll(moveActions);
-            correctAttackActions.addAll(attackActions);
+            allMoves.addAll(moveActions);
+            allAttack.addAll(attackActions);
             break;
           }
+
           System.out.println("There are problems with this client's setting, send information back to the server");
         }
       }

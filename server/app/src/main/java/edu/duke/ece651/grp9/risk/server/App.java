@@ -341,22 +341,42 @@ public class App {
               OutputList.get(j).writeObject("keep going");
 
               String action = (String) InputList.get(j).readObject();
-              findPlayer(remainingColors.get(j), m).setLoseStatus(action);
+              gamePlay.findPlayer(remainingColors.get(j), m).setLoseStatus(action);
+              Player tmp = gamePlay.findPlayer(remainingColors.get(j), m);
 
 
-              ActionThread actionThread = new ActionThread(m, InputList.get(j), OutputList.get(j), gamePlay.findPlayer(remainingColors.get(j), m),allMoves,allAttack);
-              ActionThreadList.add(actionThread);
-              actionThread.start();
-              allMoves = actionThread.allMoves;
-              allAttack = actionThread.allAttack;
-              j++;
+              /*************adding new parts***/
+              if (tmp.isLose()) {
+                if (tmp.getLoseStatus().equals("quit") && m.getPlayer().contains(tmp)) {
+                  //remove it from player list
+                  //auto set empty actionSet
+                  System.out.println("Bye bye I quit");
+                  InputList.remove(j);
+                  OutputList.remove(j);
+                  player_num --;
+
+                }
+                if (tmp.getLoseStatus().equals("continue")) {
+                }
+              } else {
+
+
+                ActionThread actionThread = new ActionThread(m, InputList.get(j), OutputList.get(j), tmp, allMoves, allAttack);
+                ActionThreadList.add(actionThread);
+                actionThread.start();
+                allMoves.addAll(actionThread.allMoves);
+                allAttack.addAll(actionThread.allAttack);
+                j++;
+              }
             }
+
+
             //after all the actions, they should be merged
             for (int k = 0; k < ActionThreadList.size(); ++k) {
               ActionThreadList.get(k).join();
             }
             j =0;
-            System.out.println("在这一个round perform action");
+            System.out.println("在这一个round perform all actions");
             for (MoveAction act : allMoves) {
               act.performAction();
             }

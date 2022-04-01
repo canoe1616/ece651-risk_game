@@ -134,6 +134,7 @@ public class GamePlay {
 
     for (Territory territory : player.getTerritoryList()) {
       if (!territory.mockIsValid()) {
+        System.out.println("现在的unit是" +territory.getName() +" " +  territory.getUnit());
         return "These actions are invalid: " + territory.getName()
                 + " territory ends with negative units";
       }
