@@ -5,15 +5,18 @@ import java.util.HashSet;
 
 
 public class Room {
-    private String name;
-    private String owner;
-    private String ID;
-    private int numPlayers;
+    public String name;
+    public Map map;
 
 
-    public Room(String input) {
+//    public Room(String input) {
+//
+//    }
+
+    public Room(String name, Map map) {
+        this.name = name;
+        this.map = map;
+
 
     }
-
-
 }
