@@ -1,10 +1,12 @@
 package edu.duke.ece651.grp9.risk.shared;
 
-<<<<<<< HEAD
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.Socket;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 
 public class RoomThread extends Thread{
     private static ArrayList<String> remainingColors;

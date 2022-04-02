@@ -15,8 +15,18 @@ public class User {
     String myCurrentColor;
     ObjectInputStream objectInputStream;
     ObjectOutputStream objectOutputStream;
+    public String status; //log in 和  Log out
 
 
+
+    public boolean activeUser(){
+        if(status.equals("out")){
+            return false;
+        }
+        else{
+            return true;
+        }
+    }
 
 
 

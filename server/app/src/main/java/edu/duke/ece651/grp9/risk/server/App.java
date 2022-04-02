@@ -58,19 +58,46 @@ public class App {
       ObjectOutputStream objectOutputStream;
       int room_id;
       RoomThread roomThread;
-      ArrayList<RoomThread> roomThread = new ArrayList<>();
+      //ArrayList<RoomThread> ActiveroomThreadList = new ArrayList<>();
+      ArrayList<RoomThread> AllThreadList = new ArrayList<>();
+
+
+//  四个room 要被所有的player 共享
+      Room room_1 = new Room(2);
+      Room room_2 = new Room(3);
+      Room room_3 = new Room(4);
+      Room room_4 = new Room(5);
+
+      //最外层的部分是
+      //如果所有的room 都满了
+
+      while(!(room_1.isFull() && room_2.isFull() && room_3.isFull() && room_4.isFull())){
+        UserThread();
+
+      }
+
+
+
 
       for (int i = 0; i < 15; i++) { //The max num of player in this version...
         Socket socket = ss.accept();
         inputStream = socket.getInputStream();
         objectInputStream = new ObjectInputStream(inputStream);
-        Room room_1 = new Room(2);
-        Room room_2 = new Room(3);
-        Room room_3 = new Room(4);
-        Room room_4 = new Room(5);
+//        Room room_1 = new Room(2);
+//        Room room_2 = new Room(3);
+//        Room room_3 = new Room(4);
+//        Room room_4 = new Room(5);
+
+        //every room need roomthread
+        RoomThread roomThread_1 = new RoomThread(room_1.map, room_1.getList());
+
+
+
+
+
         //account password...
         //read the room selection from the client;
-        room_id = (int)objectInputStream.readObject(); 
+        room_id = (int)objectInputStream.readObject();
         if (room_id == 1){
           room_1.addSocket(socket);
         }
@@ -85,17 +112,17 @@ public class App {
         }
         if (room_1.isFull()){ // do we need a roomThreadList?
           roomThread = new RoomThread(m, room_1.getList());
-          roomThreadList.add(roomThread);
+          ActiveroomThreadList.add(roomThread);
           roomThread.start();
         }
         if (room_2.isFull()){
-          
+
         }
         if (room_3.isFull()){
-          
+
         }
         if (room_4.isFull()){
-          
+
         }
 
 
