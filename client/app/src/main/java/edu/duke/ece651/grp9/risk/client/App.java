@@ -238,13 +238,27 @@ public class App extends Application{
       //receive map from server
       InputStream inputStream = socket.getInputStream();
       ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+      System.out.println("Please input the room that you want to join, 1-4");
+      int room_id = 0;
+      
+      try {
+        room_id = Integer.parseInt(inputSource.readLine());
+        // Only show the the valid room buttom in GUI. --Peter
+      }
+      catch (Exception e) {
+        System.out.println(e);
+      }
+      ////
+      //sent room id
+      OutputStream outputStream = socket.getOutputStream();
+      ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
+      objectOutputStream.writeObject(s); // write #001
+
       //这里的myMap 只是一个全局变量;
       Map myMap = (Map) objectInputStream.readObject(); // recv #001
       System.out.println("Receive Map form server.");
 
-      //sent color
-      OutputStream outputStream = socket.getOutputStream();
-      ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
+      
 
 
       //debug 3.28

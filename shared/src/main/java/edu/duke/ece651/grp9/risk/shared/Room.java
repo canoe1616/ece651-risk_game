@@ -6,13 +6,25 @@ import java.util.HashSet;
 
 public class Room {
     private String name;
-    private String owner;
-    private String ID;
     private int numPlayers;
+    private ArrayList<Socket> socketList;
 
 
-    public Room(String input) {
+    public Room(int numPlayers) {
+        this.numPlayers = numPlayers;
+    }
 
+    boolean isFull(){
+        if (socketList.size()>=numPlayers){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+    void addSocket(Socket socket){
+        socketList.add(socket);
     }
 
 
