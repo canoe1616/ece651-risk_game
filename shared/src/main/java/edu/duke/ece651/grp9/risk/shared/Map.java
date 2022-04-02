@@ -116,4 +116,19 @@ public class Map implements Serializable{
     }
     return null;
   }
+
+  /**
+   * this method is to add a basic unit after each round
+   * produce new resources for each territory
+   */
+  public void upgradeMapPerRound() {
+    for (Territory ter: territoryList) {
+      ter.setUnits(ter.getUnits(0)+1, 0);
+      ter.setUnit(ter.getUnit() + 1);
+    }
+    for (Player player: players) {
+      player.updatePlayerResource();
+    }
+  }
+
 }

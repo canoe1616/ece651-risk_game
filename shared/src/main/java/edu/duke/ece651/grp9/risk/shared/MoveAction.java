@@ -122,7 +122,6 @@ public class MoveAction implements Action {
     source.moveUnits(destination, numUnits);
     source.moveUnits(destination, numUnits, unitLevel); //EVOLUTION 2
 
-    // TODO: update food resource here? is it correct?
     player.setFoodQuantity(player.getFoodQuantity() - this.computeCost());
   }
 

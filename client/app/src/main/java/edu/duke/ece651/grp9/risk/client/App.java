@@ -14,14 +14,34 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.HashSet;
 import java.util.Iterator;
-
 import edu.duke.ece651.grp9.risk.shared.*;
 
-public class App {
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
+
+
+public class App extends Application{
   private final BufferedReader inputReader;
+  private String username;
+  private String password;
 
   public App(BufferedReader inputSource) {
     this.inputReader = inputSource;
+  }
+
+  @Override
+  public void start(Stage stage) {
+    String javaVersion = System.getProperty("java.version");
+    String javafxVersion = System.getProperty("javafx.version");
+    Label l = new Label("Hello, JavaFX " + javafxVersion +
+            ", running on Java " +
+            javaVersion + ".");
+    Scene scene = new Scene(new StackPane(l), 640, 480);
+    stage.setScene(scene);
+    stage.show();
   }
 
   /**
@@ -47,7 +67,7 @@ public class App {
     while (!color_correct.equals("true")) {
       try {
         s = inputSource.readLine();
-        System.out.println(s);
+        //System.out.println(s);
         //check color valid
         //From server -> color_correct
         outStream.writeObject(s);
@@ -76,7 +96,7 @@ public class App {
     //get prompt and print it
     try {
       String unitPrompt = (String) inStream.readObject();
-      System.out.println(unitPrompt);
+      System.out.println("unitPrompt是否有被打印出来："+unitPrompt);
     } catch (Exception exception) {
       System.out.println(exception.getMessage());
     }
@@ -88,6 +108,7 @@ public class App {
         s = inputSource.readLine();
         System.out.println(s);
         outStream.writeObject(s);
+        //这个readObject 没有找到
         unit_correct = (String) inStream.readObject();
         if (unit_correct.equals("false")) {
           System.out.println("Invalid unit selection, please enter again!");
@@ -157,10 +178,48 @@ public class App {
    * @param action player's actions, A, a, M, m, D, d are valid.
    * @return a string for action
    */
-    public String getActionString(String action){
+    public String getActionString(String action) {
       ActionRuleChecker arc = new ActionRuleChecker();
       return arc.checkAction(action);
     }
+
+
+
+    /**
+     * to record each player's username and password
+    Q:是否需要考虑多个空格的情况
+     */
+    public String getUsername(BufferedReader inputSource,ObjectOutputStream outStream) throws IOException{
+      try {
+        System.out.println("please enter the username and the password (e.g Lucy 123456");
+        String s = inputSource.readLine();
+        String[] words = s.split(" ");
+        this.username = words[0];
+        this.password = words[1];
+        while(username == null || password == null){
+          System.out.println("input invalid, please enter again");
+          s = inputSource.readLine();
+          words = s.split(" ");
+          this.username = words[0];
+          this.password = words[1];
+        }
+      }
+      catch (Exception exception) {
+        System.out.println(exception.getMessage());
+      }
+      //sending username and password to the server
+      outStream.reset();
+      outStream.writeObject(username);
+      outStream.reset();
+      outStream.writeObject(password);
+
+
+      //if the username and the password, they are not match with each other
+
+      return null;
+
+    }
+
 
 
   public static void main(String[] args) {
@@ -168,23 +227,30 @@ public class App {
     BufferedReader inputSource = new BufferedReader(new InputStreamReader(System.in));
     App app = new App(inputSource);
 
+
     //build be hashset<string> for actions for the server?
     HashSet<String> actionListMove = new HashSet<>();
     HashSet<String> actionListAttack = new HashSet<>();
+    HashSet<String> actionListUpgrade = new HashSet<>();
     ActionSet actionSet = new ActionSet();
     try {
       Socket socket = new Socket("localhost", 6666);
       //receive map from server
       InputStream inputStream = socket.getInputStream();
       ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
-      Map myMap = (Map) objectInputStream.readObject();
+      //这里的myMap 只是一个全局变量;
+      Map myMap = (Map) objectInputStream.readObject(); // recv #001
       System.out.println("Receive Map form server.");
 
       //sent color
       OutputStream outputStream = socket.getOutputStream();
       ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
 
-      String color = app.selectColor(inputSource, objectInputStream, objectOutputStream);
+
+      //debug 3.28
+      //String color = app.selectColor(inputSource, objectInputStream, objectOutputStream);
+      String color = (String) objectInputStream.readObject();
+      System.out.println("test中的color 是什么颜色 " + color);
       String unitString = app.selectUnit(inputSource, objectInputStream, objectOutputStream);
 
       ///////////////////////end of initial placement/////////////
@@ -192,7 +258,8 @@ public class App {
       System.out.println("Its next step...");
 
       while(true){//until you lose or you win.
-        myMap = (Map) objectInputStream.readObject();//
+        myMap = (Map) objectInputStream.
+                readObject();//
         System.out.println("Receive Map form server.");
         MapTextView mtv = new MapTextView(myMap);
         String endGame = (String) objectInputStream.readObject();//
@@ -236,7 +303,7 @@ public class App {
             String action = null;
             ActionRuleChecker arc = new ActionRuleChecker();
             while(true) {//while loop until valid input
-              System.out.println("You are the " + color + " Player, what would you like to do?\n  (M)ove\n  (A)ttack\n  (D)one");
+              System.out.println("You are the " + color + " Player, what would you like to do?\n  (M)ove\n  (A)ttack\n  (U)pgrade\n  (D)one");
               action = inputSource.readLine();
               String actionChoiceError;
               while ((actionChoiceError = app.getActionString(action)) != null) {
@@ -248,6 +315,7 @@ public class App {
               if (action.equals("D") || action.equals("d")) {
                 actionSet.actionListMove = actionListMove;
                 actionSet.actionListAttack = actionListAttack;
+                actionSet.actionListUpgrade = actionListUpgrade;
 
                 objectOutputStream.reset();
                 objectOutputStream.writeObject(actionSet);
@@ -255,6 +323,7 @@ public class App {
                 String actionProblem = (String) objectInputStream.readObject();
                 actionListMove.clear();
                 actionListAttack.clear();
+                actionListUpgrade.clear();
                 if (actionProblem == null) {
                   break;
                 } else {
@@ -263,15 +332,20 @@ public class App {
               }
               else if (action.equals("m") || action.equals("M")) {
                 //call the move function here
-                System.out.println("Please enter as this following format: Source, Destination, MoveUnits(e.g A B 10");
+                System.out.println("Please enter as this following format: Source, Destination, UnitNumber, UnitLevel(e.g A B 10 0)");
                 String action_input = inputSource.readLine();
                 actionListMove.add(action_input);
               }
               else if (action.equals("a") || action.equals("A")) {
                 //call the move function here
-                System.out.println("Please enter as this following format: Source, Destination, AttackUnits(e.g A B 10");
+                System.out.println("Please enter as this following format: Source, Destination, UnitNumber, UnitLevel(e.g A B 10 0)");
                 String action_input = inputSource.readLine();
                 actionListAttack.add(action_input);
+              } else if (action.equals("u") || action.equals("U")) {
+                //call the move function here
+                System.out.println("Please enter as this following format: Source, StartLevel, EndLevel, UnitNumber (e.g A 0 2 5)");
+                String action_input = inputSource.readLine();
+                actionListUpgrade.add(action_input);
               }
 
             }
