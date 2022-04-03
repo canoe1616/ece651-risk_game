@@ -3,6 +3,7 @@ package edu.duke.ece651.grp9.risk.shared;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.Socket;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -10,9 +11,12 @@ import java.util.TreeSet;
 
 public class GamePlay {
   public HashMap<String, String> userPassPairs;
+  public HashMap<User, Socket> UserList;
   public GamePlay() {
     this.userPassPairs = new HashMap<String, String>();
+    this.UserList = new HashMap<>();
   }
+
 
   /**
    * Set units for player's Territories based on input from Client
@@ -259,6 +263,7 @@ public class GamePlay {
 
   /**
    * to store the user_name and password that sent by the client
+   *
    */
   public String storeUserNameAndPassword(ObjectInputStream objectInputStream) throws IOException {
     try {

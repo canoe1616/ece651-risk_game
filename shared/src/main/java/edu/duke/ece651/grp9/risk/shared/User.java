@@ -2,6 +2,7 @@ package edu.duke.ece651.grp9.risk.shared;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.Socket;
 import java.util.HashMap;
 
 public class User {
@@ -19,6 +20,8 @@ public class User {
 
 
 
+
+
     public User(String userName,String password){
         this.userName = userName;
         this.password = password;
@@ -31,6 +34,11 @@ public class User {
         else{
             return true;
         }
+    }
+
+    @Override
+    public int hashCode() {
+        return this.userName.hashCode();
     }
 
 
