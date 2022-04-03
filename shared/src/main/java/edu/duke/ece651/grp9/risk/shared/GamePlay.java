@@ -267,6 +267,7 @@ public class GamePlay {
    */
   public String storeUserNameAndPassword(ObjectInputStream objectInputStream) throws IOException {
     try {
+      System.out.println("In server username and password part.");
       String username = (String) objectInputStream.readObject();
       String password = (String) objectInputStream.readObject();
       //to test whether we have this username before or not and the password are matched or not.

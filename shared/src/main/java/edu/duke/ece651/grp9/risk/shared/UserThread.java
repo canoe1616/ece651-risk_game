@@ -39,7 +39,7 @@ public class UserThread extends Thread{
         this.room_2 = room_2;
         this.room_3 = room_3;
         this.room_4 = room_4;
-        this.socket = new Socket();
+        this.socket = socket;
 
 
 
@@ -56,7 +56,7 @@ public class UserThread extends Thread{
 //          System.out.println("In the UserThread");
 //          Socket socket = ss.accept();
 
-
+        System.out.println("In the UserThread");
 
         try{
             
@@ -108,6 +108,7 @@ public class UserThread extends Thread{
             /**********************************************************************************/
             int room_id = (int)objectInputStream.readObject();
             if (room_id == 1){
+                System.out.println("Room_1 add one user");
                 room_1.addUser(user);
                 room_1.addSocket(socket);
                 ActiveroomThreadList.add(roomThread1);
@@ -133,7 +134,9 @@ public class UserThread extends Thread{
             /*********************************************************************************/
                  //run every room thread
             if (room_1.isFull()){ // do we need a roomThreadList?
+
                 roomThread1.start();
+                System.out.println("Room_1 already start");
             }
             if (room_2.isFull()){
                 roomThread2.start();

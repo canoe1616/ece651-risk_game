@@ -236,14 +236,20 @@ public class App extends Application{
     try {
       Socket socket = new Socket("localhost", 8080);
       //receive map from server
-      
-      InputStream inputStream = socket.getInputStream();
-      ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+
+      System.out.println("Client connected");
+
+
       OutputStream outputStream = socket.getOutputStream();
       ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
 
+      System.out.println("Ready to get into the Client username part");
+
+
       //client side user enter username and account
       app.getUsername(inputSource, objectOutputStream);
+      InputStream inputStream = socket.getInputStream();
+      ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
       String account_check = (String)objectInputStream.readObject();
       while(account_check == "false"){
         app.getUsername(inputSource, objectOutputStream);
@@ -263,10 +269,13 @@ public class App extends Application{
       }
       ////
       //sent room id
-      
+
+      objectOutputStream.reset();
       objectOutputStream.writeObject(room_id); // write #001
 
       //这里的myMap 只是一个全局变量;
+      System.out.println("ready to read the my map");
+
       Map myMap = (Map) objectInputStream.readObject(); // recv #001
       System.out.println("Receive Map form server.");
 
