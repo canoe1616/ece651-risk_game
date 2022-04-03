@@ -21,6 +21,7 @@ public class Room {
         this.map = roomFactory.makeRoom(numPlayers).map;
         this.numPlayers = numPlayers;
         this.socketList = new ArrayList<>();
+        this.userList = new ArrayList<>();
     }
 
     public boolean isFull(){

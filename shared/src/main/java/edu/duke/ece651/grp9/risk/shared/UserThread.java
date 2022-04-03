@@ -46,9 +46,14 @@ public class UserThread extends Thread{
     @Override
     public void run() {
 
-        try(ServerSocket ss = new ServerSocket(6666)) {
-            Socket socket = ss.accept();
-        
+        try(ServerSocket ss = new ServerSocket(8080)) {
+          for (int i = 0; i < 2; i++) {
+            Socket s = ss.accept();
+          }
+
+          System.out.println("In the UserThread");
+          Socket socket = ss.accept();
+            
             //Step1: 请输入你的username 和 password --  回传给client的东西是 account_check
             InputStream inputStream = socket.getInputStream();
             ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
@@ -115,7 +120,7 @@ public class UserThread extends Thread{
             }
         }
         catch (Exception e){
-            System.out.println("Error");
+            System.out.println(e);
 
         }
     }

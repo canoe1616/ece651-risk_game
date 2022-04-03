@@ -16,13 +16,13 @@ public class RoomThread extends Thread {
     private ArrayList<String> remainingColors;
     private ObjectInputStream objectInputStream;
     private ObjectOutputStream objectOutputStream;
-    private static ArrayList<Socket> socketList;
-    private static ArrayList<String> playerList;
-    private static ArrayList<ObjectInputStream> InputList;
-    private static ArrayList<ObjectOutputStream> OutputList;
-    private static HashSet<MoveAction> allMoves = new HashSet<>();
-    private static HashSet<AttackAction> allAttacks = new HashSet<>();
-    private static HashSet<UpgradeAction> allUpgrades = new HashSet<>();
+    private ArrayList<Socket> socketList;
+    private ArrayList<String> playerList;
+    private ArrayList<ObjectInputStream> InputList;
+    private ArrayList<ObjectOutputStream> OutputList;
+    private HashSet<MoveAction> allMoves = new HashSet<>();
+    private HashSet<AttackAction> allAttacks = new HashSet<>();
+    private HashSet<UpgradeAction> allUpgrades = new HashSet<>();
 
     //new adding
     public Room room;
@@ -38,7 +38,7 @@ public class RoomThread extends Thread {
         allMoves = new HashSet<MoveAction>();
         allAttacks = new HashSet<AttackAction>();
         allUpgrades = new HashSet<UpgradeAction>();
-
+        remainingColors = new ArrayList<String>();
     }
 
     @Override

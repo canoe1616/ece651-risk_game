@@ -234,7 +234,7 @@ public class App extends Application{
     HashSet<String> actionListUpgrade = new HashSet<>();
     ActionSet actionSet = new ActionSet();
     try {
-      Socket socket = new Socket("localhost", 6666);
+      Socket socket = new Socket("localhost", 8080);
       //receive map from server
       
       InputStream inputStream = socket.getInputStream();

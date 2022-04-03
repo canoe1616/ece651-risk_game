@@ -62,15 +62,16 @@ public class App {
       //最外层的部分是
       //如果所有的room 都满了
 
-      while (room_1.isFull() && room_2.isFull() && room_3.isFull() && room_4.isFull())) {
+      while (!(room_1.isFull() && room_2.isFull() && room_3.isFull() && room_4.isFull())) {
           //当有新的player连接起来的时候
           //设置一个窗口 -> 告诉我们所有的user 说所有的房间已经满了
           UserThread userThread = new UserThread(room_1, room_2, room_3, room_4, roomThread1, roomThread2, roomThread3, roomThread4);
+          System.out.println("Enter userThread!!");
           userThread.start();
         }
 
       }
-    } catch (Exception e) {
+     catch (Exception e) {
       System.out.println(e);
     }
   }}
