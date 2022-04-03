@@ -1,13 +1,12 @@
 package edu.duke.ece651.grp9.risk.shared;
 
-import javax.imageio.IIOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class UserThread extends Thread{
     ArrayList<RoomThread> ActiveroomThreadList = new ArrayList<>();
@@ -47,8 +46,9 @@ public class UserThread extends Thread{
     @Override
     public void run() {
 
-        try {
-            Socket socket = new Socket();
+        try(ServerSocket ss = new ServerSocket(6666)) {
+            Socket socket = ss.accept();
+        
             //Step1: 请输入你的username 和 password --  回传给client的东西是 account_check
             InputStream inputStream = socket.getInputStream();
             ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
@@ -77,26 +77,29 @@ public class UserThread extends Thread{
             int room_id = (int)objectInputStream.readObject();
             if (room_id == 1){
                 room_1.addUser(user);
+                room_1.addSocket(socket);
                 ActiveroomThreadList.add(roomThread1);
             }
             if (room_id == 2){
                 room_2.addUser(user);
+                room_2.addSocket(socket);
                 ActiveroomThreadList.add(roomThread2);
             }
             if (room_id == 3){
                 room_3.addUser(user);
+                room_3.addSocket(socket);
                 ActiveroomThreadList.add(roomThread3);
             }
             if (room_id == 4){
                 room_4.addUser(user);
+                room_4.addSocket(socket);
                 ActiveroomThreadList.add(roomThread4);
             }
 
-//            Room room = new Room(num);
-//            ActiveroomThreadList.add(room)
+ 
 
-/*********************************************************************************/
-    //run every room thread
+            /*********************************************************************************/
+                 //run every room thread
             if (room_1.isFull()){ // do we need a roomThreadList?
                 roomThread1.start();
             }

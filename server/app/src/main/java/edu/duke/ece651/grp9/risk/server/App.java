@@ -32,29 +32,23 @@ public class App {
 
 
   public static <objectInputStream> void main(String[] args) {
-
-    BufferedReader inputSource = new BufferedReader(new InputStreamReader(System.in));
-
-    try (ServerSocket ss = new ServerSocket(6666)) {
-
+    try{
       InputStream inputStream;
       ObjectInputStream objectInputStream;
       OutputStream outputStream;
       ObjectOutputStream objectOutputStream;
       int room_id;
       RoomThread roomThread;
-      //ArrayList<RoomThread> ActiveroomThreadList = new ArrayList<>();
       ArrayList<RoomThread> AllThreadList = new ArrayList<>();
       Socket socket;
       GamePlay gameplay = new GamePlay();
-
-//  四个room 要被所有的player 共享
+      //  four rooms need to be shared by all players
       Room room_1 = new Room(2);
       Room room_2 = new Room(3);
       Room room_3 = new Room(4);
       Room room_4 = new Room(5);
 
-// 四个共享的room 的线程
+      // four room thread.
 
       RoomThread roomThread1 = new RoomThread(room_1);
       RoomThread roomThread2 = new RoomThread(room_2);
@@ -68,15 +62,11 @@ public class App {
       //最外层的部分是
       //如果所有的room 都满了
 
-      int userNum = 1;
-      while (userNum < 15) {
-        if ((room_1.isFull() && room_2.isFull() && room_3.isFull() && room_4.isFull())) {
+      while (room_1.isFull() && room_2.isFull() && room_3.isFull() && room_4.isFull())) {
           //当有新的player连接起来的时候
           //设置一个窗口 -> 告诉我们所有的user 说所有的房间已经满了
-        } else {
           UserThread userThread = new UserThread(room_1, room_2, room_3, room_4, roomThread1, roomThread2, roomThread3, roomThread4);
           userThread.start();
-
         }
 
       }

@@ -30,7 +30,6 @@ public class RoomThread extends Thread {
 
 
     public RoomThread(Room room) {
-        ArrayList<Socket> socketList = new ArrayList<>();
         this.room = room;
         this.player_num =room.map.getPlayerNum();
         playerList = new ArrayList<String>();
@@ -42,9 +41,9 @@ public class RoomThread extends Thread {
 
     }
 
-
     @Override
     public void run() {
+      try{
         Map m = room.map;
         remainingColors = new ArrayList<>();
         Iterator<Player> it = m.getPlayer().iterator();
@@ -57,25 +56,12 @@ public class RoomThread extends Thread {
         Socket socket = null;
         GamePlay gamePlay = new GamePlay();
 
-        try (ServerSocket ss = new ServerSocket(6666)) {
-            for (int i = 0; i < player_num; i++) {
-                Socket s = ss.accept();
-                socketList.add(s);
-            }
-
-            //socket 是固定的一个
-            //Q: 一个client 对应一个socket & multi-threads
-//        Socket socket = ss.accept();
-//        //input outputStream, inputStream,
-//        OutputStream outputStream = socket.getOutputStream();
-//        ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
-
             int i = 0;
 
 //for part 1 - initial placement
             while (i < player_num) {
                 //add the checker
-                socket = socketList.get(i);
+                socket = room.getSocketList().get(i);
                 OutputStream outputStream = socket.getOutputStream();
                 ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
                 objectOutputStream.writeObject(m); // send #001
@@ -166,7 +152,6 @@ public class RoomThread extends Thread {
             }
             System.out.println("Final point");
             TimeUnit.SECONDS.sleep(20);
-            ss.close();
 
 
         } catch (Exception e) {
