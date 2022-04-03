@@ -72,11 +72,34 @@ public class App {
       //如果所有的room 都满了
 
       while(!(room_1.isFull() && room_2.isFull() && room_3.isFull() && room_4.isFull())){
+        //login
+        inputStream = socket.getInputStream();
+        objectInputStream = new ObjectInputStream(inputStream);
+        String password_check = storeUserNameAndPassword(objectInputStream);
+        String password_correct = "true";
+
+          // add the checker
+          //if everything is good, we will send "true" to the client
+          while (password_check != null) {
+
+            objectOutputStream.writeObject("false");
+            //read the new username/password from the client
+            password_check = storeUserNameAndPassword(objectInputStream);
+          }
+
+          if (password_check == null) {
+            password_correct = "true";
+            objectOutputStream.writeObject(color_correct);
+            break;
+          }
+        }
+
+
         UserThread();
 
       }
 
-
+///////////////////////////////////////////////////////////////////////////////////////////////////
 
 
       for (int i = 0; i < 15; i++) { //The max num of player in this version...

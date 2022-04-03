@@ -13,7 +13,7 @@ public class UserThread {
         while (user.activeUser()) {
             Room room = new Room(num);
             ActiveroomThreadList.add(room);
-
+            
 
             //在每一轮的时候，我们switch room的，actionthread -》 switch room?
             //view - room_list  四个

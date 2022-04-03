@@ -236,8 +236,21 @@ public class App extends Application{
     try {
       Socket socket = new Socket("localhost", 6666);
       //receive map from server
+      
       InputStream inputStream = socket.getInputStream();
       ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+      OutputStream outputStream = socket.getOutputStream();
+      ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
+
+      //client side user enter username and account
+      app.getUsername(inputSource, objectOutputStream);
+      String account_check = (String)objectInputStream.readObject();
+      while(account_check == "false"){
+        app.getUsername(inputSource, objectOutputStream);
+        account_check = (String)objectInputStream.readObject();
+      }
+      //end of user input...
+      
       System.out.println("Please input the room that you want to join, 1-4");
       int room_id = 0;
       
@@ -250,8 +263,7 @@ public class App extends Application{
       }
       ////
       //sent room id
-      OutputStream outputStream = socket.getOutputStream();
-      ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
+      
       objectOutputStream.writeObject(s); // write #001
 
       //这里的myMap 只是一个全局变量;
