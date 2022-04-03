@@ -60,7 +60,8 @@ public class App {
       RoomThread roomThread;
       //ArrayList<RoomThread> ActiveroomThreadList = new ArrayList<>();
       ArrayList<RoomThread> AllThreadList = new ArrayList<>();
-
+      Socket socket;
+      GamePlay gameplay = new GamePlay();
 
 //  四个room 要被所有的player 共享
       Room room_1 = new Room(2);
@@ -75,28 +76,26 @@ public class App {
         //login
         inputStream = socket.getInputStream();
         objectInputStream = new ObjectInputStream(inputStream);
-        String password_check = storeUserNameAndPassword(objectInputStream);
+        String password_check = gameplay.storeUserNameAndPassword(objectInputStream);
         String password_correct = "true";
-
           // add the checker
           //if everything is good, we will send "true" to the client
           while (password_check != null) {
 
             objectOutputStream.writeObject("false");
             //read the new username/password from the client
-            password_check = storeUserNameAndPassword(objectInputStream);
+            password_check = gameplay.storeUserNameAndPassword(objectInputStream);
           }
 
           if (password_check == null) {
             password_correct = "true";
-            objectOutputStream.writeObject(color_correct);
+            objectOutputStream.writeObject(password_correct);
             break;
           }
         }
 
-
-        UserThread();
-
+      UserThread userThread = new UserThread(AllThreadList, username);
+      userThread.start();
       }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
