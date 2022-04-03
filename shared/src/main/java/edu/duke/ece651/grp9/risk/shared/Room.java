@@ -10,16 +10,20 @@ public class Room {
 
     private String name;
     private int numPlayers;
-    private ArrayList<Socket> socketList;
+    //private ArrayList<Socket> socketList;
+    private ArrayList<User> userList;
     public Map map;
 
 
     public Room(int numPlayers) {
+        RoomFactory roomFactory = new RoomFactory();
+        //应该调用roomfactory
+        this.map = roomFactory.makeRoom(numPlayers).map;
         this.numPlayers = numPlayers;
     }
 
     public boolean isFull(){
-        if (socketList.size()>=numPlayers){
+        if (userList.size()>=numPlayers){
             return true;
         }
         else{
@@ -27,9 +31,9 @@ public class Room {
         }
     }
 
-    void addSocket(Socket socket){
-        socketList.add(socket);
-    }
+//   // void addSocket(Socket socket){
+//        socketList.add(socket);
+//    }
 
 
 
@@ -42,5 +46,8 @@ public class Room {
 
 
 
+    }
+    public void addUser( User user){
+        userList.add(user);
     }
 }

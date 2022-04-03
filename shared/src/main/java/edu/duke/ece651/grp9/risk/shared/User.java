@@ -19,6 +19,11 @@ public class User {
 
 
 
+    public User(String userName,String password){
+        this.userName = userName;
+        this.password = password;
+    }
+
     public boolean activeUser(){
         if(status.equals("out")){
             return false;

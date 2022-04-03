@@ -264,7 +264,7 @@ public class App extends Application{
       ////
       //sent room id
       
-      objectOutputStream.writeObject(s); // write #001
+      objectOutputStream.writeObject(room_id); // write #001
 
       //这里的myMap 只是一个全局变量;
       Map myMap = (Map) objectInputStream.readObject(); // recv #001

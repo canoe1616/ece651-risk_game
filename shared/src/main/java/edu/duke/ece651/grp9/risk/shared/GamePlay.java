@@ -9,7 +9,7 @@ import java.util.Iterator;
 import java.util.TreeSet;
 
 public class GamePlay {
-  private HashMap<String, String> userPassPairs;
+  public HashMap<String, String> userPassPairs;
   public GamePlay() {
     this.userPassPairs = new HashMap<String, String>();
   }
@@ -267,10 +267,11 @@ public class GamePlay {
       //to test whether we have this username before or not and the password are matched or not.
       if (userPassPairs.containsKey(username)) {
         if (!userPassPairs.get(username).equals(password)) {
-          return "the password you enter is invalid, please enter again";
+          return null;
         }
       } else {
         userPassPairs.put(username, password);
+        return username;
       }
     } catch (Exception e) {
       System.out.println(e);
