@@ -111,21 +111,29 @@ public class UserThread extends Thread{
                 System.out.println("Room_1 add one user");
                 room_1.addUser(user);
                 room_1.addSocket(socket);
+                roomThread1.InputList.add(objectInputStream);
+                roomThread1.OutputList.add(objectOutputStream);
                 ActiveroomThreadList.add(roomThread1);
             }
             if (room_id == 2){
                 room_2.addUser(user);
                 room_2.addSocket(socket);
+                roomThread2.InputList.add(objectInputStream);
+                roomThread2.OutputList.add(objectOutputStream);
                 ActiveroomThreadList.add(roomThread2);
             }
             if (room_id == 3){
                 room_3.addUser(user);
                 room_3.addSocket(socket);
+                roomThread3.InputList.add(objectInputStream);
+                roomThread3.OutputList.add(objectOutputStream);
                 ActiveroomThreadList.add(roomThread3);
             }
             if (room_id == 4){
                 room_4.addUser(user);
                 room_4.addSocket(socket);
+                roomThread4.InputList.add(objectInputStream);
+                roomThread4.OutputList.add(objectOutputStream);
                 ActiveroomThreadList.add(roomThread4);
             }
 

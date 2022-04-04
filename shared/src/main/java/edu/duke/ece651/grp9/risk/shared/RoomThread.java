@@ -18,8 +18,8 @@ public class RoomThread extends Thread {
     private ObjectOutputStream objectOutputStream;
     private ArrayList<Socket> socketList;
     private ArrayList<String> playerList;
-    private ArrayList<ObjectInputStream> InputList;
-    private ArrayList<ObjectOutputStream> OutputList;
+    public ArrayList<ObjectInputStream> InputList;
+    public ArrayList<ObjectOutputStream> OutputList;
     private HashSet<MoveAction> allMoves = new HashSet<>();
     private HashSet<AttackAction> allAttacks = new HashSet<>();
     private HashSet<UpgradeAction> allUpgrades = new HashSet<>();
@@ -73,34 +73,42 @@ public class RoomThread extends Thread {
 //                objectOutputStream.writeObject(m); // send #001
 //
 
+//
+//                Socket socket_1 = room.getSocketList().get(0);
+//                Socket socket_2 = room.getSocketList().get(1);
+//                if(socket_1 == null){
+//                    System.out.println("socket_1是null");
+//                }
+//                if(socket_2 == null){
+//                    System.out.println("socket_2是null");
+//                }
+//
+//                OutputStream outputStream_1 = socket_1.getOutputStream();
+//                OutputStream outputStream_2 = socket_2.getOutputStream();
+//                ObjectOutputStream objectOutputStream_1 = new ObjectOutputStream(outputStream_1);
+//               ObjectOutputStream objectOutputStream_2 = new ObjectOutputStream(outputStream_2);
+//                objectOutputStream_1.reset();
+//                objectOutputStream_1.writeObject(m);
+//                objectOutputStream_1.reset();
+//                objectOutputStream_2.writeObject(m);
 
-                Socket socket_1 = room.getSocketList().get(0);
-                Socket socket_2 = room.getSocketList().get(1);
-                if(socket_1 == null){
-                    System.out.println("socket_1是null");
-                }
-                if(socket_2 == null){
-                    System.out.println("socket_2是null");
-                }
 
-                OutputStream outputStream_1 = socket_1.getOutputStream();
-                OutputStream outputStream_2 = socket_2.getOutputStream();
-                ObjectOutputStream objectOutputStream_1 = new ObjectOutputStream(outputStream_1);
-               ObjectOutputStream objectOutputStream_2 = new ObjectOutputStream(outputStream_2);
-                objectOutputStream_1.reset();
-                objectOutputStream_1.writeObject(m);
-                objectOutputStream_1.reset();
-                objectOutputStream_2.writeObject(m);
-
-
+                /**
+                Before unit setting, sending map to the client.
+                 */
+                ObjectOutputStream objectOutputStream =OutputList.get(i);
+                ObjectInputStream objectInputStream = InputList.get(i);
+                objectOutputStream.reset();
+                objectOutputStream.writeObject(m);
+                System.out.println("Already sent the map");
 
                // OutputList.add(objectOutputStream);
 
-                System.out.println("Already sent the map");
 
-                InputStream inputStream = socket.getInputStream();
-                ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
-                InputList.add(objectInputStream);
+
+//                InputStream inputStream = socket.getInputStream();
+//                ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+//                InputList.add(objectInputStream);
 
                 ServerThread serverThread = new ServerThread(socket, serverThreadList, m, objectInputStream, objectOutputStream, remainingColors.get(i));
                 serverThreadList.add(serverThread);
