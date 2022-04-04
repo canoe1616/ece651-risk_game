@@ -65,6 +65,11 @@ public class ActionThread extends Thread{
             break;
           }
 
+          // to be done
+          // if readobject- >yes
+          //thread stops
+
+
           System.out.println("There are problems with this client's setting, send information back to the server");
         }
       }

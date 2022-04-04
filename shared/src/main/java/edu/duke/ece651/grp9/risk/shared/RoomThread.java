@@ -67,30 +67,6 @@ public class RoomThread extends Thread {
                 System.out.println("Enter Room Thread initial placement");
                 System.out.println("This room's getSocketList size" + room.getSocketList().size());
                 //add the checker
-//                socket = room.getSocketList().get(i);
-//                OutputStream outputStream = socket.getOutputStream();
-//                ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
-//                objectOutputStream.writeObject(m); // send #001
-//
-
-//
-//                Socket socket_1 = room.getSocketList().get(0);
-//                Socket socket_2 = room.getSocketList().get(1);
-//                if(socket_1 == null){
-//                    System.out.println("socket_1是null");
-//                }
-//                if(socket_2 == null){
-//                    System.out.println("socket_2是null");
-//                }
-//
-//                OutputStream outputStream_1 = socket_1.getOutputStream();
-//                OutputStream outputStream_2 = socket_2.getOutputStream();
-//                ObjectOutputStream objectOutputStream_1 = new ObjectOutputStream(outputStream_1);
-//               ObjectOutputStream objectOutputStream_2 = new ObjectOutputStream(outputStream_2);
-//                objectOutputStream_1.reset();
-//                objectOutputStream_1.writeObject(m);
-//                objectOutputStream_1.reset();
-//                objectOutputStream_2.writeObject(m);
 
 
                 /**
@@ -102,13 +78,6 @@ public class RoomThread extends Thread {
                 objectOutputStream.writeObject(m);
                 System.out.println("Already sent the map");
 
-               // OutputList.add(objectOutputStream);
-
-
-
-//                InputStream inputStream = socket.getInputStream();
-//                ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
-//                InputList.add(objectInputStream);
 
                 ServerThread serverThread = new ServerThread(socket, serverThreadList, m, objectInputStream, objectOutputStream, remainingColors.get(i));
                 serverThreadList.add(serverThread);

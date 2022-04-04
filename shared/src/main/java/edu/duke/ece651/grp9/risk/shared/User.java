@@ -16,7 +16,8 @@ public class User {
     String myCurrentColor;
     ObjectInputStream objectInputStream;
     ObjectOutputStream objectOutputStream;
-    public String status; //log in 和  Log out
+    public String status; //log in 和  Log out //switch
+
 
 
 

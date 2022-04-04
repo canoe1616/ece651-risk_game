@@ -188,6 +188,8 @@ public class App extends Application{
     /**
      * to record each player's username and password
     Q:是否需要考虑多个空格的情况
+
+     前端两个button 直接到 Getusername 这里
      */
     public String getUsername(BufferedReader inputSource,ObjectOutputStream outStream) throws IOException{
       try {
@@ -360,6 +362,8 @@ public class App extends Application{
                 actionListAttack.clear();
                 actionListUpgrade.clear();
                 if (actionProblem == null) {
+                  //to be done
+                  // do you want to switch room or not
                   break;
                 } else {
                   System.out.println(actionProblem + "\nPlease reenter your Actions again.");

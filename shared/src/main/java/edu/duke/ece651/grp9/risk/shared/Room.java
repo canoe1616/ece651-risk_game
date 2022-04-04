@@ -13,6 +13,7 @@ public class Room {
     private ArrayList<Socket> socketList;
     private ArrayList<User> userList;
     public Map map;
+    public ArrayList<User> myCurrentUser;
 
     //debugging 4.2 night
 
@@ -53,5 +54,14 @@ public class Room {
     }
     public void addUser( User user){
         userList.add(user);
+    }
+
+    /*
+    For UI part  priting
+     */
+    public String roomFull(){
+        String a = String.valueOf(userList.size()) + "/" + String.valueOf(numPlayers);
+        System.out.println(a);
+        return a;
     }
 }

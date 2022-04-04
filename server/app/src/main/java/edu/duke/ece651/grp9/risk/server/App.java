@@ -29,6 +29,18 @@ public class App {
 //  private static HashSet<AttackAction> allAttacks = new HashSet<>();
 //  private static HashSet<UpgradeAction> allUpgrades = new HashSet<>();
 
+  //  four rooms need to be shared by all players
+  public static Room room_1 = new Room(2);
+  public static Room room_2 = new Room(3);
+  public static Room room_3 = new Room(4);
+  public static Room room_4 = new Room(5);
+
+  // four room thread.
+
+  public static RoomThread roomThread1 = new RoomThread(room_1);
+  public static RoomThread roomThread2 = new RoomThread(room_2);
+  public static RoomThread roomThread3 = new RoomThread(room_3);
+  public static RoomThread roomThread4 = new RoomThread(room_4);
 
 
   public static <objectInputStream> void main(String[] args) {
@@ -41,18 +53,7 @@ public class App {
       RoomThread roomThread;
       ArrayList<RoomThread> AllThreadList = new ArrayList<>();
       GamePlay gameplay = new GamePlay();
-      //  four rooms need to be shared by all players
-      Room room_1 = new Room(2);
-      Room room_2 = new Room(3);
-      Room room_3 = new Room(4);
-      Room room_4 = new Room(5);
 
-      // four room thread.
-
-      RoomThread roomThread1 = new RoomThread(room_1);
-      RoomThread roomThread2 = new RoomThread(room_2);
-      RoomThread roomThread3 = new RoomThread(room_3);
-      RoomThread roomThread4 = new RoomThread(room_4);
 
 
       //对于AllThreadList 来说
@@ -81,7 +82,25 @@ public class App {
      catch (Exception e) {
       System.out.println(e);
     }
-  }}
+  }
+  public ArrayList<Room> availableRoom(){
+    ArrayList<Room> availableRoomList = new ArrayList<Room>();
+    if(!room_1.isFull()){
+      availableRoomList.add(room_1);
+    }
+    if(!room_2.isFull()){
+      availableRoomList.add(room_2);
+    }
+    if(!room_3.isFull()){
+      availableRoomList.add(room_3);
+    }
+    if(!room_4.isFull()){
+      availableRoomList.add(room_4);
+    }
+    return availableRoomList;
+  }
+
+}
 
 
 
