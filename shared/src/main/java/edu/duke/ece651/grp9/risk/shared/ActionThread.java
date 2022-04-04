@@ -62,30 +62,8 @@ public class ActionThread extends Thread{
             allMove.addAll(moveActions);
             allAttack.addAll(attackActions);
             allUpgrade.addAll(upgradeActions);
-
-
-            // to be done
-            // if readobject- >yes
-            //thread stops
-
-//            String switch_answer = (String) objectInputStream.readObject();
-//            if(switch_answer.equals("true")){
-//              suspend();
-//            }
-
-
-
-
-
-
             break;
           }
-
-
-
-
-
-
 
           System.out.println("There are problems with this client's setting, send information back to the server");
         }
