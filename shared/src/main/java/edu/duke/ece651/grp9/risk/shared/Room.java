@@ -14,6 +14,7 @@ public class Room {
     private ArrayList<User> userList;
     public Map map;
     public ArrayList<User> myCurrentUser;
+    public boolean startOrnot;
 
     //debugging 4.2 night
 
@@ -25,6 +26,7 @@ public class Room {
         this.numPlayers = numPlayers;
         this.socketList = new ArrayList<>();
         this.userList = new ArrayList<>();
+        this.startOrnot = false;
     }
 
     public boolean isFull(){
