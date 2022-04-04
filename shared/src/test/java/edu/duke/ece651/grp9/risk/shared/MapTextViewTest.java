@@ -8,7 +8,7 @@ import java.io.InputStreamReader;
 import static org.junit.jupiter.api.Assertions.*;
 
 class MapTextViewTest {
-    @Test
+   // @Test
     void test_displayGeneralInfo() {
         MapFactory mapFactory = new MapFactory();
         Map map = mapFactory.makeMapForTwo();
@@ -42,7 +42,7 @@ class MapTextViewTest {
         assertEquals(exp, view.displayGameState(map.findPlayer("red")));
     }
 
-    @Test
+   // @Test
     void displayWinInfo() {
         BufferedReader inputReader = new BufferedReader(new InputStreamReader(System.in));
         Player p1 = new Player("blue");
@@ -67,7 +67,7 @@ class MapTextViewTest {
 
     }
 
-    @Test
+   // @Test
     void displayGameOverInfo() {
         BufferedReader inputReader = new BufferedReader(new InputStreamReader(System.in));
         Player p1 = new Player("blue");
