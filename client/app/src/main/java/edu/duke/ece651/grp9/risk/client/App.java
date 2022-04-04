@@ -364,6 +364,21 @@ public class App extends Application{
                 if (actionProblem == null) {
                   //to be done
                   // do you want to switch room or not
+//                  System.out.println("Do you want to switch room? (Yes or No)");
+//                  String change = inputSource.readLine();
+//                  if(change.equals("Yes")) {
+//                    objectOutputStream.reset();
+//                    objectOutputStream.writeObject("true");
+//                  }
+//                  else{
+//                    objectOutputStream.reset();
+//                    objectOutputStream.writeObject("false");
+//                  }
+
+
+
+
+
                   break;
                 } else {
                   System.out.println(actionProblem + "\nPlease reenter your Actions again.");
