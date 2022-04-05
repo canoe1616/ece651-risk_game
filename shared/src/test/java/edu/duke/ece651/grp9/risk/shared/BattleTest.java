@@ -52,9 +52,9 @@ class BattleTest {
     Player p1 = map.findPlayer("red");
     Player p2 = map.findPlayer("green");
 
-    Territory src1 = map.findTerritory("UTAH");
-    Territory src2 = map.findTerritory("IOWA");
-    Territory dst = map.findTerritory("KANSAS");
+    Territory src1 = map.findTerritory("B");
+    Territory src2 = map.findTerritory("D");
+    Territory dst = map.findTerritory("G");
 
     src1.setUnit(10);
     src2.setUnit(10);
