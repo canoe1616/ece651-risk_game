@@ -81,6 +81,9 @@ public class logInPageController {
             }
 
             // TODO: need to reader info from controller to client
+            else{
+                errorMessage.setText("your password is wrong!");
+            }
 
 
         }
