@@ -7,13 +7,20 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class StartGameController implements Initializable {
     private Stage Window;
-    public StartGameController(Stage Window) {
+    public ObjectOutputStream objectOutputStream;
+    public ObjectInputStream objectInputStream;
+
+    public StartGameController(Stage Window, ObjectInputStream objectInputStream, ObjectOutputStream objectOutputStream) {
         this.Window = Window;
+        this.objectInputStream = objectInputStream;
+        this.objectOutputStream = objectOutputStream;
     }
 
     @FXML
@@ -21,7 +28,7 @@ public class StartGameController implements Initializable {
         System.out.println("click on log in");
         FXMLLoader loaderStart = new FXMLLoader(getClass().getResource("/FXML/LoginView.fxml"));
         loaderStart.setControllerFactory(c->{
-            return new logInPageController(Window);
+            return new logInPageController(Window,objectInputStream,objectOutputStream);
         });
         Scene scene = new Scene(loaderStart.load());
         Window.setScene(scene);
