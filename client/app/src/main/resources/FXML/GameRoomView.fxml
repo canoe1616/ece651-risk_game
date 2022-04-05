@@ -96,7 +96,7 @@
                 <Font name="Copperplate" size="15.0" />
             </font>
         </Label>
-        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="20" wrappingWidth="28.277679443359375" GridPane.columnIndex="5" GridPane.columnSpan="2" GridPane.rowSpan="2" GridPane.valignment="TOP">
+        <Text fx:id="foodQuantity" strokeType="OUTSIDE" strokeWidth="0.0" text="20" wrappingWidth="28.277679443359375" GridPane.columnIndex="5" GridPane.columnSpan="2" GridPane.rowSpan="2" GridPane.valignment="TOP">
             <font>
                 <Font name="Copperplate" size="14.0" />
             </font>
@@ -106,7 +106,7 @@
                 <Font name="Copperplate" size="15.0" />
             </font>
         </Label>
-        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="2000" wrappingWidth="53.66119384765625" GridPane.columnIndex="7" GridPane.columnSpan="2" GridPane.rowSpan="2" GridPane.valignment="TOP">
+        <Text fx:id="moneyQuantity" strokeType="OUTSIDE" strokeWidth="0.0" text="2000" wrappingWidth="53.66119384765625" GridPane.columnIndex="7" GridPane.columnSpan="2" GridPane.rowSpan="2" GridPane.valignment="TOP">
             <font>
                 <Font name="Copperplate" size="14.0" />
             </font>

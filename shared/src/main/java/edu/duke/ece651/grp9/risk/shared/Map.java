@@ -1,5 +1,6 @@
 package edu.duke.ece651.grp9.risk.shared;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 
@@ -52,6 +53,8 @@ public class Map implements Serializable{
   public HashSet<Player> getPlayer() {
     return players;
   }
+
+//  public ArrayList<Player> getOrderedPlayer() {}
 
   /**
    * given a player, this method is to add a player to the player list
