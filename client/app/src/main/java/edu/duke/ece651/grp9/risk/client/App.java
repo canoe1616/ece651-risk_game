@@ -224,7 +224,6 @@ public class App {
       outStream.reset();
       outStream.writeObject(password);
 
-
       //if the username and the password, they are not match with each other
 
       return null;

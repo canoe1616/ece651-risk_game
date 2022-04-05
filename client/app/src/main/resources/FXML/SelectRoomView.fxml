@@ -67,10 +67,10 @@
                               <Text layoutX="48.0" layoutY="78.0" strokeType="OUTSIDE" strokeWidth="0.0" text="/ 3" wrappingWidth="21.504058837890625" />
                               <Text layoutX="48.0" layoutY="122.0" strokeType="OUTSIDE" strokeWidth="0.0" text="/ 4" wrappingWidth="21.504058837890625" />
                               <Text layoutX="48.0" layoutY="168.0" strokeType="OUTSIDE" strokeWidth="0.0" text="/ 5" wrappingWidth="21.504058837890625" />
-                              <Text fx:id="room1num" layoutX="-3.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" wrappingWidth="21.504058837890625" x="40.0" y="31.0" />
-                              <Text fx:id="room2num" layoutX="35.0" layoutY="78.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" wrappingWidth="21.504058837890625" />
-                              <Text fx:id="room3num" layoutX="35.0" layoutY="122.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" wrappingWidth="21.504058837890625" />
-                              <Text fx:id="room4num" layoutX="35.0" layoutY="168.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" wrappingWidth="21.504058837890625" />
+                              <Text fx:id="room1num" layoutX="-2.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" wrappingWidth="21.504058837890625" x="40.0" y="31.0" />
+                              <Text fx:id="room2num" layoutX="38.0" layoutY="78.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" wrappingWidth="21.504058837890625" />
+                              <Text fx:id="room3num" layoutX="38.0" layoutY="122.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" wrappingWidth="21.504058837890625" />
+                              <Text fx:id="room4num" layoutX="38.0" layoutY="168.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" wrappingWidth="21.504058837890625" />
                            </children></AnchorPane>
                     </items>
                   </SplitPane>

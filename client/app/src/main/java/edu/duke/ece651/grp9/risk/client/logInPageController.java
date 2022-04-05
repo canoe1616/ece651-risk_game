@@ -22,6 +22,7 @@ public class logInPageController {
     private String errMsg;
     private LinkedBlockingQueue<Pair<String, String>> loginList;
 
+
     @FXML TextField username;
 
     @FXML
@@ -35,6 +36,7 @@ public class logInPageController {
         System.out.println("input name and password.\n click join");
     }
 
+
     @FXML
     public void join() throws IOException {
         FXMLLoader loaderStart = new FXMLLoader(getClass().getResource("/FXML/SelectRoomView.fxml"));
@@ -42,6 +44,7 @@ public class logInPageController {
         this.pwd = password.getText();
         username.setText("");
         password.setText("");
+
         // TODO: need to reader info from controller to client
 //        try {
 //            loginList.put(new Pair<>(name, pwd));
@@ -52,6 +55,7 @@ public class logInPageController {
         loaderStart.setControllerFactory(c->{
             return new selectRoomController(this.Window);
         });
+
         Scene scene = new Scene(loaderStart.load());
         this.Window.setScene(scene);
         this.Window.show();
