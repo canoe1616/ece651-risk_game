@@ -43,6 +43,7 @@ public class App {
   public static RoomThread roomThread4 = new RoomThread(room_4);
 
 
+  GamePlay gameplay = new GamePlay();
   public static <objectInputStream> void main(String[] args) {
     try {
       InputStream inputStream;
@@ -72,7 +73,7 @@ public class App {
           //对于每一个user 来说，他们有一个单独的room thread
           Socket socket = ss.accept();
 
-          UserThread userThread = new UserThread(socket,room_1, room_2, room_3, room_4, roomThread1, roomThread2, roomThread3, roomThread4);
+          UserThread userThread = new UserThread(socket,room_1, room_2, room_3, room_4, roomThread1, roomThread2, roomThread3, roomThread4,gameplay);
           System.out.println("Enter userThread!!");
           userThread.start();
         }

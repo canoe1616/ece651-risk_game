@@ -270,13 +270,21 @@ public class GamePlay {
       System.out.println("In server username and password part.");
       String username = (String) objectInputStream.readObject();
       String password = (String) objectInputStream.readObject();
+      System.out.println("username是" + username);
+      System.out.println("password是" + password);
       //to test whether we have this username before or not and the password are matched or not.
+      for (String key: userPassPairs.keySet()){
+        System.out.println(key);
+      }
+
       if (userPassPairs.containsKey(username)) {
+        System.out.println("The username already exists");
         if (!userPassPairs.get(username).equals(password)) {
           return null;
         }
       } else {
         userPassPairs.put(username, password);
+        System.out.println("Record in the userPassPairs");
         return username;
       }
     } catch (Exception e) {

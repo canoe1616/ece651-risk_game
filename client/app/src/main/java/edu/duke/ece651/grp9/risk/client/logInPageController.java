@@ -23,16 +23,13 @@ public class logInPageController {
     public ObjectInputStream objectInputStream;
     private Stage Window;
     public String name;
-    public  String pwd;
+    public String pwd;
     private String errMsg;
     private LinkedBlockingQueue<Pair<String, String>> loginList;
 
 
-
-
-
-
-    @FXML TextField username;
+    @FXML
+    TextField username;
 
     @FXML
     TextField password;
@@ -56,24 +53,41 @@ public class logInPageController {
 //        username.setText("");
 //        password.setText("");
 
-        if (name != null & pwd != null){
+        if( !(name.equals("") || pwd.equals(""))) {
             objectOutputStream.reset();
             objectOutputStream.writeObject(name);
             objectOutputStream.reset();
             objectOutputStream.writeObject(pwd);
+
+            String account_check = null;
+            //account check
+            try {
+                account_check = (String) objectInputStream.readObject();
+
+
+            } catch (Exception exception) {
+                System.out.println(exception.getMessage());
+            }
+
+
+            if (account_check.equals("true")) {
+                loaderStart.setControllerFactory(c -> {
+                    return new selectRoomController(this.Window);
+                });
+
+                Scene scene = new Scene(loaderStart.load());
+                this.Window.setScene(scene);
+                this.Window.show();
+            }
+
+            // TODO: need to reader info from controller to client
+
+
+        }
+        else{
+            username.setText("");
+            password.setText("");
         }
 
-
-
-        // TODO: need to reader info from controller to client
-
-        loaderStart.setControllerFactory(c->{
-            return new selectRoomController(this.Window);
-        });
-
-        Scene scene = new Scene(loaderStart.load());
-        this.Window.setScene(scene);
-        this.Window.show();
     }
-
 }
