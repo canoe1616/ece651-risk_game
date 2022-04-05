@@ -19,181 +19,89 @@ import edu.duke.ece651.grp9.risk.shared.Map;
 
 public class App {
 
-  private static ArrayList<String> remainingColors;
-  private static HashMap<String, String> userPassPairs;
-  private static ArrayList<Socket> socketList;
-  private static ArrayList<String> playerList;
-  private static ArrayList<ObjectInputStream> InputList;
-  private static ArrayList<ObjectOutputStream> OutputList;
-  private static HashSet<MoveAction> allMoves = new HashSet<>();
-  private static HashSet<AttackAction> allAttacks = new HashSet<>();
-  private static HashSet<UpgradeAction> allUpgrades = new HashSet<>();
+//  private static ArrayList<String> remainingColors;
+//  private static HashMap<String, String> userPassPairs;
+//  private static ArrayList<Socket> socketList;
+//  private static ArrayList<String> playerList;
+//  private static ArrayList<ObjectInputStream> InputList;
+//  private static ArrayList<ObjectOutputStream> OutputList;
+//  private static HashSet<MoveAction> allMoves = new HashSet<>();
+//  private static HashSet<AttackAction> allAttacks = new HashSet<>();
+//  private static HashSet<UpgradeAction> allUpgrades = new HashSet<>();
+
+  //  four rooms need to be shared by all players
+  public static Room room_1 = new Room(2);
+  public static Room room_2 = new Room(3);
+  public static Room room_3 = new Room(4);
+  public static Room room_4 = new Room(5);
+
+  // four room thread.
+
+  public static RoomThread roomThread1 = new RoomThread(room_1);
+  public static RoomThread roomThread2 = new RoomThread(room_2);
+  public static RoomThread roomThread3 = new RoomThread(room_3);
+  public static RoomThread roomThread4 = new RoomThread(room_4);
 
 
-  public App(Map m) {
-    remainingColors = new ArrayList<>();
-    Iterator<Player> it = m.getPlayer().iterator();
-    while (it.hasNext()) {
-      remainingColors.add(it.next().getName());
-    }
-    socketList = new ArrayList<Socket>();
-    playerList = new ArrayList<String>();
-    InputList = new ArrayList<ObjectInputStream>();
-    OutputList = new ArrayList<ObjectOutputStream>();
-    allMoves = new HashSet<MoveAction>();
-    allAttacks = new HashSet<AttackAction>();
-    allUpgrades = new HashSet<UpgradeAction>();
-  }
-
-  //boolean
   public static <objectInputStream> void main(String[] args) {
-    //no multi-threads the server should enter the number of players
-    System.out.println("Please input the number of players you want, and should be 2-5");
-    BufferedReader inputSource = new BufferedReader(new InputStreamReader(System.in));
-    int player_num = 0;
     try {
-      player_num = Integer.parseInt(inputSource.readLine());
-      while (player_num < 2 || player_num > 5) {
-        System.out.println("Must be 2-5. Please enter again");
-        player_num = Integer.parseInt(inputSource.readLine());
-      }
-    } catch (Exception e) {
-      System.out.println(e);
-    }
+      InputStream inputStream;
+      ObjectInputStream objectInputStream;
+      OutputStream outputStream;
+      ObjectOutputStream objectOutputStream;
+      int room_id;
+      RoomThread roomThread;
+      ArrayList<RoomThread> AllThreadList = new ArrayList<>();
+      GamePlay gameplay = new GamePlay();
 
-    MapFactory f = new MapFactory();
-    Map m = f.makeMap(player_num);
-    App app = new App(m);
 
-    remainingColors = new ArrayList<>();
-    Iterator<Player> it = m.getPlayer().iterator();
-    while (it.hasNext()) {
-      remainingColors.add(it.next().getName());
-    }
 
-/******************************************************************************************************/
-    ArrayList<ServerThread> serverThreadList = new ArrayList<>();
-    ArrayList<ActionThread> ActionThreadList = new ArrayList<>();
-    Socket socket = null;
-    GamePlay gamePlay = new GamePlay();
+      //对于AllThreadList 来说
 
-    try (ServerSocket ss = new ServerSocket(6666)) {
-      for (int i = 0; i < player_num; i++) {
-        Socket s = ss.accept();
-        socketList.add(s);
-      }
 
-      //socket 是固定的一个
-      //Q: 一个client 对应一个socket & multi-threads
-//        Socket socket = ss.accept();
-//        //input outputStream, inputStream,
-//        OutputStream outputStream = socket.getOutputStream();
-//        ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
+      //最外层的部分是
+      //如果所有的room 都满了
+      try (ServerSocket ss = new ServerSocket(8080)) {
+        //这个是Server 的socket
 
-      int i = 0;
 
-//for part 1 - initial placement
-      while (i < player_num) {
-        //add the checker
-        socket = socketList.get(i);
-        OutputStream outputStream = socket.getOutputStream();
-        ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
-        objectOutputStream.writeObject(m); // send #001
-        OutputList.add(objectOutputStream);
+        while (!(room_1.isFull() && room_2.isFull() && room_3.isFull() && room_4.isFull())) {
+          //当有新的player连接起来的时候
+          //设置一个窗口 -> 告诉我们所有的user 说所有的房间已经满了
+          //4.3 仍旧需要建立一个socket 传到user_Thread 里面去
+          //对于每一个user 来说，他们有一个单独的room thread
+          Socket socket = ss.accept();
 
-        InputStream inputStream = socket.getInputStream();
-        ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
-        InputList.add(objectInputStream);
-
-        ServerThread serverThread = new ServerThread(socket, serverThreadList, m, objectInputStream, objectOutputStream, remainingColors.get(i));
-        serverThreadList.add(serverThread);
-        serverThread.start();
-        m = serverThread.m;
-        i++;
-        System.out.print("i is " + i);
-      }
-
-      System.out.println("第一个unit setting 的部分结束了");
-
-      for (int n = 0; n < serverThreadList.size(); ++n) {
-        System.out.println("server thread join");
-        serverThreadList.get(n).join();
-      }
-
-      //for part 2 - for action part
-      //while the game is not over?
-
-      int j = 0;
-      while (m.getGameWinner() == null) {
-
-        while (j < player_num) {
-          //how to update
-          OutputList.get(j).reset();
-          OutputList.get(j).writeObject(m);
-          OutputList.get(j).reset();
-          OutputList.get(j).writeObject("keep going");
-
-          String action = (String) InputList.get(j).readObject();
-          gamePlay.findPlayer(remainingColors.get(j), m).setLoseStatus(action);
-          Player tmp = gamePlay.findPlayer(remainingColors.get(j), m);
-
-          /*************adding new parts***/
-          if (tmp.isLose()) {
-            if (tmp.getLoseStatus().equals("quit") && m.getPlayer().contains(tmp)) {
-              //remove it from player list
-              //auto set empty actionSet
-              System.out.println("Bye bye I quit");
-              InputList.remove(j);
-              OutputList.remove(j);
-              remainingColors.remove(j);
-              player_num--;
-              j--;
-            }
-            if (tmp.getLoseStatus().equals("continue")) {
-            }
-          } else {
-            ActionThread actionThread = new ActionThread(m, InputList.get(j), OutputList.get(j), tmp, allMoves, allAttacks, allUpgrades);
-            ActionThreadList.add(actionThread);
-            actionThread.start();
-            allMoves.addAll(actionThread.allMove);
-            allAttacks.addAll(actionThread.allAttack);
-            allUpgrades.addAll(actionThread.allUpgrade);
-            j++;
-          }
+          UserThread userThread = new UserThread(socket,room_1, room_2, room_3, room_4, roomThread1, roomThread2, roomThread3, roomThread4);
+          System.out.println("Enter userThread!!");
+          userThread.start();
         }
 
-        //after all the actions, they should be merged
-        for (int k = 0; k < ActionThreadList.size(); ++k) {
-          ActionThreadList.get(k).join();
-        }
-
-        j = 0;
-        System.out.println("perform all actions");
-        gamePlay.playMoves(allMoves);
-        gamePlay.playAttacks(m, allAttacks);
-        gamePlay.playUpgrades(allUpgrades);
-        // increase the basic unit per terr, produce resource
-        m.upgradeMapPerRound();
-        allMoves.clear();
-        allAttacks.clear();
-        allUpgrades.clear();
       }
-
-      //for part 3 - for game winner and end this game
-      for (int t = 0; t < player_num; t++) {
-        System.out.println("已经进入到winner阶段");
-        gamePlay.gameWinner(OutputList.get(t), remainingColors.get(t), m);
-      }
-      System.out.println("Final point");
-      TimeUnit.SECONDS.sleep(20);
-      ss.close();
-
-
-    } catch (Exception e) {
+    }
+     catch (Exception e) {
       System.out.println(e);
     }
   }
+  public ArrayList<Room> availableRoom(){
+    ArrayList<Room> availableRoomList = new ArrayList<Room>();
+    if(!room_1.isFull()){
+      availableRoomList.add(room_1);
+    }
+    if(!room_2.isFull()){
+      availableRoomList.add(room_2);
+    }
+    if(!room_3.isFull()){
+      availableRoomList.add(room_3);
+    }
+    if(!room_4.isFull()){
+      availableRoomList.add(room_4);
+    }
+    return availableRoomList;
+  }
+
 }
+
 
 
 
