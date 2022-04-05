@@ -17,6 +17,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Set;
 
 
 public class MapController {
@@ -55,7 +56,6 @@ public class MapController {
     public static ObjectOutputStream outputStream;
     public static ObjectInputStream inputStream;
 
-
     /**
      * this method to get all buttons for the default map (containing all territories
      */
@@ -92,14 +92,22 @@ public class MapController {
     public void showMap(Player player, Map myMap, HashMap<String, Button> ButtonMap) {
         //set each button's color and shape in buttonMap
         HashSet<Player> players = myMap.getPlayer();
+        // store useable buttons
+        Set<String> allButtons = ButtonMap.keySet();
         for (Player p: players) {
             String color = p.getName();
             for (Territory ter: p.getTerritoryList()) {
                 String style = getStyle(color);
                 Button button =  ButtonMap.get(ter.getName());
+                allButtons.remove(ter.getName());
                 button.setStyle(style);
                 button.setCursor(Cursor.HAND);
             }
+        }
+
+        for (String unusedButton: allButtons) {
+            Button button = ButtonMap.get(unusedButton);
+            button.setDisable(true);
         }
 
         // set food and money value
