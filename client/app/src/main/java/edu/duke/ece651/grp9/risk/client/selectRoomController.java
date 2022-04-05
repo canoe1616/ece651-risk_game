@@ -27,25 +27,32 @@ public class selectRoomController implements Initializable {
     @FXML Text room3num;
     @FXML Text room4num;
 
-    public static ObjectOutputStream outputStream;
-    public static ObjectInputStream inputStream;
+    public static ObjectOutputStream objectOutputStream;
+    public static ObjectInputStream objectInputStream;
 
-    public selectRoomController(Stage Window, ObjectInputStream inputStream,ObjectOutputStream outputStream ) {
+    public selectRoomController(Stage Window, ObjectInputStream objectInputStream,ObjectOutputStream objectOutputStream ) {
         this.Window = Window;
         System.out.println("input name and password.\n click join");
+        this.objectInputStream = objectInputStream;
+        this.objectOutputStream = objectOutputStream;
     }
 
     private void joinRoomHelper(Text roomNum, int playerNum, ActionEvent actionEvent) throws IOException {
+
+        System.out.println("enter the joining room helper");
+        objectOutputStream.reset();
+        objectOutputStream.writeObject(playerNum-1);
+
         Object source = actionEvent.getSource();
         if (source instanceof Button) {
             Button btn = (Button) source;
             if (Integer.parseInt(roomNum.getText()) >= playerNum-1) {
                 btn.setDisable(true);
             }
-            roomNum.setText(Integer.toString(Integer.parseInt(roomNum.getText()) + 1));
+         //   roomNum.setText(Integer.toString(Integer.parseInt(roomNum.getText()) + 1));
             FXMLLoader loaderStart = new FXMLLoader(getClass().getResource("/FXML/MapView.fxml"));
             loaderStart.setControllerFactory(c -> {
-                // make a map for n players
+               //  make a map for n players
                 MapFactory mapFactory = new MapFactory();
                 Map map = mapFactory.makeMap(playerNum);
                 HashSet<Player> players = map.getPlayer();

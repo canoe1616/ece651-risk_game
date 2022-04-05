@@ -2,16 +2,16 @@ package edu.duke.ece651.grp9.risk.shared;
 
 public class MapFactory implements AbstractMapFactory {
   
-  public String A = "OREGON";
-  public String B = "IOWA";
-  public String C = "ARIZONA";
-  public String D = "UTAH";
-  public String E = "TEXAS";
-  public String F = "OHIO";
-  public String G = "KANSAS";
-  public String H = "FLORIDA";
-  public String I = "YORK";
-  public String J = "RHODE";
+  public String A = "A";
+  public String B = "B";
+  public String C = "C";
+  public String D = "D";
+  public String E = "E";
+  public String F = "F";
+  public String G = "G";
+  public String H = "H";
+  public String I = "I";
+  public String J = "J";
 
   
   public Map makeMap(int num){
@@ -201,13 +201,13 @@ public class MapFactory implements AbstractMapFactory {
     p1.addTerritory(ter_C);
     p1.addTerritory(ter_D);
     
+    p3.addTerritory(ter_E);
+    p3.addTerritory(ter_G);
+    p3.addTerritory(ter_H);
+    
     p2.addTerritory(ter_B);
     p2.addTerritory(ter_F);
     p2.addTerritory(ter_I);
-    
-    p3.addTerritory(ter_B);
-    p3.addTerritory(ter_F);
-    p3.addTerritory(ter_I);
     
     //set neighbors
     ter_A.addNeighbors(ter_B);

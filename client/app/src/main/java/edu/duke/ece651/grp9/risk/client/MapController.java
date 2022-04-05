@@ -100,7 +100,7 @@ public class MapController {
                 String style = getStyle(color);
                 Button button =  ButtonMap.get(ter.getName());
                 allButtons.remove(ter.getName());
-                button.setStyle(style);
+               button.setStyle(style);
                 button.setCursor(Cursor.HAND);
             }
         }
@@ -122,6 +122,7 @@ public class MapController {
         style += ";" + "-fx-border-color: black;";
         return style;
     }
+
 
 
     @FXML
