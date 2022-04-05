@@ -12,7 +12,7 @@ class BattleTest {
   @Test
   void addAttackAction_combine() {
     MapFactory mapFactory = new MapFactory();
-    Map map = mapFactory.makeMapForTwo();
+    Map map = mapFactory.makeMapForTest();
     Battle battle = new Battle(map);
     Player player = map.findPlayer("red");
 
@@ -52,9 +52,10 @@ class BattleTest {
     Player p1 = map.findPlayer("red");
     Player p2 = map.findPlayer("green");
 
-    Territory src1 = map.findTerritory("A");
-    Territory src2 = map.findTerritory("D");
-    Territory dst = map.findTerritory("F");
+    Territory src1 = map.findTerritory("UTAH");
+    Territory src2 = map.findTerritory("IOWA");
+    Territory dst = map.findTerritory("KANSAS");
+
     src1.setUnit(10);
     src2.setUnit(10);
     AttackAction attack1 = new AttackAction(p1, src1, dst, 6);
@@ -68,7 +69,7 @@ class BattleTest {
   @Test
   void simpleBattle() {
     MapFactory mapFactory = new MapFactory();
-    Map map = mapFactory.makeMapForTwo();
+    Map map = mapFactory.makeMapForTest();
     Player playerRed = map.findPlayer("red");
     Player playerBlue = map.findPlayer("blue");
     Territory srcA = map.findTerritory("A");
@@ -99,7 +100,7 @@ class BattleTest {
   @Test
   void simpleBattle2() {
     MapFactory mapFactory = new MapFactory();
-    Map map = mapFactory.makeMapForTwo();
+    Map map = mapFactory.makeMapForTest();
     Player playerRed = map.findPlayer("red");
     Player playerBlue = map.findPlayer("blue");
     Territory srcA = map.findTerritory("A");
@@ -211,7 +212,7 @@ class BattleTest {
   @Test
   public void test_doOneAttack() {
     MapFactory factory = new MapFactory();
-    Map map = factory.makeMapForTwo();
+    Map map = factory.makeMapForTest();
 
     Player attacker = map.findPlayer("red");
     Player defender = map.findPlayer("blue");

@@ -41,7 +41,7 @@ public class MapTest {
   @Test
   public void test_findTerritory() {
     MapFactory mapFactory = new MapFactory();
-    Map map = mapFactory.makeMapForTwo();
+    Map map = mapFactory.makeMapForTest();
     assertEquals(map.findTerritory("C"), new Territory("C"));
     assertEquals(map.findTerritory("Z"), null);
   }
@@ -66,7 +66,7 @@ public class MapTest {
   @Test
   void getGameWinner_true() {
     MapFactory mapFactory = new MapFactory();
-    Map map = mapFactory.makeMapForTwo();
+    Map map = mapFactory.makeMapForTest();
     Player playerRed = map.findPlayer("red");
     Player playerBlue = map.findPlayer("blue");
     map.findTerritory("C").setOwner(playerRed);
@@ -81,7 +81,7 @@ public class MapTest {
   @Test
   void getGameWinner_false() {
     MapFactory mapFactory = new MapFactory();
-    Map map = mapFactory.makeMapForTwo();
+    Map map = mapFactory.makeMapForTest();
     Player playerRed = map.findPlayer("red");
     Player playerBlue = map.findPlayer("blue");
     map.findTerritory("C").setOwner(playerRed);

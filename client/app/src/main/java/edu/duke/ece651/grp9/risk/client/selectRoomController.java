@@ -13,6 +13,8 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.URL;
 import java.util.HashSet;
 import java.util.ResourceBundle;
@@ -25,7 +27,10 @@ public class selectRoomController implements Initializable {
     @FXML Text room3num;
     @FXML Text room4num;
 
-    public selectRoomController(Stage Window) {
+    public static ObjectOutputStream outputStream;
+    public static ObjectInputStream inputStream;
+
+    public selectRoomController(Stage Window, ObjectInputStream inputStream,ObjectOutputStream outputStream ) {
         this.Window = Window;
         System.out.println("input name and password.\n click join");
     }

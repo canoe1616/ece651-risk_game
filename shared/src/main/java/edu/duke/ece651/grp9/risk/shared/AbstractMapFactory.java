@@ -13,4 +13,5 @@ public interface AbstractMapFactory {
   public Map makeMapForThree();
   public Map makeMapForFour();
   public Map makeMapForFive();
+  public Map makeMapForTest();
 }

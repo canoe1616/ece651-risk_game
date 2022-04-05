@@ -43,18 +43,6 @@ public class AttackPopup {
         popupwindow.initModality(Modality.APPLICATION_MODAL);
         popupwindow.setTitle("Create Attack");
 
-//    Label source = new Label("Source Territory");
-//    Label destination = new Label("Destination Territory");
-//    Label numUnits = new Label("Number of Unit's Attacking");
-//    Label unitLevel = new Label("Level of Unit's Attacking");
-//    Button submitButton = new Button("Submit");
-//    Button cancelButton = new Button("Cancel");
-//    submitButton.setOnAction(e -> popupwindow.close());
-//    cancelButton.setOnAction(e -> popupwindow.close());
-        //VBox layout = new VBox(10);
-        //layout.getChildren().addAll(source, destination, numUnits, unitLevel, submitButton, cancelButton);
-        //layout.setAlignment(Pos.CENTER);
-
         URL xmlRes = MapController.class.getResource("/FXML/AttackPopup.fxml");
         assert (xmlRes != null);
         GridPane gp = FXMLLoader.load(xmlRes);
@@ -90,4 +78,7 @@ public class AttackPopup {
             throw new IllegalArgumentException("Invalid source");
         }
     }
+
+
+
 }

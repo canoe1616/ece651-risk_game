@@ -199,6 +199,8 @@ public class App {
     /**
      * to record each player's username and password
     Q:是否需要考虑多个空格的情况
+
+     前端两个button 直接到 Getusername 这里
      */
     public String getUsername(BufferedReader inputSource,ObjectOutputStream outStream) throws IOException{
       try {
@@ -244,17 +246,52 @@ public class App {
     HashSet<String> actionListUpgrade = new HashSet<>();
     ActionSet actionSet = new ActionSet();
     try {
-      Socket socket = new Socket("localhost", 6666);
+      Socket socket = new Socket("localhost", 8080);
       //receive map from server
+
+      System.out.println("Client connected");
+
+
+      OutputStream outputStream = socket.getOutputStream();
+      ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
+
+      System.out.println("Ready to get into the Client username part");
+
+
+      //client side user enter username and account
+      app.getUsername(inputSource, objectOutputStream);
       InputStream inputStream = socket.getInputStream();
       ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+      String account_check = (String)objectInputStream.readObject();
+      while(account_check == "false"){
+        app.getUsername(inputSource, objectOutputStream);
+        account_check = (String)objectInputStream.readObject();
+      }
+      //end of user input...
+      
+      System.out.println("Please input the room that you want to join, 1-4");
+      int room_id = 0;
+      
+      try {
+        room_id = Integer.parseInt(inputSource.readLine());
+        // Only show the the valid room buttom in GUI. --Peter
+      }
+      catch (Exception e) {
+        System.out.println(e);
+      }
+      ////
+      //sent room id
+
+      objectOutputStream.reset();
+      objectOutputStream.writeObject(room_id); // write #001
+
       //这里的myMap 只是一个全局变量;
+      System.out.println("ready to read the my map");
+
       Map myMap = (Map) objectInputStream.readObject(); // recv #001
       System.out.println("Receive Map form server.");
 
-      //sent color
-      OutputStream outputStream = socket.getOutputStream();
-      ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
+      
 
 
       //debug 3.28
@@ -334,6 +371,10 @@ public class App {
                 actionListAttack.clear();
                 actionListUpgrade.clear();
                 if (actionProblem == null) {
+                  //to be done
+                  // do you want to switch room or not
+
+
                   break;
                 } else {
                   System.out.println(actionProblem + "\nPlease reenter your Actions again.");
