@@ -27,8 +27,8 @@ public class selectRoomController implements Initializable {
     @FXML Text room3num;
     @FXML Text room4num;
 
-    public static ObjectOutputStream objectOutputStream;
-    public static ObjectInputStream objectInputStream;
+    public  ObjectOutputStream objectOutputStream;
+    public  ObjectInputStream objectInputStream;
 
     public selectRoomController(Stage Window, ObjectInputStream objectInputStream,ObjectOutputStream objectOutputStream ) {
         this.Window = Window;
@@ -57,11 +57,21 @@ public class selectRoomController implements Initializable {
                 Map map = mapFactory.makeMap(playerNum);
                 HashSet<Player> players = map.getPlayer();
                 Player player = players.iterator().next();
-                return new MapController(this.Window, map,player);
+                MapController mc = new MapController(this.Window, map,player,objectInputStream,objectOutputStream);
+                return mc;
             });
             Scene scene = new Scene(loaderStart.load());
             this.Window.setScene(scene);
             this.Window.show();
+
+            String unitChecking = unitPopup();
+            try {
+                objectOutputStream.reset();
+                objectOutputStream.writeObject(unitChecking);
+            }
+            catch (IOException e) {
+                System.out.println("cannot send the problem with unitchecking");
+            }
         }
     }
 
@@ -88,5 +98,16 @@ public class selectRoomController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
+    }
+
+    public String unitPopup() {
+        try {
+            UnitPopup popup = new UnitPopup();
+            popup.display();
+            return popup.unitPlacement;
+        } catch (IOException e) {
+            System.out.println("Could not display Unit Popup");
+        }
+        return null;
     }
 }

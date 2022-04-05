@@ -53,8 +53,9 @@ public class MapController {
     public static HashSet<String> upgrades = new HashSet<>();
     public static boolean techAction = false;
 
-    public static ObjectOutputStream outputStream;
-    public static ObjectInputStream inputStream;
+    public ObjectOutputStream objectOutputStream;
+    public ObjectInputStream objectInputStream;
+
 
     /**
      * this method to get all buttons for the default map (containing all territories
@@ -74,10 +75,13 @@ public class MapController {
     }
 
 
-    public MapController(Stage Window, Map map, Player player) {
+    public MapController(Stage Window, Map map, Player player, ObjectInputStream objectInputStream, ObjectOutputStream objectOutputStream) {
         this.myMap = map;
         this.Window = Window;
         this.player = player;
+        this.objectInputStream = objectInputStream;
+        this.objectOutputStream = objectOutputStream;
+
         System.out.println("input name and password.\n click join");
     }
 
@@ -114,6 +118,9 @@ public class MapController {
         foodQuantity.setText(Integer.toString(player.getFoodQuantity()));
         moneyQuantity.setText(Integer.toString(player.getMoneyQuantity()));
         System.out.println("Already paint color");
+
+
+
     }
 
     public String getStyle(String color) {

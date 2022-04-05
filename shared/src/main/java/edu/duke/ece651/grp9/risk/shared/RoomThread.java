@@ -75,7 +75,7 @@ public class RoomThread extends Thread {
                 ObjectOutputStream objectOutputStream =OutputList.get(i);
                 ObjectInputStream objectInputStream = InputList.get(i);
                 objectOutputStream.reset();
-                objectOutputStream.writeObject(m);
+              //  objectOutputStream.writeObject(m);
                 System.out.println("Already sent the map");
 
 
