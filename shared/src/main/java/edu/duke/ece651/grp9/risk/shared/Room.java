@@ -11,7 +11,7 @@ public class Room {
     private String name;
     private int numPlayers;
     private ArrayList<Socket> socketList;
-    private ArrayList<User> userList;
+    private HashSet<User> userList;
     public Map map;
     public ArrayList<User> myCurrentUser;
     public boolean startOrnot;
@@ -25,7 +25,7 @@ public class Room {
         this.map = roomFactory.makeRoom(numPlayers).map;
         this.numPlayers = numPlayers;
         this.socketList = new ArrayList<>();
-        this.userList = new ArrayList<>();
+        this.userList = new HashSet<>();
         this.startOrnot = false;
     }
 
