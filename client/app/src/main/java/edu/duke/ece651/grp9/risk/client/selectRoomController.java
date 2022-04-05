@@ -1,5 +1,7 @@
 package edu.duke.ece651.grp9.risk.client;
 
+import edu.duke.ece651.grp9.risk.shared.MoveAction;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -8,7 +10,6 @@ import javafx.scene.control.Button;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -16,69 +17,53 @@ import java.util.ResourceBundle;
 public class selectRoomController implements Initializable {
     private Stage Window;
 
-//    @FXML Text room1num;
-//    @FXML Text room2num;
-//    @FXML Text room3num;
-//    @FXML Text room4num;
-//
-//    @FXML
-//    private void initialize() {
-//        room1num.setText("I'm a Label.");
-//    }
+    @FXML
+    Text room1num;
+    @FXML Text room2num;
+    @FXML Text room3num;
+    @FXML Text room4num;
 
     public selectRoomController(Stage Window) {
         this.Window = Window;
-        //initialize();
         System.out.println("input name and password.\n click join");
     }
 
-
-    @FXML
-    public void JoinRoom1() throws IOException {
-        int numPlayer = 2;
-        FXMLLoader loaderStart = new FXMLLoader(getClass().getResource("/FXML/GameRoomView.fxml"));
-        loaderStart.setControllerFactory(c->{
-            return new GameRoomController(numPlayer, this.Window);
-        });
-        Scene scene = new Scene(loaderStart.load());
-        this.Window.setScene(scene);
-        this.Window.show();
+    private void joinRoomHelper(Text roomNum, int playerNum, ActionEvent actionEvent) throws IOException {
+        Object source = actionEvent.getSource();
+        if (source instanceof Button) {
+            Button btn = (Button) source;
+            if (Integer.parseInt(roomNum.getText()) >= playerNum-1) {
+                btn.setDisable(true);
+            }
+            roomNum.setText(Integer.toString(Integer.parseInt(roomNum.getText()) + 1));
+            FXMLLoader loaderStart = new FXMLLoader(getClass().getResource("/FXML/GameRoomView.fxml"));
+            loaderStart.setControllerFactory(c -> {
+                return new GameRoomController(playerNum, this.Window);
+            });
+            Scene scene = new Scene(loaderStart.load());
+            this.Window.setScene(scene);
+            this.Window.show();
+        }
     }
 
     @FXML
-    public void JoinRoom2() throws IOException {
-        int numPlayer = 3;
-        FXMLLoader loaderStart = new FXMLLoader(getClass().getResource("/FXML/GameRoomView.fxml"));
-        loaderStart.setControllerFactory(c->{
-            return new GameRoomController(numPlayer, this.Window);
-        });
-        Scene scene = new Scene(loaderStart.load());
-        this.Window.setScene(scene);
-        this.Window.show();
+    public void JoinRoom1(ActionEvent actionEvent) throws IOException {
+        joinRoomHelper(room1num,2, actionEvent);
     }
 
     @FXML
-    public void JoinRoom3() throws IOException {
-        int numPlayer = 4;
-        FXMLLoader loaderStart = new FXMLLoader(getClass().getResource("/FXML/GameRoomView.fxml"));
-        loaderStart.setControllerFactory(c->{
-            return new GameRoomController(numPlayer, this.Window);
-        });
-        Scene scene = new Scene(loaderStart.load());
-        this.Window.setScene(scene);
-        this.Window.show();
+    public void JoinRoom2(ActionEvent actionEvent) throws IOException {
+        joinRoomHelper(room2num,3, actionEvent);
     }
 
     @FXML
-    public void JoinRoom4() throws IOException {
-        int numPlayer = 5;
-        FXMLLoader loaderStart = new FXMLLoader(getClass().getResource("/FXML/GameRoomView.fxml"));
-        loaderStart.setControllerFactory(c->{
-            return new GameRoomController(numPlayer, this.Window);
-        });
-        Scene scene = new Scene(loaderStart.load());
-        this.Window.setScene(scene);
-        this.Window.show();
+    public void JoinRoom3(ActionEvent actionEvent) throws IOException {
+        joinRoomHelper(room3num,4, actionEvent);
+    }
+
+    @FXML
+    public void JoinRoom4(ActionEvent actionEvent) throws IOException {
+        joinRoomHelper(room4num, 5, actionEvent);
     }
 
     @Override

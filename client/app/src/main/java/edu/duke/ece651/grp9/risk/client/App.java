@@ -268,8 +268,7 @@ public class App {
       System.out.println("Its next step...");
 
       while(true){//until you lose or you win.
-        myMap = (Map) objectInputStream.
-                readObject();//
+        myMap = (Map) objectInputStream.readObject();//
         System.out.println("Receive Map form server.");
         MapTextView mtv = new MapTextView(myMap);
         String endGame = (String) objectInputStream.readObject();//
