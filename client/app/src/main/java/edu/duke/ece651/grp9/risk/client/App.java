@@ -17,13 +17,33 @@ import java.util.Iterator;
 import edu.duke.ece651.grp9.risk.shared.*;
 
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 
-public class App extends Application{
+public class App {
+
+//  private Stage Window;
+//  @Override
+//  public void start(Stage stage) throws IOException {
+//    this.Window = stage;
+//    FXMLLoader loaderStart = new FXMLLoader(getClass().getResource("/FXML/StartView.fxml"));
+//    loaderStart.setControllerFactory(c->{
+//      return new StartGameController(this.Window);
+//    });
+//    Scene scene = new Scene(loaderStart.load());
+//    stage.setScene(scene);
+//    stage.show();
+//  }
+//
+//  public static void main(String[] args) {
+//    launch(args);
+//  }
+
+
   private final BufferedReader inputReader;
   private String username;
   private String password;
@@ -32,17 +52,8 @@ public class App extends Application{
     this.inputReader = inputSource;
   }
 
-  @Override
-  public void start(Stage stage) {
-    String javaVersion = System.getProperty("java.version");
-    String javafxVersion = System.getProperty("javafx.version");
-    Label l = new Label("Hello, JavaFX " + javafxVersion +
-            ", running on Java " +
-            javaVersion + ".");
-    Scene scene = new Scene(new StackPane(l), 640, 480);
-    stage.setScene(scene);
-    stage.show();
-  }
+
+
 
   /**
    * this method is to ask player select a color
@@ -215,7 +226,6 @@ public class App extends Application{
       outStream.reset();
       outStream.writeObject(password);
 
-
       //if the username and the password, they are not match with each other
 
       return null;
@@ -314,7 +324,7 @@ public class App extends Application{
           break;
         }
         else{//countinue
-          
+
           if(myMap.findPlayer(color).isLose() && myMap.findPlayer(color).getLoseStatus().equals("no act")){
             String action = app.selectStateAfterLose(inputSource, color);
             objectOutputStream.writeObject(action);

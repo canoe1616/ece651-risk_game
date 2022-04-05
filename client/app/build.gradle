@@ -33,7 +33,7 @@ dependencies {
 
 application {
     // Define the main class for the application.
-    mainClass = 'edu.duke.ece651.grp9.risk.client.App'
+    mainClass = 'edu.duke.ece651.grp9.risk.client.Client';
 }
 
 tasks.named('test') {
