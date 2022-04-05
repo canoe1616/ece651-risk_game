@@ -10,24 +10,22 @@ import javafx.stage.Stage;
 
 import java.awt.event.ActionEvent;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class selectRoomController implements Initializable {
     private Stage Window;
+    public ObjectOutputStream objectOutputStream;
+    public ObjectInputStream objectInputStream;
 
-//    @FXML Text room1num;
-//    @FXML Text room2num;
-//    @FXML Text room3num;
-//    @FXML Text room4num;
-//
-//    @FXML
-//    private void initialize() {
-//        room1num.setText("I'm a Label.");
-//    }
 
-    public selectRoomController(Stage Window) {
+
+    public selectRoomController(Stage Window, ObjectInputStream objectInputStream, ObjectOutputStream objectOutputStream) {
         this.Window = Window;
+        this.objectInputStream = objectInputStream;
+        this.objectOutputStream = objectOutputStream;
         //initialize();
         System.out.println("input name and password.\n click join");
     }
@@ -35,6 +33,10 @@ public class selectRoomController implements Initializable {
 
     @FXML
     public void JoinRoom1() throws IOException {
+
+        int room_id = 1;
+        objectOutputStream.reset();
+        objectOutputStream.writeObject(room_id);
         int numPlayer = 2;
         FXMLLoader loaderStart = new FXMLLoader(getClass().getResource("/FXML/GameRoomView.fxml"));
         loaderStart.setControllerFactory(c->{
@@ -47,6 +49,9 @@ public class selectRoomController implements Initializable {
 
     @FXML
     public void JoinRoom2() throws IOException {
+        int room_id = 2;
+        objectOutputStream.reset();
+        objectOutputStream.writeObject(room_id);
         int numPlayer = 3;
         FXMLLoader loaderStart = new FXMLLoader(getClass().getResource("/FXML/GameRoomView.fxml"));
         loaderStart.setControllerFactory(c->{
@@ -59,6 +64,9 @@ public class selectRoomController implements Initializable {
 
     @FXML
     public void JoinRoom3() throws IOException {
+        int room_id =3;
+        objectOutputStream.reset();
+        objectOutputStream.writeObject(room_id);
         int numPlayer = 4;
         FXMLLoader loaderStart = new FXMLLoader(getClass().getResource("/FXML/GameRoomView.fxml"));
         loaderStart.setControllerFactory(c->{
@@ -71,6 +79,9 @@ public class selectRoomController implements Initializable {
 
     @FXML
     public void JoinRoom4() throws IOException {
+        int room_id = 4;
+        objectOutputStream.reset();
+        objectOutputStream.writeObject(room_id);
         int numPlayer = 5;
         FXMLLoader loaderStart = new FXMLLoader(getClass().getResource("/FXML/GameRoomView.fxml"));
         loaderStart.setControllerFactory(c->{

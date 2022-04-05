@@ -72,7 +72,7 @@ public class logInPageController {
 
             if (account_check.equals("true")) {
                 loaderStart.setControllerFactory(c -> {
-                    return new selectRoomController(this.Window);
+                    return new selectRoomController(this.Window, this.objectInputStream,this.objectOutputStream);
                 });
 
                 Scene scene = new Scene(loaderStart.load());
