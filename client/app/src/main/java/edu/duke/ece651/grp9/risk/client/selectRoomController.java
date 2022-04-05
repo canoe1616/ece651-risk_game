@@ -2,7 +2,6 @@ package edu.duke.ece651.grp9.risk.client;
 
 import edu.duke.ece651.grp9.risk.shared.Map;
 import edu.duke.ece651.grp9.risk.shared.MapFactory;
-import edu.duke.ece651.grp9.risk.shared.MoveAction;
 import edu.duke.ece651.grp9.risk.shared.Player;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -21,8 +20,7 @@ import java.util.ResourceBundle;
 public class selectRoomController implements Initializable {
     private Stage Window;
 
-    @FXML
-    Text room1num;
+    @FXML Text room1num;
     @FXML Text room2num;
     @FXML Text room3num;
     @FXML Text room4num;
@@ -40,14 +38,14 @@ public class selectRoomController implements Initializable {
                 btn.setDisable(true);
             }
             roomNum.setText(Integer.toString(Integer.parseInt(roomNum.getText()) + 1));
-            FXMLLoader loaderStart = new FXMLLoader(getClass().getResource("/FXML/GameRoomView.fxml"));
+            FXMLLoader loaderStart = new FXMLLoader(getClass().getResource("/FXML/MapView.fxml"));
             loaderStart.setControllerFactory(c -> {
                 // make a map for n players
                 MapFactory mapFactory = new MapFactory();
                 Map map = mapFactory.makeMap(playerNum);
                 HashSet<Player> players = map.getPlayer();
                 Player player = players.iterator().next();
-                return new GameRoomController(this.Window, map,player);
+                return new MapController(this.Window, map,player);
             });
             Scene scene = new Scene(loaderStart.load());
             this.Window.setScene(scene);

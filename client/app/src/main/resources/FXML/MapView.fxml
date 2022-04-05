@@ -80,9 +80,17 @@
         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
     </rowConstraints>
     <children>
-        <ImageView fitHeight="364.0" fitWidth="600.0" pickOnBounds="true" smooth="false" GridPane.columnSpan="22" GridPane.hgrow="ALWAYS" GridPane.rowIndex="11" GridPane.rowSpan="25" GridPane.vgrow="ALWAYS">
+        <ImageView fitHeight="364.0" fitWidth="600.0" pickOnBounds="true" smooth="false" GridPane.columnSpan="22" GridPane.hgrow="ALWAYS" GridPane.rowIndex="12" GridPane.rowSpan="25" GridPane.vgrow="ALWAYS">
             <image>
                 <Image url="@../Image/territory.png" />
             </image></ImageView>
@@ -121,62 +129,62 @@
                 <Font name="Copperplate" size="14.0" />
             </font>
         </Text>
-        <Button fx:id="D" mnemonicParsing="false" prefHeight="21.0" prefWidth="78.0" style="-fx-background-color: light-green;" text="D" textFill="#070707" textOverrun="CENTER_WORD_ELLIPSIS" GridPane.columnIndex="17" GridPane.columnSpan="3" GridPane.rowIndex="17">
+        <Button fx:id="D" mnemonicParsing="false" onAction="#onTerritory" prefHeight="21.0" prefWidth="78.0" style="-fx-background-color: light-green;" text="D" textFill="#070707" textOverrun="CENTER_WORD_ELLIPSIS" GridPane.columnIndex="7" GridPane.columnSpan="3" GridPane.rowIndex="24">
             <font>
                 <Font name="Copperplate" size="14.0" />
             </font>
         </Button>
-        <Button fx:id="E" mnemonicParsing="false" prefHeight="21.0" prefWidth="86.0" style="-fx-background-color: light-green;" text="E" textFill="#070707" textOverrun="CENTER_WORD_ELLIPSIS" GridPane.columnIndex="2" GridPane.columnSpan="4" GridPane.rowIndex="26">
+        <Button fx:id="E" mnemonicParsing="false" onAction="#onTerritory" prefHeight="21.0" prefWidth="86.0" style="-fx-background-color: light-green;" text="E" textFill="#070707" textOverrun="CENTER_WORD_ELLIPSIS" GridPane.columnIndex="7" GridPane.columnSpan="4" GridPane.rowIndex="37">
             <font>
                 <Font name="Copperplate" size="14.0" />
             </font>
         </Button>
-        <Button fx:id="F" mnemonicParsing="false" prefHeight="26.0" prefWidth="59.0" style="-fx-background-color: light-green;" text="F" textFill="#070707" textOverrun="CENTER_WORD_ELLIPSIS" GridPane.columnIndex="7" GridPane.columnSpan="3" GridPane.rowIndex="21">
+        <Button fx:id="F" mnemonicParsing="false" onAction="#onTerritory" prefHeight="26.0" prefWidth="59.0" style="-fx-background-color: light-green;" text="F" textFill="#070707" textOverrun="CENTER_WORD_ELLIPSIS" GridPane.columnIndex="13" GridPane.columnSpan="3" GridPane.rowIndex="19">
             <font>
                 <Font name="Copperplate" size="14.0" />
             </font>
         </Button>
-        <Button fx:id="A" mnemonicParsing="false" prefHeight="22.0" prefWidth="79.0" style="-fx-background-color: light-green;" text="A" textFill="#070707" textOverrun="CENTER_WORD_ELLIPSIS" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="14">
+        <Button fx:id="A" mnemonicParsing="false" onAction="#onTerritory" prefHeight="22.0" prefWidth="79.0" style="-fx-background-color: light-green;" text="A" textFill="#070707" textOverrun="CENTER_WORD_ELLIPSIS" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="16">
             <font>
                 <Font name="Copperplate" size="14.0" />
             </font>
         </Button>
-        <Button fx:id="G" mnemonicParsing="false" prefHeight="21.0" prefWidth="86.0" style="-fx-background-color: light-green;" text="G" textFill="#070707" textOverrun="CENTER_WORD_ELLIPSIS" GridPane.columnIndex="10" GridPane.columnSpan="3" GridPane.rowIndex="27">
+        <Button fx:id="G" mnemonicParsing="false" onAction="#onTerritory" prefHeight="21.0" prefWidth="86.0" style="-fx-background-color: light-green;" text="G" textFill="#070707" textOverrun="CENTER_WORD_ELLIPSIS" GridPane.columnIndex="10" GridPane.columnSpan="3" GridPane.rowIndex="29">
             <font>
                 <Font name="Copperplate" size="14.0" />
             </font>
         </Button>
-        <Button fx:id="H" mnemonicParsing="false" prefHeight="21.0" prefWidth="86.0" style="-fx-background-color: light-green;" text="H" textFill="#070707" textOverrun="CENTER_WORD_ELLIPSIS" GridPane.columnIndex="14" GridPane.columnSpan="3" GridPane.rowIndex="29">
+        <Button fx:id="H" mnemonicParsing="false" onAction="#onTerritory" prefHeight="21.0" prefWidth="86.0" style="-fx-background-color: light-green;" text="H" textFill="#070707" textOverrun="CENTER_WORD_ELLIPSIS" GridPane.columnIndex="13" GridPane.columnSpan="3" GridPane.rowIndex="38">
             <font>
                 <Font name="Copperplate" size="14.0" />
             </font>
         </Button>
-        <Button fx:id="I" mnemonicParsing="false" prefHeight="21.0" prefWidth="86.0" style="-fx-background-color: light-green;" text="I" textFill="#070707" textOverrun="CENTER_WORD_ELLIPSIS" GridPane.columnIndex="7" GridPane.columnSpan="3" GridPane.rowIndex="35">
+        <Button fx:id="I" mnemonicParsing="false" onAction="#onTerritory" prefHeight="21.0" prefWidth="86.0" style="-fx-background-color: light-green;" text="I" textFill="#070707" textOverrun="CENTER_WORD_ELLIPSIS" GridPane.columnIndex="14" GridPane.columnSpan="3" GridPane.rowIndex="31">
             <font>
                 <Font name="Copperplate" size="14.0" />
             </font>
         </Button>
-        <Button fx:id="C" mnemonicParsing="false" prefHeight="26.0" prefWidth="55.0" style="-fx-background-color: light-green;" text="C" textFill="#070707" textOverrun="CENTER_WORD_ELLIPSIS" GridPane.columnIndex="13" GridPane.columnSpan="3" GridPane.rowIndex="17">
+        <Button fx:id="C" mnemonicParsing="false" onAction="#onTerritory" prefHeight="26.0" prefWidth="55.0" style="-fx-background-color: light-green;" text="C" textFill="#070707" textOverrun="CENTER_WORD_ELLIPSIS" GridPane.columnIndex="3" GridPane.columnSpan="3" GridPane.rowIndex="28">
             <font>
                 <Font name="Copperplate" size="14.0" />
             </font>
         </Button>
-        <Button fx:id="J" mnemonicParsing="false" prefHeight="21.0" prefWidth="86.0" style="-fx-background-color: light-green;" text="J" textFill="#070707" textOverrun="CENTER_WORD_ELLIPSIS" GridPane.columnIndex="13" GridPane.columnSpan="3" GridPane.rowIndex="36">
+        <Button fx:id="J" mnemonicParsing="false" onAction="#onTerritory" prefHeight="21.0" prefWidth="86.0" style="-fx-background-color: light-green;" text="J" textFill="#070707" textOverrun="CENTER_WORD_ELLIPSIS" GridPane.columnIndex="17" GridPane.columnSpan="3" GridPane.rowIndex="20">
             <font>
                 <Font name="Copperplate" size="14.0" />
             </font>
         </Button>
-        <Button fx:id="createAttack" mnemonicParsing="false" prefHeight="19.0" prefWidth="75.0" style="-fx-background-color: white;" text="Attack" GridPane.columnIndex="13" GridPane.columnSpan="3" GridPane.rowSpan="2" GridPane.valignment="TOP">
+        <Button fx:id="createAttack" mnemonicParsing="false" onAction="#onCreateAttack" prefHeight="19.0" prefWidth="75.0" style="-fx-background-color: white;" text="Attack" GridPane.columnIndex="13" GridPane.columnSpan="3" GridPane.rowSpan="2" GridPane.valignment="TOP">
             <font>
                 <Font name="Copperplate" size="15.0" />
             </font>
         </Button>
-        <Button fx:id="createAttack1" mnemonicParsing="false" prefHeight="26.0" prefWidth="74.0" style="-fx-background-color: white;" text="Move" GridPane.columnIndex="16" GridPane.columnSpan="6" GridPane.rowSpan="2" GridPane.valignment="TOP">
+        <Button fx:id="createMove" mnemonicParsing="false" onAction="#onCreateMove" prefHeight="26.0" prefWidth="74.0" style="-fx-background-color: white;" text="Move" GridPane.columnIndex="16" GridPane.columnSpan="6" GridPane.rowSpan="2" GridPane.valignment="TOP">
             <font>
                 <Font name="Copperplate" size="15.0" />
             </font>
         </Button>
-        <Button fx:id="createUpgrade" mnemonicParsing="false" prefHeight="26.0" prefWidth="103.0" style="-fx-background-color: white;" text="Upgrade" GridPane.columnIndex="19" GridPane.columnSpan="4" GridPane.rowSpan="2" GridPane.valignment="TOP">
+        <Button fx:id="createUpgrade" mnemonicParsing="false" onAction="#onCreateUpgrade" prefHeight="26.0" prefWidth="103.0" style="-fx-background-color: white;" text="Upgrade" GridPane.columnIndex="19" GridPane.columnSpan="4" GridPane.rowSpan="2" GridPane.valignment="TOP">
             <font>
                 <Font name="Copperplate" size="15.0" />
             </font>
@@ -185,20 +193,25 @@
             <font>
                 <Font name="Copperplate" size="12.0" />
             </font></Label>
-        <Button fx:id="B" mnemonicParsing="false" prefHeight="22.0" prefWidth="137.0" style="-fx-background-color: light-green;" text="B" textFill="#070707" textOverrun="CENTER_WORD_ELLIPSIS" GridPane.columnIndex="7" GridPane.columnSpan="4" GridPane.rowIndex="15">
+        <Button fx:id="B" mnemonicParsing="false" onAction="#onTerritory" prefHeight="22.0" prefWidth="137.0" style="-fx-background-color: light-green;" text="B" textFill="#070707" textOverrun="CENTER_WORD_ELLIPSIS" GridPane.columnIndex="7" GridPane.columnSpan="4" GridPane.rowIndex="16">
             <font>
                 <Font name="Copperplate" size="14.0" />
             </font>
         </Button>
-        <Button fx:id="done" mnemonicParsing="false" prefHeight="26.0" prefWidth="146.0" style="-fx-background-color: white;" text="Commit Actions" wrapText="true" GridPane.columnIndex="17" GridPane.columnSpan="6" GridPane.rowIndex="6" GridPane.rowSpan="2" GridPane.valignment="TOP">
+        <Button fx:id="done" mnemonicParsing="false" onAction="#onDone" prefHeight="26.0" prefWidth="146.0" style="-fx-background-color: white;" text="Commit Actions" wrapText="true" GridPane.columnIndex="17" GridPane.columnSpan="6" GridPane.rowIndex="6" GridPane.rowSpan="2" GridPane.valignment="TOP">
             <font>
                 <Font name="Copperplate" size="15.0" />
             </font>
         </Button>
-        <Button fx:id="levelUp" mnemonicParsing="false" prefHeight="26.0" prefWidth="88.0" style="-fx-background-color: white;" text="Level Up" GridPane.columnIndex="13" GridPane.columnSpan="4" GridPane.rowIndex="6" GridPane.rowSpan="2" GridPane.valignment="TOP">
+        <Button fx:id="levelUp" mnemonicParsing="false" onAction="#onLevelUp" prefHeight="26.0" prefWidth="88.0" style="-fx-background-color: white;" text="Level Up" GridPane.columnIndex="13" GridPane.columnSpan="4" GridPane.rowIndex="6" GridPane.rowSpan="2" GridPane.valignment="TOP">
             <font>
                 <Font name="Copperplate" size="15.0" />
             </font>
         </Button>
+        <Label fx:id="status" alignment="TOP_LEFT" prefHeight="40.0" prefWidth="351.0" wrapText="true" GridPane.columnIndex="5" GridPane.columnSpan="8" GridPane.rowIndex="5" GridPane.rowSpan="4">
+            <font>
+                <Font name="Copperplate" size="11.0" />
+            </font>
+        </Label>
     </children>
 </GridPane>

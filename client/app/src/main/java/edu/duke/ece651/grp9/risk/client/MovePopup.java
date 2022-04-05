@@ -2,7 +2,6 @@ package edu.duke.ece651.grp9.risk.client;
 
 import java.io.IOException;
 import java.net.URL;
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,7 +14,7 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-public class InitiUnitPlace {
+public class MovePopup {
 
     private static Stage popupwindow;
     public static String action;
@@ -34,9 +33,9 @@ public class InitiUnitPlace {
         popupwindow = new Stage();
 
         popupwindow.initModality(Modality.APPLICATION_MODAL);
-        popupwindow.setTitle("Please place your territory units!");
+        popupwindow.setTitle("Create Move");
 
-        URL xmlRes = MapController.class.getResource("/fxml/InitialPlace.fxml");
+        URL xmlRes = MapController.class.getResource("/fxml/MovePopup.fxml");
         assert (xmlRes != null);
         GridPane gp = FXMLLoader.load(xmlRes);
         gp.setAlignment(Pos.CENTER);
@@ -72,4 +71,3 @@ public class InitiUnitPlace {
         }
     }
 }
-

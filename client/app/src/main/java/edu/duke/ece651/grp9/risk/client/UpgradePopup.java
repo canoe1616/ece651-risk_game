@@ -2,41 +2,45 @@ package edu.duke.ece651.grp9.risk.client;
 
 import java.io.IOException;
 import java.net.URL;
-
+import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-public class InitiUnitPlace {
+public class UpgradePopup {
 
     private static Stage popupwindow;
-    public static String action;
+    public static String upgrade;
 
     @FXML
-    TextField sourceTerritory;
-    @FXML
-    TextField destinationTerritory;
+    TextField territory;
     @FXML
     TextField numUnits;
     @FXML
-    Slider unitLevel;
+    Slider startLevel;
+    @FXML
+    Slider endLevel;
 
     @FXML
     public static void display() throws IOException {
         popupwindow = new Stage();
 
         popupwindow.initModality(Modality.APPLICATION_MODAL);
-        popupwindow.setTitle("Please place your territory units!");
+        popupwindow.setTitle("Upgrade Units");
 
-        URL xmlRes = MapController.class.getResource("/fxml/InitialPlace.fxml");
+        URL xmlRes = MapController.class.getResource("/fxml/UpgradePopup.fxml");
         assert (xmlRes != null);
         GridPane gp = FXMLLoader.load(xmlRes);
         gp.setAlignment(Pos.CENTER);
@@ -52,7 +56,7 @@ public class InitiUnitPlace {
         if (source instanceof Button) {
             Button btn = (Button) source;
             popupwindow.close();
-            this.action = null;
+            this.upgrade = null;
         } else {
             throw new IllegalArgumentException("Invalid source");
         }
@@ -64,12 +68,11 @@ public class InitiUnitPlace {
         if (source instanceof Button) {
             Button btn = (Button) source;
             popupwindow.close();
-            String action = sourceTerritory.getText() + " " + destinationTerritory.getText() + " " +
-                    numUnits.getText() + " " + (int)unitLevel.getValue();
-            this.action = action;
+            String upgradeAction = territory.getText() + " " + numUnits.getText() + " " +
+                    (int)startLevel.getValue() + " " + (int)endLevel.getValue();
+            this.upgrade = upgradeAction;
         } else {
             throw new IllegalArgumentException("Invalid source");
         }
     }
 }
-
