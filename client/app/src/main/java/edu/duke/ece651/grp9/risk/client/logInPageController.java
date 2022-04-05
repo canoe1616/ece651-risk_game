@@ -79,6 +79,7 @@ public class logInPageController {
                 this.Window.setScene(scene);
                 this.Window.show();
             }
+            
 
             // TODO: need to reader info from controller to client
             else{

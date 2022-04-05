@@ -14,7 +14,7 @@ class GamePlayTest {
     @Test
     public void test_findPlayer() {
     MapFactory factory = new MapFactory();
-    Map map = factory.makeMapForTwo();
+    Map map = factory.makeMapForTest();
     GamePlay app = new GamePlay();
 
     assertEquals(app.findPlayer("red", map), new Player("red"));
@@ -26,7 +26,7 @@ class GamePlayTest {
     @Test
   public void test_playAttacks() {
     MapFactory factory = new MapFactory();
-    Map map = factory.makeMapForTwo();
+    Map map = factory.makeMapForTest();
 
     Player p1 = map.findPlayer("red");
     Territory t1 = map.findTerritory("A");
@@ -129,7 +129,7 @@ class GamePlayTest {
       @Test
   public void test_validActionSet() {
         MapFactory factory = new MapFactory();
-        Map map = factory.makeMapForTwo();
+        Map map = factory.makeMapForTest();
         GamePlay app1 = new GamePlay();
         Player p1 = app1.findPlayer("red", map);
 
@@ -198,7 +198,7 @@ class GamePlayTest {
   public void test_unitSetting() throws InterruptedException, IOException {
     ServerSocket ss = new ServerSocket(6666);
     MapFactory factory = new MapFactory();
-    Map map = factory.makeMapForTwo();
+    Map map = factory.makeMapForTest();
     GamePlay app1 = new GamePlay();
 
     Thread th = new Thread() {
@@ -243,7 +243,7 @@ class GamePlayTest {
   @Test
   void playMoves() {
     MapFactory factory = new MapFactory();
-    Map map = factory.makeMapForTwo();
+    Map map = factory.makeMapForTest();
 
     Player p1 = map.findPlayer("red");
     Territory t1 = map.findTerritory("A");
@@ -265,7 +265,7 @@ class GamePlayTest {
   @Test
   void playUpgrades() {
     MapFactory factory = new MapFactory();
-    Map map = factory.makeMapForTwo();
+    Map map = factory.makeMapForTest();
 
     Player p1 = map.findPlayer("red");
     Territory t1 = map.findTerritory("A");

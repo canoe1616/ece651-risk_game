@@ -69,7 +69,7 @@ class BattleTest {
   @Test
   void simpleBattle() {
     MapFactory mapFactory = new MapFactory();
-    Map map = mapFactory.makeMapForTwo();
+    Map map = mapFactory.makeMapForTest();
     Player playerRed = map.findPlayer("red");
     Player playerBlue = map.findPlayer("blue");
     Territory srcA = map.findTerritory("A");
@@ -100,7 +100,7 @@ class BattleTest {
   @Test
   void simpleBattle2() {
     MapFactory mapFactory = new MapFactory();
-    Map map = mapFactory.makeMapForTwo();
+    Map map = mapFactory.makeMapForTest();
     Player playerRed = map.findPlayer("red");
     Player playerBlue = map.findPlayer("blue");
     Territory srcA = map.findTerritory("A");
@@ -212,7 +212,7 @@ class BattleTest {
   @Test
   public void test_doOneAttack() {
     MapFactory factory = new MapFactory();
-    Map map = factory.makeMapForTwo();
+    Map map = factory.makeMapForTest();
 
     Player attacker = map.findPlayer("red");
     Player defender = map.findPlayer("blue");
