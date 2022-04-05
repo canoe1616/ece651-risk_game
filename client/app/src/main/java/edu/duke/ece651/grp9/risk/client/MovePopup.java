@@ -35,7 +35,7 @@ public class MovePopup {
         popupwindow.initModality(Modality.APPLICATION_MODAL);
         popupwindow.setTitle("Create Move");
 
-        URL xmlRes = MapController.class.getResource("/fxml/MovePopup.fxml");
+        URL xmlRes = MapController.class.getResource("/FXML/MovePopup.fxml");
         assert (xmlRes != null);
         GridPane gp = FXMLLoader.load(xmlRes);
         gp.setAlignment(Pos.CENTER);

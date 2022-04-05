@@ -55,7 +55,7 @@ public class AttackPopup {
         //layout.getChildren().addAll(source, destination, numUnits, unitLevel, submitButton, cancelButton);
         //layout.setAlignment(Pos.CENTER);
 
-        URL xmlRes = MapController.class.getResource("/fxml/AttackPopup.fxml");
+        URL xmlRes = MapController.class.getResource("/FXML/AttackPopup.fxml");
         assert (xmlRes != null);
         GridPane gp = FXMLLoader.load(xmlRes);
         gp.setAlignment(Pos.CENTER);

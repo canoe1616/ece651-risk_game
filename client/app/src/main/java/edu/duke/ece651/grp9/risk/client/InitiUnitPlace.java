@@ -36,7 +36,7 @@ public class InitiUnitPlace {
         popupwindow.initModality(Modality.APPLICATION_MODAL);
         popupwindow.setTitle("Please place your territory units!");
 
-        URL xmlRes = MapController.class.getResource("/fxml/InitialPlace.fxml");
+        URL xmlRes = MapController.class.getResource("/FXML/InitialPlace.fxml");
         assert (xmlRes != null);
         GridPane gp = FXMLLoader.load(xmlRes);
         gp.setAlignment(Pos.CENTER);
