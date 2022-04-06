@@ -3,6 +3,7 @@ package edu.duke.ece651.grp9.risk.client;
 import edu.duke.ece651.grp9.risk.shared.Map;
 import edu.duke.ece651.grp9.risk.shared.MapFactory;
 import edu.duke.ece651.grp9.risk.shared.Player;
+import edu.duke.ece651.grp9.risk.shared.Room;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -22,10 +23,10 @@ import java.util.ResourceBundle;
 public class selectRoomController implements Initializable {
     private Stage Window;
 
-    @FXML Text room1num;
-    @FXML Text room2num;
-    @FXML Text room3num;
-    @FXML Text room4num;
+    @FXML Button room1;
+    @FXML Button room2;
+    @FXML Button room3;
+    @FXML Button room4;
 
     public  ObjectOutputStream objectOutputStream;
     public  ObjectInputStream objectInputStream;
@@ -35,20 +36,79 @@ public class selectRoomController implements Initializable {
         System.out.println("input name and password.\n click join");
         this.objectInputStream = objectInputStream;
         this.objectOutputStream = objectOutputStream;
+        try {
+            //3
+            String startOrnot1 = (String) objectInputStream.readObject();
+            String startOrnot2 = (String) objectInputStream.readObject();
+            String startOrnot3 = (String) objectInputStream.readObject();
+            String startOrnot4 = (String) objectInputStream.readObject();
+
+
+            System.out.println(startOrnot1 );
+            System.out.println(startOrnot2);
+            System.out.println(startOrnot3);
+            System.out.println(startOrnot4);
+            startOrnot2 = "true";
+
+            if (startOrnot1.equals("true")) {
+                System.out.println("ROOM 1 FULL");
+                room1.setDisable(true);
+            }
+            if (startOrnot2.equals("true")) {
+                room2.setDisable(true);
+            }
+            if (startOrnot3.equals("true")) {
+                room3.setDisable(true);
+            }
+            if (startOrnot4.equals("true")) {
+                room4.setDisable(true);
+            }
+        }
+        catch(Exception e){
+            e.getStackTrace();
+        }
     }
 
-    private void joinRoomHelper(Text roomNum, int playerNum, ActionEvent actionEvent) throws IOException {
+    private void joinRoomHelper(int playerNum, ActionEvent actionEvent) throws IOException {
 
         System.out.println("enter the joining room helper");
         objectOutputStream.reset();
         objectOutputStream.writeObject(playerNum-1);
 
         Object source = actionEvent.getSource();
-        if (source instanceof Button) {
-            Button btn = (Button) source;
-            if (Integer.parseInt(roomNum.getText()) >= playerNum-1) {
-                btn.setDisable(true);
-            }
+
+            //read something from the server
+
+//                if (playerNum == 2) {
+//                    //read something from the server
+//
+//                    if(startOrnot.equals(true)){
+//                        btn.setDisable(true);
+//                    }
+//
+//                }
+//                if (playerNum == 3) {
+//                    String startOrnot3 = (String) objectInputStream.readObject();
+//                    if(startOrnot.equals(true)){
+//                        btn.setDisable(true);
+//                    }
+//                }
+//                if(playerNum ==4){
+//                    String startOrnot = (String) objectInputStream.readObject();
+//                    if(startOrnot.equals(true)){
+//                        btn.setDisable(true);
+//                    }
+//                }
+//                if(playerNum ==5){
+//                    String startOrnot = (String) objectInputStream.readObject();
+//                    if(startOrnot.equals(true)){
+//                        btn.setDisable(true);
+//                    }
+//                }
+ //           }
+  //          catch(Exception e){
+   //             System.out.println(e);
+           // }
          //   roomNum.setText(Integer.toString(Integer.parseInt(roomNum.getText()) + 1));
             FXMLLoader loaderStart = new FXMLLoader(getClass().getResource("/FXML/MapView.fxml"));
             loaderStart.setControllerFactory(c -> {
@@ -73,26 +133,25 @@ public class selectRoomController implements Initializable {
                 System.out.println("cannot send the problem with unitchecking");
             }
         }
-    }
 
     @FXML
     public void JoinRoom1(ActionEvent actionEvent) throws IOException {
-        joinRoomHelper(room1num,2, actionEvent);
+        joinRoomHelper(2, actionEvent);
     }
 
     @FXML
     public void JoinRoom2(ActionEvent actionEvent) throws IOException {
-        joinRoomHelper(room2num,3, actionEvent);
+        joinRoomHelper(3, actionEvent);
     }
 
     @FXML
     public void JoinRoom3(ActionEvent actionEvent) throws IOException {
-        joinRoomHelper(room3num,4, actionEvent);
+        joinRoomHelper(4, actionEvent);
     }
 
     @FXML
     public void JoinRoom4(ActionEvent actionEvent) throws IOException {
-        joinRoomHelper(room4num, 5, actionEvent);
+        joinRoomHelper(5, actionEvent);
     }
 
     @Override
