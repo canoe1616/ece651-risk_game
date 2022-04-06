@@ -138,6 +138,7 @@ public class MapController {
     }
 
     public void updateResources() {
+        player = myMap.findPlayer(color);
         foodQuantity.setText(Integer.toString(player.getFoodQuantity()));
         moneyQuantity.setText(Integer.toString(player.getMoneyQuantity()));
     }
