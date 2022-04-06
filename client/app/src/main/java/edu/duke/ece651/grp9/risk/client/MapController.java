@@ -218,10 +218,15 @@ public class MapController {
             Button btn = (Button) source;
             StringBuilder sb = new StringBuilder();
             sb.append("Territory " + btn.getText() + "\n");
-            int[] unitCounts = new int[] {13, 0, 0, 0, 0, 0, 0};
+            Territory t = myMap.findTerritory(btn.getText());
+            //int[] unitCounts = new int[] {13, 0, 0, 0, 0, 0, 0};
             for (int i = 0; i < 6; i++) {
-                sb.append("Level " + i + ": " + unitCounts[i] + "\n");
+                sb.append("Level " + i + ": " + t.getUnits(i) + "\n");
             }
+            sb.append("Food Production: 100\n");
+            sb.append("Money Production: 50\n");
+            sb.append("Size: " + t.getSize());
+
             territoryStats.setText(sb.toString());
         } else {
             throw new IllegalArgumentException("Invalid source");
