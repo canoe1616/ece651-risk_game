@@ -107,8 +107,8 @@ public class RoomThread extends Thread {
                     OutputList.get(j).reset();
                     OutputList.get(j).writeObject("keep going");
 
-                    String action = (String) InputList.get(j).readObject();
-                    gamePlay.findPlayer(remainingColors.get(j), m).setLoseStatus(action);
+//                    String action = (String) InputList.get(j).readObject();
+//                    gamePlay.findPlayer(remainingColors.get(j), m).setLoseStatus(action);
                     Player tmp = gamePlay.findPlayer(remainingColors.get(j), m);
 
                     /*************adding new parts***/

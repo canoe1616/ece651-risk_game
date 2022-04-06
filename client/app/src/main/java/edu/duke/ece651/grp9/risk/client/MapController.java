@@ -157,7 +157,7 @@ public class MapController {
     
         
     
-    public void updateMap() throws Exception {
+    public void updateMap()  {
         updateButtonColors();
         updateResources();
     }
@@ -211,7 +211,7 @@ public class MapController {
             popup.display();
             String[] words = validAction(popup.action);
             if (words != null) {
-                attacks.add(popup.action);
+                moves.add(popup.action);
                 statusLabel("Move " + words[2] + "(Level " + words[3] +
                         ") units from " + words[0] + " to " + words[1]);
             } else {
@@ -283,7 +283,7 @@ public class MapController {
     }
 
     @FXML
-    public void onDone(ActionEvent actionEvent) throws Exception {
+    public void onDone(ActionEvent actionEvent) throws IOException, ClassNotFoundException {
         Object source = actionEvent.getSource();
         if (source instanceof Button) {
             Button btn = (Button) source;
@@ -303,6 +303,23 @@ public class MapController {
             actionSet.actionListAttack = attacks;
             actionSet.actionListMove = moves;
             actionSet.actionListUpgrade = upgrades;
+//      actionSet.techLevelAction = techAction;
+            objectOutputStream.reset();
+            objectOutputStream.writeObject(actionSet);
+            String actionProblem = (String) objectInputStream.readObject();
+            if (actionProblem == null) {
+                statusLabel("Actions submitted to server. Waiting for updated map.");
+                btn.setStyle("-fx-background-color: Green");
+                myMap = (Map) objectInputStream.readObject();
+                statusLabel("Received updated Map.");
+                String keepGoing = (String) objectInputStream.readObject();
+                System.out.println("Keepgoing? : " + keepGoing);
+            } else {
+                status.setText(actionProblem);
+                btn.setStyle("-fx-background-color: rgba(255,0,0,0.07)");
+                resetActions();
+                return;
+            }
 
         } else {
             throw new IllegalArgumentException("Invalid Done Button");
@@ -311,6 +328,27 @@ public class MapController {
 
         resetActions();
         updateMap();
+        if (!checkWinner()) {
+            //What do we do here?
+            objectOutputStream.writeObject("no act");
+        }
+    }
+
+    public boolean checkWinner() throws IOException, ClassNotFoundException {
+        String endGame = (String) objectInputStream.readObject();
+        System.out.println("End game: " + endGame);
+
+        if (endGame.equals("win")){
+            System.out.println("You have won");
+            status.setText("You have won!");
+            return true;
+        }
+        else if (endGame.equals("game over")){
+            System.out.println("Gameover, you have lost.");
+            status.setText("Gameover, you have lost.");
+            return true;
+        }
+        return false;
     }
 
     public void statusLabel(String message) {
