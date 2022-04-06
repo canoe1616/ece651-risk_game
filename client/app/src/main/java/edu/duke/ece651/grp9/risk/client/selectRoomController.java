@@ -28,7 +28,7 @@ public class selectRoomController {
     @FXML Button room2;
     @FXML Button room3;
     @FXML Button room4;
-    @FXML private Text color_text;
+    
 
     public  ObjectOutputStream objectOutputStream;
     public  ObjectInputStream objectInputStream;
@@ -94,12 +94,12 @@ public class selectRoomController {
             HashSet<Player> players = map.getPlayer();
             Player player = players.iterator().next();
             MapController mc = new MapController(this.Window, map,player,objectInputStream,objectOutputStream);
+            
             return mc;
         });
         Scene scene = new Scene(loaderStart.load());
         this.Window.setScene(scene);
         this.Window.show();
-        updateColorText();
         unitChecking();
     }
 
@@ -135,10 +135,12 @@ public class selectRoomController {
     }
 
     public void unitChecking() throws Exception {
+
             System.out.println("******In unit checking");
             String unitChecking = "";
             String unitPlacement = "";
             try {
+            
             unitPlacement = unitPopup();
             System.out.println(unitPlacement);
             objectOutputStream.reset();
@@ -162,16 +164,7 @@ public class selectRoomController {
             }
     }
 
-    public void updateColorText() {
-        try{
-            String color = (String)objectInputStream.readObject();
-            color_text.setText(color);
-            System.out.println("Get color:::" + color);
-        }
-        catch(Exception e){
-            e.getStackTrace();
-        }
-    }
+
 
 
 

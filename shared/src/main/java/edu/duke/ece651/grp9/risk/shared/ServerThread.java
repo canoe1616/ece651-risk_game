@@ -38,9 +38,7 @@ public class ServerThread extends Thread{
             ActionRuleChecker tmp = new ActionRuleChecker();
             //send map object
             
-            //check if the color selection is valid -- [done]
-            objectOutputStream.writeObject(color);
-            System.out.print("send color: " + color);
+            
 
 
 
@@ -71,6 +69,10 @@ public class ServerThread extends Thread{
                     break;
                 }
             }
+
+            //check if the color selection is valid -- [done]
+            objectOutputStream.writeObject(color);
+            System.out.println("send color: " + color);
 
         }
         catch(Exception e){

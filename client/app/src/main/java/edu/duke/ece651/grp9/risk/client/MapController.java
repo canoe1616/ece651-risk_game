@@ -26,6 +26,7 @@ public class MapController {
     
     @FXML private Text foodQuantity;
     @FXML private Text moneyQuantity;
+    @FXML private Text color_text;
 
     @FXML private Button A;
     @FXML private Button B;
@@ -96,7 +97,7 @@ public class MapController {
 
     public void showMap() throws Exception{
         //set each button's color and shape in buttonMap
-        
+        updateColorText();
         updateButtonColors();
         Set<String> allButtons = ButtonMap.keySet();
         for (String unusedButton: allButtons) {
@@ -132,7 +133,17 @@ public class MapController {
     }
 
     
-
+    public void updateColorText() {
+        try{
+            System.out.println("ready to Read color......");
+            String color = (String)objectInputStream.readObject();
+            color_text.setText(color);
+            System.out.println("Get color:::" + color);
+        }
+        catch(Exception e){
+            e.getStackTrace();
+        }
+    }
     
         
     

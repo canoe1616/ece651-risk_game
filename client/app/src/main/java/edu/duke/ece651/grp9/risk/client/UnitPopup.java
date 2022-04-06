@@ -27,12 +27,20 @@ public class UnitPopup {
     TextField unitPlacements;
 
     @FXML
-    public static void display() throws IOException {
+    public static void display() throws Exception {
         popupwindow = new Stage();
 
-        popupwindow.initModality(Modality.APPLICATION_MODAL);
-        popupwindow.setTitle("Place Units");
 
+        popupwindow.initModality(Modality.APPLICATION_MODAL);
+        try{
+            String unit_line = (String)inputStream.readObject();
+            System.out.println("read unit_line: " + unit_line);
+            popupwindow.setTitle(unit_line);
+        }
+        catch(Exception e){
+            e.getStackTrace();
+        }
+      
         URL xmlRes = MapController.class.getResource("/fxml/UnitPopup.fxml");
         assert (xmlRes != null);
         GridPane gp = FXMLLoader.load(xmlRes);
@@ -58,4 +66,6 @@ public class UnitPopup {
             throw new IllegalArgumentException("Invalid source");
         }
     }
+
+    
 }
