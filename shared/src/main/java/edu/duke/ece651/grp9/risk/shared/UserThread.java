@@ -188,30 +188,22 @@ public class UserThread extends Thread{
                  //run every room thread
             if (room_1.isFull() && room_1.startOrnot ==false){ // do we need a roomThreadList?
 
-                objectOutputStream.reset();
-                objectOutputStream.writeObject("true");
                 roomThread1.start();
                 System.out.println("Room_1 already start");
             }
             //x4
             if (room_2.isFull() && room_2.startOrnot ==false){ // do we need a roomThreadList?
 
-                objectOutputStream.reset();
-                objectOutputStream.writeObject("true");
                 roomThread2.start();
                 System.out.println("Room_2 already start");
             }
             if (room_3.isFull() && room_3.startOrnot ==false){ // do we need a roomThreadList?
 
-                objectOutputStream.reset();
-                objectOutputStream.writeObject("true");
                 roomThread3.start();
                 System.out.println("Room_3 already start");
             }
             if (room_4.isFull() && room_4.startOrnot ==false){ // do we need a roomThreadList?
 
-                objectOutputStream.reset();
-                objectOutputStream.writeObject("true");
                 roomThread4.start();
                 System.out.println("Room_4 already start");
             }

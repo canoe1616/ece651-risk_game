@@ -44,7 +44,7 @@ public class GamePlay {
       sb.append(ter.getName() + " ");
     }
     sb.append("\n");
-    sb.append("You have 30 total units, how do you want to place the units?");
+   // sb.append("You have 30 total units, how do you want to place the units?");
     try {
       stream.writeObject(sb.toString());
     } catch (Exception e) {

@@ -205,7 +205,7 @@
                 <Font name="Copperplate" size="11.0" />
             </font>
         </Label>
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Your color is:" wrappingWidth="96.97820281982422" GridPane.columnIndex="3" GridPane.columnSpan="3" GridPane.rowIndex="5">
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text=" " wrappingWidth="96.97820281982422" GridPane.columnIndex="3" GridPane.columnSpan="3" GridPane.rowIndex="5">
          <font>
             <Font name="Copperplate" size="13.0" />
          </font>

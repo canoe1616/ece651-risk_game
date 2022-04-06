@@ -15,7 +15,7 @@
             <font>
                 <Font name="Copperplate" size="13.0" />
             </font></Button>
-        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Place Units (e.g. 10 10 10)" textAlignment="CENTER" wrappingWidth="127.66119384765625">
+        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="You have 30 total units, how do you want to place the units? (e.g. 10 10 10)" textAlignment="CENTER" wrappingWidth="127.66119384765625">
             <font>
                 <Font name="Copperplate" size="14.0" />
             </font>
