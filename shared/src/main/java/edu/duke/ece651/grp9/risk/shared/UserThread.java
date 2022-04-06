@@ -108,8 +108,51 @@ public class UserThread extends Thread{
              */
 
             /**********************************************************************************/
+            if (room_1.isFull()){
+                room_1.startOrnot = true;
+                objectOutputStream.reset();
+                objectOutputStream.writeObject("true");
+                //System.out.println("Room_2 already start");
+            }
+            else{
+                objectOutputStream.reset();
+                objectOutputStream.writeObject("false");
+            }
+
+            if (room_2.isFull()){
+                room_2.startOrnot = true;
+                objectOutputStream.reset();
+                objectOutputStream.writeObject("true");
+                //System.out.println("Room_2 already start");
+            }
+            else{
+                objectOutputStream.reset();
+                objectOutputStream.writeObject("false");
+            }
+            if (room_3.isFull()){
+                room_3.startOrnot = true;
+                objectOutputStream.reset();
+                objectOutputStream.writeObject("true");
+                //System.out.println("Room_2 already start");
+            }
+            else{
+                objectOutputStream.reset();
+                objectOutputStream.writeObject("false");
+            }
+            if (room_4.isFull()){
+                room_4.startOrnot = true;
+                objectOutputStream.reset();
+                objectOutputStream.writeObject("true");
+                //System.out.println("Room_2 already start");
+            }
+            else{
+                objectOutputStream.reset();
+                objectOutputStream.writeObject("false");
+            }
+
+
             int room_id = (int)objectInputStream.readObject();
-            if (room_id == 1){
+            if (room_id == 1 && !room_1.isFull()){
                 System.out.println("Room_1 add one user");
                 room_1.addUser(user);
                 room_1.addSocket(socket);
@@ -117,21 +160,21 @@ public class UserThread extends Thread{
                 roomThread1.OutputList.add(objectOutputStream);
                 ActiveroomThreadList.add(roomThread1);
             }
-            if (room_id == 2){
+            if (room_id == 2 && !room_2.isFull() ){
                 room_2.addUser(user);
                 room_2.addSocket(socket);
                 roomThread2.InputList.add(objectInputStream);
                 roomThread2.OutputList.add(objectOutputStream);
                 ActiveroomThreadList.add(roomThread2);
             }
-            if (room_id == 3){
+            if (room_id == 3 && !room_3.isFull()){
                 room_3.addUser(user);
                 room_3.addSocket(socket);
                 roomThread3.InputList.add(objectInputStream);
                 roomThread3.OutputList.add(objectOutputStream);
                 ActiveroomThreadList.add(roomThread3);
             }
-            if (room_id == 4){
+            if (room_id == 4 && !room_4.isFull()){
                 room_4.addUser(user);
                 room_4.addSocket(socket);
                 roomThread4.InputList.add(objectInputStream);
@@ -144,26 +187,37 @@ public class UserThread extends Thread{
             /*********************************************************************************/
                  //run every room thread
             if (room_1.isFull() && room_1.startOrnot ==false){ // do we need a roomThreadList?
-                room_1.startOrnot = true;
+
+                objectOutputStream.reset();
+                objectOutputStream.writeObject("true");
                 roomThread1.start();
                 System.out.println("Room_1 already start");
             }
-            if (room_2.isFull() && room_2.startOrnot ==false){
-                room_2.startOrnot = true;
+            //x4
+            if (room_2.isFull() && room_2.startOrnot ==false){ // do we need a roomThreadList?
+
+                objectOutputStream.reset();
+                objectOutputStream.writeObject("true");
                 roomThread2.start();
                 System.out.println("Room_2 already start");
             }
-            if (room_3.isFull() && room_3.startOrnot ==false){
-                room_3.startOrnot = true;
+            if (room_3.isFull() && room_3.startOrnot ==false){ // do we need a roomThreadList?
+
+                objectOutputStream.reset();
+                objectOutputStream.writeObject("true");
                 roomThread3.start();
                 System.out.println("Room_3 already start");
             }
-            if (room_4.isFull() && room_4.startOrnot ==false ){
-                room_4.startOrnot = true;
+            if (room_4.isFull() && room_4.startOrnot ==false){ // do we need a roomThreadList?
+
+                objectOutputStream.reset();
+                objectOutputStream.writeObject("true");
                 roomThread4.start();
                 System.out.println("Room_4 already start");
-
             }
+
+
+
         }
         catch (Exception e){
             System.out.println(e);

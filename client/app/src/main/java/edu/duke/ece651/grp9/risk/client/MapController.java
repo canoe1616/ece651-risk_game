@@ -90,11 +90,25 @@ public class MapController {
         InitButtonMap();
         // display different map to different players
         // TODO: how to indicate the player's name
-        showMap(player, myMap, this.ButtonMap);
+        showMap();
     }
 
-    public void showMap(Player player, Map myMap, HashMap<String, Button> ButtonMap) {
+    public void showMap() {
         //set each button's color and shape in buttonMap
+
+        updateButtonColors();
+        Set<String> allButtons = ButtonMap.keySet();
+        for (String unusedButton: allButtons) {
+            Button button = ButtonMap.get(unusedButton);
+            button.setDisable(true);
+        }
+
+        // set food and money value
+        updateResources();
+        System.out.println("Already paint color");
+    }
+
+    public void updateButtonColors() {
         HashSet<Player> players = myMap.getPlayer();
         // store useable buttons
         Set<String> allButtons = ButtonMap.keySet();
@@ -104,23 +118,21 @@ public class MapController {
                 String style = getStyle(color);
                 Button button =  ButtonMap.get(ter.getName());
                 allButtons.remove(ter.getName());
-               button.setStyle(style);
+                button.setStyle(style);
                 button.setCursor(Cursor.HAND);
             }
         }
+    }
 
-        for (String unusedButton: allButtons) {
-            Button button = ButtonMap.get(unusedButton);
-            button.setDisable(true);
-        }
-
-        // set food and money value
+    public void updateResources() {
         foodQuantity.setText(Integer.toString(player.getFoodQuantity()));
         moneyQuantity.setText(Integer.toString(player.getMoneyQuantity()));
-        System.out.println("Already paint color");
+    }
 
 
-
+    public void updateMap() {
+        updateButtonColors();
+        updateResources();
     }
 
     public String getStyle(String color) {
@@ -129,8 +141,6 @@ public class MapController {
         style += ";" + "-fx-border-color: black;";
         return style;
     }
-
-
 
     @FXML
     public void onCreateAttack(ActionEvent actionEvent) {
@@ -274,6 +284,7 @@ public class MapController {
 //        statusLabel("Actions submitted to server. Waiting for updated map.");
 //        btn.setStyle("-fx-background-color: Green");
 //        myMap = (Map) objectInputStream.readObject();
+//        statusLabel("Received updated Map.");
 //      } else {
 //        status.setText(actionProblem);
 //        btn.setStyle("-fx-background-color: Red");
@@ -286,6 +297,7 @@ public class MapController {
         // TODO: check results and triggle game end page
 
         resetActions();
+        updateMap();
     }
 
     public void statusLabel(String message) {
