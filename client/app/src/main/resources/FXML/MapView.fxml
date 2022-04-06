@@ -96,21 +96,21 @@
                 <Font name="Copperplate" size="15.0" />
             </font>
         </Label>
-        <Text fx:id="foodQuantity" strokeType="OUTSIDE" strokeWidth="0.0" text="20" wrappingWidth="28.277679443359375" GridPane.columnIndex="5" GridPane.columnSpan="2" GridPane.rowSpan="2" GridPane.valignment="TOP">
+        <Label fx:id="foodQuantity" strokeType="OUTSIDE" strokeWidth="0.0" text="20" wrappingWidth="28.277679443359375" GridPane.columnIndex="5" GridPane.columnSpan="2" GridPane.rowSpan="2" GridPane.valignment="TOP">
             <font>
                 <Font name="Copperplate" size="14.0" />
             </font>
-        </Text>
+        </Label>
         <Label alignment="CENTER" contentDisplay="TOP" prefHeight="17.0" prefWidth="105.0" text="\$" GridPane.columnIndex="6" GridPane.rowSpan="2" GridPane.valignment="TOP">
             <font>
                 <Font name="Copperplate" size="15.0" />
             </font>
         </Label>
-        <Text fx:id="moneyQuantity" strokeType="OUTSIDE" strokeWidth="0.0" text="2000" wrappingWidth="53.66119384765625" GridPane.columnIndex="7" GridPane.columnSpan="2" GridPane.rowSpan="2" GridPane.valignment="TOP">
+        <Label fx:id="moneyQuantity" strokeType="OUTSIDE" strokeWidth="0.0" text="2000" wrappingWidth="53.66119384765625" GridPane.columnIndex="7" GridPane.columnSpan="2" GridPane.rowSpan="2" GridPane.valignment="TOP">
             <font>
                 <Font name="Copperplate" size="14.0" />
             </font>
-        </Text>
+        </Label>
         <Label alignment="TOP_CENTER" prefHeight="17.0" prefWidth="105.0" text="Level:" GridPane.columnIndex="10" GridPane.columnSpan="2" GridPane.rowSpan="2" GridPane.valignment="TOP">
             <font>
                 <Font name="Copperplate" size="15.0" />
@@ -210,10 +210,10 @@
             <Font name="Copperplate" size="13.0" />
          </font>
       </Text>
-      <Text fx:id="color_text" strokeType="OUTSIDE" strokeWidth="0.0" text="color" GridPane.columnIndex="7" GridPane.rowIndex="5">
-         <font>
-            <Font name="Copperplate" size="13.0" />
-         </font>
-      </Text>
+<!--      <Text fx:id="color_text" strokeType="OUTSIDE" strokeWidth="0.0" text="color" GridPane.columnIndex="7" GridPane.rowIndex="5">-->
+<!--         <font>-->
+<!--            <Font name="Copperplate" size="13.0" />-->
+<!--         </font>-->
+<!--      </Text>-->
     </children>
 </GridPane>

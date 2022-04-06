@@ -24,9 +24,9 @@ import java.util.Set;
 public class MapController {
     private Stage Window;
     
-    @FXML private Text foodQuantity;
-    @FXML private Text moneyQuantity;
-    @FXML private Text color_text;
+    @FXML private Label foodQuantity;
+    @FXML private Label moneyQuantity;
+   // @FXML private Text color_text;
 
     @FXML private Button A;
     @FXML private Button B;
@@ -142,15 +142,12 @@ public class MapController {
 
     
     public void updateTerroteryText() {
-        try{
-            System.out.println("ready to Read color......");
-            String color = (String)objectInputStream.readObject();
-            color_text.setText(color);
-            System.out.println("Get color:::" + color);
-        }
-        catch(Exception e){
-            e.getStackTrace();
-        }
+
+            System.out.println("ready to Read text......");
+            //String ter = (String)objectInputStream.readObject();
+            String ter = "You have 30 total units, how do you want to place the units?";
+            status.setText(ter);
+            System.out.println("Get text:::" + ter);
     }
     
         

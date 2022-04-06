@@ -44,7 +44,7 @@ public class ServerThread extends Thread{
 
             //read unit assignment
 
-            gamePlay.unitSetting(objectOutputStream, gamePlay.findPlayer(color, m));
+            //gamePlay.unitSetting(objectOutputStream, gamePlay.findPlayer(color, m));
             String unitString = "";
             while(true){
                 String unit_correct = "true";
@@ -64,6 +64,8 @@ public class ServerThread extends Thread{
                     unit_correct = "true";
                     objectOutputStream.reset();
                     objectOutputStream.writeObject(unit_correct);
+
+
                     System.out.print("server thread 结束了");
                     gamePlay.playerUnitSetting(unitString, gamePlay.findPlayer(color, m));
                     break;
