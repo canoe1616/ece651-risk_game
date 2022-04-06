@@ -283,6 +283,8 @@ public class MapController {
         } else {
             throw new IllegalArgumentException("Invalid Done Button");
         }
+        // TODO: check results and triggle game end page
+
         resetActions();
     }
 

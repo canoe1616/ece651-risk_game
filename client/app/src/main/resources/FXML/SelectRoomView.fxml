@@ -84,8 +84,8 @@
          </font>
       </Text>
       <Button fx:id="room1" mnemonicParsing="false" onAction="#JoinRoom1" text="JOIN" GridPane.columnIndex="4" GridPane.columnSpan="3" GridPane.rowIndex="2" GridPane.rowSpan="2" />
-      <Button fx:id="room3" mnemonicParsing="false" onAction="#JoinRoom2" text="JOIN" GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.rowIndex="4" />
-      <Button fx:id="room2" mnemonicParsing="false" onAction="#JoinRoom3" text="JOIN" GridPane.columnIndex="4" GridPane.columnSpan="3" GridPane.rowIndex="5" GridPane.rowSpan="2" />
+      <Button fx:id="room2" mnemonicParsing="false" onAction="#JoinRoom2" text="JOIN" GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.rowIndex="4" />
+      <Button fx:id="room3" mnemonicParsing="false" onAction="#JoinRoom3" text="JOIN" GridPane.columnIndex="4" GridPane.columnSpan="3" GridPane.rowIndex="5" GridPane.rowSpan="2" />
       <Button fx:id="room4" mnemonicParsing="false" onAction="#JoinRoom4" text="JOIN" GridPane.columnIndex="4" GridPane.rowIndex="7" />
    </children>
 </GridPane>
