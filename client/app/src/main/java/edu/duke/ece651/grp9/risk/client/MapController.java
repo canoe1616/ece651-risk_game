@@ -97,7 +97,7 @@ public class MapController {
 
     public void showMap() throws Exception{
         //set each button's color and shape in buttonMap
-        updateColorText();
+        updateTerroteryText();
         updateButtonColors();
         Set<String> allButtons = ButtonMap.keySet();
         for (String unusedButton: allButtons) {
@@ -133,7 +133,7 @@ public class MapController {
     }
 
     
-    public void updateColorText() {
+    public void updateTerroteryText() {
         try{
             System.out.println("ready to Read color......");
             String color = (String)objectInputStream.readObject();

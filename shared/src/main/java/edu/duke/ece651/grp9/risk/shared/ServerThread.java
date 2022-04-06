@@ -71,8 +71,8 @@ public class ServerThread extends Thread{
             }
 
             //check if the color selection is valid -- [done]
-            objectOutputStream.writeObject(color);
-            System.out.println("send color: " + color);
+          //  objectOutputStream.writeObject(color);
+           // System.out.println("send color: " + color);
 
         }
         catch(Exception e){
