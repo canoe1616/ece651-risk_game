@@ -42,6 +42,7 @@ public class MapController {
     private HashMap<String, Button> ButtonMap;
     private Map myMap;
     private Player player;
+    private String color;
 
 
     @FXML
@@ -81,6 +82,7 @@ public class MapController {
         this.myMap = map;
         this.Window = Window;
         this.player = player;
+        this.color = player.getName();
         this.objectInputStream = objectInputStream;
         this.objectOutputStream = objectOutputStream;
 
