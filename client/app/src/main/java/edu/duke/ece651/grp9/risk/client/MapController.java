@@ -47,9 +47,18 @@ public class MapController {
 
     @FXML
     Label territoryStats;
-
     @FXML
     Label status;
+    @FXML
+    Button done;
+    @FXML
+    Button createAttack;
+    @FXML
+    Button createMove;
+    @FXML
+    Button createUpgrade;
+    @FXML
+    Button levelUp;
 
     public static HashSet<String> attacks = new HashSet<>();
     public static HashSet<String> moves = new HashSet<>();
@@ -283,6 +292,7 @@ public class MapController {
 
     @FXML
     public void onDone(ActionEvent actionEvent) throws IOException, ClassNotFoundException {
+        //disableButtons();
         Object source = actionEvent.getSource();
         if (source instanceof Button) {
             Button btn = (Button) source;
@@ -321,6 +331,7 @@ public class MapController {
                 status.setText(actionProblem);
                 btn.setStyle("-fx-background-color: rgba(255,0,0,0.07)");
                 resetActions();
+                //enableButtons();
                 return;
             }
 
@@ -331,7 +342,23 @@ public class MapController {
 
         resetActions();
         updateMap();
-        
+        //enableButtons();
+    }
+
+    public void disableButtons() {
+        createAttack.setDisable(true);
+        createMove.setDisable(true);
+        done.setDisable(true);
+        levelUp.setDisable(true);
+        createUpgrade.setDisable(true);
+    }
+
+    public void enableButtons() {
+        createAttack.setDisable(false);
+        createMove.setDisable(false);
+        done.setDisable(false);
+        levelUp.setDisable(false);
+        createUpgrade.setDisable(false);
     }
 
     public boolean checkWinner(String endGame){
