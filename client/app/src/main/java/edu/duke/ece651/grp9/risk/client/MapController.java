@@ -93,6 +93,8 @@ public class MapController {
         // display different map to different players
         // TODO: how to indicate the player's name
         showMap();
+        //receive the map from the server
+        //myMap =  (Map) objectInputStream.readObject();
     }
 
     public void showMap() throws Exception{
@@ -105,9 +107,12 @@ public class MapController {
             button.setDisable(true);
         }
 
+
         // set food and money value
         updateResources();
         System.out.println("Already paint color");
+       // updateMapafterInitiualization();
+
         
     }
 
@@ -125,6 +130,11 @@ public class MapController {
                 button.setCursor(Cursor.HAND);
             }
         }
+    }
+
+
+    public void updateMapafterInitiualization() throws Exception {
+        myMap =  (Map) objectInputStream.readObject();
     }
 
     public void updateResources() {

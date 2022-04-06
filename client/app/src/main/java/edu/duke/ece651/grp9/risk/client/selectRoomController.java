@@ -100,7 +100,34 @@ public class selectRoomController {
         Scene scene = new Scene(loaderStart.load());
         this.Window.setScene(scene);
         this.Window.show();
+
         unitChecking();
+
+        FXMLLoader loaderafterUnit = new FXMLLoader(getClass().getResource("/FXML/MapView.fxml"));
+        loaderafterUnit.setControllerFactory(c -> {
+            //  make a map for n players
+
+            Map map = null;
+            try {
+                map = (Map) objectInputStream.readObject();
+                objectOutputStream.reset();
+                objectOutputStream.writeObject("no act");
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+            HashSet<Player> players = map.getPlayer();
+            Player player = players.iterator().next();
+            MapController mc = new MapController(this.Window,map,player,objectInputStream,objectOutputStream);
+
+            return mc;
+        });
+        Scene scene_after = new Scene(loaderafterUnit.load());
+        this.Window.setScene(scene_after);
+        this.Window.show();
+
     }
 
     @FXML
