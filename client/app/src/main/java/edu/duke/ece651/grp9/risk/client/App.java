@@ -305,10 +305,10 @@ public class App {
       System.out.println("Its next step...");
 
       while(true){//until you lose or you win.
-        myMap = (Map) objectInputStream.readObject();//
+        myMap = (Map) objectInputStream.readObject();// read 001 map
         System.out.println("Receive Map form server.");
         MapTextView mtv = new MapTextView(myMap);
-        String endGame = (String) objectInputStream.readObject();//
+        String endGame = (String) objectInputStream.readObject();// read 002 string end game //win / gameover/ keep going
         System.out.println("Read state.");
         if (endGame.equals("win")){
           String res = mtv.sendInfoWinner(color, myMap);
@@ -322,29 +322,29 @@ public class App {
           socket.close();
           break;
         }
-        else{//countinue
+        else{//countinue - keep going
 
           if(myMap.findPlayer(color).isLose() && myMap.findPlayer(color).getLoseStatus().equals("no act")){
             String action = app.selectStateAfterLose(inputSource, color);
-            objectOutputStream.writeObject(action);
+            objectOutputStream.writeObject(action); // write 001
             //change it at local player.
             myMap.findPlayer(color).setLoseStatus(action);
           }
           else if(myMap.findPlayer(color).isLose() && myMap.findPlayer(color).getLoseStatus().equals("quit")){
             System.out.println("Bye bye I quit");
-            objectOutputStream.writeObject("quit");
+            objectOutputStream.writeObject("quit"); //write 001
             socket.close();
             break; //close the game here
           }
           else if(myMap.findPlayer(color).isLose() && myMap.findPlayer(color).getLoseStatus().equals("continue")){
              String gameStateInitial = mtv.displayGameState(myMap.findPlayer(color));
              System.out.println(gameStateInitial);
-             objectOutputStream.writeObject("continue");
+             objectOutputStream.writeObject("continue");  //write 001
           }
           else{
             String gameStateInitial = mtv.displayGameState(myMap.findPlayer(color));
             System.out.println(gameStateInitial);
-            objectOutputStream.writeObject("no act");
+            objectOutputStream.writeObject("no act"); //write 001
             //allow client typing
             String action = null;
             ActionRuleChecker arc = new ActionRuleChecker();
@@ -364,9 +364,9 @@ public class App {
                 actionSet.actionListUpgrade = actionListUpgrade;
 
                 objectOutputStream.reset();
-                objectOutputStream.writeObject(actionSet);
+                objectOutputStream.writeObject(actionSet); //write 002
                 System.out.println("Sent actionSet to the server.");
-                String actionProblem = (String) objectInputStream.readObject();
+                String actionProblem = (String) objectInputStream.readObject(); // read 003 read action problem
                 actionListMove.clear();
                 actionListAttack.clear();
                 actionListUpgrade.clear();

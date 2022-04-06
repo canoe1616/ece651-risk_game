@@ -33,7 +33,7 @@ public class ActionThread extends Thread{
           HashSet<AttackAction> attackActions = new HashSet<>();
           HashSet<UpgradeAction> upgradeActions = new HashSet<>();
 
-          ActionSet actionSet = (ActionSet) objectInputStream.readObject();
+          ActionSet actionSet = (ActionSet) objectInputStream.readObject(); // read 002 (actionSet)
           System.out.println("Get action...");
 
           HashSet<String> actionListMove = actionSet.getMoveList();
@@ -57,7 +57,7 @@ public class ActionThread extends Thread{
           System.out.println("actionProblem: " +actionProblem );
           //debug：here should be reset
           objectOutputStream.reset();
-          objectOutputStream.writeObject(actionProblem);
+          objectOutputStream.writeObject(actionProblem); //write 003 (send action problem)
           if (actionProblem == null) {
             allMove.addAll(moveActions);
             allAttack.addAll(attackActions);

@@ -101,12 +101,6 @@ public class MapController {
         //set each button's color and shape in buttonMap
         updateTerroteryText();
         updateButtonColors();
-        Set<String> allButtons = ButtonMap.keySet();
-        for (String unusedButton: allButtons) {
-            Button button = ButtonMap.get(unusedButton);
-            button.setDisable(true);
-        }
-
 
         // set food and money value
         updateResources();
@@ -129,6 +123,10 @@ public class MapController {
                 button.setStyle(style);
                 button.setCursor(Cursor.HAND);
             }
+        }
+        for (String unusedButton: allButtons) {
+            Button button = ButtonMap.get(unusedButton);
+            button.setDisable(true);
         }
     }
 
@@ -305,15 +303,19 @@ public class MapController {
             actionSet.actionListUpgrade = upgrades;
 //      actionSet.techLevelAction = techAction;
             objectOutputStream.reset();
-            objectOutputStream.writeObject(actionSet);
-            String actionProblem = (String) objectInputStream.readObject();
+            objectOutputStream.writeObject(actionSet); //write 001
+            String actionProblem = (String) objectInputStream.readObject();//read 001
             if (actionProblem == null) {
                 statusLabel("Actions submitted to server. Waiting for updated map.");
                 btn.setStyle("-fx-background-color: Green");
-                myMap = (Map) objectInputStream.readObject();
+                myMap = (Map) objectInputStream.readObject();//read 002
                 statusLabel("Received updated Map.");
-                String keepGoing = (String) objectInputStream.readObject();
-                System.out.println("Keepgoing? : " + keepGoing);
+                String endGame = (String) objectInputStream.readObject();//read 003
+                System.out.println("EndGame? : " + endGame);
+                if (!checkWinner(endGame)) {
+                    //What do we do here?
+                    objectOutputStream.writeObject("no act"); //write 002
+                }
             } else {
                 status.setText(actionProblem);
                 btn.setStyle("-fx-background-color: rgba(255,0,0,0.07)");
@@ -328,15 +330,10 @@ public class MapController {
 
         resetActions();
         updateMap();
-        if (!checkWinner()) {
-            //What do we do here?
-            objectOutputStream.writeObject("no act");
-        }
+        
     }
 
-    public boolean checkWinner() throws IOException, ClassNotFoundException {
-        String endGame = (String) objectInputStream.readObject();
-        System.out.println("End game: " + endGame);
+    public boolean checkWinner(String endGame){
 
         if (endGame.equals("win")){
             System.out.println("You have won");

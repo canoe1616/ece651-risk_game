@@ -103,11 +103,11 @@ public class RoomThread extends Thread {
                 while (j < player_num) {
                     //how to update
                     OutputList.get(j).reset();
-                    OutputList.get(j).writeObject(m);
+                    OutputList.get(j).writeObject(m); // # write 001 map
                     OutputList.get(j).reset();
-                    OutputList.get(j).writeObject("keep going");
+                    OutputList.get(j).writeObject("keep going"); // # write 002 (end game)
 
-//                    String action = (String) InputList.get(j).readObject();
+//                    String action = (String) InputList.get(j).readObject();  // # read 001 (no action, quit, continue)
 //                    gamePlay.findPlayer(remainingColors.get(j), m).setLoseStatus(action);
                     Player tmp = gamePlay.findPlayer(remainingColors.get(j), m);
 
