@@ -112,7 +112,7 @@ public class selectRoomController {
                 map = (Map) objectInputStream.readObject();
                 objectOutputStream.reset();
                 String endGame = (String) objectInputStream.readObject();
-                objectOutputStream.writeObject("no act"); 
+                //objectOutputStream.writeObject("no act"); 
 
             } catch (IOException e) {
                 e.printStackTrace();

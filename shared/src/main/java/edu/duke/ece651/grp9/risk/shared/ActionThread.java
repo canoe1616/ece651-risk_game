@@ -32,6 +32,9 @@ public class ActionThread extends Thread{
           HashSet<MoveAction> moveActions = new HashSet<>();
           HashSet<AttackAction> attackActions = new HashSet<>();
           HashSet<UpgradeAction> upgradeActions = new HashSet<>();
+          
+          //String test = (String) objectInputStream.readObject();
+          //System.out.println("###### error here:" + test);
 
           ActionSet actionSet = (ActionSet) objectInputStream.readObject(); // read 002 (actionSet)
           System.out.println("Get action...");
