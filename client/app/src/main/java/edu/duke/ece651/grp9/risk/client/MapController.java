@@ -15,6 +15,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.nio.ReadOnlyBufferException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
@@ -22,7 +23,7 @@ import java.util.Set;
 
 public class MapController {
     private Stage Window;
-
+    
     @FXML private Text foodQuantity;
     @FXML private Text moneyQuantity;
 
@@ -86,16 +87,16 @@ public class MapController {
     }
 
     // initial game room according to the given map
-    public void initialize() {
+    public void initialize() throws Exception{
         InitButtonMap();
         // display different map to different players
         // TODO: how to indicate the player's name
         showMap();
     }
 
-    public void showMap() {
+    public void showMap() throws Exception{
         //set each button's color and shape in buttonMap
-
+        
         updateButtonColors();
         Set<String> allButtons = ButtonMap.keySet();
         for (String unusedButton: allButtons) {
@@ -106,6 +107,7 @@ public class MapController {
         // set food and money value
         updateResources();
         System.out.println("Already paint color");
+        
     }
 
     public void updateButtonColors() {
@@ -129,8 +131,12 @@ public class MapController {
         moneyQuantity.setText(Integer.toString(player.getMoneyQuantity()));
     }
 
+    
 
-    public void updateMap() {
+    
+        
+    
+    public void updateMap() throws Exception {
         updateButtonColors();
         updateResources();
     }
@@ -256,7 +262,7 @@ public class MapController {
     }
 
     @FXML
-    public void onDone(ActionEvent actionEvent) {
+    public void onDone(ActionEvent actionEvent) throws Exception {
         Object source = actionEvent.getSource();
         if (source instanceof Button) {
             Button btn = (Button) source;
@@ -276,20 +282,6 @@ public class MapController {
             actionSet.actionListAttack = attacks;
             actionSet.actionListMove = moves;
             actionSet.actionListUpgrade = upgrades;
-//      actionSet.techLevelAction = techAction;
-//      objectOutputStream.reset();
-//      objectOutputStream.writeObject(actionSet);
-//      String actionProblem = (String) objectInputStream.readObject();
-//      if (actionProblem == null) {
-//        statusLabel("Actions submitted to server. Waiting for updated map.");
-//        btn.setStyle("-fx-background-color: Green");
-//        myMap = (Map) objectInputStream.readObject();
-//        statusLabel("Received updated Map.");
-//      } else {
-//        status.setText(actionProblem);
-//        btn.setStyle("-fx-background-color: Red");
-//      }
-
 
         } else {
             throw new IllegalArgumentException("Invalid Done Button");

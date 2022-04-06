@@ -70,7 +70,6 @@ public class logInPageController {
                 System.out.println(exception.getMessage());
             }
 
-
             if (account_check.equals("true")) {
                 loaderStart.setControllerFactory(c -> {
                     return new selectRoomController(this.Window, this.objectInputStream,this.objectOutputStream);
@@ -81,7 +80,6 @@ public class logInPageController {
                 this.Window.show();
             }
             
-
             // TODO: need to reader info from controller to client
             else{
                 errorMessage.setText("your password is wrong!");

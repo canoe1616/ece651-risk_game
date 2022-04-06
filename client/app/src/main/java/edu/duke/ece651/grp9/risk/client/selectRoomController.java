@@ -28,6 +28,7 @@ public class selectRoomController {
     @FXML Button room2;
     @FXML Button room3;
     @FXML Button room4;
+    @FXML private Text color_text;
 
     public  ObjectOutputStream objectOutputStream;
     public  ObjectInputStream objectInputStream;
@@ -79,7 +80,7 @@ public class selectRoomController {
 
     }
 
-    private void joinRoomHelper(int playerNum, ActionEvent actionEvent) throws IOException {
+    private void joinRoomHelper(int playerNum, ActionEvent actionEvent) throws Exception {
 
         System.out.println("enter the joining room helper");
         objectOutputStream.reset();
@@ -98,40 +99,31 @@ public class selectRoomController {
         Scene scene = new Scene(loaderStart.load());
         this.Window.setScene(scene);
         this.Window.show();
-
-        String unitChecking = unitPopup();
-        try {
-            objectOutputStream.reset();
-            objectOutputStream.writeObject(unitChecking);
-        }
-        catch (IOException e) {
-            System.out.println("cannot send the problem with unitchecking");
-        }
+        updateColorText();
+        unitChecking();
     }
 
     @FXML
-    public void JoinRoom1(ActionEvent actionEvent) throws IOException {
+    public void JoinRoom1(ActionEvent actionEvent) throws Exception {
         joinRoomHelper(2, actionEvent);
     }
 
     @FXML
-    public void JoinRoom2(ActionEvent actionEvent) throws IOException {
+    public void JoinRoom2(ActionEvent actionEvent) throws Exception {
         joinRoomHelper(3, actionEvent);
     }
 
     @FXML
-    public void JoinRoom3(ActionEvent actionEvent) throws IOException {
+    public void JoinRoom3(ActionEvent actionEvent) throws Exception {
         joinRoomHelper(4, actionEvent);
     }
 
     @FXML
-    public void JoinRoom4(ActionEvent actionEvent) throws IOException {
+    public void JoinRoom4(ActionEvent actionEvent) throws Exception {
         joinRoomHelper(5, actionEvent);
     }
 
-
-
-    public String unitPopup() {
+    public String unitPopup() throws Exception{
         try {
             UnitPopup popup = new UnitPopup();
             popup.display();
@@ -141,4 +133,47 @@ public class selectRoomController {
         }
         return null;
     }
+
+    public void unitChecking() throws Exception {
+            System.out.println("******In unit checking");
+            String unitChecking = "";
+            String unitPlacement = "";
+            try {
+            unitPlacement = unitPopup();
+            System.out.println(unitPlacement);
+            objectOutputStream.reset();
+            objectOutputStream.writeObject(unitPlacement);
+            unitChecking = (String) objectInputStream.readObject();
+            }
+            catch (IOException e) {
+                System.out.println(e);
+            }
+
+            while (unitChecking.equals("false")){
+                try{
+                unitPlacement = unitPopup();
+                objectOutputStream.reset();
+                objectOutputStream.writeObject(unitPlacement);
+                unitChecking = (String) objectInputStream.readObject();
+                }
+                catch (IOException e) {
+                System.out.println(e);
+                }
+            }
+    }
+
+    public void updateColorText() {
+        try{
+            String color = (String)objectInputStream.readObject();
+            color_text.setText(color);
+            System.out.println("Get color:::" + color);
+        }
+        catch(Exception e){
+            e.getStackTrace();
+        }
+    }
+
+
+
+    
 }
