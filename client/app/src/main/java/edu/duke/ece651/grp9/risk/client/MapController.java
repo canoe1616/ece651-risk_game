@@ -148,7 +148,8 @@ public class MapController {
 
             System.out.println("ready to Read text......");
             //String ter = (String)objectInputStream.readObject();
-            String ter = "You have 30 total units, how do you want to place the units?";
+            String ter = "You have 30 total units, how do you want to place the units?\n" +
+                   "you are " + color;
             status.setText(ter);
             System.out.println("Get text:::" + ter);
     }
