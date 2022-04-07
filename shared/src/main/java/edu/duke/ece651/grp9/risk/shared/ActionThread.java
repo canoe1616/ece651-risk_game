@@ -36,6 +36,7 @@ public class ActionThread extends Thread{
           System.out.println("ready to read actionSet From " + player.getName());
 
           ActionSet actionSet = (ActionSet) objectInputStream.readObject(); // read 002 (actionSet)
+
           System.out.println("Status: Get action from " + player.getName());
 
           HashSet<String> actionListMove = actionSet.getMoveList();

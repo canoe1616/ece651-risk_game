@@ -313,7 +313,6 @@ public class MapController {
             String actionProblem = (String) objectInputStream.readObject();//read 001
             System.out.println("Status: read actionProblem: " + actionProblem);
 
-            
             if (actionProblem == null) {
                 statusLabel("Actions submitted to server. Waiting for updated map.");
                 btn.setStyle("-fx-background-color: Green");
@@ -325,7 +324,7 @@ public class MapController {
                 System.out.println("Status: read endGame: " + endGame);
                 if (!checkWinner(endGame)) {
                     //What do we do here?
-                    objectOutputStream.writeObject("no act"); //write 002
+                    //objectOutputStream.writeObject("no act"); //write 002
                 }
             } 
             else {

@@ -93,11 +93,9 @@ public class RoomThread extends Thread {
                     OutputList.get(j).reset();
                     OutputList.get(j).writeObject("keep going"); // # write 002 (end game)
                     System.out.println("Status: sent keep going");
-                }
-                for (int j = 0; j < player_num; j++){
+                
                     //String action = (String) InputList.get(j).readObject();  // # read 001 (no action, quit, continue)
                     //System.out.println("Status: read action: " + action);
-
                     //gamePlay.findPlayer(remainingColors.get(j), m).setLoseStatus(action);
                     Player tmp = gamePlay.findPlayer(remainingColors.get(j), m);
 
@@ -118,6 +116,7 @@ public class RoomThread extends Thread {
                         }
                     } 
                     else {
+                        System.out.println("Status: enter actionThread");
                         ActionThread actionThread = new ActionThread(m, InputList.get(j), OutputList.get(j), tmp, allMoves, allAttacks, allUpgrades);
                         ActionThreadList.add(actionThread);
                         actionThread.start();
