@@ -13,8 +13,11 @@ public class ActionThread extends Thread{
   public HashSet<MoveAction> allMove = new HashSet<>();
   public HashSet<AttackAction> allAttack = new HashSet<>();
   public HashSet<UpgradeAction> allUpgrade = new HashSet<>();
+  public HashSet<TechAction> techActions;
 
-  public ActionThread(Map m, ObjectInputStream objectInputStream, ObjectOutputStream objectOutputStream, Player player, HashSet<MoveAction> allMoves, HashSet<AttackAction>allAttack, HashSet<UpgradeAction> allUpgrade) {
+  public ActionThread(Map m, ObjectInputStream objectInputStream, ObjectOutputStream objectOutputStream,
+      Player player, HashSet<MoveAction> allMoves, HashSet<AttackAction>allAttack,
+      HashSet<UpgradeAction> allUpgrade, HashSet<TechAction> techActions) {
     this.m = m;
     this.objectInputStream = objectInputStream;
     this.objectOutputStream = objectOutputStream;
@@ -22,6 +25,7 @@ public class ActionThread extends Thread{
     this.allMove = allMoves;
     this.allAttack = allAttack;
     this.allUpgrade = allUpgrade;
+    this.techActions = techActions;
   }
 
   @Override
@@ -56,7 +60,8 @@ public class ActionThread extends Thread{
 
 
           //moveActions  attackActions need to be reset in the next round.
-          String actionProblem = gamePlay.validActionSet(player, moveActions, attackActions, upgradeActions);
+          String actionProblem = gamePlay.validActionSet(player, moveActions, attackActions,
+              upgradeActions, actionSet.techLevelUpgrade);
           //debug：here should be reset
           objectOutputStream.reset();
           objectOutputStream.writeObject(actionProblem); //write 003 (send action problem)
@@ -65,6 +70,10 @@ public class ActionThread extends Thread{
             allMove.addAll(moveActions);
             allAttack.addAll(attackActions);
             allUpgrade.addAll(upgradeActions);
+            if (actionSet.techLevelUpgrade) {
+              techActions.add(new TechAction(player));
+            }
+
             break;
           }
 

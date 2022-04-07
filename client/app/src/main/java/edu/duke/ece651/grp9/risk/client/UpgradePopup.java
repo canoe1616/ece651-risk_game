@@ -40,7 +40,7 @@ public class UpgradePopup {
         popupwindow.initModality(Modality.APPLICATION_MODAL);
         popupwindow.setTitle("Upgrade Units");
 
-        URL xmlRes = MapController.class.getResource("/FXMLFXML/UpgradePopup.fxml");
+        URL xmlRes = MapController.class.getResource("/FXML/UpgradePopup.fxml");
         assert (xmlRes != null);
         GridPane gp = FXMLLoader.load(xmlRes);
         gp.setAlignment(Pos.CENTER);

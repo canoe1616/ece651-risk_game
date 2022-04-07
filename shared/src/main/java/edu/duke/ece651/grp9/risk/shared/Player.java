@@ -149,7 +149,6 @@ public class Player implements Serializable {
    */
   public void upgradeTechLevel() {
     techLevel += 1;
-    //TODO decrement Money
   }
 
   /**
