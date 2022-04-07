@@ -125,7 +125,8 @@ public class selectRoomController {
                 String endGame = (String) objectInputStream.readObject(); //ServerThread 108
                 System.out.println("Status: get the end game: " + endGame);
                 player = map.findPlayer(real_color);
-                //objectOutputStream.writeObject("no act"); 
+                //debug 4.7 afternoon
+                objectOutputStream.writeObject("no act");
 
             } catch (IOException e) {
                 e.printStackTrace();

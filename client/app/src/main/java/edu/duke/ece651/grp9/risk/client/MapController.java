@@ -285,7 +285,7 @@ public class MapController {
     }
 
     @FXML
-    public void onDone(ActionEvent actionEvent) throws IOException, ClassNotFoundException {
+    public void onDone(ActionEvent actionEvent) throws Exception {
         //disableButtons();
         Object source = actionEvent.getSource();
         if (source instanceof Button) {
@@ -321,11 +321,40 @@ public class MapController {
                 statusLabel("Received updated Map.");
                 btn.setStyle("-fx-background-color: White");
                 String endGame = (String) objectInputStream.readObject();//read 003
-                System.out.println("Status: read endGame: " + endGame);
+                System.out.println("Status: read endGame: " + endGame);//keep going
+
+                /************For quit and continue part****************/
+
+
                 if (!checkWinner(endGame)) {
                     //What do we do here?
-                    //objectOutputStream.writeObject("no act"); //write 002
+                    //debug 4.7 --> last to find the continue and quit
+                    if (myMap.findPlayer(color).isLose() && myMap.findPlayer(color).getLoseStatus().equals("no act")) {
+                    //    popup替换成
+                        String quitOrContinue = losePopup();
+                        objectOutputStream.writeObject(quitOrContinue); // write 001
+                        //change it at local player.
+                        myMap.findPlayer(color).setLoseStatus(quitOrContinue);
+                    } else if (myMap.findPlayer(color).isLose() && myMap.findPlayer(color).getLoseStatus().equals("quit")) {
+                        System.out.println("Bye bye I quit");
+                        objectOutputStream.writeObject("quit"); //write 001
+
+
+
+                    } else if (myMap.findPlayer(color).isLose() && myMap.findPlayer(color).getLoseStatus().equals("continue")) {
+
+                        System.out.println("player decide to continue!");
+                        objectOutputStream.writeObject("continue");  //write 001
+                    } else {
+                        objectOutputStream.writeObject("no act"); //write 002
+                    }
                 }
+
+                /*********************************************/
+
+
+
+
             } 
             else {
 
@@ -400,6 +429,18 @@ public class MapController {
         moves.clear();
         upgrades.clear();
         techAction = false;
+    }
+
+    public String losePopup() throws Exception{
+        try {
+            LosePopup popup = new LosePopup();
+            popup.display();
+            return popup.quitOrContinue;
+
+        } catch (IOException e) {
+            System.out.println("Could not display Unit Popup");
+        }
+        return null;
     }
 }
 

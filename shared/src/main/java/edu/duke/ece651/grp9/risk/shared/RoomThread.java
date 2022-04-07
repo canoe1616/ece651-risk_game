@@ -90,13 +90,19 @@ public class RoomThread extends Thread {
                     OutputList.get(j).reset();
                     OutputList.get(j).writeObject(m); // # write 001 map
                     System.out.println("Status: sent the map");
+                }
+                for (int j = 0; j < player_num; j++) {
                     OutputList.get(j).reset();
                     OutputList.get(j).writeObject("keep going"); // # write 002 (end game)
                     System.out.println("Status: sent keep going");
-                
-                    //String action = (String) InputList.get(j).readObject();  // # read 001 (no action, quit, continue)
-                    //System.out.println("Status: read action: " + action);
-                    //gamePlay.findPlayer(remainingColors.get(j), m).setLoseStatus(action);
+
+                    /*********************************/
+                    //debug
+                    String action = (String) InputList.get(j).readObject();  // # read 001 (no action, quit, continue)
+                    System.out.println("Status: read action: " + action);
+                    gamePlay.findPlayer(remainingColors.get(j), m).setLoseStatus(action);
+                    /**********************************/
+
                     Player tmp = gamePlay.findPlayer(remainingColors.get(j), m);
 
                     /*************adding new parts***/
