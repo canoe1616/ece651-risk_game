@@ -6,7 +6,9 @@ import edu.duke.ece651.grp9.risk.shared.Player;
 import edu.duke.ece651.grp9.risk.shared.Territory;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Cursor;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.text.Text;
@@ -395,11 +397,22 @@ public class MapController {
         createUpgrade.setDisable(false);
     }
 
-    public boolean checkWinner(String endGame){
+    public boolean checkWinner(String endGame) throws IOException {
 
         if (endGame.equals("win")){
             System.out.println("You have won");
             status.setText("You have won!");
+
+//            // display page
+//            System.out.println("click on log in");
+//            FXMLLoader loaderStart = new FXMLLoader(getClass().getResource("/FXML/WinView.fxml"));
+//            loaderStart.setControllerFactory(c->{
+//                return new WinPage(Window,objectInputStream,objectOutputStream);
+//            });
+//            Scene scene = new Scene(loaderStart.load());
+//            Window.setScene(scene);
+//            Window.show();
+
             return true;
         }
         else if (endGame.equals("game over")){
