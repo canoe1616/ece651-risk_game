@@ -21,6 +21,7 @@ public class RoomThread extends Thread {
     private HashSet<MoveAction> allMoves = new HashSet<>();
     private HashSet<AttackAction> allAttacks = new HashSet<>();
     private HashSet<UpgradeAction> allUpgrades = new HashSet<>();
+    private HashSet<TechAction> techActions = new HashSet<>();
 
     public Room room;
     public int player_num;
@@ -34,6 +35,7 @@ public class RoomThread extends Thread {
         allMoves = new HashSet<MoveAction>();
         allAttacks = new HashSet<AttackAction>();
         allUpgrades = new HashSet<UpgradeAction>();
+        techActions = new HashSet<TechAction>();
         remainingColors = new ArrayList<String>();
     }
 
@@ -123,12 +125,14 @@ public class RoomThread extends Thread {
                     } 
                     else {
                         System.out.println("Status: enter actionThread");
-                        ActionThread actionThread = new ActionThread(m, InputList.get(j), OutputList.get(j), tmp, allMoves, allAttacks, allUpgrades);
+                        ActionThread actionThread = new ActionThread(m, InputList.get(j), OutputList.get(j),
+                            tmp, allMoves, allAttacks, allUpgrades, techActions);
                         ActionThreadList.add(actionThread);
                         actionThread.start();
                         allMoves.addAll(actionThread.allMove);
                         allAttacks.addAll(actionThread.allAttack);
                         allUpgrades.addAll(actionThread.allUpgrade);
+                        techActions.addAll(actionThread.techActions);
                     }
                 }
 
@@ -142,11 +146,13 @@ public class RoomThread extends Thread {
                 gamePlay.playMoves(allMoves);
                 gamePlay.playAttacks(m, allAttacks);
                 gamePlay.playUpgrades(allUpgrades);
+                gamePlay.playTechLevels(techActions);
                 // increase the basic unit per terr, produce resource
                 m.upgradeMapPerRound();
                 allMoves.clear();
                 allAttacks.clear();
                 allUpgrades.clear();
+                techActions.clear();
             }
 
             //for part 3 - for game winner and end this game

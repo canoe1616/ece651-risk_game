@@ -147,7 +147,7 @@ public class MapController {
         player = myMap.findPlayer(color);
         foodQuantity.setText(Integer.toString(player.getFoodQuantity()));
         moneyQuantity.setText(Integer.toString(player.getMoneyQuantity()));
-        colorLabel.setText(Integer.toString(player.getTechLevel()));
+        techLevelLabel.setText(Integer.toString(player.getTechLevel()));
     }
 
     
@@ -241,7 +241,7 @@ public class MapController {
             popup.display();
             String[] words = validAction(popup.upgrade);
             if (words != null) {
-                attacks.add(popup.upgrade);
+                upgrades.add(popup.upgrade);
                 statusLabel("Upgrade " + words[1] + " units in "
                         + words[0] + " from level" + words[2] + " to " + words[3]);
             } else {
@@ -261,7 +261,7 @@ public class MapController {
             sb.append("Territory " + btn.getText() + "\n");
             Territory t = myMap.findTerritory(btn.getText());
             //int[] unitCounts = new int[] {13, 0, 0, 0, 0, 0, 0};
-            for (int i = 0; i < 6; i++) {
+            for (int i = 0; i < 7; i++) {
                 sb.append("Level " + i + ": " + t.getUnits(i) + "\n");
             }
             sb.append("Food Production: 100\n");
@@ -308,7 +308,7 @@ public class MapController {
             actionSet.actionListAttack = attacks;
             actionSet.actionListMove = moves;
             actionSet.actionListUpgrade = upgrades;
-//      actionSet.techLevelAction = techAction;
+            actionSet.techLevelUpgrade = techAction;
             objectOutputStream.reset();
             objectOutputStream.writeObject(actionSet); //write 001
             System.out.println("Status: write actionSet");

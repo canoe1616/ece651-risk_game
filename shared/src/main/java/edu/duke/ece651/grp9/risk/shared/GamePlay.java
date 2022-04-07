@@ -126,17 +126,17 @@ public class GamePlay {
     Territory source = map.findTerritory(words[0]);
 
     try {
-      unitLevelStart = Integer.parseInt(words[1]);
+      numUnits = Integer.parseInt(words[1]);
     } catch (NumberFormatException e) {
     }
 
     try {
-      unitLevelEnd = Integer.parseInt(words[2]);
+      unitLevelStart = Integer.parseInt(words[2]);
     } catch (NumberFormatException e) {
     }
 
     try {
-      numUnits = Integer.parseInt(words[3]);
+      unitLevelEnd = Integer.parseInt(words[3]);
     } catch (NumberFormatException e) {
     }
 
@@ -151,11 +151,12 @@ public class GamePlay {
    * @param attacks AttackActions that are checked
    * @return null if no error, String describing problem if there is error
    */
-  public String validActionSet(Player player, HashSet<MoveAction> moves, HashSet<AttackAction> attacks, HashSet<UpgradeAction> upgrades) {
+  public String validActionSet(Player player, HashSet<MoveAction> moves, HashSet<AttackAction> attacks,
+      HashSet<UpgradeAction> upgrades, boolean techLevelUpgrade) {
     int foodCost = 0;
     int moneyCost = 0;
     //Once we first meet the problem, then reenter with "Done", moves and attacks would be "NULL"
-    if (moves.isEmpty() && attacks.isEmpty() && upgrades.isEmpty()) {
+    if (moves.isEmpty() && attacks.isEmpty() && upgrades.isEmpty() && !techLevelUpgrade) {
       return null;
     }
     for (MoveAction move : moves) {
@@ -195,6 +196,16 @@ public class GamePlay {
     if (foodCost > player.getFoodQuantity()) {
       return "Do not have enough food to do move or attack orders";
     }
+
+    if (techLevelUpgrade) {
+      TechAction techAction = new TechAction(player);
+      String error = techAction.canPerformAction();
+      moneyCost += techAction.computeCost();
+      if (error != null) {
+        return error;
+      }
+    }
+
     if (moneyCost > player.getMoneyQuantity()) {
       return "Do not have enough money to do upgrade orders";
     }
@@ -260,6 +271,15 @@ public class GamePlay {
       upgrade.performAction();
     }
   }
+
+  public void playTechLevels(HashSet<TechAction> allTechLevels) {
+    for (TechAction techAction: allTechLevels) {
+      if (techAction != null) {
+        techAction.performAction();
+      }
+    }
+  }
+
 
   /**
    * to store the user_name and password that sent by the client

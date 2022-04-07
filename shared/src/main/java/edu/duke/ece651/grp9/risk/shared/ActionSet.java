@@ -11,6 +11,8 @@ public class ActionSet implements Serializable{
   public HashSet<String> actionListMove;
   public HashSet<String> actionListAttack;
   public HashSet<String> actionListUpgrade;
+  public boolean techLevelUpgrade;
+
   /**
    * A construct for an ActionSet that contains a set for moves and a set for attacks.
    */
@@ -18,6 +20,7 @@ public class ActionSet implements Serializable{
     this.actionListMove = new HashSet<String>();
     this.actionListAttack = new HashSet<String>();
     this.actionListUpgrade= new HashSet<String>();
+    this.techLevelUpgrade = false;
   }
 
   public HashSet<String> getMoveList() {
