@@ -26,7 +26,8 @@ public class MapController {
     
     @FXML private Label foodQuantity;
     @FXML private Label moneyQuantity;
-   // @FXML private Text color_text;
+    @FXML private Label techLevelLabel;
+    @FXML private Label colorLabel;
 
     @FXML private Button A;
     @FXML private Button B;
@@ -108,10 +109,11 @@ public class MapController {
 
     public void showMap() throws Exception{
         //set each button's color and shape in buttonMap
-        updateTerroteryText();
+        updateTerritoryText();
         updateButtonColors();
         // set food and money value
         updateResources();
+        colorLabel.setText("You are the " + color + " player");
         System.out.println("Status: end of showMap");
        // updateMapafterInitiualization();
     }
@@ -145,12 +147,12 @@ public class MapController {
         player = myMap.findPlayer(color);
         foodQuantity.setText(Integer.toString(player.getFoodQuantity()));
         moneyQuantity.setText(Integer.toString(player.getMoneyQuantity()));
+        colorLabel.setText(Integer.toString(player.getTechLevel()));
     }
 
     
-    public void updateTerroteryText() {
+    public void updateTerritoryText() {
 
-            //String ter = (String)objectInputStream.readObject();
             String ter = "You have 30 total units, how do you want to place the units?\n" +
                    "you are " + color;
             status.setText(ter);
