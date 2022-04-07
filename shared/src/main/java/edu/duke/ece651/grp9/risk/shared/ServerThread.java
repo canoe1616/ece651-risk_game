@@ -41,40 +41,32 @@ public class ServerThread extends Thread{
             objectOutputStream.reset();
             objectOutputStream.writeObject(color);//send the color
 
-
             //read unit assignment
-
             //gamePlay.unitSetting(objectOutputStream, gamePlay.findPlayer(color, m));
             String unitString = "";
             while(true){
                 String unit_correct = "true";
                 unitString = (String)objectInputStream.readObject();
-                System.out.print("server端接收到的unitString是：" + unitString);
+                System.out.println("Read unit string:" + unitString);
                 // add the checker
                 while(tmp.checkUnit(unitString, gamePlay.findPlayer(color, m)) != null){
                     //debug
-                    System.out.print("是否进入到了unit报错环节" + unitString);
+                    System.out.println("Invalid unit string: " + unitString);
                     unit_correct = "false";
                     objectOutputStream.reset();
                     objectOutputStream.writeObject("false");//MC 190
                     unitString = (String)objectInputStream.readObject();
+                    System.out.println("Read unit string:" + unitString);
                 }
                 //
                 if(tmp.checkUnit(unitString, gamePlay.findPlayer(color, m)) == null) {
                     unit_correct = "true";
                     objectOutputStream.reset();
                     objectOutputStream.writeObject(unit_correct);//MC 190
-
-
-                    System.out.print("server thread 结束了");
                     gamePlay.playerUnitSetting(unitString, gamePlay.findPlayer(color, m));
                     break;
                 }
             }
-
-            //check if the color selection is valid -- [done]
-          //  objectOutputStream.writeObject(color);
-           // System.out.println("send color: " + color);
 
         }
         catch(Exception e){

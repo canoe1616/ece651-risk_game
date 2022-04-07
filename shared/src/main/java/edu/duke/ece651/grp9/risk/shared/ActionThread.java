@@ -32,13 +32,11 @@ public class ActionThread extends Thread{
           HashSet<MoveAction> moveActions = new HashSet<>();
           HashSet<AttackAction> attackActions = new HashSet<>();
           HashSet<UpgradeAction> upgradeActions = new HashSet<>();
-          
-          //String test = (String) objectInputStream.readObject();
-          //System.out.println("###### error here:" + test);
+  
           System.out.println("ready to read actionSet From " + player.getName());
-          
+
           ActionSet actionSet = (ActionSet) objectInputStream.readObject(); // read 002 (actionSet)
-          System.out.println("Get action from " + player.getName());
+          System.out.println("Status: Get action from " + player.getName());
 
           HashSet<String> actionListMove = actionSet.getMoveList();
           for (String move : actionListMove) {
@@ -58,10 +56,10 @@ public class ActionThread extends Thread{
 
           //moveActions  attackActions need to be reset in the next round.
           String actionProblem = gamePlay.validActionSet(player, moveActions, attackActions, upgradeActions);
-          System.out.println("actionProblem: " +actionProblem );
           //debug：here should be reset
           objectOutputStream.reset();
           objectOutputStream.writeObject(actionProblem); //write 003 (send action problem)
+          System.out.println("Status: writing actionProblem to client: " +actionProblem );
           if (actionProblem == null) {
             allMove.addAll(moveActions);
             allAttack.addAll(attackActions);

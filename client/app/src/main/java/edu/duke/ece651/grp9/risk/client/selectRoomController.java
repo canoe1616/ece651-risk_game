@@ -74,7 +74,6 @@ public class selectRoomController {
 
     public selectRoomController(Stage Window, ObjectInputStream objectInputStream,ObjectOutputStream objectOutputStream ) {
         this.Window = Window;
-        System.out.println("input name and password.\n click join");
         this.objectInputStream = objectInputStream;
         this.objectOutputStream = objectOutputStream;
 
@@ -82,17 +81,14 @@ public class selectRoomController {
 
     private void joinRoomHelper(int playerNum, ActionEvent actionEvent) throws Exception {
 
-        
-
-
-        System.out.println("enter the joining room helper");
+    
+        System.out.println("Status: enter the joining room helper");
         objectOutputStream.reset();
         objectOutputStream.writeObject(playerNum-1); //write room_id
-        System.out.println("get the color here");
         
         try{
         real_color = (String)objectInputStream.readObject(); //color
-        System.out.println("get the color::::::::" + real_color);
+        System.out.println("Status get the color: " + real_color);
       
         FXMLLoader loaderStart = new FXMLLoader(getClass().getResource("/FXML/MapView.fxml"));
         loaderStart.setControllerFactory(c -> {
@@ -113,8 +109,8 @@ public class selectRoomController {
             System.out.println(e);
             
         }
-        unitChecking();
 
+        unitChecking();
 
         FXMLLoader loaderafterUnit = new FXMLLoader(getClass().getResource("/FXML/MapView.fxml"));
         loaderafterUnit.setControllerFactory(c -> {
@@ -124,8 +120,10 @@ public class selectRoomController {
             Player player = null;
             try {
                 map = (Map) objectInputStream.readObject(); //ServerThread 106
+                System.out.println("Status: get the new map");
                 objectOutputStream.reset();
                 String endGame = (String) objectInputStream.readObject(); //ServerThread 108
+                System.out.println("Status: get the end game: " + endGame);
                 player = map.findPlayer(real_color);
                 //objectOutputStream.writeObject("no act"); 
 
@@ -178,16 +176,17 @@ public class selectRoomController {
 
     public void unitChecking() throws Exception {
 
-            System.out.println("******In unit checking");
+            System.out.println("Status: in unit checking");
             String unitChecking = "";
             String unitPlacement = "";
             try {
             
             unitPlacement = unitPopup();
-            System.out.println(unitPlacement);
+            System.out.println("Status: unitPlacement: " + unitPlacement);
             objectOutputStream.reset();
             objectOutputStream.writeObject(unitPlacement);// write unit ServerThread 51
-            unitChecking = (String) objectInputStream.readObject();// reaad from 
+            unitChecking = (String) objectInputStream.readObject();
+            System.out.println("Status: read unitChecking: " + unitChecking);
             }
             catch (IOException e) {
                 System.out.println(e);

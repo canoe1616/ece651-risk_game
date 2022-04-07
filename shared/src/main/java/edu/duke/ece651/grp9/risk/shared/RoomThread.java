@@ -1,6 +1,4 @@
 package edu.duke.ece651.grp9.risk.shared;
-
-
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -24,10 +22,8 @@ public class RoomThread extends Thread {
     private HashSet<AttackAction> allAttacks = new HashSet<>();
     private HashSet<UpgradeAction> allUpgrades = new HashSet<>();
 
-    //new adding
     public Room room;
     public int player_num;
-
 
     public RoomThread(Room room) {
         this.room = room;
@@ -45,7 +41,7 @@ public class RoomThread extends Thread {
     public void run() {
       try{
 
-          System.out.println("Enter Room Thread");
+        System.out.println("Status: enter the room thread");
         Map m = room.map;
         remainingColors = new ArrayList<>();
         Iterator<Player> it = m.getPlayer().iterator();
@@ -62,53 +58,47 @@ public class RoomThread extends Thread {
 
 //for part 1 - initial placement
             while (i < player_num) {
-
-
-                System.out.println("Enter Room Thread initial placement");
-                System.out.println("This room's getSocketList size" + room.getSocketList().size());
+                System.out.println("Status: ready to go to server thread, i=" + i);
+                
                 //add the checker
-
-
                 /**
                 Before unit setting, sending map to the client.
                  */
                 ObjectOutputStream objectOutputStream =OutputList.get(i);
                 ObjectInputStream objectInputStream = InputList.get(i);
-                objectOutputStream.reset();
-              //  objectOutputStream.writeObject(m);
-                System.out.println("Already sent the map");
-
 
                 ServerThread serverThread = new ServerThread(socket, serverThreadList, m, objectInputStream, objectOutputStream, remainingColors.get(i));
                 serverThreadList.add(serverThread);
                 serverThread.start();
                 m = serverThread.m;
                 i++;
-                System.out.print("i is " + i);
             }
 
-            System.out.println("第一个unit setting 的部分结束了");
-
             for (int n = 0; n < serverThreadList.size(); ++n) {
-                System.out.println("server thread join");
+                System.out.println("Status: server thread join");
                 serverThreadList.get(n).join();
             }
 
             //for part 2 - for action part
             //while the game is not over?
 
-            int j = 0;
+            
             while (m.getGameWinner() == null) {
 
-                while (j < player_num) {
+                for (int j = 0; j < player_num; j++) {
                     //how to update
                     OutputList.get(j).reset();
                     OutputList.get(j).writeObject(m); // # write 001 map
+                    System.out.println("Status: sent the map");
                     OutputList.get(j).reset();
                     OutputList.get(j).writeObject("keep going"); // # write 002 (end game)
+                    System.out.println("Status: sent keep going");
+                }
+                for (int j = 0; j < player_num; j++){
+                    //String action = (String) InputList.get(j).readObject();  // # read 001 (no action, quit, continue)
+                    //System.out.println("Status: read action: " + action);
 
-//                    String action = (String) InputList.get(j).readObject();  // # read 001 (no action, quit, continue)
-//                    gamePlay.findPlayer(remainingColors.get(j), m).setLoseStatus(action);
+                    //gamePlay.findPlayer(remainingColors.get(j), m).setLoseStatus(action);
                     Player tmp = gamePlay.findPlayer(remainingColors.get(j), m);
 
                     /*************adding new parts***/
@@ -116,7 +106,7 @@ public class RoomThread extends Thread {
                         if (tmp.getLoseStatus().equals("quit") && m.getPlayer().contains(tmp)) {
                             //remove it from player list
                             //auto set empty actionSet
-                            System.out.println("Bye bye I quit");
+                            System.out.println("Status: lose status = quit");
                             InputList.remove(j);
                             OutputList.remove(j);
                             remainingColors.remove(j);
@@ -124,15 +114,16 @@ public class RoomThread extends Thread {
                             j--;
                         }
                         if (tmp.getLoseStatus().equals("continue")) {
+                            System.out.println("Status: lose status = continue");
                         }
-                    } else {
+                    } 
+                    else {
                         ActionThread actionThread = new ActionThread(m, InputList.get(j), OutputList.get(j), tmp, allMoves, allAttacks, allUpgrades);
                         ActionThreadList.add(actionThread);
                         actionThread.start();
                         allMoves.addAll(actionThread.allMove);
                         allAttacks.addAll(actionThread.allAttack);
                         allUpgrades.addAll(actionThread.allUpgrade);
-                        j++;
                     }
                 }
 
@@ -141,7 +132,7 @@ public class RoomThread extends Thread {
                     ActionThreadList.get(k).join();
                 }
 
-                j = 0;
+                int j = 0;
                 System.out.println("perform all actions");
                 gamePlay.playMoves(allMoves);
                 gamePlay.playAttacks(m, allAttacks);

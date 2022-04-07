@@ -94,8 +94,6 @@ public class MapController {
         this.color = player.getName();
         this.objectInputStream = objectInputStream;
         this.objectOutputStream = objectOutputStream;
-
-        System.out.println("input name and password.\n click join");
     }
 
     // initial game room according to the given map
@@ -112,13 +110,10 @@ public class MapController {
         //set each button's color and shape in buttonMap
         updateTerroteryText();
         updateButtonColors();
-
         // set food and money value
         updateResources();
-        System.out.println("Already paint color");
+        System.out.println("Status: end of showMap");
        // updateMapafterInitiualization();
-
-        
     }
 
     public void updateButtonColors() {
@@ -155,12 +150,11 @@ public class MapController {
     
     public void updateTerroteryText() {
 
-            System.out.println("ready to Read text......");
             //String ter = (String)objectInputStream.readObject();
             String ter = "You have 30 total units, how do you want to place the units?\n" +
                    "you are " + color;
             status.setText(ter);
-            System.out.println("Get text:::" + ter);
+            System.out.println("Status: set text:" + ter);
     }
     
         
@@ -210,7 +204,6 @@ public class MapController {
         Object source = actionEvent.getSource();
         if (source instanceof Button) {
             Button btn = (Button) source;
-            System.out.println(btn.getId());
         } else {
             throw new IllegalArgumentException("Invalid source");
         }
@@ -316,15 +309,20 @@ public class MapController {
 //      actionSet.techLevelAction = techAction;
             objectOutputStream.reset();
             objectOutputStream.writeObject(actionSet); //write 001
+            System.out.println("Status: write actionSet");
             String actionProblem = (String) objectInputStream.readObject();//read 001
+            System.out.println("Status: read actionProblem: " + actionProblem);
+
+            
             if (actionProblem == null) {
                 statusLabel("Actions submitted to server. Waiting for updated map.");
                 btn.setStyle("-fx-background-color: Green");
                 myMap = (Map) objectInputStream.readObject();//read 002 //RoomThread 106
+                System.out.println("Status: Received updated Map.");
                 statusLabel("Received updated Map.");
                 btn.setStyle("-fx-background-color: White");
                 String endGame = (String) objectInputStream.readObject();//read 003
-                System.out.println("EndGame? : " + endGame);
+                System.out.println("Status: read endGame: " + endGame);
                 if (!checkWinner(endGame)) {
                     //What do we do here?
                     objectOutputStream.writeObject("no act"); //write 002
