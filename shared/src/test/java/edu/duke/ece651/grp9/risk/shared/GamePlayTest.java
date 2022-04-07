@@ -174,7 +174,7 @@ class GamePlayTest {
       t.setUnits(100, 0);
     }
 
-    upgrades.add((UpgradeAction) app1.createUpgrade(map, "red", "A 0 2 5"));
+    upgrades.add((UpgradeAction) app1.createUpgrade(map, "red", "A 5 0 2"));
     assertEquals("This action is invalid: Your technology level is not yet at level 2.",
         app1.validActionSet(p1, moves, attacks, upgrades,false));
     p1.upgradeTechLevel();
@@ -189,7 +189,7 @@ class GamePlayTest {
 
     moves.clear();
     // check money resource
-    upgrades.add((UpgradeAction) app1.createUpgrade(map, "red", "A 0 4 100"));
+    upgrades.add((UpgradeAction) app1.createUpgrade(map, "red", "A 100 0 4"));
     p1.upgradeTechLevel();
     p1.upgradeTechLevel();
     p1.upgradeTechLevel();
