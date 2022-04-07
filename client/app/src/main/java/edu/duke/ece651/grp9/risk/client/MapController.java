@@ -403,21 +403,32 @@ public class MapController {
             System.out.println("You have won");
             status.setText("You have won!");
 
-//            // display page
-//            System.out.println("click on log in");
-//            FXMLLoader loaderStart = new FXMLLoader(getClass().getResource("/FXML/WinView.fxml"));
-//            loaderStart.setControllerFactory(c->{
-//                return new WinPage(Window,objectInputStream,objectOutputStream);
-//            });
-//            Scene scene = new Scene(loaderStart.load());
-//            Window.setScene(scene);
-//            Window.show();
+            // display page
+            System.out.println("click on log in");
+            FXMLLoader loaderStart = new FXMLLoader(getClass().getResource("/FXML/WinView.fxml"));
+            loaderStart.setControllerFactory(c->{
+                return new WinPage(Window,objectInputStream,objectOutputStream);
+            });
+            Scene scene = new Scene(loaderStart.load());
+            Window.setScene(scene);
+            Window.show();
 
             return true;
         }
         else if (endGame.equals("game over")){
             System.out.println("Gameover, you have lost.");
             status.setText("Gameover, you have lost.");
+
+            // display page
+            System.out.println("click on log in");
+            FXMLLoader loaderStart = new FXMLLoader(getClass().getResource("/FXML/LoseView.fxml"));
+            loaderStart.setControllerFactory(c->{
+                return new LosePage(Window,objectInputStream,objectOutputStream);
+            });
+            Scene scene = new Scene(loaderStart.load());
+            Window.setScene(scene);
+            Window.show();
+
             return true;
         }
         return false;

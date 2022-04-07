@@ -12,7 +12,8 @@
 <?import javafx.scene.paint.Stop?>
 <?import javafx.scene.text.Font?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1"
+fx:controller="edu.duke.ece651.grp9.risk.client.LosePage">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -61,6 +62,6 @@
             </RadialGradient>
          </textFill>
         </Label>
-      <Button fx:id="back2room" mnemonicParsing="false"  text="Back To Room" GridPane.columnIndex="6" GridPane.columnSpan="4" GridPane.rowIndex="2" />
+      <Button fx:id="back2room" mnemonicParsing="false" onAction="#back2room" text="Back To Room" GridPane.columnIndex="6" GridPane.columnSpan="4" GridPane.rowIndex="2" />
     </children>
 </GridPane>
