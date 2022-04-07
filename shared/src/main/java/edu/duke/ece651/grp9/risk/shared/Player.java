@@ -30,7 +30,7 @@ public class Player implements Serializable {
     this.territoryList = new HashSet<Territory>();
     this.totalUnit = 30;
     this.loseStatus = "no act";
-    this.techLevel = 0;
+    this.techLevel = 1;
     this.food = new Food(500);
     this.money = new Money(500);
   }

@@ -16,16 +16,16 @@ public class UpgradeActionTest {
     assertEquals(t1.getUnits(0), 5);
     assertEquals(t1.getUnits(3), 0);
 
-    String error1 = "This action is invalid: Your technology level is not yet at level 3.";
+    String error1 = "This action is invalid: Your technology level is not yet at level 4.";
 
-    UpgradeAction u1 = new UpgradeAction(p1, t1, 2, 0, 3);
+    UpgradeAction u1 = new UpgradeAction(p1, t1, 2, 0, 4);
     assertEquals(u1.canPerformAction(), error1);
     assertTrue(t1.mockIsValid());
 
     p1.upgradeTechLevel();
     p1.upgradeTechLevel();
     p1.upgradeTechLevel();
-    assertEquals(p1.getTechLevel(), 3);
+    assertEquals(p1.getTechLevel(), 4);
 
     assertEquals(u1.canPerformAction(), null);
     assertEquals(u1.getPlayer(), p1);
@@ -33,7 +33,7 @@ public class UpgradeActionTest {
     u1.performAction();
 
     assertEquals(t1.getUnits(0), 3);
-    assertEquals(t1.getUnits(3), 2);
+    assertEquals(t1.getUnits(4), 2);
 
     UpgradeAction u2 = new UpgradeAction(p1, t1, 2, 0, 3);
     UpgradeAction u3 = new UpgradeAction(p1, t1, 2, 0, 3);

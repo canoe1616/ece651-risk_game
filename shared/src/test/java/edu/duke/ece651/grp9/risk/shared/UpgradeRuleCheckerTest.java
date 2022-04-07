@@ -19,9 +19,9 @@ public class UpgradeRuleCheckerTest {
 
     RuleChecker ruleChecker = new UpgradeRuleChecker(null);
 
-    String error1 = "This action is invalid: Your technology level is not yet at level 1.";
+    String error1 = "This action is invalid: Your technology level is not yet at level 2.";
 
-    UpgradeAction u1 = new UpgradeAction(p1, t1, 3, 0 ,1);
+    UpgradeAction u1 = new UpgradeAction(p1, t1, 3, 0 ,2);
 
     assertEquals(error1, ruleChecker.checkMyRule(u1));
 
@@ -32,7 +32,7 @@ public class UpgradeRuleCheckerTest {
     u1.performAction();
 
     assertEquals(t1.getUnits(0), 2);
-    assertEquals(t1.getUnits(1), 3);
+    assertEquals(t1.getUnits(2), 3);
 
     String error2 = "This action is invalid: Unit can only increase in level.";
     UpgradeAction u2 = new UpgradeAction(p1, t1, 3, 1 ,1);

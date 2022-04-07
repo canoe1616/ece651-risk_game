@@ -88,7 +88,7 @@ public class TerritoryTest {
 
     String error1 = "Invalid upgrade: Must upgrade tech level before upgrading Unit level.";
 
-    assertEquals(error1, t1.canUpgradeUnits(0, 1, 1));
+    assertEquals(error1, t1.canUpgradeUnits(0, 2, 1));
 
     String error2 = "Invalid upgrade: You can only increase a Unit's level.";
     assertEquals(error2, t1.canUpgradeUnits(0, 0, 1));
