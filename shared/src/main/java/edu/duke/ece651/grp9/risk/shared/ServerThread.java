@@ -38,8 +38,8 @@ public class ServerThread extends Thread{
             ActionRuleChecker tmp = new ActionRuleChecker();
             //send map object
             
-            
-
+            objectOutputStream.reset();
+            objectOutputStream.writeObject(color);//send the color
 
 
             //read unit assignment
@@ -56,14 +56,14 @@ public class ServerThread extends Thread{
                     System.out.print("是否进入到了unit报错环节" + unitString);
                     unit_correct = "false";
                     objectOutputStream.reset();
-                    objectOutputStream.writeObject("false");
+                    objectOutputStream.writeObject("false");//MC 190
                     unitString = (String)objectInputStream.readObject();
                 }
                 //
                 if(tmp.checkUnit(unitString, gamePlay.findPlayer(color, m)) == null) {
                     unit_correct = "true";
                     objectOutputStream.reset();
-                    objectOutputStream.writeObject(unit_correct);
+                    objectOutputStream.writeObject(unit_correct);//MC 190
 
 
                     System.out.print("server thread 结束了");

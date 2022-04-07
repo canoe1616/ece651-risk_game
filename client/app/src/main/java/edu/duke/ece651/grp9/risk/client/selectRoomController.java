@@ -29,7 +29,7 @@ public class selectRoomController {
     @FXML Button room3;
     @FXML Button room4;
     
-
+    public String real_color;
     public  ObjectOutputStream objectOutputStream;
     public  ObjectInputStream objectInputStream;
     private HashMap<String, Button> ButtonMap;
@@ -82,17 +82,25 @@ public class selectRoomController {
 
     private void joinRoomHelper(int playerNum, ActionEvent actionEvent) throws Exception {
 
+        
+
+
         System.out.println("enter the joining room helper");
         objectOutputStream.reset();
-        objectOutputStream.writeObject(playerNum-1);
-
+        objectOutputStream.writeObject(playerNum-1); //write room_id
+        System.out.println("get the color here");
+        
+        try{
+        real_color = (String)objectInputStream.readObject(); //color
+        System.out.println("get the color::::::::" + real_color);
+      
         FXMLLoader loaderStart = new FXMLLoader(getClass().getResource("/FXML/MapView.fxml"));
         loaderStart.setControllerFactory(c -> {
+            
            //  make a map for n players
             MapFactory mapFactory = new MapFactory();
             Map map = mapFactory.makeMap(playerNum);
-            HashSet<Player> players = map.getPlayer();
-            Player player = players.iterator().next();
+            Player player = map.findPlayer(real_color);
             MapController mc = new MapController(this.Window, map,player,objectInputStream,objectOutputStream);
             
             return mc;
@@ -100,18 +108,25 @@ public class selectRoomController {
         Scene scene = new Scene(loaderStart.load());
         this.Window.setScene(scene);
         this.Window.show();
-
+    }
+        catch(Exception e){
+            System.out.println(e);
+            
+        }
         unitChecking();
+
 
         FXMLLoader loaderafterUnit = new FXMLLoader(getClass().getResource("/FXML/MapView.fxml"));
         loaderafterUnit.setControllerFactory(c -> {
             //  make a map for n players
 
             Map map = null;
+            Player player = null;
             try {
-                map = (Map) objectInputStream.readObject();
+                map = (Map) objectInputStream.readObject(); //ServerThread 106
                 objectOutputStream.reset();
-                String endGame = (String) objectInputStream.readObject();
+                String endGame = (String) objectInputStream.readObject(); //ServerThread 108
+                player = map.findPlayer(real_color);
                 //objectOutputStream.writeObject("no act"); 
 
             } catch (IOException e) {
@@ -119,8 +134,7 @@ public class selectRoomController {
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
-            HashSet<Player> players = map.getPlayer();
-            Player player = players.iterator().next();
+            
             MapController mc = new MapController(this.Window,map,player,objectInputStream,objectOutputStream);
 
             return mc;
@@ -172,8 +186,8 @@ public class selectRoomController {
             unitPlacement = unitPopup();
             System.out.println(unitPlacement);
             objectOutputStream.reset();
-            objectOutputStream.writeObject(unitPlacement);
-            unitChecking = (String) objectInputStream.readObject();
+            objectOutputStream.writeObject(unitPlacement);// write unit ServerThread 51
+            unitChecking = (String) objectInputStream.readObject();// reaad from 
             }
             catch (IOException e) {
                 System.out.println(e);

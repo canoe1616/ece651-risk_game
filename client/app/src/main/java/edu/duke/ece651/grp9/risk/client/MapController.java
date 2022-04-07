@@ -166,6 +166,7 @@ public class MapController {
         
     
     public void updateMap()  {
+        InitButtonMap();
         updateButtonColors();
         updateResources();
     }
@@ -319,19 +320,23 @@ public class MapController {
             if (actionProblem == null) {
                 statusLabel("Actions submitted to server. Waiting for updated map.");
                 btn.setStyle("-fx-background-color: Green");
-                myMap = (Map) objectInputStream.readObject();//read 002
+                myMap = (Map) objectInputStream.readObject();//read 002 //RoomThread 106
                 statusLabel("Received updated Map.");
+                btn.setStyle("-fx-background-color: White");
                 String endGame = (String) objectInputStream.readObject();//read 003
                 System.out.println("EndGame? : " + endGame);
                 if (!checkWinner(endGame)) {
                     //What do we do here?
                     objectOutputStream.writeObject("no act"); //write 002
                 }
-            } else {
+            } 
+            else {
+
                 status.setText(actionProblem);
-                btn.setStyle("-fx-background-color: rgba(255,0,0,0.07)");
-                resetActions();
+                btn.setStyle("-fx-background-color: red");
                 //enableButtons();
+                resetActions();
+                updateMap();
                 return;
             }
 
@@ -343,6 +348,7 @@ public class MapController {
         resetActions();
         updateMap();
         //enableButtons();
+
     }
 
     public void disableButtons() {
