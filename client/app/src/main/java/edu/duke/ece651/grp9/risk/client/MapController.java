@@ -404,7 +404,6 @@ public class MapController {
             status.setText("You have won!");
 
             // display page
-            System.out.println("click on log in");
             FXMLLoader loaderStart = new FXMLLoader(getClass().getResource("/FXML/WinView.fxml"));
             loaderStart.setControllerFactory(c->{
                 return new WinPage(Window,objectInputStream,objectOutputStream);
@@ -420,7 +419,6 @@ public class MapController {
             status.setText("Gameover, you have lost.");
 
             // display page
-            System.out.println("click on log in");
             FXMLLoader loaderStart = new FXMLLoader(getClass().getResource("/FXML/LoseView.fxml"));
             loaderStart.setControllerFactory(c->{
                 return new LosePage(Window,objectInputStream,objectOutputStream);
