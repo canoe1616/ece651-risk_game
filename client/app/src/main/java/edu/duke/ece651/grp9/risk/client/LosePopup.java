@@ -19,8 +19,6 @@ public class LosePopup {
 
     private static Stage popupwindow;
     public static String quitOrContinue;
-    public static ObjectOutputStream outputStream;
-    public static ObjectInputStream inputStream;
 
     @FXML
     public static void display() throws IOException {
