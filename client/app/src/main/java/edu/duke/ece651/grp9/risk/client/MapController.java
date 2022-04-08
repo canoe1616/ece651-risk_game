@@ -141,9 +141,9 @@ public class MapController {
     }
 
 
-    public void updateMapafterInitiualization() throws Exception {
-        myMap =  (Map) objectInputStream.readObject();
-    }
+//    public void updateMapafterInitiualization() throws Exception {
+//        myMap =  (Map) objectInputStream.readObject();
+//    }
 
     public void updateResources() {
         player = myMap.findPlayer(color);

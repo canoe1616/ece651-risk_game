@@ -325,14 +325,6 @@ class GamePlayTest {
   }
 
 
-  public void playTechLevels(HashSet<TechAction> allTechLevels) {
-    for (TechAction techAction: allTechLevels) {
-      if (techAction != null) {
-        techAction.performAction();
-      }
-    }
-  }
-
     @Test
     void playTechLevels() {
       MapFactory factory = new MapFactory();
@@ -349,4 +341,7 @@ class GamePlayTest {
 
 
     }
+
+
+
 }

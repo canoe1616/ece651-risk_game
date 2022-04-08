@@ -42,7 +42,6 @@ public class App {
   public static RoomThread roomThread3 = new RoomThread(room_3);
   public static RoomThread roomThread4 = new RoomThread(room_4);
 
-
   GamePlay gameplay = new GamePlay();
   public static <objectInputStream> void main(String[] args) {
     try {
@@ -55,16 +54,11 @@ public class App {
       ArrayList<RoomThread> AllThreadList = new ArrayList<>();
       GamePlay gameplay = new GamePlay();
 
-
-
       //对于AllThreadList 来说
-
-
       //最外层的部分是
       //如果所有的room 都满了
       try (ServerSocket ss = new ServerSocket(8080)) {
         //这个是Server 的socket
-
 
         while (!(room_1.isFull() && room_2.isFull() && room_3.isFull() && room_4.isFull())) {
           //当有新的player连接起来的时候
@@ -72,7 +66,6 @@ public class App {
           //4.3 仍旧需要建立一个socket 传到user_Thread 里面去
           //对于每一个user 来说，他们有一个单独的room thread
           Socket socket = ss.accept();
-
           UserThread userThread = new UserThread(socket,room_1, room_2, room_3, room_4, roomThread1, roomThread2, roomThread3, roomThread4,gameplay);
           System.out.println("Enter userThread!!");
           userThread.start();
@@ -84,6 +77,8 @@ public class App {
       System.out.println(e);
     }
   }
+
+
   public ArrayList<Room> availableRoom(){
     ArrayList<Room> availableRoomList = new ArrayList<Room>();
     if(!room_1.isFull()){
