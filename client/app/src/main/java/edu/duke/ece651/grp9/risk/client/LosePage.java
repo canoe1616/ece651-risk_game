@@ -6,8 +6,8 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
+import java.net.Socket;
 
 public class LosePage {
     private Stage Window;
@@ -22,6 +22,14 @@ public class LosePage {
 
     @FXML
     public void back2room() throws IOException {
+        Socket socket = new Socket("localhost", 8080);
+            OutputStream outputStream = socket.getOutputStream();
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
+
+            InputStream inputStream = socket.getInputStream();
+            ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+
+            this.Window = Window;
         FXMLLoader loaderStart = new FXMLLoader(getClass().getResource("/FXML/StartView.fxml"));
         loaderStart.setControllerFactory(c->{
             return new StartGameController(Window,objectInputStream,objectOutputStream);
