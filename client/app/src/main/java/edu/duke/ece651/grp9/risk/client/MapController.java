@@ -27,20 +27,20 @@ public class MapController {
     private Stage Window;
     
     @FXML public Label foodQuantity;
-    @FXML private Label moneyQuantity;
-    @FXML private Label techLevelLabel;
-    @FXML private Label colorLabel;
+    @FXML public Label moneyQuantity;
+    @FXML public Label techLevelLabel;
+    @FXML public Label colorLabel;
 
-    @FXML private Button A;
-    @FXML private Button B;
-    @FXML private Button C;
-    @FXML private Button D;
-    @FXML private Button E;
-    @FXML private Button F;
-    @FXML private Button G;
-    @FXML private Button H;
-    @FXML private Button I;
-    @FXML private Button J;
+    @FXML public Button A;
+    @FXML public Button B;
+    @FXML public Button C;
+    @FXML public Button D;
+    @FXML public Button E;
+    @FXML public Button F;
+    @FXML public Button G;
+    @FXML public Button H;
+    @FXML public Button I;
+    @FXML public Button J;
 
     private HashMap<String, Button> ButtonMap;
     private Map myMap;
@@ -75,7 +75,7 @@ public class MapController {
     /**
      * this method to get all buttons for the default map (containing all territories
      */
-    private void InitButtonMap(){
+    public void InitButtonMap(){
         ButtonMap = new HashMap<>();
         ButtonMap.put("A", A);
         ButtonMap.put("B", B);
@@ -379,22 +379,6 @@ public class MapController {
         updateMap();
         //enableButtons();
 
-    }
-
-    public void disableButtons() {
-        createAttack.setDisable(true);
-        createMove.setDisable(true);
-        done.setDisable(true);
-        levelUp.setDisable(true);
-        createUpgrade.setDisable(true);
-    }
-
-    public void enableButtons() {
-        createAttack.setDisable(false);
-        createMove.setDisable(false);
-        done.setDisable(false);
-        levelUp.setDisable(false);
-        createUpgrade.setDisable(false);
     }
 
     public boolean checkWinner(String endGame) throws IOException {

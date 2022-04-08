@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -60,8 +61,6 @@ class ClientControllerTest extends ApplicationTest {
 //        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("StartView.fxml")));
 //        stage.setScene(new Scene(root));
         stage.show();
-
-
     }
 
 
@@ -70,6 +69,92 @@ class ClientControllerTest extends ApplicationTest {
         MapController cont = new MapController(stage, new Map(), new Player("red"), null, null);
         String s = cont.getStyle("red");
         assertEquals("-fx-background-color: red;;-fx-border-color: black;", s);
+    }
+
+    @Test
+    void test_updateResources() {
+        MapFactory factory = new MapFactory();
+        Map map = factory.makeMapForTwo();
+        MapController cont = new MapController(stage, map, map.findPlayer("red"), null, null);
+        cont.foodQuantity = new Label();
+        cont.moneyQuantity = new Label();
+        cont.techLevelLabel = new Label();
+        cont.updateResources();
+
+        assertEquals(cont.foodQuantity.getText(), "200");
+        assertEquals(cont.moneyQuantity.getText(), "100");
+        assertEquals(cont.techLevelLabel.getText(), "1");
+    }
+
+    @Test
+    void test_resetActions(){
+        MapFactory factory = new MapFactory();
+        Map map = factory.makeMapForTwo();
+        MapController cont = new MapController(stage, map, map.findPlayer("red"), null, null);
+        cont.moves.add("1 2 3 3");
+
+        assertEquals(cont.moves.iterator().next(), "1 2 3 3");
+
+        MapController.resetActions();
+        assertTrue(cont.moves.isEmpty());
+    }
+
+    @Test
+    void test_validAction() {
+        MapFactory factory = new MapFactory();
+        Map map = factory.makeMapForTwo();
+        MapController cont = new MapController(stage, map, map.findPlayer("red"), null, null);
+
+        assertNull(cont.validAction(null));
+
+        assertNull(cont.validAction("3 3 3"));
+
+        assertTrue(cont.validAction("3 1 2 4")[0].equals("3"));
+        assertTrue(cont.validAction("3 1 2 4")[1].equals("1"));
+        assertTrue(cont.validAction("3 1 2 4")[2].equals("2"));
+        assertTrue(cont.validAction("3 1 2 4")[3].equals("4"));
+    }
+
+    @Test
+    void test_showMap() throws Exception {
+        MapFactory factory = new MapFactory();
+        Map map = factory.makeMapForThree();
+        MapController cont = new MapController(stage, map, map.findPlayer("red"), null, null);
+
+        cont.foodQuantity = new Label();
+        cont.moneyQuantity = new Label();
+        cont.techLevelLabel = new Label();
+        cont.colorLabel = new Label();
+        cont.status = new Label();
+        cont.A = new Button();
+        cont.B = new Button();
+        cont.C = new Button();
+        cont.D = new Button();
+        cont.E = new Button();
+        cont.F = new Button();
+        cont.G = new Button();
+        cont.H = new Button();
+        cont.I = new Button();
+        cont.J = new Button();
+
+        cont.initialize();
+        cont.updateMap();
+
+        assertEquals(cont.colorLabel.getText(), "You are the red player");
+    }
+
+    @Test
+    void test_statusLabel() {
+        MapFactory factory = new MapFactory();
+        Map map = factory.makeMapForTwo();
+        MapController cont = new MapController(stage, map, map.findPlayer("red"), null, null);
+        cont.status = new Label();
+
+        assertEquals(cont.status.getText(), "");
+
+        cont.statusLabel("Test");
+
+        assertEquals(cont.status.getText(), "Last Action: Test");
     }
 
 
