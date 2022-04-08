@@ -336,9 +336,15 @@ public class MapController {
                     if (myMap.findPlayer(color).isLose() && myMap.findPlayer(color).getLoseStatus().equals("no act")) {
                     //    popup替换成
                         String quitOrContinue = losePopup();
-                        objectOutputStream.writeObject(quitOrContinue); // write 001
-                        //change it at local player.
-                        myMap.findPlayer(color).setLoseStatus(quitOrContinue);
+                        if(quitOrContinue.equals("quit")){
+                            objectOutputStream.writeObject(quitOrContinue); // write 001
+                            //change it at local player.
+                            myMap.findPlayer(color).setLoseStatus(quitOrContinue);
+                        }
+                        else{
+                             objectOutputStream.writeObject("no act");
+                        }
+                        
                     } else if (myMap.findPlayer(color).isLose() && myMap.findPlayer(color).getLoseStatus().equals("quit")) {
                         System.out.println("Bye bye I quit");
                         objectOutputStream.writeObject("quit"); //write 001

@@ -108,8 +108,8 @@ public class RoomThread extends Thread {
                     Player tmp = gamePlay.findPlayer(remainingColors.get(j), m);
 
                     /*************adding new parts***/
-                    if (tmp.isLose()) {
-                        if (tmp.getLoseStatus().equals("quit") && m.getPlayer().contains(tmp)) {
+                    if (tmp.isLose() && tmp.getLoseStatus().equals("quit") && m.getPlayer().contains(tmp)) {
+                        
                             //remove it from player list
                             //auto set empty actionSet
                             System.out.println("Status: lose status = quit");
@@ -118,10 +118,7 @@ public class RoomThread extends Thread {
                             remainingColors.remove(j);
                             player_num--;
                             j--;
-                        }
-                        if (tmp.getLoseStatus().equals("continue")) {
-                            System.out.println("Status: lose status = continue");
-                        }
+                        
                     } 
                     else {
                         System.out.println("Status: enter actionThread");
