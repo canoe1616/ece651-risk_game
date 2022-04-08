@@ -140,6 +140,10 @@ public class MoveAction implements Action {
     HashSet<Territory> visited = new HashSet<Territory>();
     queue.add(source);
     visited.add(source);
+    // corner case: source == destination
+    if (source.equals(destination)) {
+      return 0;
+    }
     while (!queue.isEmpty()) {
       passTerrSize += queue.peek().getSize();
       int sz = queue.size();
