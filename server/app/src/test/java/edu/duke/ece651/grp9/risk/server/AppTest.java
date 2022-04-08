@@ -3,13 +3,8 @@
  */
 package edu.duke.ece651.grp9.risk.server;
 
-import edu.duke.ece651.grp9.risk.shared.Action;
-import edu.duke.ece651.grp9.risk.shared.AttackAction;
-import edu.duke.ece651.grp9.risk.shared.MapFactory;
-import edu.duke.ece651.grp9.risk.shared.Map;
-import edu.duke.ece651.grp9.risk.shared.MoveAction;
-import edu.duke.ece651.grp9.risk.shared.Player;
-import edu.duke.ece651.grp9.risk.shared.Territory;
+import edu.duke.ece651.grp9.risk.shared.*;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,14 +14,23 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.HashSet;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 
 import static org.junit.jupiter.api.Assertions.*;
-//
-//class AppTest {
-//
+
+class AppTest {
+
+    @Test
+    void availableRoom() {
+
+        App app1 = new App();
+        ArrayList<Room> avail_1 = app1.availableRoom();
+        assertEquals(4, avail_1.size());
+    }
+
 //  @Test
 //  public void test_constructor() {
 //    MapFactory factory = new MapFactory();
@@ -247,4 +251,4 @@ import static org.junit.jupiter.api.Assertions.*;
 //    HashSet<MoveAction> moves = app1.receiveActions(moveList, true);
 //  }*/
 //
-//}
+}
