@@ -31,8 +31,8 @@ public class Player implements Serializable {
     this.totalUnit = 30;
     this.loseStatus = "no act";
     this.techLevel = 1;
-    this.food = new Food(500);
-    this.money = new Money(500);
+    this.food = new Food(200);
+    this.money = new Money(100);
   }
 
   /**

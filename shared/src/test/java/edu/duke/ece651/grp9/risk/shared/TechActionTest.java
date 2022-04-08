@@ -13,6 +13,7 @@ public class TechActionTest {
     Player p1 = new Player("red");
     String error1 = "This action is invalid: You are already at the max tech level.";
 
+    p1.setMoneyQuantity(500);
     assertEquals(p1.getMoneyQuantity(), 500);
     assertEquals(p1.getTechLevel(), 1);
 

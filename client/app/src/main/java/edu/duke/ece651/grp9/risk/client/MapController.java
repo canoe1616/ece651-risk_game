@@ -266,8 +266,8 @@ public class MapController {
             for (int i = 0; i < 7; i++) {
                 sb.append("Level " + i + ": " + t.getUnits(i) + "\n");
             }
-            sb.append("Food Production: 100\n");
-            sb.append("Money Production: 50\n");
+            sb.append("Food Production: 50\n");
+            sb.append("Money Production: 20\n");
             sb.append("Size: " + t.getSize());
 
             territoryStats.setText(sb.toString());

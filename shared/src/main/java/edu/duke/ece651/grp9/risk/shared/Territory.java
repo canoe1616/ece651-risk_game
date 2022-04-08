@@ -292,7 +292,7 @@ public class Territory implements Serializable {
    * @return Food that values 100
    */
   public Food produceFood() {
-    return new Food(100);
+    return new Food(50);
   }
 
   /**
@@ -300,7 +300,7 @@ public class Territory implements Serializable {
    * @return Food that values 50
    */
   public Money productMoney() {
-    return new Money(50);
+    return new Money(20);
   }
 
 

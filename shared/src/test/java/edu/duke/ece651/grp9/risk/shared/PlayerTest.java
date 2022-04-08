@@ -90,6 +90,8 @@ public class PlayerTest {
   @Test
   void updatePlayerResource() {
     Player player = new Player("blue");
+    player.setMoneyQuantity(500);
+    player.setFoodQuantity(500);
     player.updatePlayerResource();
     assertEquals(500, player.getFoodQuantity());
     assertEquals(500, player.getMoneyQuantity());
@@ -98,8 +100,8 @@ public class PlayerTest {
     player.addTerritory(ter1);
     player.addTerritory(ter2);
     player.updatePlayerResource();
-    assertEquals(700, player.getFoodQuantity());
-    assertEquals(600, player.getMoneyQuantity());
+    assertEquals(600, player.getFoodQuantity());
+    assertEquals(540, player.getMoneyQuantity());
 
     player.setFoodQuantity(500);
     player.setMoneyQuantity(400);

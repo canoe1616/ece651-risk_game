@@ -203,6 +203,7 @@ class GamePlayTest {
     Map map = factory.makeMapForTwo();
     GamePlay app1 = new GamePlay();
     Player p1 = app1.findPlayer("red", map);
+    p1.setMoneyQuantity(500);
 
     HashSet<MoveAction> moves = new HashSet<>();
     HashSet<AttackAction> attacks = new HashSet<>();

@@ -140,14 +140,15 @@ public class TerritoryTest {
     //assertTrue(t1.mockIsValid());
   }
 
+  @Test
   void produceFood() {
     Territory ter = new Territory("red");
-    assertEquals(100, ter.produceFood().getQuantity());
+    assertEquals(50, ter.produceFood().getQuantity());
   }
 
   @Test
   void productMoney() {
     Territory ter = new Territory("red");
-    assertEquals(50, ter.productMoney().getQuantity());
+    assertEquals(20, ter.productMoney().getQuantity());
   }
 }
