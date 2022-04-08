@@ -323,4 +323,30 @@ class GamePlayTest {
     assertEquals(5, t1.getUnits(0));
     assertEquals(5, t1.getUnits(1));
   }
+
+
+  public void playTechLevels(HashSet<TechAction> allTechLevels) {
+    for (TechAction techAction: allTechLevels) {
+      if (techAction != null) {
+        techAction.performAction();
+      }
+    }
+  }
+
+    @Test
+    void playTechLevels() {
+      MapFactory factory = new MapFactory();
+      Map map = factory.makeMapForTest();
+
+      Player p1 = map.findPlayer("red");
+
+      GamePlay app = new GamePlay();
+      HashSet<TechAction> allTechLevels = new HashSet<>();
+      TechAction action = new TechAction(p1);
+      allTechLevels.add(action);
+      app.playTechLevels(allTechLevels);
+      assertEquals(2, p1.getTechLevel());
+
+
+    }
 }

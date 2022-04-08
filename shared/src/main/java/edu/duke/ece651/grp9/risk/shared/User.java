@@ -18,11 +18,6 @@ public class User {
     ObjectOutputStream objectOutputStream;
     public String status; //log in 和  Log out //switch
 
-
-
-
-
-
     public User(String userName,String password){
         this.userName = userName;
         this.password = password;

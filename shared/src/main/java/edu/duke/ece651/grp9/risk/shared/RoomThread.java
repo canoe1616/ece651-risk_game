@@ -157,7 +157,7 @@ public class RoomThread extends Thread {
 
             //for part 3 - for game winner and end this game
             for (int t = 0; t < player_num; t++) {
-                System.out.println("已经进入到winner阶段");
+                System.out.println("go to the get winner phase");
                 gamePlay.gameWinner(OutputList.get(t), remainingColors.get(t), m);
             }
             System.out.println("Final point");

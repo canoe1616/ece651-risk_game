@@ -290,8 +290,8 @@ public class GamePlay {
       System.out.println("In server username and password part.");
       String username = (String) objectInputStream.readObject();
       String password = (String) objectInputStream.readObject();
-      System.out.println("username是" + username);
-      System.out.println("password是" + password);
+      System.out.println("username is" + username);
+      System.out.println("password is" + password);
       //to test whether we have this username before or not and the password are matched or not.
       for (String key: userPassPairs.keySet()){
         System.out.println(key);

@@ -8,7 +8,7 @@ import java.io.InputStreamReader;
 import static org.junit.jupiter.api.Assertions.*;
 
 class MapTextViewTest {
-  /*
+
     @Test
     void test_displayGeneralInfo() {
         MapFactory mapFactory = new MapFactory();
@@ -23,23 +23,24 @@ class MapTextViewTest {
                         "----------------------------------\n" +
                         "10(l-0), 0(l-1), 0(l-2), 0(l-3), 0(l-4), 0(l-5), 0(l-6) units in C(next to: A, D)\n" +
                         "10(l-0), 0(l-1), 0(l-2), 0(l-3), 0(l-4), 0(l-5), 0(l-6) units in D(next to: B, C)\n" +
-                        "Remaining food: 500\n" +
-                        "Remaining money: 500\n" +
+                        "Remaining food: 200\n" +
+                        "Remaining money: 100\n" +
                         "You tech level: 1\n" +
                         "\n" +
                         "red Player:\n" +
                         "----------------------------------\n" +
                         "10(l-0), 0(l-1), 0(l-2), 0(l-3), 0(l-4), 0(l-5), 0(l-6) units in A(next to: B, C)\n" +
                         "10(l-0), 0(l-1), 0(l-2), 0(l-3), 0(l-4), 0(l-5), 0(l-6) units in B(next to: A, D)\n" +
-                        "Remaining food: 500\n" +
-                        "Remaining money: 500\n" +
-                        "You tech level: 1\n\n"+
-          
-                        "You are the red Player, what would you like to do?\n" +
-                        " (M)ove\n" +
-                        " (A)ttack\n" +
-                        " (D)one\n";
-                       
+                        "Remaining food: 200\n" +
+                        "Remaining money: 100\n" +
+                        "You tech level: 1\n\n";
+//        +
+//
+//                        "You are the red Player, what would you like to do?\n" +
+//                        " (M)ove\n" +
+//                        " (A)ttack\n" +
+//                        " (D)one\n";
+
         assertEquals(exp, view.displayGameState(map.findPlayer("red")));
     }
 
@@ -58,8 +59,8 @@ class MapTextViewTest {
                 "blue Player:\n" +
                 "----------------------------------\n" +
                 "15(l-0), 0(l-1), 0(l-2), 0(l-3), 0(l-4), 0(l-5), 0(l-6) units in NC(next to)\n" +
-                "Remaining food: 500\n" +
-                "Remaining money: 500\n" +
+                "Remaining food: 200\n" +
+                "Remaining money: 100\n" +
                 "You tech level: 1\n" +
                 "\n" +
                 "\n" +
@@ -79,8 +80,8 @@ class MapTextViewTest {
         String exp = "end_game = game over\n" +
                 "blue Player:\n" +
                 "----------------------------------\n" +
-                "Remaining food: 500\n" +
-                "Remaining money: 500\n" +
+                "Remaining food: 200\n" +
+                "Remaining money: 100\n" +
                 "You tech level: 1\n" +
                 "\n" +
                 "\n" +
@@ -88,5 +89,5 @@ class MapTextViewTest {
         assertEquals(exp, view.sendInfoLoser("blue", map));
 
         }
-*/
+
 }

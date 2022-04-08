@@ -16,12 +16,8 @@ public class Room {
     public ArrayList<User> myCurrentUser;
     public boolean startOrnot;
 
-    //debugging 4.2 night
-
-
     public Room(int numPlayers) {
         RoomFactory roomFactory = new RoomFactory();
-        //应该调用roomfactory
         this.map = roomFactory.makeRoom(numPlayers).map;
         this.numPlayers = numPlayers;
         this.socketList = new ArrayList<>();
@@ -29,41 +25,48 @@ public class Room {
         this.startOrnot = false;
     }
 
-    public boolean isFull(){
-        if (userList.size()>=numPlayers){
-            return true;
-        }
-        else{
-            return false;
-        }
-    }
-
-    
-
-
     public Room(String name, Map map) {
         this.name = name;
         this.map = map;
     }
 
+    /**
+     * check if the room is full
+     */
+    public boolean isFull(){
+        if (userList.size() >= numPlayers){
+            return true;
+        } else{
+            return false;
+        }
+    }
+
+    /**
+     * add a socket to a new player
+     * @param socket
+     */
     public void addSocket(Socket socket){
        socketList.add(socket);
     } 
 
     public ArrayList<Socket> getSocketList(){
       return socketList;
-
     }
+
     public void addUser( User user){
         userList.add(user);
     }
 
     /*
-    For UI part  priting
+    For UI part  printing
      */
     public String roomFull(){
         String a = String.valueOf(userList.size()) + "/" + String.valueOf(numPlayers);
         System.out.println(a);
         return a;
+    }
+
+    public String getName() {
+        return name;
     }
 }

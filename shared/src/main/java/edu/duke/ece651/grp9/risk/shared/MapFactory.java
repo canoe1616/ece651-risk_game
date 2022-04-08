@@ -27,9 +27,9 @@ public class MapFactory implements AbstractMapFactory {
     else if (num == 5){
       return makeMapForFive();
     }
-    else if (num == 10){
-      return makeMapForTest();
-    }
+//    else if (num == 10){
+//      return makeMapForTest();
+//    }
     else{
       return null;
     }

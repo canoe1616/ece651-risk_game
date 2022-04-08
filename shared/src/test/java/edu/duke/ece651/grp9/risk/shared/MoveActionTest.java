@@ -104,6 +104,9 @@ public class MoveActionTest {
     Action move2 = new MoveAction(p2, t3, t5, 2,1);
     assertEquals(40,move2.computeCost());
 
+    Action move3 = new MoveAction(p2, t3, t3, 2,1);
+    assertEquals(0,move3.computeCost());
+
   }
 }
 
