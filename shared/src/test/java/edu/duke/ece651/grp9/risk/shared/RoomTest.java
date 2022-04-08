@@ -21,6 +21,9 @@ class RoomTest {
         room.addUser(new User("b", "b"));
         assertEquals(true, room.isFull());
         assertEquals("2/2", room.roomFull());
+
+        assertEquals(0, room.getSocketList().size());
+
     }
 
     @Test
