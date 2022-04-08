@@ -26,7 +26,7 @@ import java.util.Set;
 public class MapController {
     private Stage Window;
     
-    @FXML private Label foodQuantity;
+    @FXML public Label foodQuantity;
     @FXML private Label moneyQuantity;
     @FXML private Label techLevelLabel;
     @FXML private Label colorLabel;

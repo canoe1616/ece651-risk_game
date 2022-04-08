@@ -14,7 +14,6 @@ public class Client extends Application {
     private Socket socket;
 
 
-
     @Override
     public void start(Stage stage) throws IOException {
         try{
