@@ -87,7 +87,7 @@
             <image>
                 <Image url="@../Image/territory.png" />
             </image></ImageView>
-        <Button mnemonicParsing="false" prefHeight="61.0" prefWidth="84.0" style="-fx-background-color: white;" text="Back" GridPane.columnSpan="3" GridPane.rowSpan="2" GridPane.valignment="TOP">
+        <Button fx:id="backstart" mnemonicParsing="false" onAction="#back2room" prefHeight="61.0" prefWidth="84.0" style="-fx-background-color: white;" text="Back" GridPane.columnSpan="3" GridPane.rowSpan="2" GridPane.valignment="TOP">
             <font>
                 <Font name="Copperplate" size="15.0" />
             </font>

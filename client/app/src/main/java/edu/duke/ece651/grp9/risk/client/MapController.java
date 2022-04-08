@@ -14,9 +14,8 @@ import javafx.scene.control.Label;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
+import java.net.Socket;
 import java.nio.ReadOnlyBufferException;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -41,6 +40,7 @@ public class MapController {
     @FXML private Button H;
     @FXML private Button I;
     @FXML private Button J;
+    @FXML private Button backstart;
 
     private HashMap<String, Button> ButtonMap;
     private Map myMap;
@@ -471,6 +471,25 @@ public class MapController {
             System.out.println("Could not display Unit Popup");
         }
         return null;
+    }
+    @FXML
+    public void back2room() throws IOException {
+        Socket socket = new Socket("localhost", 8080);
+        OutputStream outputStream = socket.getOutputStream();
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
+
+        InputStream inputStream = socket.getInputStream();
+        ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+
+        this.Window = Window;
+        FXMLLoader loaderStart = new FXMLLoader(getClass().getResource("/FXML/StartView.fxml"));
+        loaderStart.setControllerFactory(c->{
+            //debug 4.9
+            return new StartGameController(Window,objectInputStream,objectOutputStream);
+        });
+        Scene scene = new Scene(loaderStart.load());
+        Window.setScene(scene);
+        Window.show();
     }
 }
 
