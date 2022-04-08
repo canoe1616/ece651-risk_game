@@ -302,6 +302,9 @@ public class GamePlay {
         if (!userPassPairs.get(username).equals(password)) {
           return null;
         }
+        else{
+          return username;
+        }
       } else {
         userPassPairs.put(username, password);
         System.out.println("Record in the userPassPairs");
