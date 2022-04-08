@@ -22,9 +22,10 @@ public class WinPage {
 
     @FXML
     public void back2room() throws IOException {
-        FXMLLoader loaderStart = new FXMLLoader(getClass().getResource("/FXML/SelectRoomView.fxml"));
+        FXMLLoader loaderStart = new FXMLLoader(getClass().getResource("/FXML/StartView.fxml"));
         loaderStart.setControllerFactory(c->{
-            return new selectRoomController(Window,objectInputStream,objectOutputStream);
+            //debug 4.9
+            return new StartGameController(Window,objectInputStream,objectOutputStream);
         });
         Scene scene = new Scene(loaderStart.load());
         Window.setScene(scene);
