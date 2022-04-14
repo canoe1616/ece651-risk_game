@@ -1,9 +1,6 @@
 package edu.duke.ece651.grp9.risk.client;
 
-import edu.duke.ece651.grp9.risk.shared.Map;
-import edu.duke.ece651.grp9.risk.shared.MapFactory;
-import edu.duke.ece651.grp9.risk.shared.Player;
-import edu.duke.ece651.grp9.risk.shared.Room;
+import edu.duke.ece651.grp9.risk.shared.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

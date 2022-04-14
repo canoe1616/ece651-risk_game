@@ -14,12 +14,11 @@ import javafx.scene.control.Label;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import java.awt.*;
 import java.io.*;
 import java.net.Socket;
 import java.nio.ReadOnlyBufferException;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 
 public class MapController {
@@ -66,6 +65,7 @@ public class MapController {
     public static HashSet<String> moves = new HashSet<>();
     public static HashSet<String> upgrades = new HashSet<>();
     public static boolean techAction = false;
+    public HashMap<String, String> seen = new HashMap<>();
 
     public ObjectOutputStream objectOutputStream;
     public ObjectInputStream objectInputStream;
@@ -119,18 +119,63 @@ public class MapController {
        // updateMapafterInitiualization();
     }
 
+//    public void updateButtonColors() {
+//        HashSet<Player> players = myMap.getPlayer();
+//        // store useable buttons
+//        Set<String> allButtons = ButtonMap.keySet();
+//        for (Player p: players) {
+//            String color = p.getName();
+//            for (Territory ter: p.getTerritoryList()) {
+//                String style = getStyle(color);
+//                Button button =  ButtonMap.get(ter.getName());
+//                allButtons.remove(ter.getName());
+//                button.setStyle(style);
+//                button.setCursor(Cursor.HAND);
+//            }
+//        }
+//        for (String unusedButton: allButtons) {
+//            Button button = ButtonMap.get(unusedButton);
+//            button.setDisable(true);
+//        }
+//    }
+
+    // ----------evo 3: only display adjacency---------------
     public void updateButtonColors() {
-        HashSet<Player> players = myMap.getPlayer();
         // store useable buttons
         Set<String> allButtons = ButtonMap.keySet();
+        HashSet<Player> players = myMap.getPlayer();
+        // store neighbored territories
+        HashSet<Territory> neighbors = new HashSet<>();
+        Player player = myMap.findPlayer(color);
+        for (Territory ter: player.getTerritoryList()) {
+            for (Territory nei: ter.getNeighbors()) {
+                if (!player.getTerritoryList().contains(nei)) {
+                    neighbors.add(nei);
+                }
+            }
+        }
+
         for (Player p: players) {
-            String color = p.getName();
-            for (Territory ter: p.getTerritoryList()) {
-                String style = getStyle(color);
-                Button button =  ButtonMap.get(ter.getName());
+            for (Territory ter : p.getTerritoryList()) {
+                String terColor = ter.getOwner().getName();
+                // if it's owned by player or adjacency territories, show color
+               if (p.equals(player) || (!p.equals(player) && isNeighbor(ter))) {
+                    String style = getStyle(terColor);
+                    Button button = ButtonMap.get(ter.getName());
+                    button.setStyle(style);
+                    button.setCursor(Cursor.HAND);
+                    // save old info to hashset seen
+                    seen.put(ter.getName(), getTerritoryInfo(ter.getName()));
+                } else if (hasSeen(ter.getName())) {
+                   // if has seen before, set grey background color
+                   Button button = ButtonMap.get(ter.getName());
+                   button.setStyle(getStyle("grey"));
+               } else {
+                   // if haven't been seen before, set transparent background
+                   Button button = ButtonMap.get(ter.getName());
+                   button.setStyle("-fx-background-color: transparent");
+               }
                 allButtons.remove(ter.getName());
-                button.setStyle(style);
-                button.setCursor(Cursor.HAND);
             }
         }
         for (String unusedButton: allButtons) {
@@ -139,10 +184,34 @@ public class MapController {
         }
     }
 
+    /**
+     * check if territory t is the neighbors of player
+     * @param t is the given territory
+     * @return true if it's neighbor
+     */
+    private boolean isNeighbor(Territory t) {
+        for (Territory ter: myMap.findPlayer(color).getTerritoryList()) {
+            for (Territory nei: ter.getNeighbors()) {
+                if (Objects.equals(t.getName(), nei.getName())) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
-//    public void updateMapafterInitiualization() throws Exception {
-//        myMap =  (Map) objectInputStream.readObject();
-//    }
+
+    /**
+     * check if the territory info has seen before
+     */
+    public boolean hasSeen(String terName) {
+        for (String ter: seen.keySet()) {
+            if (Objects.equals(ter, terName)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     public void updateResources() {
         player = myMap.findPlayer(color);
@@ -151,17 +220,15 @@ public class MapController {
         techLevelLabel.setText(Integer.toString(player.getTechLevel()));
     }
 
-    
-    public void updateTerritoryText() {
 
+    public void updateTerritoryText() {
             String ter = "You have 30 total units, how do you want to place the units?\n" +
                    "you are " + color;
             status.setText(ter);
             System.out.println("Status: set text:" + ter);
     }
-    
-        
-    
+
+
     public void updateMap()  {
         InitButtonMap();
         updateButtonColors();
@@ -253,26 +320,54 @@ public class MapController {
         }
     }
 
+    private String getTerritoryInfo(String terrName) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Territory " + terrName + "\n");
+        Territory t = myMap.findTerritory(terrName);
+        sb.append("Owner: " + t.getOwner().getName() + "\n");
+        //int[] unitCounts = new int[] {13, 0, 0, 0, 0, 0, 0};
+        for (int i = 0; i < 7; i++) {
+            sb.append("Level " + i + ": " + t.getUnits(i) + "\n");
+        }
+        sb.append("Food Production: 50\n");
+        sb.append("Money Production: 20\n");
+        sb.append("Size: " + t.getSize());
+        return sb.toString();
+    }
+
     @FXML
     public void onTerritory(ActionEvent actionEvent) {
         Object source = actionEvent.getSource();
         if (source instanceof Button) {
             Button btn = (Button) source;
-            StringBuilder sb = new StringBuilder();
-            sb.append("Territory " + btn.getText() + "\n");
-            Territory t = myMap.findTerritory(btn.getText());
-            //int[] unitCounts = new int[] {13, 0, 0, 0, 0, 0, 0};
-            for (int i = 0; i < 7; i++) {
-                sb.append("Level " + i + ": " + t.getUnits(i) + "\n");
+            // if visible this round, update text
+            if (isVisibleTerr(btn.getText())) {
+                territoryStats.setText(getTerritoryInfo(btn.getText()));
+            } else { // if invisible, set old text from seen
+                String info = seen.containsKey(btn.getText()) ? seen.get(btn.getText()):null;
+                territoryStats.setText(info);
             }
-            sb.append("Food Production: 50\n");
-            sb.append("Money Production: 20\n");
-            sb.append("Size: " + t.getSize());
-
-            territoryStats.setText(sb.toString());
         } else {
             throw new IllegalArgumentException("Invalid source");
         }
+    }
+
+    /**
+     * check if the territory is visible in this round, if yes, update ter info;
+     * else, do not update.
+     * @param terName
+     * @return
+     */
+    public boolean isVisibleTerr(String terName) {
+        HashSet<Territory> neighbors = new HashSet<>();
+        Player player = myMap.findPlayer(color);
+        Territory territory = myMap.findTerritory(terName);
+        for (Territory ter: player.getTerritoryList()) {
+            for (Territory nei: ter.getNeighbors()) {
+                neighbors.add(nei);
+            }
+        }
+        return player.getTerritoryList().contains(territory) || neighbors.contains(territory);
     }
 
     @FXML
@@ -455,6 +550,9 @@ public class MapController {
         }
         return null;
     }
+
+
+
     @FXML
     public void back2room() throws IOException {
         Socket socket = new Socket("localhost", 8080);
