@@ -195,7 +195,7 @@ class ClientControllerTest extends ApplicationTest {
 
        }
 
-        WaitForAsyncUtils.waitForFxEvents();
+        //WaitForAsyncUtils.waitForFxEvents();
 
     }
 
