@@ -1,9 +1,6 @@
 package edu.duke.ece651.grp9.risk.client;
 
-import edu.duke.ece651.grp9.risk.shared.Map;
-import edu.duke.ece651.grp9.risk.shared.MapFactory;
-import edu.duke.ece651.grp9.risk.shared.Player;
-import edu.duke.ece651.grp9.risk.shared.Room;
+import edu.duke.ece651.grp9.risk.shared.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -97,7 +94,7 @@ public class selectRoomController {
             MapFactory mapFactory = new MapFactory();
             Map map = mapFactory.makeMap(playerNum);
             Player player = map.findPlayer(real_color);
-            MapController mc = new MapController(this.Window, map,player,objectInputStream,objectOutputStream);
+            MapController mc = new MapController(this.Window, new HashMap<Territory, String>(), map,player,objectInputStream,objectOutputStream);
             
             return mc;
         });
@@ -134,7 +131,7 @@ public class selectRoomController {
                 e.printStackTrace();
             }
             
-            MapController mc = new MapController(this.Window,map,player,objectInputStream,objectOutputStream);
+            MapController mc = new MapController(this.Window,new HashMap<Territory, String>(), map,player,objectInputStream,objectOutputStream);
 
             return mc;
         });
