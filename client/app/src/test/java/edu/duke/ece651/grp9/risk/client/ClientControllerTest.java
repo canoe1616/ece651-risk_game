@@ -65,10 +65,27 @@ class ClientControllerTest extends ApplicationTest {
 
 
     @Test
-    void getStyle() {
+    void test_getStyle() {
         MapController cont = new MapController(stage, new Map(), new Player("red"), null, null);
         String s = cont.getStyle("red");
         assertEquals("-fx-background-color: red;;-fx-border-color: black;", s);
+    }
+
+    @Test
+    void test_hasSeen() {
+        MapController cont = new MapController(stage, new Map(), new Player("red"), null, null);
+        assertEquals(false, cont.hasSeen("A"));
+        cont.seen.put("A", "test");
+        assertEquals(true, cont.hasSeen("A"));
+    }
+
+    @Test
+    void test_isVisibleTerr() {
+        MapFactory mapFactory = new MapFactory();
+        Map map = mapFactory.makeMapForTwo();
+        MapController cont = new MapController(stage, map, map.findPlayer("red"), null, null);
+        assertTrue(cont.isVisibleTerr("A"));
+        assertFalse(cont.isVisibleTerr("I"));
     }
 
     @Test

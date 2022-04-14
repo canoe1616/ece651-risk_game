@@ -340,9 +340,10 @@ public class MapController {
         Object source = actionEvent.getSource();
         if (source instanceof Button) {
             Button btn = (Button) source;
+            // if visible this round, update text
             if (isVisibleTerr(btn.getText())) {
                 territoryStats.setText(getTerritoryInfo(btn.getText()));
-            } else {
+            } else { // if invisible, set old text from seen
                 String info = seen.containsKey(btn.getText()) ? seen.get(btn.getText()):null;
                 territoryStats.setText(info);
             }
@@ -357,15 +358,16 @@ public class MapController {
      * @param terName
      * @return
      */
-    private boolean isVisibleTerr(String terName) {
+    public boolean isVisibleTerr(String terName) {
         HashSet<Territory> neighbors = new HashSet<>();
-        for (Territory ter: myMap.findPlayer(color).getTerritoryList()) {
+        Player player = myMap.findPlayer(color);
+        Territory territory = myMap.findTerritory(terName);
+        for (Territory ter: player.getTerritoryList()) {
             for (Territory nei: ter.getNeighbors()) {
                 neighbors.add(nei);
             }
         }
-        return (myMap.findPlayer(color).getTerritoryList().contains(myMap.findTerritory(terName))
-        || neighbors.contains(myMap.findTerritory(terName)));
+        return player.getTerritoryList().contains(territory) || neighbors.contains(territory);
     }
 
     @FXML
