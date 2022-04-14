@@ -18,10 +18,7 @@ import java.awt.*;
 import java.io.*;
 import java.net.Socket;
 import java.nio.ReadOnlyBufferException;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Locale;
-import java.util.Set;
+import java.util.*;
 
 
 public class MapController {
@@ -68,7 +65,7 @@ public class MapController {
     public static HashSet<String> moves = new HashSet<>();
     public static HashSet<String> upgrades = new HashSet<>();
     public static boolean techAction = false;
-    public HashMap<Territory, String> seen = new HashMap<>();
+    public HashMap<String, String> seen = new HashMap<>();
 
     public ObjectOutputStream objectOutputStream;
     public ObjectInputStream objectInputStream;
@@ -92,12 +89,11 @@ public class MapController {
     }
 
 
-    public MapController(Stage Window, HashMap<Territory, String> seen, Map map, Player player, ObjectInputStream objectInputStream, ObjectOutputStream objectOutputStream) {
+    public MapController(Stage Window, Map map, Player player, ObjectInputStream objectInputStream, ObjectOutputStream objectOutputStream) {
         this.myMap = map;
         this.Window = Window;
         this.player = player;
         this.color = player.getName();
-        this.seen = seen;
         this.objectInputStream = objectInputStream;
         this.objectOutputStream = objectOutputStream;
     }
@@ -143,60 +139,43 @@ public class MapController {
 //        }
 //    }
 
-    // evo 3: only display adjancent
+    // ----------evo 3: only display adjacency---------------
     public void updateButtonColors() {
         // store useable buttons
         Set<String> allButtons = ButtonMap.keySet();
         HashSet<Player> players = myMap.getPlayer();
-        //HashMap<Territory, Boolean> painted = new HashMap<>();
         // store neighbored territories
         HashSet<Territory> neighbors = new HashSet<>();
-        for (Territory ter: myMap.findPlayer(color).getTerritoryList()) {
+        Player player = myMap.findPlayer(color);
+        for (Territory ter: player.getTerritoryList()) {
             for (Territory nei: ter.getNeighbors()) {
-                if (!myMap.findPlayer(color).getTerritoryList().contains(nei)) {
+                if (!player.getTerritoryList().contains(nei)) {
                     neighbors.add(nei);
                 }
             }
         }
 
-        for (Territory s: seen.keySet()) {
-            System.out.print(s.getName());
-        }
-
         for (Player p: players) {
             for (Territory ter : p.getTerritoryList()) {
+                String terColor = ter.getOwner().getName();
                 // if it's owned by player or adjacency territories, show color
-               if ((p.equals(myMap.findPlayer(color)) || (!p.equals(myMap.findPlayer(color)) && isNeighbor(ter)))) {
-                    //System.out.println("paint territory " + ter.getName());
-                    String terColor = ter.getOwner().getName();
+               if (p.equals(player) || (!p.equals(player) && isNeighbor(ter))) {
                     String style = getStyle(terColor);
                     Button button = ButtonMap.get(ter.getName());
                     button.setStyle(style);
                     button.setCursor(Cursor.HAND);
-                    // TODO: NEED REFACTORY WITH ONTERRITORY
-                    StringBuilder sb = new StringBuilder();
-                    sb.append("Territory " + ter.getName() + "\n");
-                    Territory t = myMap.findTerritory(ter.getName());
-                    sb.append("Owner: " + terColor + "\n");
-                    //int[] unitCounts = new int[] {13, 0, 0, 0, 0, 0, 0};
-                    for (int i = 0; i < 7; i++) {
-                        sb.append("Level " + i + ": " + t.getUnits(i) + "\n");
-                    }
-                    sb.append("Food Production: 50\n");
-                    sb.append("Money Production: 20\n");
-                    sb.append("Size: " + t.getSize());
-                    //painted.put(ter, true);
-                    seen.put(ter, sb.toString());
+                    // save old info to hashset seen
+                    seen.put(ter.getName(), getTerritoryInfo(ter.getName()));
                 } else if (hasSeen(ter.getName())) {
+                   // if has seen before, set grey background color
                    Button button = ButtonMap.get(ter.getName());
-                   button.setStyle(seen.get(ter.getName()));
+                   button.setStyle(getStyle("grey"));
+               } else {
+                   // if haven't been seen before, set transparent background
+                   Button button = ButtonMap.get(ter.getName());
+                   button.setStyle("-fx-background-color: transparent");
                }
-//                } else {
-//                    Button button = ButtonMap.get(ter.getName());
-//                    button.setStyle("-fx-background-color: grey");
-//                }
                 allButtons.remove(ter.getName());
-
             }
         }
         for (String unusedButton: allButtons) {
@@ -205,10 +184,15 @@ public class MapController {
         }
     }
 
+    /**
+     * check if territory t is the neighbors of player
+     * @param t is the given territory
+     * @return true if it's neighbor
+     */
     private boolean isNeighbor(Territory t) {
         for (Territory ter: myMap.findPlayer(color).getTerritoryList()) {
             for (Territory nei: ter.getNeighbors()) {
-                if (t.getName() == nei.getName()) {
+                if (Objects.equals(t.getName(), nei.getName())) {
                     return true;
                 }
             }
@@ -221,8 +205,8 @@ public class MapController {
      * check if the territory info has seen before
      */
     public boolean hasSeen(String terName) {
-        for (Territory ter: seen.keySet()) {
-            if (ter.getName() == terName) {
+        for (String ter: seen.keySet()) {
+            if (Objects.equals(ter, terName)) {
                 return true;
             }
         }
@@ -336,27 +320,30 @@ public class MapController {
         }
     }
 
+    private String getTerritoryInfo(String terrName) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Territory " + terrName + "\n");
+        Territory t = myMap.findTerritory(terrName);
+        sb.append("Owner: " + t.getOwner().getName() + "\n");
+        //int[] unitCounts = new int[] {13, 0, 0, 0, 0, 0, 0};
+        for (int i = 0; i < 7; i++) {
+            sb.append("Level " + i + ": " + t.getUnits(i) + "\n");
+        }
+        sb.append("Food Production: 50\n");
+        sb.append("Money Production: 20\n");
+        sb.append("Size: " + t.getSize());
+        return sb.toString();
+    }
+
     @FXML
     public void onTerritory(ActionEvent actionEvent) {
         Object source = actionEvent.getSource();
         if (source instanceof Button) {
             Button btn = (Button) source;
             if (isVisibleTerr(btn.getText())) {
-                StringBuilder sb = new StringBuilder();
-                sb.append("Territory " + btn.getText() + "\n");
-                Territory t = myMap.findTerritory(btn.getText());
-                sb.append("Owner: " + t.getOwner().getName() + "\n");
-                //int[] unitCounts = new int[] {13, 0, 0, 0, 0, 0, 0};
-                for (int i = 0; i < 7; i++) {
-                    sb.append("Level " + i + ": " + t.getUnits(i) + "\n");
-                }
-                sb.append("Food Production: 50\n");
-                sb.append("Money Production: 20\n");
-                sb.append("Size: " + t.getSize());
-
-                territoryStats.setText(sb.toString());
+                territoryStats.setText(getTerritoryInfo(btn.getText()));
             } else {
-                String info = seen.containsKey(myMap.findTerritory(btn.getText())) ? seen.get(myMap.findTerritory(btn.getText())):null;
+                String info = seen.containsKey(btn.getText()) ? seen.get(btn.getText()):null;
                 territoryStats.setText(info);
             }
         } else {
@@ -426,7 +413,6 @@ public class MapController {
                 statusLabel("Actions submitted to server. Waiting for updated map.");
                 btn.setStyle("-fx-background-color: Green");
                 myMap = (Map) objectInputStream.readObject();//read 002 //RoomThread 106
-                seen = (HashMap<Territory, String>) objectInputStream.readObject();
                 System.out.println("Status: Received updated Map.");
                 statusLabel("Received updated Map.");
                 btn.setStyle("-fx-background-color: White");

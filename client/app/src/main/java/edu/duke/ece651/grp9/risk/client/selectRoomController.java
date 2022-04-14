@@ -94,7 +94,7 @@ public class selectRoomController {
             MapFactory mapFactory = new MapFactory();
             Map map = mapFactory.makeMap(playerNum);
             Player player = map.findPlayer(real_color);
-            MapController mc = new MapController(this.Window, new HashMap<Territory, String>(), map,player,objectInputStream,objectOutputStream);
+            MapController mc = new MapController(this.Window, map,player,objectInputStream,objectOutputStream);
             
             return mc;
         });
@@ -131,7 +131,7 @@ public class selectRoomController {
                 e.printStackTrace();
             }
             
-            MapController mc = new MapController(this.Window,new HashMap<Territory, String>(), map,player,objectInputStream,objectOutputStream);
+            MapController mc = new MapController(this.Window,map,player,objectInputStream,objectOutputStream);
 
             return mc;
         });
