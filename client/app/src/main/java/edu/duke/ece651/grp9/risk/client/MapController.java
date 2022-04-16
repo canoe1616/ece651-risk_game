@@ -28,6 +28,7 @@ public class MapController {
     @FXML public Label moneyQuantity;
     @FXML public Label techLevelLabel;
     @FXML public Label colorLabel;
+    @FXML public Label researchLabel;
 
     @FXML public Button A;
     @FXML public Button B;
@@ -44,6 +45,7 @@ public class MapController {
     private Map myMap;
     private Player player;
     private String color;
+    private Button researchButton;
 
 
     @FXML
@@ -60,12 +62,15 @@ public class MapController {
     Button createUpgrade;
     @FXML
     Button levelUp;
+    @FXML
+    Button research;
 
     public static HashSet<String> attacks = new HashSet<>();
     public static HashSet<String> moves = new HashSet<>();
     public static HashSet<String> upgrades = new HashSet<>();
     public static boolean techAction = false;
     public HashMap<String, String> seen = new HashMap<>();
+    public static boolean researchAction = false;
 
     public ObjectOutputStream objectOutputStream;
     public ObjectInputStream objectInputStream;
@@ -86,6 +91,8 @@ public class MapController {
         ButtonMap.put("H", H);
         ButtonMap.put("I", I);
         ButtonMap.put("J", J);
+        researchButton = research;
+
     }
 
 
@@ -182,6 +189,10 @@ public class MapController {
             Button button = ButtonMap.get(unusedButton);
             button.setDisable(true);
         }
+        if (player.getResearched()) {
+            Button button = researchButton;
+            button.setDisable(true);
+        }
     }
 
     /**
@@ -218,6 +229,8 @@ public class MapController {
         foodQuantity.setText(Integer.toString(player.getFoodQuantity()));
         moneyQuantity.setText(Integer.toString(player.getMoneyQuantity()));
         techLevelLabel.setText(Integer.toString(player.getTechLevel()));
+        System.out.println(player.getResearched());
+        researchLabel.setText(player.getResearched()? "YES": "NO");
     }
 
 
@@ -383,6 +396,18 @@ public class MapController {
     }
 
     @FXML
+    public void onResearch(ActionEvent actionEvent) {
+        Object source = actionEvent.getSource();
+        if (source instanceof Button) {
+            Button btn = (Button) source;
+            researchAction = true;
+            statusLabel("Do research order");
+        } else {
+            throw new IllegalArgumentException("Invalid source");
+        }
+    }
+
+    @FXML
     public void onDone(ActionEvent actionEvent) throws Exception {
         //disableButtons();
         Object source = actionEvent.getSource();
@@ -400,11 +425,15 @@ public class MapController {
             if (techAction) {
                 System.out.println("Player tech level upgrade");
             }
+            if (researchAction) {
+                System.out.println("Player do research");
+            }
             ActionSet actionSet = new ActionSet();
             actionSet.actionListAttack = attacks;
             actionSet.actionListMove = moves;
             actionSet.actionListUpgrade = upgrades;
             actionSet.techLevelUpgrade = techAction;
+            actionSet.doResearch = researchAction;
             objectOutputStream.reset();
             objectOutputStream.writeObject(actionSet); //write 001
             System.out.println("Status: write actionSet");
@@ -537,6 +566,7 @@ public class MapController {
         moves.clear();
         upgrades.clear();
         techAction = false;
+        researchAction = false;
     }
 
     public String losePopup() throws Exception{

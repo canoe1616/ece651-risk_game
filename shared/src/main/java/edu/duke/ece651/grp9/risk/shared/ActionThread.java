@@ -38,7 +38,6 @@ public class ActionThread extends Thread{
           HashSet<MoveAction> moveActions = new HashSet<>();
           HashSet<AttackAction> attackActions = new HashSet<>();
           HashSet<UpgradeAction> upgradeActions = new HashSet<>();
-          HashSet<ResearchAction> researchActions = new HashSet<>();
   
           System.out.println("ready to read actionSet From " + player.getName());
 
@@ -77,7 +76,7 @@ public class ActionThread extends Thread{
               techActions.add(new TechAction(player));
             }
             if (actionSet.doResearch) {
-              researchActions.add(new ResearchAction(player));
+              researchAction.add(new ResearchAction(player));
             }
 
             break;

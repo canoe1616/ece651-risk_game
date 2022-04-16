@@ -86,6 +86,7 @@ public class ResearchAction implements Action {
      */
     public void performAction() {
         player.setMoneyQuantity(player.getMoneyQuantity() - computeCost());
+        System.out.println("do performAction for research");
         player.doResearch();
     }
 

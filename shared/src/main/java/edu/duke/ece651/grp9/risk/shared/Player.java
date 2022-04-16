@@ -215,6 +215,7 @@ public class Player implements Serializable {
    * do research action for the player
    */
   public void doResearch() {
+    System.out.println("set researched to be true");
     researched = true;
   }
 
