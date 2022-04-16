@@ -353,8 +353,6 @@ public class MapController {
             int checkNum = popup.cloak.split(" ").length;
             if (checkNum == 1) {
                 cloaks.add(popup.cloak);
-                // debug
-                System.out.println(cloaks.size());
                 statusLabel("Cloak territory " + popup.cloak);
             } else {
                 statusLabel("Invalid Action");
@@ -386,13 +384,13 @@ public class MapController {
         if (source instanceof Button) {
             Button btn = (Button) source;
             Territory ter = myMap.findTerritory(btn.getText());
-            // if visible this round, update text
+            // if visible this round and the neighbored territory is not cloaked, update text
             if (player.getTerritoryList().contains(ter) || (isVisibleTerr(btn.getText()) && ter.getCloackNum() == 0)) {
                 territoryStats.setText(getTerritoryInfo(btn.getText()));
             } else if (isVisibleTerr(btn.getText()) && ter.getCloackNum() > 0) {
-                // if is neighbor and cloak number greater than 0, cloak the territory
+                // if the neighbored territory was cloaked, display null
                 territoryStats.setText(null);
-            } else { // if invisible, set old text from seen
+            } else { // if the territory is invisible, set old text from seen, or null if it hasn't been seen before
                 String info = seen.containsKey(btn.getText()) ? seen.get(btn.getText()):null;
                 territoryStats.setText(info);
             }

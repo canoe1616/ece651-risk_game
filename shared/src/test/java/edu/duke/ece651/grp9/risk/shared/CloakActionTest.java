@@ -6,6 +6,20 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class CloakActionTest {
     @Test
+    public void test_canPerform() {
+        Player player = new Player("red");
+        player.upgradeTechLevel();
+        player.upgradeTechLevel();
+        player.doResearch();
+        Territory ter = new Territory("A");
+        player.addTerritory(ter);
+        ter.setOwner(player);
+
+        CloakAction action = new CloakAction(player, ter);
+        assertEquals(null, action.canPerformAction());
+    }
+
+    @Test
     public void test_getters() {
         Player p1 = new Player("red");
         Territory ter = new Territory("A");

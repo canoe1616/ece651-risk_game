@@ -125,6 +125,10 @@ public class GamePlay {
     Player player = map.findPlayer(color);
     Territory source = map.findTerritory(words[0]);
 
+    if (source == null) {
+      return null;
+    }
+
     try {
       numUnits = Integer.parseInt(words[1]);
     } catch (NumberFormatException e) {
@@ -148,6 +152,9 @@ public class GamePlay {
     //String[] words = action.split(" ");
     Player player = map.findPlayer(color);
     Territory destination = map.findTerritory(action);
+    if (destination == null) {
+      return null;
+    }
     return new CloakAction(player, destination);
 
   }
@@ -232,13 +239,6 @@ public class GamePlay {
       return "Do not have enough money to do research orders";
     }
 
-    for (Territory territory : player.getTerritoryList()) {
-      if (!territory.mockIsValid()) {
-        return "These actions are invalid: " + territory.getName()
-                + " territory ends with negative units";
-      }
-    }
-
     for (CloakAction cloak: cloaks) {
       if (cloak == null) {
         return "This action is invalid: Territory does not exist";
@@ -252,6 +252,13 @@ public class GamePlay {
 
     if (moneyCost > player.getMoneyQuantity()) {
       return "Do not have enough money to do cloak orders";
+    }
+
+    for (Territory territory : player.getTerritoryList()) {
+      if (!territory.mockIsValid()) {
+        return "These actions are invalid: " + territory.getName()
+                + " territory ends with negative units";
+      }
     }
 
     return null;
