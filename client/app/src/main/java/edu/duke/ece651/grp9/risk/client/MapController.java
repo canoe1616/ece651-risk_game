@@ -64,6 +64,8 @@ public class MapController {
     Button levelUp;
     @FXML
     Button research;
+    @FXML
+    Button createClock;
 
     public static HashSet<String> attacks = new HashSet<>();
     public static HashSet<String> moves = new HashSet<>();
@@ -71,6 +73,7 @@ public class MapController {
     public static boolean techAction = false;
     public HashMap<String, String> seen = new HashMap<>();
     public static boolean researchAction = false;
+    public static HashSet<String> cloaks = new HashSet<>();
 
     public ObjectOutputStream objectOutputStream;
     public ObjectInputStream objectInputStream;
@@ -333,6 +336,31 @@ public class MapController {
         }
     }
 
+    @FXML
+    public void onCreateCloak(ActionEvent actionEvent) {
+        Object source = actionEvent.getSource();
+        if (source instanceof Button) {
+            Button btn = (Button) source;
+            System.out.println(btn.getId());
+        } else {
+            throw new IllegalArgumentException("Invalid source");
+        }
+
+        try {
+            CloakPopup popup = new CloakPopup();
+            popup.display();
+            int checkNum = popup.cloak.split(" ").length;
+            if ( checkNum == 1) {
+                cloaks.add(popup.cloak);
+                statusLabel("Cloak territory " + popup.cloak);
+            } else {
+                statusLabel("Invalid Action");
+            }
+        } catch (IOException e) {
+            System.out.println("Could not display Cloak Popup");
+        }
+    }
+
     private String getTerritoryInfo(String terrName) {
         StringBuilder sb = new StringBuilder();
         sb.append("Territory " + terrName + "\n");
@@ -395,6 +423,7 @@ public class MapController {
         }
     }
 
+
     @FXML
     public void onResearch(ActionEvent actionEvent) {
         Object source = actionEvent.getSource();
@@ -428,12 +457,16 @@ public class MapController {
             if (researchAction) {
                 System.out.println("Player do research");
             }
+            for (String cloak: cloaks) {
+                System.out.println("cloak : " + cloak);
+            }
             ActionSet actionSet = new ActionSet();
             actionSet.actionListAttack = attacks;
             actionSet.actionListMove = moves;
             actionSet.actionListUpgrade = upgrades;
             actionSet.techLevelUpgrade = techAction;
             actionSet.doResearch = researchAction;
+            actionSet.actionListCloak = cloaks;
             objectOutputStream.reset();
             objectOutputStream.writeObject(actionSet); //write 001
             System.out.println("Status: write actionSet");
@@ -567,6 +600,7 @@ public class MapController {
         upgrades.clear();
         techAction = false;
         researchAction = false;
+        cloaks.clear();
     }
 
     public String losePopup() throws Exception{

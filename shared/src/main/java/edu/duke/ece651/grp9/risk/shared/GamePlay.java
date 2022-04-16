@@ -145,9 +145,9 @@ public class GamePlay {
 
 
   public Action createCloak(Map map, String color, String action) {
-    String[] words = action.split(" ");
+    //String[] words = action.split(" ");
     Player player = map.findPlayer(color);
-    Territory destination = map.findTerritory(words[0]);
+    Territory destination = map.findTerritory(action);
     return new CloakAction(player, destination);
 
   }

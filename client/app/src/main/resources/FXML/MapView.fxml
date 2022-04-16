@@ -232,7 +232,7 @@
             <Font name="Copperplate" size="15.0" />
          </font>
       </Button>
-      <Button fx:id="createClock" mnemonicParsing="false"  prefHeight="26.0" prefWidth="74.0" style="-fx-background-color: white;" text="Cloak" GridPane.columnIndex="20" GridPane.columnSpan="3" GridPane.rowIndex="5" GridPane.rowSpan="2" GridPane.valignment="TOP">
+      <Button fx:id="createClock" mnemonicParsing="false" onAction="#onCreateCloak" prefHeight="26.0" prefWidth="74.0" style="-fx-background-color: white;" text="Cloak" GridPane.columnIndex="20" GridPane.columnSpan="3" GridPane.rowIndex="5" GridPane.rowSpan="2" GridPane.valignment="TOP">
          <font>
             <Font name="Copperplate" size="15.0" />
          </font>

@@ -24,7 +24,7 @@ public class ActionSet implements Serializable{
     this.actionListUpgrade= new HashSet<String>();
     this.techLevelUpgrade = false;
     this.doResearch = false;
-    this.actionListCloak = new HashSet<>();
+    this.actionListCloak = new HashSet<String>();
   }
 
   public HashSet<String> getMoveList() {

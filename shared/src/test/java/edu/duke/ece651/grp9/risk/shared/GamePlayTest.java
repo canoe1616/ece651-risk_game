@@ -276,6 +276,7 @@ class GamePlayTest {
     Player p1 = app1.findPlayer("red", map);
     p1.setMoneyQuantity(500);
 
+
     HashSet<MoveAction> moves = new HashSet<>();
     HashSet<AttackAction> attacks = new HashSet<>();
     HashSet<UpgradeAction> upgrades = new HashSet<>();
@@ -296,7 +297,7 @@ class GamePlayTest {
     assertEquals(null, app1.validActionSet(p1, moves, attacks, upgrades, false, true, cloaks));
 
 
-    cloaks.add(new CloakAction(p1, map.findTerritory("A")));
+    cloaks.add((CloakAction) app1.createCloak(map, "red", "A"));
     assertEquals("This action is invalid: you cannot do cloak order without researched.",app1.validActionSet(p1, moves, attacks, upgrades, false, true, cloaks));
 
     Action research = new ResearchAction(p1);
@@ -304,7 +305,7 @@ class GamePlayTest {
     assertEquals(275, p1.getMoneyQuantity());
 
     cloaks.clear();
-    cloaks.add(new CloakAction(p1, map.findTerritory("I")));
+    cloaks.add((CloakAction) app1.createCloak(map, "red", "I"));
     assertEquals("This action is invalid: you do not own I.",app1.validActionSet(p1, moves, attacks, upgrades, false, true, cloaks));
 
     cloaks.clear();
@@ -472,7 +473,5 @@ class GamePlayTest {
     assertEquals(6, map.findTerritory("A").getCloackNum());
     assertEquals(3, map.findTerritory("B").getCloackNum());
   }
-
-
 
 }
