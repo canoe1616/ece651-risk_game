@@ -90,6 +90,13 @@ public class ActionThread extends Thread{
               researchAction.add(new ResearchAction(player));
             }
 
+            // update cloak number
+            for (Territory ter: player.getTerritoryList()) {
+              if (ter.getCloackNum() > 0) {
+                ter.reduceClockNum();
+              }
+            }
+
             break;
           }
 

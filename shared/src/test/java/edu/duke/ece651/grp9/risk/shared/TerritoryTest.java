@@ -160,6 +160,7 @@ public class TerritoryTest {
     assertEquals(3, territory.getCloackNum());
     territory.reduceClockNum();
     territory.doClockOnTerritory();
-    assertEquals(5, territory.getCloackNum());
+    territory.doClockOnTerritory();
+    assertEquals(8, territory.getCloackNum());
   }
 }
