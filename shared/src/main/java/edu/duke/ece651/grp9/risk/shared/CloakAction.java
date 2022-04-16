@@ -1,21 +1,20 @@
 package edu.duke.ece651.grp9.risk.shared;
 
-/**
- * research action enables the player to gain the ability of clocking
- */
-public class ResearchAction implements Action {
+public class CloakAction implements Action {
     private final Player player;
-    private final RuleChecker researchChecker;
+    private final RuleChecker cloakChecker;
+    private final Territory source;
     private final int researchCost;
 
     /**
      * Constructor to create a Move
      * @param player is the Player performing the Action
      */
-    public ResearchAction(Player player) {
+    public CloakAction(Player player,  Territory source) {
         this.player = player;
-        this.researchChecker = new ResearchRuleChecker(null);
-        this.researchCost = 100;
+        this.cloakChecker = new OwnerRuleChecker(new CloakRuleChecker(null));
+        this.researchCost = 20;
+        this.source = source;
     }
 
     /**
@@ -33,7 +32,7 @@ public class ResearchAction implements Action {
      * @return source Territory
      */
     public Territory getSource() {
-        return null;
+        return source;
     }
 
     /**
@@ -78,7 +77,7 @@ public class ResearchAction implements Action {
      * @return null if valid, if invalid a String describing error is returned
      */
     public String canPerformAction() {
-        return researchChecker.checkAction(this);
+        return cloakChecker.checkAction(this);
     }
 
     /**
@@ -86,17 +85,12 @@ public class ResearchAction implements Action {
      */
     public void performAction() {
         player.setMoneyQuantity(player.getMoneyQuantity() - computeCost());
-        player.doResearch();
+        source.doClockOnTerritory();
     }
 
     @Override
     public int computeCost() {
         // if player has gain the reserach ability, cost 0
-        if (!player.getResearched()) {
-            return researchCost;
-        } else {
-            return 0;
-        }
+        return researchCost;
     }
-
 }

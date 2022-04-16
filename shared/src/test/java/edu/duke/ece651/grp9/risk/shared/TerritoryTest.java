@@ -151,4 +151,15 @@ public class TerritoryTest {
     Territory ter = new Territory("red");
     assertEquals(20, ter.productMoney().getQuantity());
   }
+
+  @Test
+  void clockNum() {
+    Territory territory = new Territory("A");
+    assertEquals(0, territory.getCloackNum());
+    territory.doClockOnTerritory();
+    assertEquals(3, territory.getCloackNum());
+    territory.reduceClockNum();
+    territory.doClockOnTerritory();
+    assertEquals(5, territory.getCloackNum());
+  }
 }

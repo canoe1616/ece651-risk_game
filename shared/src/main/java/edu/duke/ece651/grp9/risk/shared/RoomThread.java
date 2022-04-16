@@ -23,6 +23,7 @@ public class RoomThread extends Thread {
     private HashSet<UpgradeAction> allUpgrades = new HashSet<>();
     private HashSet<TechAction> techActions = new HashSet<>();
     private HashSet<ResearchAction> researchActions = new HashSet<>();
+    private HashSet<CloakAction> allCloaks = new HashSet<>();
 
     public Room room;
     public int player_num;
@@ -39,6 +40,7 @@ public class RoomThread extends Thread {
         techActions = new HashSet<TechAction>();
         researchActions = new HashSet<ResearchAction>();
         remainingColors = new ArrayList<String>();
+        allCloaks = new HashSet<CloakAction>();
     }
 
     @Override
@@ -125,7 +127,7 @@ public class RoomThread extends Thread {
                     else {
                         System.out.println("Status: enter actionThread");
                         ActionThread actionThread = new ActionThread(m, InputList.get(j), OutputList.get(j),
-                            tmp, allMoves, allAttacks, allUpgrades, techActions, researchActions);
+                            tmp, allMoves, allAttacks, allUpgrades, techActions, researchActions, allCloaks);
                         ActionThreadList.add(actionThread);
                         actionThread.start();
                         allMoves.addAll(actionThread.allMove);
@@ -133,6 +135,7 @@ public class RoomThread extends Thread {
                         allUpgrades.addAll(actionThread.allUpgrade);
                         techActions.addAll(actionThread.techActions);
                         researchActions.addAll(actionThread.researchAction);
+                        allCloaks.addAll(actionThread.allCloak);
                     }
                 }
 
@@ -148,12 +151,15 @@ public class RoomThread extends Thread {
                 gamePlay.playUpgrades(allUpgrades);
                 gamePlay.playTechLevels(techActions);
                 gamePlay.playResearch(researchActions);
+                gamePlay.playCloak(allCloaks);
                 // increase the basic unit per terr, produce resource
                 m.upgradeMapPerRound();
                 allMoves.clear();
                 allAttacks.clear();
                 allUpgrades.clear();
                 techActions.clear();
+                researchActions.clear();
+                allCloaks.clear();
             }
 
             //for part 3 - for game winner and end this game

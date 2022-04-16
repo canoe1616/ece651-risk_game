@@ -143,6 +143,15 @@ public class GamePlay {
     return new UpgradeAction(player, source, numUnits, unitLevelStart, unitLevelEnd);
   }
 
+
+  public Action createCloak(Map map, String color, String action) {
+    String[] words = action.split(" ");
+    Player player = map.findPlayer(color);
+    Territory destination = map.findTerritory(words[0]);
+    return new CloakAction(player, destination);
+
+  }
+
   /**
    * Checks is a set of Actions from client is valid
    *
@@ -152,11 +161,11 @@ public class GamePlay {
    * @return null if no error, String describing problem if there is error
    */
   public String validActionSet(Player player, HashSet<MoveAction> moves, HashSet<AttackAction> attacks,
-      HashSet<UpgradeAction> upgrades, boolean techLevelUpgrade, boolean research) {
+      HashSet<UpgradeAction> upgrades, boolean techLevelUpgrade, boolean research, HashSet<CloakAction> cloaks) {
     int foodCost = 0;
     int moneyCost = 0;
     //Once we first meet the problem, then reenter with "Done", moves and attacks would be "NULL"
-    if (moves.isEmpty() && attacks.isEmpty() && upgrades.isEmpty() && !techLevelUpgrade && !research) {
+    if (moves.isEmpty() && attacks.isEmpty() && upgrades.isEmpty() && !techLevelUpgrade && !research && cloaks.isEmpty()) {
       return null;
     }
     for (MoveAction move : moves) {
@@ -230,6 +239,21 @@ public class GamePlay {
       }
     }
 
+    for (CloakAction cloak: cloaks) {
+      if (cloak == null) {
+        return "This action is invalid: Territory does not exist";
+      }
+      String error = cloak.canPerformAction();
+      moneyCost += cloak.computeCost();
+      if (error != null) {
+        return error;
+      }
+    }
+
+    if (moneyCost > player.getMoneyQuantity()) {
+      return "Do not have enough money to do cloak orders";
+    }
+
     return null;
   }
 
@@ -297,6 +321,14 @@ public class GamePlay {
     for (ResearchAction researchAction: allResearch) {
       if (researchAction != null) {
         researchAction.performAction();
+      }
+    }
+  }
+
+  public void playCloak(HashSet<CloakAction> allCloaks) {
+    for (CloakAction cloakAction: allCloaks) {
+      if (cloakAction != null) {
+        cloakAction.performAction();
       }
     }
   }
