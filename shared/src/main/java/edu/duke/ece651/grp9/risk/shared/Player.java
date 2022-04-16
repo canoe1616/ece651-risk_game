@@ -19,6 +19,7 @@ public class Player implements Serializable {
   private Food food;
   private Money money;
   private int techLevel;
+  private boolean researched;
 
   /**
    * Constructor to create a Player
@@ -33,6 +34,7 @@ public class Player implements Serializable {
     this.techLevel = 1;
     this.food = new Food(200);
     this.money = new Money(100);
+    this.researched = false;
   }
 
   /**
@@ -207,6 +209,17 @@ public class Player implements Serializable {
    */
   public void setMoneyQuantity(int moneyQuantity) {
     money.setResource(moneyQuantity);
+  }
+
+  /**
+   * do research action for the player
+   */
+  public void doResearch() {
+    researched = true;
+  }
+
+  public boolean getResearched() {
+    return researched;
   }
 
 }

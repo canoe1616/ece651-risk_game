@@ -14,10 +14,11 @@ public class ActionThread extends Thread{
   public HashSet<AttackAction> allAttack = new HashSet<>();
   public HashSet<UpgradeAction> allUpgrade = new HashSet<>();
   public HashSet<TechAction> techActions;
+  public HashSet<ResearchAction> researchAction;
 
   public ActionThread(Map m, ObjectInputStream objectInputStream, ObjectOutputStream objectOutputStream,
       Player player, HashSet<MoveAction> allMoves, HashSet<AttackAction>allAttack,
-      HashSet<UpgradeAction> allUpgrade, HashSet<TechAction> techActions) {
+      HashSet<UpgradeAction> allUpgrade, HashSet<TechAction> techActions, HashSet<ResearchAction> researchAction) {
     this.m = m;
     this.objectInputStream = objectInputStream;
     this.objectOutputStream = objectOutputStream;
@@ -26,6 +27,7 @@ public class ActionThread extends Thread{
     this.allAttack = allAttack;
     this.allUpgrade = allUpgrade;
     this.techActions = techActions;
+    this.researchAction = researchAction;
   }
 
   @Override
@@ -36,6 +38,7 @@ public class ActionThread extends Thread{
           HashSet<MoveAction> moveActions = new HashSet<>();
           HashSet<AttackAction> attackActions = new HashSet<>();
           HashSet<UpgradeAction> upgradeActions = new HashSet<>();
+          HashSet<ResearchAction> researchActions = new HashSet<>();
   
           System.out.println("ready to read actionSet From " + player.getName());
 
@@ -61,7 +64,7 @@ public class ActionThread extends Thread{
 
           //moveActions  attackActions need to be reset in the next round.
           String actionProblem = gamePlay.validActionSet(player, moveActions, attackActions,
-              upgradeActions, actionSet.techLevelUpgrade);
+              upgradeActions, actionSet.techLevelUpgrade, actionSet.doResearch);
           //debug：here should be reset
           objectOutputStream.reset();
           objectOutputStream.writeObject(actionProblem); //write 003 (send action problem)
@@ -72,6 +75,9 @@ public class ActionThread extends Thread{
             allUpgrade.addAll(upgradeActions);
             if (actionSet.techLevelUpgrade) {
               techActions.add(new TechAction(player));
+            }
+            if (actionSet.doResearch) {
+              researchActions.add(new ResearchAction(player));
             }
 
             break;
