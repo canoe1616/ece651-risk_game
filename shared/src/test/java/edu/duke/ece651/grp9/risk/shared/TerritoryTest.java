@@ -157,12 +157,12 @@ public class TerritoryTest {
     Player p1 = new Player("red");
     Territory t1 = new Territory("Tar Valon");
     assertTrue(t1.getSpies().isEmpty());
-    t1.addSpy(p1);
+    t1.addSpy(p1, 1);
     assertFalse(t1.getSpies().isEmpty());
     assertEquals(t1.getSpies().get(p1).getNumUnits(), 1);
     assertEquals(t1.getSpies().get(new Player("blue")), null);
 
-    t1.addSpy(p1);
+    t1.addSpy(p1, 1);
     assertEquals(t1.getSpies().get(p1).getNumUnits(), 2);
 
     Territory t2 = new Territory("Two Rivers");

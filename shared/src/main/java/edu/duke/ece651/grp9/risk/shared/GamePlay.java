@@ -211,7 +211,7 @@ public class GamePlay {
     }
 
     for (Territory territory : player.getTerritoryList()) {
-      if (!territory.mockIsValid()) {
+      if (!territory.mockIsValid(player)) {
         return "These actions are invalid: " + territory.getName()
                 + " territory ends with negative units";
       }

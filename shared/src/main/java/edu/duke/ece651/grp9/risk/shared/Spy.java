@@ -11,6 +11,7 @@ import java.io.Serializable;
 public class Spy implements Serializable {
   //private Player owner;
   private int numUnits;
+  private int mockUnits;
   private int upgradeCost;
   //private int numUnits;
   //private Territory location;
@@ -22,7 +23,7 @@ public class Spy implements Serializable {
   public Spy(int numUnits) {
     this.upgradeCost = 20;
     this.numUnits = numUnits;
-
+    syncUnits();
     //this.location = location;
     //this.owner = owner;
   }
@@ -34,6 +35,31 @@ public class Spy implements Serializable {
    */
   public int getNumUnits() {
     return numUnits;
+  }
+
+  /**
+   * Sets mockUnits to unit so that they are synced for next round of Action's check
+   */
+  public void syncUnits() {
+    mockUnits = numUnits;
+  }
+
+  /**
+   * Update mockUnits to be used as part of RuleChecker
+   *
+   * @param movedUnits int for number of Unit's being relocated
+   */
+  public void mockAction(int movedUnits) {
+    mockUnits += movedUnits;
+  }
+
+  /**
+   * Getter for mockUnits of this Unit level
+   *
+   * @return mockUnits for this Unit level
+   */
+  public int getMockUnits() {
+    return mockUnits;
   }
 
   /**
@@ -67,5 +93,6 @@ public class Spy implements Serializable {
    */
   public void addUnits(int addedUnits) {
     numUnits += addedUnits;
+    syncUnits();
   }
 }
