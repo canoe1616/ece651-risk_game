@@ -12,6 +12,7 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
@@ -23,6 +24,7 @@ public class UpgradePopup {
 
     private static Stage popupwindow;
     public static String upgrade;
+    public static boolean asSpy;
 
     @FXML
     TextField territory;
@@ -32,6 +34,8 @@ public class UpgradePopup {
     Slider startLevel;
     @FXML
     Slider endLevel;
+    @FXML
+    CheckBox spyBox;
 
     @FXML
     public static void display() throws IOException {
@@ -71,6 +75,7 @@ public class UpgradePopup {
             String upgradeAction = territory.getText() + " " + numUnits.getText() + " " +
                     (int)startLevel.getValue() + " " + (int)endLevel.getValue();
             this.upgrade = upgradeAction;
+            this.asSpy = spyBox.isSelected();
         } else {
             throw new IllegalArgumentException("Invalid source");
         }

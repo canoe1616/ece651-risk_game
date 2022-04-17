@@ -3,6 +3,7 @@ package edu.duke.ece651.grp9.risk.client;
 import edu.duke.ece651.grp9.risk.shared.ActionSet;
 import edu.duke.ece651.grp9.risk.shared.Map;
 import edu.duke.ece651.grp9.risk.shared.Player;
+import edu.duke.ece651.grp9.risk.shared.Spy;
 import edu.duke.ece651.grp9.risk.shared.Territory;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -22,102 +23,120 @@ import java.util.*;
 
 
 public class MapController {
-    private Stage Window;
-    
-    @FXML public Label foodQuantity;
-    @FXML public Label moneyQuantity;
-    @FXML public Label techLevelLabel;
-    @FXML public Label colorLabel;
 
-    @FXML public Button A;
-    @FXML public Button B;
-    @FXML public Button C;
-    @FXML public Button D;
-    @FXML public Button E;
-    @FXML public Button F;
-    @FXML public Button G;
-    @FXML public Button H;
-    @FXML public Button I;
-    @FXML public Button J;
+  private Stage Window;
 
-    private HashMap<String, Button> ButtonMap;
-    private Map myMap;
-    private Player player;
-    private String color;
+  @FXML
+  public Label foodQuantity;
+  @FXML
+  public Label moneyQuantity;
+  @FXML
+  public Label techLevelLabel;
+  @FXML
+  public Label colorLabel;
 
+  @FXML
+  public Button A;
+  @FXML
+  public Button B;
+  @FXML
+  public Button C;
+  @FXML
+  public Button D;
+  @FXML
+  public Button E;
+  @FXML
+  public Button F;
+  @FXML
+  public Button G;
+  @FXML
+  public Button H;
+  @FXML
+  public Button I;
+  @FXML
+  public Button J;
 
-    @FXML
-    Label territoryStats;
-    @FXML
-    Label status;
-    @FXML
-    Button done;
-    @FXML
-    Button createAttack;
-    @FXML
-    Button createMove;
-    @FXML
-    Button createUpgrade;
-    @FXML
-    Button levelUp;
-
-    public static HashSet<String> attacks = new HashSet<>();
-    public static HashSet<String> moves = new HashSet<>();
-    public static HashSet<String> upgrades = new HashSet<>();
-    public static boolean techAction = false;
-    public HashMap<String, String> seen = new HashMap<>();
-
-    public ObjectOutputStream objectOutputStream;
-    public ObjectInputStream objectInputStream;
+  private HashMap<String, Button> ButtonMap;
+  private Map myMap;
+  private Player player;
+  private String color;
 
 
-    /**
-     * this method to get all buttons for the default map (containing all territories
-     */
-    public void InitButtonMap(){
-        ButtonMap = new HashMap<>();
-        ButtonMap.put("A", A);
-        ButtonMap.put("B", B);
-        ButtonMap.put("C", C);
-        ButtonMap.put("D", D);
-        ButtonMap.put("E", E);
-        ButtonMap.put("F", F);
-        ButtonMap.put("G", G);
-        ButtonMap.put("H", H);
-        ButtonMap.put("I", I);
-        ButtonMap.put("J", J);
-    }
+  @FXML
+  Label territoryStats;
+  @FXML
+  Label status;
+  @FXML
+  Label spyLabel;
+  @FXML
+  Button done;
+  @FXML
+  Button createAttack;
+  @FXML
+  Button createMove;
+  @FXML
+  Button createUpgrade;
+  @FXML
+  Button levelUp;
+
+  public static HashSet<String> attacks = new HashSet<>();
+  public static HashSet<String> moves = new HashSet<>();
+  public static HashSet<String> upgrades = new HashSet<>();
+  public static boolean techAction = false;
+  public HashMap<String, String> seen = new HashMap<>();
+
+  public ObjectOutputStream objectOutputStream;
+  public ObjectInputStream objectInputStream;
 
 
-    public MapController(Stage Window, Map map, Player player, ObjectInputStream objectInputStream, ObjectOutputStream objectOutputStream) {
-        this.myMap = map;
-        this.Window = Window;
-        this.player = player;
-        this.color = player.getName();
-        this.objectInputStream = objectInputStream;
-        this.objectOutputStream = objectOutputStream;
-    }
+  /**
+   * this method to get all buttons for the default map (containing all territories
+   */
+  public void InitButtonMap() {
+    ButtonMap = new HashMap<>();
+    ButtonMap.put("A", A);
+    ButtonMap.put("B", B);
+    ButtonMap.put("C", C);
+    ButtonMap.put("D", D);
+    ButtonMap.put("E", E);
+    ButtonMap.put("F", F);
+    ButtonMap.put("G", G);
+    ButtonMap.put("H", H);
+    ButtonMap.put("I", I);
+    ButtonMap.put("J", J);
+  }
 
-    // initial game room according to the given map
-    public void initialize() throws Exception{
-        InitButtonMap();
-        // display different map to different players
-        // TODO: how to indicate the player's name
-        showMap();
-        //receive the map from the server
-        //myMap =  (Map) objectInputStream.readObject();
-    }
 
-    public void showMap() throws Exception{
-        //set each button's color and shape in buttonMap
-        updateTerritoryText();
-        updateButtonColors();
-        // set food and money value
-        updateResources();
-        colorLabel.setText("You are the " + color + " player");
-        System.out.println("Status: end of showMap");
-       // updateMapafterInitiualization();
-    }
+  public MapController(Stage Window, Map map, Player player, ObjectInputStream objectInputStream,
+      ObjectOutputStream objectOutputStream) {
+    this.myMap = map;
+    this.Window = Window;
+    this.player = player;
+    this.color = player.getName();
+    this.objectInputStream = objectInputStream;
+    this.objectOutputStream = objectOutputStream;
+  }
+
+  // initial game room according to the given map
+  public void initialize() throws Exception {
+    InitButtonMap();
+    // display different map to different players
+    // TODO: how to indicate the player's name
+    showMap();
+    //receive the map from the server
+    //myMap =  (Map) objectInputStream.readObject();
+  }
+
+  public void showMap() throws Exception {
+    //set each button's color and shape in buttonMap
+    updateTerritoryText();
+    updateButtonColors();
+    // set food and money value
+    updateResources();
+    colorLabel.setText("You are the " + color + " player");
+    System.out.println("Status: end of showMap");
+    // updateMapafterInitiualization();
+  }
 
 //    public void updateButtonColors() {
 //        HashSet<Player> players = myMap.getPlayer();
@@ -139,438 +158,445 @@ public class MapController {
 //        }
 //    }
 
-    // ----------evo 3: only display adjacency---------------
-    public void updateButtonColors() {
-        // store useable buttons
-        Set<String> allButtons = ButtonMap.keySet();
-        HashSet<Player> players = myMap.getPlayer();
-        // store neighbored territories
-        HashSet<Territory> neighbors = new HashSet<>();
-        Player player = myMap.findPlayer(color);
-        for (Territory ter: player.getTerritoryList()) {
-            for (Territory nei: ter.getNeighbors()) {
-                if (!player.getTerritoryList().contains(nei)) {
-                    neighbors.add(nei);
-                }
-            }
+  // ----------evo 3: only display adjacency---------------
+  public void updateButtonColors() {
+    // store useable buttons
+    Set<String> allButtons = ButtonMap.keySet();
+    HashSet<Player> players = myMap.getPlayer();
+    // store neighbored territories
+    //TODO "neighbors" isn't used?
+    HashSet<Territory> neighbors = new HashSet<>();
+    Player player = myMap.findPlayer(color);
+    for (Territory ter : player.getTerritoryList()) {
+      for (Territory nei : ter.getNeighbors()) {
+        if (!player.getTerritoryList().contains(nei)) {
+          neighbors.add(nei);
         }
-
-        for (Player p: players) {
-            for (Territory ter : p.getTerritoryList()) {
-                String terColor = ter.getOwner().getName();
-                // if it's owned by player or adjacency territories, show color
-               if (p.equals(player) || (!p.equals(player) && isNeighbor(ter))) {
-                    String style = getStyle(terColor);
-                    Button button = ButtonMap.get(ter.getName());
-                    button.setStyle(style);
-                    button.setCursor(Cursor.HAND);
-                    // save old info to hashset seen
-                    seen.put(ter.getName(), getTerritoryInfo(ter.getName()));
-                } else if (hasSeen(ter.getName())) {
-                   // if has seen before, set grey background color
-                   Button button = ButtonMap.get(ter.getName());
-                   button.setStyle(getStyle("grey"));
-               } else {
-                   // if haven't been seen before, set transparent background
-                   Button button = ButtonMap.get(ter.getName());
-                   button.setStyle("-fx-background-color: transparent");
-               }
-                allButtons.remove(ter.getName());
-            }
-        }
-        for (String unusedButton: allButtons) {
-            Button button = ButtonMap.get(unusedButton);
-            button.setDisable(true);
-        }
+      }
     }
 
-    /**
-     * check if territory t is the neighbors of player
-     * @param t is the given territory
-     * @return true if it's neighbor
-     */
-    private boolean isNeighbor(Territory t) {
-        for (Territory ter: myMap.findPlayer(color).getTerritoryList()) {
-            for (Territory nei: ter.getNeighbors()) {
-                if (Objects.equals(t.getName(), nei.getName())) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
+    //TODO why are we looping over every player? Instead loop over Map?
+    for (Player p : players) {
+      for (Territory ter : p.getTerritoryList()) {
+        String terColor = ter.getOwner().getName();
 
+        boolean hasSpy = ter.hasSpy(p) > 0;
 
-    /**
-     * check if the territory info has seen before
-     */
-    public boolean hasSeen(String terName) {
-        for (String ter: seen.keySet()) {
-            if (Objects.equals(ter, terName)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public void updateResources() {
-        player = myMap.findPlayer(color);
-        foodQuantity.setText(Integer.toString(player.getFoodQuantity()));
-        moneyQuantity.setText(Integer.toString(player.getMoneyQuantity()));
-        techLevelLabel.setText(Integer.toString(player.getTechLevel()));
-    }
-
-
-    public void updateTerritoryText() {
-            String ter = "You have 30 total units, how do you want to place the units?\n" +
-                   "you are " + color;
-            status.setText(ter);
-            System.out.println("Status: set text:" + ter);
-    }
-
-
-    public void updateMap()  {
-        InitButtonMap();
-        updateButtonColors();
-        updateResources();
-    }
-
-    public String getStyle(String color) {
-        //set each button's shape and color
-        String style = "-fx-background-color: " + color + ";";
-        style += ";" + "-fx-border-color: black;";
-        return style;
-    }
-
-    @FXML
-    public void onCreateAttack(ActionEvent actionEvent) {
-        Object source = actionEvent.getSource();
-        if (source instanceof Button) {
-            Button btn = (Button) source;
-            System.out.println(btn.getId());
+        // if it's owned by player or adjacency territories, show color
+        if (p.equals(player) || (!p.equals(player) && isNeighbor(ter)) || hasSpy) {
+          String style = getStyle(terColor);
+          Button button = ButtonMap.get(ter.getName());
+          button.setStyle(style);
+          button.setCursor(Cursor.HAND);
+          // save old info to hashset seen
+          seen.put(ter.getName(), getTerritoryInfo(ter.getName()));
+        } else if (hasSeen(ter.getName())) {
+          // if has seen before, set grey background color
+          Button button = ButtonMap.get(ter.getName());
+          button.setStyle(getStyle("grey"));
         } else {
-            throw new IllegalArgumentException("Invalid source");
+          // if haven't been seen before, set transparent background
+          Button button = ButtonMap.get(ter.getName());
+          button.setStyle("-fx-background-color: transparent");
         }
+        allButtons.remove(ter.getName());
+      }
+    }
 
-        try {
-            AttackPopup popup = new AttackPopup();
-            popup.display();
-            String[] words = validAction(popup.action);
-            if (words != null) {
-                attacks.add(popup.action);
-                statusLabel("Attack " + words[1] + " with " + words[2] + "(Level " + words[3] +
-                        ") units from " + words[0]);
+    //TODO loop through this Player's spy
+
+    for (String unusedButton : allButtons) {
+      Button button = ButtonMap.get(unusedButton);
+      button.setDisable(true);
+    }
+  }
+
+  /**
+   * check if territory t is the neighbors of player
+   *
+   * @param t is the given territory
+   * @return true if it's neighbor
+   */
+  private boolean isNeighbor(Territory t) {
+    for (Territory ter : myMap.findPlayer(color).getTerritoryList()) {
+      for (Territory nei : ter.getNeighbors()) {
+        if (Objects.equals(t.getName(), nei.getName())) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+
+  /**
+   * check if the territory info has seen before
+   */
+  public boolean hasSeen(String terName) {
+    for (String ter : seen.keySet()) {
+      if (Objects.equals(ter, terName)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  public void updateResources() {
+    player = myMap.findPlayer(color);
+    foodQuantity.setText(Integer.toString(player.getFoodQuantity()));
+    moneyQuantity.setText(Integer.toString(player.getMoneyQuantity()));
+    techLevelLabel.setText(Integer.toString(player.getTechLevel()));
+  }
+
+
+  public void updateTerritoryText() {
+    String ter = "You have 30 total units, how do you want to place the units?\n" +
+        "you are " + color;
+    status.setText(ter);
+    System.out.println("Status: set text:" + ter);
+  }
+
+
+  public void updateMap() {
+    InitButtonMap();
+    updateButtonColors();
+    updateResources();
+  }
+
+  public String getStyle(String color) {
+    //set each button's shape and color
+    String style = "-fx-background-color: " + color + ";";
+    style += ";" + "-fx-border-color: black;";
+    return style;
+  }
+
+  @FXML
+  public void onCreateAttack(ActionEvent actionEvent) {
+    Object source = actionEvent.getSource();
+    if (source instanceof Button) {
+      Button btn = (Button) source;
+      System.out.println(btn.getId());
+    } else {
+      throw new IllegalArgumentException("Invalid source");
+    }
+
+    try {
+      AttackPopup popup = new AttackPopup();
+      popup.display();
+      String[] words = validAction(popup.action);
+      if (words != null) {
+        attacks.add(popup.action);
+        statusLabel("Attack " + words[1] + " with " + words[2] + "(Level " + words[3] +
+            ") units from " + words[0]);
+      } else {
+        statusLabel("Invalid Action");
+      }
+
+    } catch (IOException e) {
+      System.out.println("Could not display Attack Popup");
+    }
+  }
+
+  @FXML
+  public void onCreateMove(ActionEvent actionEvent) {
+    Object source = actionEvent.getSource();
+    if (source instanceof Button) {
+      Button btn = (Button) source;
+    } else {
+      throw new IllegalArgumentException("Invalid source");
+    }
+
+    try {
+      MovePopup popup = new MovePopup();
+      popup.display();
+      String[] words = validAction(popup.action);
+      if (words != null) {
+        moves.add(popup.action);
+        statusLabel("Move " + words[2] + "(Level " + words[3] +
+            ") units from " + words[0] + " to " + words[1]);
+      } else {
+        statusLabel("Invalid Action");
+      }
+    } catch (IOException e) {
+      System.out.println("Could not display Move Popup");
+    }
+  }
+
+  @FXML
+  public void onCreateUpgrade(ActionEvent actionEvent) {
+    Object source = actionEvent.getSource();
+    if (source instanceof Button) {
+      Button btn = (Button) source;
+      System.out.println(btn.getId());
+    } else {
+      throw new IllegalArgumentException("Invalid source");
+    }
+
+    try {
+      UpgradePopup popup = new UpgradePopup();
+      popup.display();
+      String[] words = validAction(popup.upgrade);
+      if (words != null) {
+        upgrades.add(popup.upgrade);
+        statusLabel("Upgrade " + words[1] + " units in "
+            + words[0] + " from level" + words[2] + " to " + words[3]);
+      } else {
+        statusLabel("Invalid Action");
+      }
+    } catch (IOException e) {
+      System.out.println("Could not display Upgrade Popup");
+    }
+  }
+
+  private String getTerritoryInfo(String terrName) {
+    StringBuilder sb = new StringBuilder();
+    sb.append("Territory " + terrName + "\n");
+    Territory t = myMap.findTerritory(terrName);
+    sb.append("Owner: " + t.getOwner().getName() + "\n");
+    //int[] unitCounts = new int[] {13, 0, 0, 0, 0, 0, 0};
+    for (int i = 0; i < 7; i++) {
+      sb.append("Level " + i + ": " + t.getUnits(i) + "\n");
+    }
+    sb.append("Food Production: 50\n");
+    sb.append("Money Production: 20\n");
+    sb.append("Size: " + t.getSize());
+    return sb.toString();
+  }
+
+  @FXML
+  public void onTerritory(ActionEvent actionEvent) {
+    Object source = actionEvent.getSource();
+    if (source instanceof Button) {
+      Button btn = (Button) source;
+      // if visible this round, update text
+      if (isVisibleTerr(btn.getText())) {
+        territoryStats.setText(getTerritoryInfo(btn.getText()));
+      } else { // if invisible, set old text from seen
+        String info = seen.containsKey(btn.getText()) ? seen.get(btn.getText()) : null;
+        territoryStats.setText(info);
+      }
+
+      if (myMap.findTerritory(btn.getText()).hasSpy(player) > 0) {
+        spyLabel.setVisible(true);
+      } else {
+        spyLabel.setVisible(false);
+      }
+
+    } else {
+      throw new IllegalArgumentException("Invalid source");
+    }
+  }
+
+  /**
+   * check if the territory is visible in this round, if yes, update ter info; else, do not update.
+   */
+  public boolean isVisibleTerr(String terName) {
+    HashSet<Territory> neighbors = new HashSet<>();
+    Player player = myMap.findPlayer(color);
+    Territory territory = myMap.findTerritory(terName);
+    for (Territory ter : player.getTerritoryList()) {
+      for (Territory nei : ter.getNeighbors()) {
+        neighbors.add(nei);
+      }
+    }
+    return player.getTerritoryList().contains(territory) || neighbors.contains(territory);
+  }
+
+  @FXML
+  public void onLevelUp(ActionEvent actionEvent) {
+    Object source = actionEvent.getSource();
+    if (source instanceof Button) {
+      Button btn = (Button) source;
+      techAction = true;
+      statusLabel("Upgrade Tech Level");
+    } else {
+      throw new IllegalArgumentException("Invalid source");
+    }
+  }
+
+  @FXML
+  public void onDone(ActionEvent actionEvent) throws Exception {
+    //disableButtons();
+    Object source = actionEvent.getSource();
+    if (source instanceof Button) {
+      Button btn = (Button) source;
+      for (String move : moves) {
+        System.out.println("Move : " + move);
+      }
+      for (String attack : attacks) {
+        System.out.println("Attack : " + attack);
+      }
+      for (String upgrade : upgrades) {
+        System.out.println("Upgrade : " + upgrade);
+      }
+      if (techAction) {
+        System.out.println("Player tech level upgrade");
+      }
+      ActionSet actionSet = new ActionSet();
+      actionSet.actionListAttack = attacks;
+      actionSet.actionListMove = moves;
+      actionSet.actionListUpgrade = upgrades;
+      actionSet.techLevelUpgrade = techAction;
+      objectOutputStream.reset();
+      objectOutputStream.writeObject(actionSet); //write 001
+      System.out.println("Status: write actionSet");
+      String actionProblem = (String) objectInputStream.readObject();//read 001
+      System.out.println("Status: read actionProblem: " + actionProblem);
+
+      if (actionProblem == null) {
+        statusLabel("Actions submitted to server. Waiting for updated map.");
+        btn.setStyle("-fx-background-color: Green");
+        myMap = (Map) objectInputStream.readObject();//read 002 //RoomThread 106
+        System.out.println("Status: Received updated Map.");
+        statusLabel("Received updated Map.");
+        btn.setStyle("-fx-background-color: White");
+        String endGame = (String) objectInputStream.readObject();//read 003
+        System.out.println("Status: read endGame: " + endGame);//keep going
+
+        /************For quit and continue part****************/
+
+        if (!checkWinner(endGame)) {
+          //What do we do here?
+          //debug 4.7 --> last to find the continue and quit
+          if (myMap.findPlayer(color).isLose() && myMap.findPlayer(color).getLoseStatus()
+              .equals("no act")) {
+            //    popup替换成
+            String quitOrContinue = losePopup();
+            if (quitOrContinue.equals("quit")) {
+              objectOutputStream.writeObject(quitOrContinue); // write 001
+              //change it at local player.
+              myMap.findPlayer(color).setLoseStatus(quitOrContinue);
             } else {
-                statusLabel("Invalid Action");
+              objectOutputStream.writeObject("no act");
             }
 
-        } catch (IOException e) {
-            System.out.println("Could not display Attack Popup");
-        }
-    }
+          } else if (myMap.findPlayer(color).isLose() && myMap.findPlayer(color).getLoseStatus()
+              .equals("quit")) {
+            System.out.println("Bye bye I quit");
+            objectOutputStream.writeObject("quit"); //write 001
 
-    @FXML
-    public void onCreateMove(ActionEvent actionEvent) {
-        Object source = actionEvent.getSource();
-        if (source instanceof Button) {
-            Button btn = (Button) source;
-        } else {
-            throw new IllegalArgumentException("Invalid source");
-        }
 
-        try {
-            MovePopup popup = new MovePopup();
-            popup.display();
-            String[] words = validAction(popup.action);
-            if (words != null) {
-                moves.add(popup.action);
-                statusLabel("Move " + words[2] + "(Level " + words[3] +
-                        ") units from " + words[0] + " to " + words[1]);
-            } else {
-                statusLabel("Invalid Action");
-            }
-        } catch (IOException e) {
-            System.out.println("Could not display Move Popup");
-        }
-    }
+          } else if (myMap.findPlayer(color).isLose() && myMap.findPlayer(color).getLoseStatus()
+              .equals("continue")) {
 
-    @FXML
-    public void onCreateUpgrade(ActionEvent actionEvent) {
-        Object source = actionEvent.getSource();
-        if (source instanceof Button) {
-            Button btn = (Button) source;
-            System.out.println(btn.getId());
-        } else {
-            throw new IllegalArgumentException("Invalid source");
+            System.out.println("player decide to continue!");
+            objectOutputStream.writeObject("continue");  //write 001
+          } else {
+            objectOutputStream.writeObject("no act"); //write 002
+          }
         }
 
-        try {
-            UpgradePopup popup = new UpgradePopup();
-            popup.display();
-            String[] words = validAction(popup.upgrade);
-            if (words != null) {
-                upgrades.add(popup.upgrade);
-                statusLabel("Upgrade " + words[1] + " units in "
-                        + words[0] + " from level" + words[2] + " to " + words[3]);
-            } else {
-                statusLabel("Invalid Action");
-            }
-        } catch (IOException e) {
-            System.out.println("Could not display Upgrade Popup");
-        }
-    }
+        /*********************************************/
 
-    private String getTerritoryInfo(String terrName) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Territory " + terrName + "\n");
-        Territory t = myMap.findTerritory(terrName);
-        sb.append("Owner: " + t.getOwner().getName() + "\n");
-        //int[] unitCounts = new int[] {13, 0, 0, 0, 0, 0, 0};
-        for (int i = 0; i < 7; i++) {
-            sb.append("Level " + i + ": " + t.getUnits(i) + "\n");
-        }
-        sb.append("Food Production: 50\n");
-        sb.append("Money Production: 20\n");
-        sb.append("Size: " + t.getSize());
-        return sb.toString();
-    }
+      } else {
 
-    @FXML
-    public void onTerritory(ActionEvent actionEvent) {
-        Object source = actionEvent.getSource();
-        if (source instanceof Button) {
-            Button btn = (Button) source;
-            // if visible this round, update text
-            if (isVisibleTerr(btn.getText())) {
-                territoryStats.setText(getTerritoryInfo(btn.getText()));
-            } else { // if invisible, set old text from seen
-                String info = seen.containsKey(btn.getText()) ? seen.get(btn.getText()):null;
-                territoryStats.setText(info);
-            }
-        } else {
-            throw new IllegalArgumentException("Invalid source");
-        }
-    }
-
-    /**
-     * check if the territory is visible in this round, if yes, update ter info;
-     * else, do not update.
-     * @param terName
-     * @return
-     */
-    public boolean isVisibleTerr(String terName) {
-        HashSet<Territory> neighbors = new HashSet<>();
-        Player player = myMap.findPlayer(color);
-        Territory territory = myMap.findTerritory(terName);
-        for (Territory ter: player.getTerritoryList()) {
-            for (Territory nei: ter.getNeighbors()) {
-                neighbors.add(nei);
-            }
-        }
-        return player.getTerritoryList().contains(territory) || neighbors.contains(territory);
-    }
-
-    @FXML
-    public void onLevelUp(ActionEvent actionEvent) {
-        Object source = actionEvent.getSource();
-        if (source instanceof Button) {
-            Button btn = (Button) source;
-            techAction = true;
-            statusLabel("Upgrade Tech Level");
-        } else {
-            throw new IllegalArgumentException("Invalid source");
-        }
-    }
-
-    @FXML
-    public void onDone(ActionEvent actionEvent) throws Exception {
-        //disableButtons();
-        Object source = actionEvent.getSource();
-        if (source instanceof Button) {
-            Button btn = (Button) source;
-            for (String move : moves) {
-                System.out.println("Move : " + move);
-            }
-            for (String attack : attacks) {
-                System.out.println("Attack : " + attack);
-            }
-            for (String upgrade : upgrades) {
-                System.out.println("Upgrade : " + upgrade);
-            }
-            if (techAction) {
-                System.out.println("Player tech level upgrade");
-            }
-            ActionSet actionSet = new ActionSet();
-            actionSet.actionListAttack = attacks;
-            actionSet.actionListMove = moves;
-            actionSet.actionListUpgrade = upgrades;
-            actionSet.techLevelUpgrade = techAction;
-            objectOutputStream.reset();
-            objectOutputStream.writeObject(actionSet); //write 001
-            System.out.println("Status: write actionSet");
-            String actionProblem = (String) objectInputStream.readObject();//read 001
-            System.out.println("Status: read actionProblem: " + actionProblem);
-
-            if (actionProblem == null) {
-                statusLabel("Actions submitted to server. Waiting for updated map.");
-                btn.setStyle("-fx-background-color: Green");
-                myMap = (Map) objectInputStream.readObject();//read 002 //RoomThread 106
-                System.out.println("Status: Received updated Map.");
-                statusLabel("Received updated Map.");
-                btn.setStyle("-fx-background-color: White");
-                String endGame = (String) objectInputStream.readObject();//read 003
-                System.out.println("Status: read endGame: " + endGame);//keep going
-
-                /************For quit and continue part****************/
-
-
-                if (!checkWinner(endGame)) {
-                    //What do we do here?
-                    //debug 4.7 --> last to find the continue and quit
-                    if (myMap.findPlayer(color).isLose() && myMap.findPlayer(color).getLoseStatus().equals("no act")) {
-                    //    popup替换成
-                        String quitOrContinue = losePopup();
-                        if(quitOrContinue.equals("quit")){
-                            objectOutputStream.writeObject(quitOrContinue); // write 001
-                            //change it at local player.
-                            myMap.findPlayer(color).setLoseStatus(quitOrContinue);
-                        }
-                        else{
-                             objectOutputStream.writeObject("no act");
-                        }
-                        
-                    } else if (myMap.findPlayer(color).isLose() && myMap.findPlayer(color).getLoseStatus().equals("quit")) {
-                        System.out.println("Bye bye I quit");
-                        objectOutputStream.writeObject("quit"); //write 001
-
-
-
-                    } else if (myMap.findPlayer(color).isLose() && myMap.findPlayer(color).getLoseStatus().equals("continue")) {
-
-                        System.out.println("player decide to continue!");
-                        objectOutputStream.writeObject("continue");  //write 001
-                    } else {
-                        objectOutputStream.writeObject("no act"); //write 002
-                    }
-                }
-
-                /*********************************************/
-
-
-
-
-            } 
-            else {
-
-                status.setText(actionProblem);
-                btn.setStyle("-fx-background-color: red");
-                //enableButtons();
-                resetActions();
-                updateMap();
-                return;
-            }
-
-        } else {
-            throw new IllegalArgumentException("Invalid Done Button");
-        }
-        // TODO: check results and triggle game end page
-
+        status.setText(actionProblem);
+        btn.setStyle("-fx-background-color: red");
+        //enableButtons();
         resetActions();
         updateMap();
-        //enableButtons();
+        return;
+      }
 
+    } else {
+      throw new IllegalArgumentException("Invalid Done Button");
     }
+    // TODO: check results and triggle game end page
 
-    public boolean checkWinner(String endGame) throws IOException {
+    resetActions();
+    updateMap();
+    //enableButtons();
 
-        if (endGame.equals("win")){
-            System.out.println("You have won");
-            status.setText("You have won!");
+  }
 
-            // display page
-            FXMLLoader loaderStart = new FXMLLoader(getClass().getResource("/FXML/WinView.fxml"));
-            loaderStart.setControllerFactory(c->{
-                return new WinPage(Window,objectInputStream,objectOutputStream);
-            });
-            Scene scene = new Scene(loaderStart.load());
-            Window.setScene(scene);
-            Window.show();
+  public boolean checkWinner(String endGame) throws IOException {
 
-            return true;
-        }
-        else if (endGame.equals("game over")){
-            System.out.println("Gameover, you have lost.");
-            status.setText("Gameover, you have lost.");
+    if (endGame.equals("win")) {
+      System.out.println("You have won");
+      status.setText("You have won!");
 
-            // display page
-            FXMLLoader loaderStart = new FXMLLoader(getClass().getResource("/FXML/LoseView.fxml"));
-            loaderStart.setControllerFactory(c->{
-                return new LosePage(Window,objectInputStream,objectOutputStream);
-            });
-            Scene scene = new Scene(loaderStart.load());
-            Window.setScene(scene);
-            Window.show();
+      // display page
+      FXMLLoader loaderStart = new FXMLLoader(getClass().getResource("/FXML/WinView.fxml"));
+      loaderStart.setControllerFactory(c -> {
+        return new WinPage(Window, objectInputStream, objectOutputStream);
+      });
+      Scene scene = new Scene(loaderStart.load());
+      Window.setScene(scene);
+      Window.show();
 
-            return true;
-        }
-        return false;
+      return true;
+    } else if (endGame.equals("game over")) {
+      System.out.println("Gameover, you have lost.");
+      status.setText("Gameover, you have lost.");
+
+      // display page
+      FXMLLoader loaderStart = new FXMLLoader(getClass().getResource("/FXML/LoseView.fxml"));
+      loaderStart.setControllerFactory(c -> {
+        return new LosePage(Window, objectInputStream, objectOutputStream);
+      });
+      Scene scene = new Scene(loaderStart.load());
+      Window.setScene(scene);
+      Window.show();
+
+      return true;
     }
+    return false;
+  }
 
-    public void statusLabel(String message) {
-        String label = "Last Action: " + message;
-        status.setText(label);
+  public void statusLabel(String message) {
+    String label = "Last Action: " + message;
+    status.setText(label);
+  }
+
+  public String[] validAction(String actionString) {
+    if (actionString == null) {
+      return null;
     }
-
-    public String[] validAction(String actionString) {
-        if (actionString == null) {
-            return null;
-        }
-        String[] words = actionString.split(" ");
-        if (words.length != 4) {
-            return null;
-        }
-        return words;
+    String[] words = actionString.split(" ");
+    if (words.length != 4) {
+      return null;
     }
+    return words;
+  }
 
-    public static void resetActions() {
-        attacks.clear();
-        moves.clear();
-        upgrades.clear();
-        techAction = false;
+  public static void resetActions() {
+    attacks.clear();
+    moves.clear();
+    upgrades.clear();
+    techAction = false;
+  }
+
+  public String losePopup() throws Exception {
+    try {
+      LosePopup popup = new LosePopup();
+      popup.display();
+      return popup.quitOrContinue;
+
+    } catch (IOException e) {
+      System.out.println("Could not display Unit Popup");
     }
-
-    public String losePopup() throws Exception{
-        try {
-            LosePopup popup = new LosePopup();
-            popup.display();
-            return popup.quitOrContinue;
-
-        } catch (IOException e) {
-            System.out.println("Could not display Unit Popup");
-        }
-        return null;
-    }
+    return null;
+  }
 
 
+  @FXML
+  public void back2room() throws IOException {
+    Socket socket = new Socket("localhost", 8080);
+    OutputStream outputStream = socket.getOutputStream();
+    ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
 
-    @FXML
-    public void back2room() throws IOException {
-        Socket socket = new Socket("localhost", 8080);
-        OutputStream outputStream = socket.getOutputStream();
-        ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
+    InputStream inputStream = socket.getInputStream();
+    ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
 
-        InputStream inputStream = socket.getInputStream();
-        ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
-
-        this.Window = Window;
-        FXMLLoader loaderStart = new FXMLLoader(getClass().getResource("/FXML/StartView.fxml"));
-        loaderStart.setControllerFactory(c->{
-            //debug 4.9
-            return new StartGameController(Window,objectInputStream,objectOutputStream);
-        });
-        Scene scene = new Scene(loaderStart.load());
-        Window.setScene(scene);
-        Window.show();
-    }
+    this.Window = Window;
+    FXMLLoader loaderStart = new FXMLLoader(getClass().getResource("/FXML/StartView.fxml"));
+    loaderStart.setControllerFactory(c -> {
+      //debug 4.9
+      return new StartGameController(Window, objectInputStream, objectOutputStream);
+    });
+    Scene scene = new Scene(loaderStart.load());
+    Window.setScene(scene);
+    Window.show();
+  }
 }
 

@@ -208,5 +208,4 @@ public class Player implements Serializable {
   public void setMoneyQuantity(int moneyQuantity) {
     money.setResource(moneyQuantity);
   }
-
 }

@@ -19,6 +19,7 @@ public class Territory implements Serializable {
   private HashSet<Territory> neighbors;
   private int mockUnits;
   private int size;
+  private HashMap<Player, Spy> spies;
 
   /**
    * Constructor to create a Territory
@@ -38,6 +39,7 @@ public class Territory implements Serializable {
     units.put(6, new Level6Unit());
     // size of territory default as 10
     this.size = 10;
+    this.spies = new HashMap<>();
   }
 
   /**
@@ -310,5 +312,46 @@ public class Territory implements Serializable {
 
   public int getSize() {
     return size;
+  }
+
+  public void moveSpy(Player owner, Territory destination, int numUnits) {
+    spies.get(owner).addUnits(-numUnits);
+
+    if (destination.getSpies().get(owner) == null) {
+      destination.getSpies().put(owner, new Spy(numUnits));
+    } else {
+      destination.getSpies().get(owner).addUnits(numUnits);
+    }
+  }
+
+  /**
+   * Add a Spy Unit to spies HashSet
+   *
+   * @param owner Player controlling this Spy
+   */
+  public void addSpy(Player owner) {
+    //Add cost
+    if (spies.get(owner) == null) {
+      spies.put(owner, new Spy());
+    } else {
+      spies.get(owner).addUnits(1);
+    }
+  }
+
+  public int hasSpy(Player owner) {
+    Spy spy = spies.get(owner);
+    if (spy == null) {
+      return 0;
+    }
+    return spy.getNumUnits();
+  }
+
+  /**
+   * Getter for this Territory's Spies
+   *
+   * @return HashMap of Spies
+   */
+  public HashMap<Player, Spy> getSpies() {
+    return spies;
   }
 }
