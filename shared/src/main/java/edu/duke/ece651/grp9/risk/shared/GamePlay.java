@@ -125,6 +125,10 @@ public class GamePlay {
     Player player = map.findPlayer(color);
     Territory source = map.findTerritory(words[0]);
 
+    if (source == null) {
+      return null;
+    }
+
     try {
       numUnits = Integer.parseInt(words[1]);
     } catch (NumberFormatException e) {
@@ -143,6 +147,18 @@ public class GamePlay {
     return new UpgradeAction(player, source, numUnits, unitLevelStart, unitLevelEnd);
   }
 
+
+  public Action createCloak(Map map, String color, String action) {
+    //String[] words = action.split(" ");
+    Player player = map.findPlayer(color);
+    Territory destination = map.findTerritory(action);
+    if (destination == null) {
+      return null;
+    }
+    return new CloakAction(player, destination);
+
+  }
+
   /**
    * Checks is a set of Actions from client is valid
    *
@@ -152,11 +168,11 @@ public class GamePlay {
    * @return null if no error, String describing problem if there is error
    */
   public String validActionSet(Player player, HashSet<MoveAction> moves, HashSet<AttackAction> attacks,
-      HashSet<UpgradeAction> upgrades, boolean techLevelUpgrade) {
+      HashSet<UpgradeAction> upgrades, boolean techLevelUpgrade, boolean research, HashSet<CloakAction> cloaks) {
     int foodCost = 0;
     int moneyCost = 0;
     //Once we first meet the problem, then reenter with "Done", moves and attacks would be "NULL"
-    if (moves.isEmpty() && attacks.isEmpty() && upgrades.isEmpty() && !techLevelUpgrade) {
+    if (moves.isEmpty() && attacks.isEmpty() && upgrades.isEmpty() && !techLevelUpgrade && !research && cloaks.isEmpty()) {
       return null;
     }
     for (MoveAction move : moves) {
@@ -208,6 +224,34 @@ public class GamePlay {
 
     if (moneyCost > player.getMoneyQuantity()) {
       return "Do not have enough money to do upgrade orders";
+    }
+
+    if (research) {
+      ResearchAction researchAction = new ResearchAction(player);
+      String error = researchAction.canPerformAction();
+      moneyCost += researchAction.computeCost();
+      if (error != null) {
+        return error;
+      }
+    }
+
+    if (moneyCost > player.getMoneyQuantity()) {
+      return "Do not have enough money to do research orders";
+    }
+
+    for (CloakAction cloak: cloaks) {
+      if (cloak == null) {
+        return "This action is invalid: Territory does not exist";
+      }
+      String error = cloak.canPerformAction();
+      moneyCost += cloak.computeCost();
+      if (error != null) {
+        return error;
+      }
+    }
+
+    if (moneyCost > player.getMoneyQuantity()) {
+      return "Do not have enough money to do cloak orders";
     }
 
     for (Territory territory : player.getTerritoryList()) {
@@ -276,6 +320,22 @@ public class GamePlay {
     for (TechAction techAction: allTechLevels) {
       if (techAction != null) {
         techAction.performAction();
+      }
+    }
+  }
+
+  public void playResearch(HashSet<ResearchAction> allResearch) {
+    for (ResearchAction researchAction: allResearch) {
+      if (researchAction != null) {
+        researchAction.performAction();
+      }
+    }
+  }
+
+  public void playCloak(HashSet<CloakAction> allCloaks) {
+    for (CloakAction cloakAction: allCloaks) {
+      if (cloakAction != null) {
+        cloakAction.performAction();
       }
     }
   }

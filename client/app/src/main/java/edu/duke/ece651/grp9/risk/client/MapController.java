@@ -28,8 +28,10 @@ public class MapController {
     @FXML public Label moneyQuantity;
     @FXML public Label techLevelLabel;
     @FXML public Label colorLabel;
+    @FXML public Label researchLabel;
 
     @FXML public Button A;
+
     @FXML public Button B;
     @FXML public Button C;
     @FXML public Button D;
@@ -44,6 +46,7 @@ public class MapController {
     private Map myMap;
     private Player player;
     private String color;
+    private Button researchButton;
 
 
     @FXML
@@ -60,12 +63,18 @@ public class MapController {
     Button createUpgrade;
     @FXML
     Button levelUp;
+    @FXML
+    Button research;
+    @FXML
+    Button createClock;
 
     public static HashSet<String> attacks = new HashSet<>();
     public static HashSet<String> moves = new HashSet<>();
     public static HashSet<String> upgrades = new HashSet<>();
     public static boolean techAction = false;
     public HashMap<String, String> seen = new HashMap<>();
+    public static boolean researchAction = false;
+    public static HashSet<String> cloaks = new HashSet<>();
 
     public ObjectOutputStream objectOutputStream;
     public ObjectInputStream objectInputStream;
@@ -86,6 +95,8 @@ public class MapController {
         ButtonMap.put("H", H);
         ButtonMap.put("I", I);
         ButtonMap.put("J", J);
+        researchButton = research;
+
     }
 
 
@@ -159,14 +170,14 @@ public class MapController {
             for (Territory ter : p.getTerritoryList()) {
                 String terColor = ter.getOwner().getName();
                 // if it's owned by player or adjacency territories, show color
-               if (p.equals(player) || (!p.equals(player) && isNeighbor(ter))) {
+               if (p.equals(player) || (!p.equals(player) && isNeighbor(ter)  && ter.getCloackNum() == 0 )) {
                     String style = getStyle(terColor);
                     Button button = ButtonMap.get(ter.getName());
                     button.setStyle(style);
                     button.setCursor(Cursor.HAND);
                     // save old info to hashset seen
                     seen.put(ter.getName(), getTerritoryInfo(ter.getName()));
-                } else if (hasSeen(ter.getName())) {
+                } else if (hasSeen(ter.getName())  && ter.getCloackNum() == 0) {
                    // if has seen before, set grey background color
                    Button button = ButtonMap.get(ter.getName());
                    button.setStyle(getStyle("grey"));
@@ -180,6 +191,10 @@ public class MapController {
         }
         for (String unusedButton: allButtons) {
             Button button = ButtonMap.get(unusedButton);
+            button.setDisable(true);
+        }
+        if (player.getResearched()) {
+            Button button = researchButton;
             button.setDisable(true);
         }
     }
@@ -218,6 +233,8 @@ public class MapController {
         foodQuantity.setText(Integer.toString(player.getFoodQuantity()));
         moneyQuantity.setText(Integer.toString(player.getMoneyQuantity()));
         techLevelLabel.setText(Integer.toString(player.getTechLevel()));
+        System.out.println(player.getResearched());
+        researchLabel.setText(player.getResearched()? "YES": "NO");
     }
 
 
@@ -320,6 +337,31 @@ public class MapController {
         }
     }
 
+    @FXML
+    public void onCreateCloak(ActionEvent actionEvent) {
+        Object source = actionEvent.getSource();
+        if (source instanceof Button) {
+            Button btn = (Button) source;
+            System.out.println(btn.getId());
+        } else {
+            throw new IllegalArgumentException("Invalid source");
+        }
+
+        try {
+            CloakPopup popup = new CloakPopup();
+            popup.display();
+            int checkNum = popup.cloak.split(" ").length;
+            if (checkNum == 1) {
+                cloaks.add(popup.cloak);
+                statusLabel("Cloak territory " + popup.cloak);
+            } else {
+                statusLabel("Invalid Action");
+            }
+        } catch (IOException e) {
+            System.out.println("Could not display Cloak Popup");
+        }
+    }
+
     private String getTerritoryInfo(String terrName) {
         StringBuilder sb = new StringBuilder();
         sb.append("Territory " + terrName + "\n");
@@ -329,9 +371,10 @@ public class MapController {
         for (int i = 0; i < 7; i++) {
             sb.append("Level " + i + ": " + t.getUnits(i) + "\n");
         }
-        sb.append("Food Production: 50\n");
-        sb.append("Money Production: 20\n");
-        sb.append("Size: " + t.getSize());
+        sb.append("Food Prod: 50\n");
+        sb.append("Money Prod: 20\n");
+        sb.append("Size: " + t.getSize() + "\n");
+        sb.append("Clock Number: " + t.getCloackNum());
         return sb.toString();
     }
 
@@ -340,10 +383,14 @@ public class MapController {
         Object source = actionEvent.getSource();
         if (source instanceof Button) {
             Button btn = (Button) source;
-            // if visible this round, update text
-            if (isVisibleTerr(btn.getText())) {
+            Territory ter = myMap.findTerritory(btn.getText());
+            // if visible this round and the neighbored territory is not cloaked, update text
+            if (player.getTerritoryList().contains(ter) || (isVisibleTerr(btn.getText()) && ter.getCloackNum() == 0)) {
                 territoryStats.setText(getTerritoryInfo(btn.getText()));
-            } else { // if invisible, set old text from seen
+            } else if (isVisibleTerr(btn.getText()) && ter.getCloackNum() > 0) {
+                // if the neighbored territory was cloaked, display null
+                territoryStats.setText(null);
+            } else { // if the territory is invisible, set old text from seen, or null if it hasn't been seen before
                 String info = seen.containsKey(btn.getText()) ? seen.get(btn.getText()):null;
                 territoryStats.setText(info);
             }
@@ -367,7 +414,7 @@ public class MapController {
                 neighbors.add(nei);
             }
         }
-        return player.getTerritoryList().contains(territory) || neighbors.contains(territory);
+        return neighbors.contains(territory);
     }
 
     @FXML
@@ -377,6 +424,19 @@ public class MapController {
             Button btn = (Button) source;
             techAction = true;
             statusLabel("Upgrade Tech Level");
+        } else {
+            throw new IllegalArgumentException("Invalid source");
+        }
+    }
+
+
+    @FXML
+    public void onResearch(ActionEvent actionEvent) {
+        Object source = actionEvent.getSource();
+        if (source instanceof Button) {
+            Button btn = (Button) source;
+            researchAction = true;
+            statusLabel("Do research order");
         } else {
             throw new IllegalArgumentException("Invalid source");
         }
@@ -400,11 +460,19 @@ public class MapController {
             if (techAction) {
                 System.out.println("Player tech level upgrade");
             }
+            if (researchAction) {
+                System.out.println("Player do research");
+            }
+            for (String cloak: cloaks) {
+                System.out.println("cloak : " + cloak);
+            }
             ActionSet actionSet = new ActionSet();
             actionSet.actionListAttack = attacks;
             actionSet.actionListMove = moves;
             actionSet.actionListUpgrade = upgrades;
             actionSet.techLevelUpgrade = techAction;
+            actionSet.doResearch = researchAction;
+            actionSet.actionListCloak = cloaks;
             objectOutputStream.reset();
             objectOutputStream.writeObject(actionSet); //write 001
             System.out.println("Status: write actionSet");
@@ -537,6 +605,8 @@ public class MapController {
         moves.clear();
         upgrades.clear();
         techAction = false;
+        researchAction = false;
+        cloaks.clear();
     }
 
     public String losePopup() throws Exception{
