@@ -3,6 +3,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Objects;
 
 /**
  * The class is to define a map for a game.
@@ -132,6 +133,43 @@ public class Map implements Serializable{
     for (Player player: players) {
       player.updatePlayerResource();
     }
+  }
+
+  /**
+   * get the territory's information
+   * @param terrName
+   * @return
+   */
+  public String getTerritoryInfo(String terrName) {
+    StringBuilder sb = new StringBuilder();
+    sb.append("Territory " + terrName + "\n");
+    Territory t = this.findTerritory(terrName);
+    sb.append("Owner: " + t.getOwner().getName() + "\n");
+    //int[] unitCounts = new int[] {13, 0, 0, 0, 0, 0, 0};
+    for (int i = 0; i < 7; i++) {
+      sb.append("Level " + i + ": " + t.getUnits(i) + "\n");
+    }
+    sb.append("Food Prod: 50\n");
+    sb.append("Money Prod: 20\n");
+    sb.append("Size: " + t.getSize() + "\n");
+    sb.append("Clock Number: " + t.getCloackNum());
+    return sb.toString();
+  }
+
+  /**
+   * check if territory t is the neighbors of player
+   * @param t is the given territory
+   * @return true if it's neighbor
+   */
+  public boolean isNeighbor(Territory t, String color) {
+    for (Territory ter: this.findPlayer(color).getTerritoryList()) {
+      for (Territory nei: ter.getNeighbors()) {
+        if (Objects.equals(t.getName(), nei.getName())) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
 
 }

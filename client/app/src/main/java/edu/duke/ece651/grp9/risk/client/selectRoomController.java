@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.ResourceBundle;
@@ -43,24 +44,11 @@ public class selectRoomController {
     public void initialize() {
         InitButtonMap();
         try {
-
-            String startOrnot1 = (String) objectInputStream.readObject();
-            String startOrnot2 = (String) objectInputStream.readObject();
-            String startOrnot3 = (String) objectInputStream.readObject();
-            String startOrnot4 = (String) objectInputStream.readObject();
-
-            if (startOrnot1.equals("true")) {
-                System.out.println("ROOM 1 FULL");
-                ButtonMap.get("room1").setDisable(true);
-            }
-            if (startOrnot2.equals("true")) {
-                ButtonMap.get("room2").setDisable(true);
-            }
-            if (startOrnot3.equals("true")) {
-                ButtonMap.get("room3").setDisable(true);
-            }
-            if (startOrnot4.equals("true")) {
-                ButtonMap.get("room4").setDisable(true);
+            for (int i = 1; i <= 4; i++) {
+                String roomStatus = (String) objectInputStream.readObject();
+                if (roomStatus.equals("true")) {
+                    ButtonMap.get("room"+i).setDisable(true);
+                }
             }
         }
         catch(Exception e){

@@ -170,13 +170,13 @@ public class MapController {
             for (Territory ter : p.getTerritoryList()) {
                 String terColor = ter.getOwner().getName();
                 // if it's owned by player or adjacency territories, show color
-               if (p.equals(player) || (!p.equals(player) && isNeighbor(ter)  && ter.getCloackNum() == 0 )) {
+               if (p.equals(player) || (!p.equals(player) && myMap.isNeighbor(ter, color) && ter.getCloackNum() == 0 )) {
                     String style = getStyle(terColor);
                     Button button = ButtonMap.get(ter.getName());
                     button.setStyle(style);
                     button.setCursor(Cursor.HAND);
                     // save old info to hashset seen
-                    seen.put(ter.getName(), getTerritoryInfo(ter.getName()));
+                    seen.put(ter.getName(), myMap.getTerritoryInfo(ter.getName()));
                 } else if (hasSeen(ter.getName())  && ter.getCloackNum() == 0) {
                    // if has seen before, set grey background color
                    Button button = ButtonMap.get(ter.getName());
@@ -199,21 +199,21 @@ public class MapController {
         }
     }
 
-    /**
-     * check if territory t is the neighbors of player
-     * @param t is the given territory
-     * @return true if it's neighbor
-     */
-    private boolean isNeighbor(Territory t) {
-        for (Territory ter: myMap.findPlayer(color).getTerritoryList()) {
-            for (Territory nei: ter.getNeighbors()) {
-                if (Objects.equals(t.getName(), nei.getName())) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
+//    /**
+//     * check if territory t is the neighbors of player
+//     * @param t is the given territory
+//     * @return true if it's neighbor
+//     */
+//    private boolean isNeighbor(Territory t) {
+//        for (Territory ter: myMap.findPlayer(color).getTerritoryList()) {
+//            for (Territory nei: ter.getNeighbors()) {
+//                if (Objects.equals(t.getName(), nei.getName())) {
+//                    return true;
+//                }
+//            }
+//        }
+//        return false;
+//    }
 
 
     /**
@@ -362,21 +362,22 @@ public class MapController {
         }
     }
 
-    private String getTerritoryInfo(String terrName) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Territory " + terrName + "\n");
-        Territory t = myMap.findTerritory(terrName);
-        sb.append("Owner: " + t.getOwner().getName() + "\n");
-        //int[] unitCounts = new int[] {13, 0, 0, 0, 0, 0, 0};
-        for (int i = 0; i < 7; i++) {
-            sb.append("Level " + i + ": " + t.getUnits(i) + "\n");
-        }
-        sb.append("Food Prod: 50\n");
-        sb.append("Money Prod: 20\n");
-        sb.append("Size: " + t.getSize() + "\n");
-        sb.append("Clock Number: " + t.getCloackNum());
-        return sb.toString();
-    }
+    // move to map class
+//    private String getTerritoryInfo(String terrName) {
+//        StringBuilder sb = new StringBuilder();
+//        sb.append("Territory " + terrName + "\n");
+//        Territory t = myMap.findTerritory(terrName);
+//        sb.append("Owner: " + t.getOwner().getName() + "\n");
+//        //int[] unitCounts = new int[] {13, 0, 0, 0, 0, 0, 0};
+//        for (int i = 0; i < 7; i++) {
+//            sb.append("Level " + i + ": " + t.getUnits(i) + "\n");
+//        }
+//        sb.append("Food Prod: 50\n");
+//        sb.append("Money Prod: 20\n");
+//        sb.append("Size: " + t.getSize() + "\n");
+//        sb.append("Clock Number: " + t.getCloackNum());
+//        return sb.toString();
+//    }
 
     @FXML
     public void onTerritory(ActionEvent actionEvent) {
@@ -386,7 +387,7 @@ public class MapController {
             Territory ter = myMap.findTerritory(btn.getText());
             // if visible this round and the neighbored territory is not cloaked, update text
             if (player.getTerritoryList().contains(ter) || (isVisibleTerr(btn.getText()) && ter.getCloackNum() == 0)) {
-                territoryStats.setText(getTerritoryInfo(btn.getText()));
+                territoryStats.setText(myMap.getTerritoryInfo(btn.getText()));
             } else if (isVisibleTerr(btn.getText()) && ter.getCloackNum() > 0) {
                 // if the neighbored territory was cloaked, display null
                 territoryStats.setText(null);

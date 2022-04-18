@@ -120,4 +120,64 @@ public class MapTest {
   }
 
 
+    @Test
+    void getTerritoryInfo() {
+      Map map = new Map();
+      Player p1 = new Player("red");
+
+      map.addPlayer(p1);
+      p1.setMoneyQuantity(50);
+      p1.setFoodQuantity(100);
+
+      Territory ter1 = new Territory("NC");
+      map.addTerritory(ter1);
+      p1.addTerritory(ter1);
+      ter1.setOwner(p1);
+
+      ter1.setUnits(5,0);
+      ter1.setUnits(10,2);
+
+      String exp = "Territory NC\n" +
+              "Owner: red\n" +
+              "Level 0: 5\n" +
+              "Level 1: 0\n" +
+              "Level 2: 10\n" +
+              "Level 3: 0\n" +
+              "Level 4: 0\n" +
+              "Level 5: 0\n" +
+              "Level 6: 0\n" +
+              "Food Prod: 50\n" +
+              "Money Prod: 20\n" +
+              "Size: 10\n" +
+              "Clock Number: 0";
+      assertEquals(exp, map.getTerritoryInfo(ter1.getName()));
+
+    }
+
+    @Test
+    void isNeighbor() {
+      Map map = new Map();
+
+      Player p1 = new Player("red");
+      Player p2 = new Player("blue");
+      map.addPlayer(p1);
+      map.addPlayer(p2);
+
+      Territory ter1 = new Territory("NC");
+      Territory ter2 = new Territory("CA");
+      Territory ter3 = new Territory("MI");
+
+      p1.addTerritory(ter1);
+      p2.addTerritory(ter2);
+      p2.addTerritory(ter3);
+
+      ter1.addNeighbors(ter2);
+      ter2.addNeighbors(ter1);
+
+      assertEquals(true, map.isNeighbor(ter2, p1.getName()));
+      assertEquals(false, map.isNeighbor(ter3, p1.getName()));
+
+
+
+    }
 }
