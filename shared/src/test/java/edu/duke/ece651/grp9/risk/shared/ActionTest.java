@@ -82,12 +82,12 @@ public class ActionTest {
             action.performAction();
         }
 
-        assertEquals(t1.getUnit(), 4);
+        //assertEquals(t1.getUnit(), 4);
         assertEquals(t1.getUnits(0), 4);
 
         assertEquals(t2.getUnits(0), 8);
 
-        assertEquals(t3.getUnit(), 3);
+        //assertEquals(t3.getUnit(), 3);
         assertEquals(t3.getUnits(0), 3);
 
 

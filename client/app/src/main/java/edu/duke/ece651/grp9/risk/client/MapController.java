@@ -180,7 +180,7 @@ public class MapController {
       for (Territory ter : p.getTerritoryList()) {
         String terColor = ter.getOwner().getName();
 
-        boolean hasSpy = (ter.hasSpy(p) > 0) && (p.equals(player));
+        boolean hasSpy = (ter.hasSpy(player) > 0);// && (p.equals(player));
 
         // if it's owned by player or adjacency territories, show color
         if (p.equals(player) || (!p.equals(player) && isNeighbor(ter)) || hasSpy) {
@@ -200,20 +200,6 @@ public class MapController {
           button.setStyle("-fx-background-color: transparent");
         }
         allButtons.remove(ter.getName());
-      }
-    }
-
-    //TODO loop through this Player's spy. Line 212 shows button as null???
-    for (Territory territory : myMap.getList()) {
-      if (territory.hasSpy(player) > 0) {
-        String terColor = territory.getOwner().getName();
-        String style = getStyle(terColor);
-        System.out.println(territory.getName());
-        Button button = ButtonMap.get(territory.getName());
-        button.setStyle(style);
-        button.setCursor(Cursor.HAND);
-        seen.put(territory.getName(), getTerritoryInfo(territory.getName()));
-        allButtons.remove(territory.getName());
       }
     }
 
