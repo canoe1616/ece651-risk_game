@@ -19,7 +19,7 @@ public class Territory implements Serializable {
   private HashSet<Territory> neighbors;
   private int mockUnits;
   private int size;
-  private int cloackNum;
+  private int cloakNum;
 
   /**
    * Constructor to create a Territory
@@ -40,7 +40,7 @@ public class Territory implements Serializable {
     // size of territory default as 10
     this.size = 10;
     // default clock num as 0
-    this.cloackNum = 0;
+    this.cloakNum = 0;
   }
 
   /**
@@ -315,8 +315,8 @@ public class Territory implements Serializable {
     return size;
   }
 
-  public int getCloackNum() {
-    return cloackNum;
+  public int getCloakNum() {
+    return cloakNum;
   }
 
 
@@ -324,13 +324,13 @@ public class Territory implements Serializable {
    * do clock order on a given territory
    */
   public void doClockOnTerritory() {
-    this.cloackNum += 3;
+    this.cloakNum += 3;
   }
 
   /**
    * num of clockNum reduced by every turn
    */
   public void reduceClockNum() {
-    cloackNum -= 1;
+    cloakNum -= 1;
   }
 }

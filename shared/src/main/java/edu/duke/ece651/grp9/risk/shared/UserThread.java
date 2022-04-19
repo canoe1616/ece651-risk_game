@@ -8,9 +8,9 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 
-public class UserThread extends Thread{
+public class UserThread extends Thread {
     ArrayList<RoomThread> ActiveroomThreadList = new ArrayList<>();
-   // private static HashMap<String, String> userPassPairs;
+    // private static HashMap<String, String> userPassPairs;
     User user;
     Room room_1;
     Room room_2;
@@ -28,7 +28,7 @@ public class UserThread extends Thread{
 
 
     //user只选了一个room 去玩， 但是它可以选多个
-    public UserThread(Socket socket,Room room_1,Room room_2,Room room_3,Room room_4,RoomThread roomThread1,RoomThread roomThread2,RoomThread roomThread3, RoomThread roomThread4, GamePlay gameplay) {
+    public UserThread(Socket socket, Room room_1, Room room_2, Room room_3, Room room_4, RoomThread roomThread1, RoomThread roomThread2, RoomThread roomThread3, RoomThread roomThread4, GamePlay gameplay) {
         ActiveroomThreadList = new ArrayList<>();
         //this.socket = new Socket();
         this.roomThread1 = roomThread1;
@@ -41,8 +41,6 @@ public class UserThread extends Thread{
         this.room_4 = room_4;
         this.socket = socket;
         this.gameplay = gameplay;
-
-
 
     }
 
@@ -59,8 +57,8 @@ public class UserThread extends Thread{
 
         System.out.println("In the UserThread");
 
-        try{
-            
+        try {
+
             //Step1: 请输入你的username 和 password --  回传给client的东西是 account_check
             InputStream inputStream = socket.getInputStream();
             ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
@@ -84,18 +82,16 @@ public class UserThread extends Thread{
                 System.out.println("Everything good in the login part");
                 objectOutputStream.writeObject(password_correct);
                 //不管它之前有没有登陆过，我们都一定会返回这个user
-                this.user = new User(password_check,gameplay.userPassPairs.get(password_check));
+                this.user = new User(password_check, gameplay.userPassPairs.get(password_check));
 
             }
             //questions 如何确定两个user 的相等 还需要写一个hashFunction
 
-           if(gameplay.UserList.containsKey(user)) {
-               this.socket = gameplay.UserList.get(user);
-           }
-           else {
-               gameplay.UserList.put(user,this.socket);
-           }
-
+            if (gameplay.UserList.containsKey(user)) {
+                this.socket = gameplay.UserList.get(user);
+            } else {
+                gameplay.UserList.put(user, this.socket);
+            }
 
             /**
              *
@@ -108,144 +104,54 @@ public class UserThread extends Thread{
              */
 
             /**********************************************************************************/
-            if (room_1.isFull()){
-                room_1.startOrnot = true;
-                objectOutputStream.reset();
-                objectOutputStream.writeObject("true");
-                //System.out.println("Room_2 already start");
-            }
-            else{
-                objectOutputStream.reset();
-                objectOutputStream.writeObject("false");
+            ArrayList<Room> rooms = new ArrayList<>();
+            ArrayList<RoomThread> roomThreads = new ArrayList<>();
+            rooms.add(room_1);
+            rooms.add(room_2);
+            rooms.add(room_3);
+            rooms.add(room_4);
+            roomThreads.add(roomThread1);
+            roomThreads.add(roomThread2);
+            roomThreads.add(roomThread3);
+            roomThreads.add(roomThread4);
+
+            for (Room room : rooms) {
+                if (room.isFull()) {
+                    room.startOrnot = true;
+                    objectOutputStream.reset();
+                    objectOutputStream.writeObject("true");
+                } else {
+                    objectOutputStream.reset();
+                    objectOutputStream.writeObject("false");
+                }
             }
 
-            if (room_2.isFull()){
-                room_2.startOrnot = true;
-                objectOutputStream.reset();
-                objectOutputStream.writeObject("true");
-                //System.out.println("Room_2 already start");
-            }
-            else{
-                objectOutputStream.reset();
-                objectOutputStream.writeObject("false");
-            }
-            if (room_3.isFull()){
-                room_3.startOrnot = true;
-                objectOutputStream.reset();
-                objectOutputStream.writeObject("true");
-                //System.out.println("Room_2 already start");
-            }
-            else{
-                objectOutputStream.reset();
-                objectOutputStream.writeObject("false");
-            }
-            if (room_4.isFull()){
-                room_4.startOrnot = true;
-                objectOutputStream.reset();
-                objectOutputStream.writeObject("true");
-                //System.out.println("Room_2 already start");
-            }
-            else{
-                objectOutputStream.reset();
-                objectOutputStream.writeObject("false");
+            int room_id = (int) objectInputStream.readObject();
+            for (int i = 1; i <= 4; i++) {
+                if (room_id == i) {
+                    Room room = rooms.get(room_id-1);
+                    RoomThread roomThread = roomThreads.get(room_id-1);
+                    room.addUser(user);
+                    room.addSocket(socket);
+                    roomThread.InputList.add(objectInputStream);
+                    roomThread.OutputList.add(objectOutputStream);
+                    ActiveroomThreadList.add(roomThread);
+
+                    if (room.isFull() && room.startOrnot == false) {
+                        roomThread.start();
+                        System.out.println("Room_" + i + " already start");
+                    }
+                }
             }
 
-
-            int room_id = (int)objectInputStream.readObject();
-            if (room_id == 1 && !room_1.isFull()){
-                System.out.println("Room_1 add one user");
-                room_1.addUser(user);
-                room_1.addSocket(socket);
-                roomThread1.InputList.add(objectInputStream);
-                roomThread1.OutputList.add(objectOutputStream);
-                ActiveroomThreadList.add(roomThread1);
-            }
-            if (room_id == 2 && !room_2.isFull() ){
-                room_2.addUser(user);
-                room_2.addSocket(socket);
-                roomThread2.InputList.add(objectInputStream);
-                roomThread2.OutputList.add(objectOutputStream);
-                ActiveroomThreadList.add(roomThread2);
-            }
-            if (room_id == 3 && !room_3.isFull()){
-                room_3.addUser(user);
-                room_3.addSocket(socket);
-                roomThread3.InputList.add(objectInputStream);
-                roomThread3.OutputList.add(objectOutputStream);
-                ActiveroomThreadList.add(roomThread3);
-            }
-            if (room_id == 4 && !room_4.isFull()){
-                room_4.addUser(user);
-                room_4.addSocket(socket);
-                roomThread4.InputList.add(objectInputStream);
-                roomThread4.OutputList.add(objectOutputStream);
-                ActiveroomThreadList.add(roomThread4);
-            }
-
- 
-
-            /*********************************************************************************/
-                 //run every room thread
-            if (room_1.isFull() && room_1.startOrnot ==false){ // do we need a roomThreadList?
-
-                roomThread1.start();
-                System.out.println("Room_1 already start");
-            }
-            //x4
-            if (room_2.isFull() && room_2.startOrnot ==false){ // do we need a roomThreadList?
-
-                roomThread2.start();
-                System.out.println("Room_2 already start");
-            }
-            if (room_3.isFull() && room_3.startOrnot ==false){ // do we need a roomThreadList?
-
-                roomThread3.start();
-                System.out.println("Room_3 already start");
-            }
-            if (room_4.isFull() && room_4.startOrnot ==false){ // do we need a roomThreadList?
-
-                roomThread4.start();
-                System.out.println("Room_4 already start");
-            }
-
-
-
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e);
 
         }
+
     }
 
 
-
-
-
-
-
-        //这里应该还有加一行 当user的action是 "switch room"
-        //room 玩完之后
-
-
-
-
-
-
-
-
-
-
-
-
-
-            
-
-            //在每一轮的时候，我们switch room的，actionthread -》 switch room?
-            //view - room_list  四个
-            //room_t
-            //如果它
-
-
-        }
+}
 
 

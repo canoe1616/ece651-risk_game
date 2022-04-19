@@ -155,12 +155,12 @@ public class TerritoryTest {
   @Test
   void clockNum() {
     Territory territory = new Territory("A");
-    assertEquals(0, territory.getCloackNum());
+    assertEquals(0, territory.getCloakNum());
     territory.doClockOnTerritory();
-    assertEquals(3, territory.getCloackNum());
+    assertEquals(3, territory.getCloakNum());
     territory.reduceClockNum();
     territory.doClockOnTerritory();
     territory.doClockOnTerritory();
-    assertEquals(8, territory.getCloackNum());
+    assertEquals(8, territory.getCloakNum());
   }
 }

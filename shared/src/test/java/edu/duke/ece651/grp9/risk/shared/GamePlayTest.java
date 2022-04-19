@@ -470,8 +470,8 @@ class GamePlayTest {
     cloaks.add(new CloakAction(p1, map.findTerritory("B")));
     app.playCloak(cloaks);
     assertEquals(440, p1.getMoneyQuantity());
-    assertEquals(6, map.findTerritory("A").getCloackNum());
-    assertEquals(3, map.findTerritory("B").getCloackNum());
+    assertEquals(6, map.findTerritory("A").getCloakNum());
+    assertEquals(3, map.findTerritory("B").getCloakNum());
   }
 
 }
