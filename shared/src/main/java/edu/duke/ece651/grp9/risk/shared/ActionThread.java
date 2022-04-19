@@ -92,7 +92,7 @@ public class ActionThread extends Thread{
 
             // update cloak number
             for (Territory ter: player.getTerritoryList()) {
-              if (ter.getCloackNum() > 0) {
+              if (ter.getCloakNum() > 0) {
                 ter.reduceClockNum();
               }
             }

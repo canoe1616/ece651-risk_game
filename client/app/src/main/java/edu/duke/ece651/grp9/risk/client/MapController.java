@@ -170,14 +170,14 @@ public class MapController {
             for (Territory ter : p.getTerritoryList()) {
                 String terColor = ter.getOwner().getName();
                 // if it's owned by player or adjacency territories, show color
-               if (p.equals(player) || (!p.equals(player) && myMap.isNeighbor(ter, color) && ter.getCloackNum() == 0 )) {
+               if (p.equals(player) || (!p.equals(player) && myMap.isNeighbor(ter, color) && ter.getCloakNum() == 0 )) {
                     String style = getStyle(terColor);
                     Button button = ButtonMap.get(ter.getName());
                     button.setStyle(style);
                     button.setCursor(Cursor.HAND);
                     // save old info to hashset seen
                     seen.put(ter.getName(), myMap.getTerritoryInfo(ter.getName()));
-                } else if (hasSeen(ter.getName())  && ter.getCloackNum() == 0) {
+                } else if (hasSeen(ter.getName())  && ter.getCloakNum() == 0) {
                    // if has seen before, set grey background color
                    Button button = ButtonMap.get(ter.getName());
                    button.setStyle(getStyle("grey"));
@@ -362,7 +362,7 @@ public class MapController {
         }
     }
 
-    // move to map class
+    // move to map class, easier for testing
 //    private String getTerritoryInfo(String terrName) {
 //        StringBuilder sb = new StringBuilder();
 //        sb.append("Territory " + terrName + "\n");
@@ -386,9 +386,9 @@ public class MapController {
             Button btn = (Button) source;
             Territory ter = myMap.findTerritory(btn.getText());
             // if visible this round and the neighbored territory is not cloaked, update text
-            if (player.getTerritoryList().contains(ter) || (isVisibleTerr(btn.getText()) && ter.getCloackNum() == 0)) {
+            if (player.getTerritoryList().contains(ter) || (isVisibleTerr(btn.getText()) && ter.getCloakNum() == 0)) {
                 territoryStats.setText(myMap.getTerritoryInfo(btn.getText()));
-            } else if (isVisibleTerr(btn.getText()) && ter.getCloackNum() > 0) {
+            } else if (isVisibleTerr(btn.getText()) && ter.getCloakNum() > 0) {
                 // if the neighbored territory was cloaked, display null
                 territoryStats.setText(null);
             } else { // if the territory is invisible, set old text from seen, or null if it hasn't been seen before

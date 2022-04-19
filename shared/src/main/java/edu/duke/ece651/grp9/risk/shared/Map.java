@@ -152,7 +152,7 @@ public class Map implements Serializable{
     sb.append("Food Prod: 50\n");
     sb.append("Money Prod: 20\n");
     sb.append("Size: " + t.getSize() + "\n");
-    sb.append("Clock Number: " + t.getCloackNum());
+    sb.append("Cloak Number: " + t.getCloakNum());
     return sb.toString();
   }
 

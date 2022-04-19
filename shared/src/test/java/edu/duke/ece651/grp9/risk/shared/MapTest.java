@@ -149,7 +149,7 @@ public class MapTest {
               "Food Prod: 50\n" +
               "Money Prod: 20\n" +
               "Size: 10\n" +
-              "Clock Number: 0";
+              "Cloak Number: 0";
       assertEquals(exp, map.getTerritoryInfo(ter1.getName()));
 
     }
