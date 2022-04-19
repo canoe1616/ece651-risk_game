@@ -25,7 +25,7 @@ public class OwnerRuleChecker extends RuleChecker {
    */
   @Override
   protected String checkMyRule(Action action) {
-    if (!action.getSource().getOwner().equals(action.getPlayer())) {
+    if (action.getUnitLevel() < 7 && !action.getSource().getOwner().equals(action.getPlayer())) {
       return "This action is invalid: you do not own " + action.getSource().getName() + ".";
     }
     return null;

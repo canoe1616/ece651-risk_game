@@ -29,6 +29,13 @@ public class MoveRuleChecker extends RuleChecker {
    */
   @Override
   protected String checkMyRule(Action action) {
+    if (action.getUnitLevel() == 7) {
+      if (!action.getSource().getNeighbors().contains(action.getDestination())) {
+        return "This action is invalid: " + action.getSource().getName() +
+            " is not adjacent to " + action.getDestination().getName();
+      }
+      return null;
+    }
     Queue<Territory> queue = new LinkedList<Territory>();
     HashSet<Territory> visited = new HashSet<Territory>();
     queue.add(action.getSource());

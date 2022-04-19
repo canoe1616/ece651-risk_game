@@ -157,8 +157,12 @@ public class Territory implements Serializable {
    * @param unitLevel int level being moved between Territories
    */
   public void moveUnits(Territory destination, int numUnits, int unitLevel) {
-    this.units.get(unitLevel).addUnits(-numUnits);
-    destination.units.get(unitLevel).addUnits(numUnits);
+    if (unitLevel < 7) {
+      this.units.get(unitLevel).addUnits(-numUnits);
+      destination.units.get(unitLevel).addUnits(numUnits);
+    } else {
+
+    }
   }
 
   /**
@@ -255,7 +259,7 @@ public class Territory implements Serializable {
       }
     } else {
       spies.get(player).mockAction(-unitMovement);
-      destination.getSpies().get(player).mockAction(unitMovement);
+      //destination.getSpies().get(player).mockAction(unitMovement);
     }
   }
 
@@ -360,12 +364,13 @@ public class Territory implements Serializable {
   }
 
   public void moveSpy(Player owner, Territory destination, int numUnits) {
-    spies.get(owner).addUnits(-numUnits);
+    System.out.println("Move spy from " + this.getName() + " to " + destination.getName());
 
+    spies.get(owner).addUnits(-numUnits);
     if (destination.getSpies().get(owner) == null) {
       destination.getSpies().put(owner, new Spy(numUnits));
     } else {
-      destination.getSpies().get(owner).addUnits(numUnits);
+      destination.addSpy(owner, numUnits);//getSpies().get(owner).addUnits(numUnits);
     }
   }
 
@@ -377,7 +382,7 @@ public class Territory implements Serializable {
   public void addSpy(Player owner, int numUnits) {
     //Add cost
     if (spies.get(owner) == null) {
-      spies.put(owner, new Spy());
+      spies.put(owner, new Spy(numUnits));
     } else {
       spies.get(owner).addUnits(numUnits);
     }
