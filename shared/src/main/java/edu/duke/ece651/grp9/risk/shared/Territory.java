@@ -20,6 +20,7 @@ public class Territory implements Serializable {
   private int mockUnits;
   private int size;
   private int cloakNum;
+  private HashMap<Player, Spy> spies;
 
   /**
    * Constructor to create a Territory
@@ -41,6 +42,7 @@ public class Territory implements Serializable {
     this.size = 10;
     // default clock num as 0
     this.cloakNum = 0;
+    this.spies = new HashMap<>();
   }
 
   /**
@@ -158,8 +160,12 @@ public class Territory implements Serializable {
    * @param unitLevel int level being moved between Territories
    */
   public void moveUnits(Territory destination, int numUnits, int unitLevel) {
-    this.units.get(unitLevel).addUnits(-numUnits);
-    destination.units.get(unitLevel).addUnits(numUnits);
+    if (unitLevel < 7) {
+      this.units.get(unitLevel).addUnits(-numUnits);
+      destination.units.get(unitLevel).addUnits(numUnits);
+    } else {
+
+    }
   }
 
   /**
@@ -201,6 +207,18 @@ public class Territory implements Serializable {
     units.get(endLevel).addUnits(numUnits);
   }
 
+  //EVOLUTION 3
+  /**
+   * Upgrade Unit's to Spy Unit using Money Resource
+   *
+   * @param numUnits number of units to upgrade
+   * @param startLevel which Unit level to upgrade
+   */
+  public void upgradeSpy(Player owner, int numUnits, int startLevel) {
+    units.get(startLevel).addUnits(-numUnits);
+    addSpy(owner, numUnits);
+  }
+
   /**
    * Mock the Actions (Move and Attack). Updates mockUnits to ensure every Territory does not 0 or
    * more units after Player executes all set of moves
@@ -214,16 +232,37 @@ public class Territory implements Serializable {
 
   //EVOLUTION 2
   /**
-   * Mock the Actions (Move and Attack). Updates mockUnits to ensure every Territory does not 0 or
+   * Mock the Actions (Move and Attack). Updates mockUnits to ensure every Territory has 0 or
    * more units after Player executes all set of moves
    *
+   * @param destination Territory this Unit is being moved to
    * @param unitMovement number of units moving into destination Territory
+   * @param unitLevel level of Unit being moved, Spy is level 7
    */
   public void mockActions(Territory destination, int unitMovement, int unitLevel) {
-    units.get(unitLevel).mockAction(-unitMovement);
-    //If an upgrade action these units are not available for another Territory
-    if (!this.equals(destination)) {// && !destination.getOwner().equals(owner)) {
-      destination.units.get(unitLevel).mockAction(unitMovement);
+    mockActions(null, destination, unitMovement, unitLevel);
+  }
+
+  //EVOLUTION 3
+  /**
+   * Mock the Actions (Move and Attack). Updates mockUnits to ensure every Territory has 0 or
+   * more units after Player executes all set of moves
+   *
+   * @param player Player controlling this move, null if not moving a Spy Unit
+   * @param destination Territory this Unit is being moved to
+   * @param unitMovement number of units moving into destination Territory
+   * @param unitLevel level of Unit being moved, Spy is level 7
+   */
+  public void mockActions(Player player, Territory destination, int unitMovement, int unitLevel) {
+    if (unitLevel < 7) {
+      units.get(unitLevel).mockAction(-unitMovement);
+      //If an upgrade action these units are not available for another Territory
+      if (!this.equals(destination)) {// && !destination.getOwner().equals(owner)) {
+        destination.units.get(unitLevel).mockAction(unitMovement);
+      }
+    } else {
+      spies.get(player).mockAction(-unitMovement);
+      //destination.getSpies().get(player).mockAction(unitMovement);
     }
   }
 
@@ -233,10 +272,22 @@ public class Territory implements Serializable {
    * @return boolean value if mockUnits is at least 0
    */
   public boolean mockIsValid() {
+    return mockIsValid(null);
+  }
+
+  /**
+   * Checks so that no Territory is left with negative units count before Actions executed
+   *
+   * @return boolean value if mockUnits is at least 0
+   */
+  public boolean mockIsValid(Player player) {
     for (Unit unit : units.values()) {
       if (unit.getMockUnits() < 0) {
         return false;
       }
+    }
+    if (player != null && spies.get(player) != null && spies.get(player).getMockUnits() < 0) {
+      return false;
     }
     return true;
   }
@@ -332,5 +383,47 @@ public class Territory implements Serializable {
    */
   public void reduceClockNum() {
     cloakNum -= 1;
+  }
+
+  public void moveSpy(Player owner, Territory destination, int numUnits) {
+    System.out.println("Move spy from " + this.getName() + " to " + destination.getName());
+
+    spies.get(owner).addUnits(-numUnits);
+    if (destination.getSpies().get(owner) == null) {
+      destination.getSpies().put(owner, new Spy(numUnits));
+    } else {
+      destination.addSpy(owner, numUnits);//getSpies().get(owner).addUnits(numUnits);
+    }
+  }
+
+  /**
+   * Add a Spy Unit to spies HashSet
+   *
+   * @param owner Player controlling this Spy
+   */
+  public void addSpy(Player owner, int numUnits) {
+    //Add cost
+    if (spies.get(owner) == null) {
+      spies.put(owner, new Spy(numUnits));
+    } else {
+      spies.get(owner).addUnits(numUnits);
+    }
+  }
+
+  public int hasSpy(Player owner) {
+    Spy spy = spies.get(owner);
+    if (spy == null) {
+      return 0;
+    }
+    return spy.getNumUnits();
+  }
+
+  /**
+   * Getter for this Territory's Spies
+   *
+   * @return HashMap of Spies
+   */
+  public HashMap<Player, Spy> getSpies() {
+    return spies;
   }
 }

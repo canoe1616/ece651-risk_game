@@ -29,7 +29,7 @@ public class UpgradeRuleChecker extends RuleChecker {
    */
   @Override
   protected String checkMyRule(Action action) {
-    if (action.getPlayer().getTechLevel() < action.getEndLevel()) {
+    if (action.getEndLevel() != 7 && action.getPlayer().getTechLevel() < action.getEndLevel()) {
       return "This action is invalid: Your technology level is not yet at level " + action.getEndLevel() + ".";
     }
     if (action.getUnitLevel() >= action.getEndLevel()) {

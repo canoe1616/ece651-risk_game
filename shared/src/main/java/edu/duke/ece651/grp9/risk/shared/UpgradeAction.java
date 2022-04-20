@@ -11,7 +11,7 @@ public class UpgradeAction implements Action {
   private final Player player;
   private final Territory source;
   private final int numUnits;
-  private final RuleChecker moveChecker;
+  private final RuleChecker upgradeChecker;
   private int startLevel;
   private int endLevel;
 
@@ -25,7 +25,7 @@ public class UpgradeAction implements Action {
     this.player = player;
     this.source = source;
     this.numUnits = numUnits;
-    this.moveChecker = new UnitsRuleChecker(new OwnerRuleChecker(new UpgradeRuleChecker(null)));
+    this.upgradeChecker = new UnitsRuleChecker(new OwnerRuleChecker(new UpgradeRuleChecker(null)));
     this.startLevel = 0;
     this.endLevel = 0;
     source.syncUnits();
@@ -107,14 +107,18 @@ public class UpgradeAction implements Action {
    * @return null if valid, if invalid a String describing error is returned
    */
   public String canPerformAction() {
-    return moveChecker.checkAction(this);
+    return upgradeChecker.checkAction(this);
   }
 
   /**
    * Perform upgrade on source Territories of Unit startLevel
    */
   public void performAction() {
-    source.upgradeUnits(numUnits, startLevel, endLevel); //EVOLUTION 2
+    if (endLevel < 7) {
+      source.upgradeUnits(numUnits, startLevel, endLevel); //EVOLUTION 2
+    } else {
+      source.upgradeSpy(player, numUnits, startLevel);
+    }
     player.setMoneyQuantity(player.getMoneyQuantity() - this.computeCost());
   }
 
@@ -124,7 +128,10 @@ public class UpgradeAction implements Action {
    * @return cost of this Upgrade Action
    */
   public int computeCost() {
-    return (source.getUnitClass(endLevel).getUpgradeCost() -
-        source.getUnitClass(startLevel).getUpgradeCost()) * numUnits;
+    if (endLevel < 7) {
+      return (source.getUnitClass(endLevel).getUpgradeCost() -
+          source.getUnitClass(startLevel).getUpgradeCost()) * numUnits;
+    }
+    return numUnits * 20;
   }
 }

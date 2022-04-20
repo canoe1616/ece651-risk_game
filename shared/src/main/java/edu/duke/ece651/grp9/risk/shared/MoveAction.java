@@ -119,10 +119,13 @@ public class MoveAction implements Action {
    * Perform move on source and destination Territories
    */
   public void performAction() {
-    source.moveUnits(destination, numUnits);
-    source.moveUnits(destination, numUnits, unitLevel); //EVOLUTION 2
-
-    player.setFoodQuantity(player.getFoodQuantity() - this.computeCost());
+    if (unitLevel < 7) {
+      source.moveUnits(destination, numUnits, unitLevel); //EVOLUTION 2
+      player.setFoodQuantity(player.getFoodQuantity() - this.computeCost());
+    } else {
+      source.moveSpy(player, destination, numUnits); //EVOLUTION 3
+      player.setFoodQuantity(player.getFoodQuantity() - this.computeCost());
+    }
   }
 
   /**
@@ -133,6 +136,9 @@ public class MoveAction implements Action {
   // TODO: now the assumption is all territories have the same size, can use bfs
   // may need use Dijkstra’s Algorithm if territory has different size
   public int computeCost() {
+    if (unitLevel == 7) {
+      return 20 * numUnits;
+    }
     int passTerrSize = 0;
     boolean found = false;
     // bfs for shortest path

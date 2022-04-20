@@ -33,7 +33,7 @@
                 <Font name="Copperplate" size="14.0" />
             </font>
         </Text>
-        <Slider fx:id="endLevel" blockIncrement="1.0" majorTickUnit="1.0" max="6.0" minorTickCount="0" showTickLabels="true" snapToTicks="true" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+        <Slider fx:id="endLevel" blockIncrement="1.0" majorTickUnit="1.0" max="7.0" minorTickCount="0" showTickLabels="true" snapToTicks="true" GridPane.columnIndex="1" GridPane.rowIndex="3" />
         <TextField fx:id="territory" GridPane.columnIndex="1" />
         <TextField fx:id="numUnits" GridPane.columnIndex="1" GridPane.rowIndex="1" />
         <Slider fx:id="startLevel" blockIncrement="1.0" majorTickUnit="1.0" max="6.0" minorTickCount="0" showTickLabels="true" snapToTicks="true" GridPane.columnIndex="1" GridPane.rowIndex="2" />
