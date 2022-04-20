@@ -12,6 +12,8 @@ import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -58,12 +60,15 @@ public class MapController {
   public Button I;
   @FXML
   public Button J;
+  @FXML
+  public Slider volumn;
 
   private HashMap<String, Button> ButtonMap;
   private Map myMap;
   private Player player;
   private String color;
   private Button researchButton;
+  private MediaPlayer mediaPlayer;
 
 
   @FXML
@@ -120,13 +125,14 @@ public class MapController {
 
 
   public MapController(Stage Window, Map map, Player player, ObjectInputStream objectInputStream,
-      ObjectOutputStream objectOutputStream) {
+      ObjectOutputStream objectOutputStream, MediaPlayer mediaPlayer) {
     this.myMap = map;
     this.Window = Window;
     this.player = player;
     this.color = player.getName();
     this.objectInputStream = objectInputStream;
     this.objectOutputStream = objectOutputStream;
+    this.mediaPlayer = mediaPlayer;
   }
 
 
@@ -136,8 +142,15 @@ public class MapController {
     // display different map to different players
     // TODO: how to indicate the player's name
     showMap();
-    //receive the map from the server
-    //myMap =  (Map) objectInputStream.readObject();
+    volumn.setValue(100);
+    mediaPlayer.setVolume(1.0);
+    volumn.valueProperty().addListener((observable, oldValue, newValue) -> {
+            System.out.println(volumn.getValue());
+            mediaPlayer.pause();
+            mediaPlayer.setVolume(volumn.getValue()/100.0);
+            mediaPlayer.play();
+        });
+
   }
 
   public void showMap() throws Exception {
@@ -661,7 +674,7 @@ public class MapController {
         getClass().getResource("/FXML/StartView.fxml"));
     loaderStart.setControllerFactory(c -> {
       //debug 4.9
-      return new StartGameController(Window, objectInputStream, objectOutputStream);
+      return new StartGameController(Window, objectInputStream, objectOutputStream, mediaPlayer);
     });
     Scene scene = new Scene(loaderStart.load());
     Window.setScene(scene);

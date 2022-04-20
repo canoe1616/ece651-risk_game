@@ -3,6 +3,8 @@ package edu.duke.ece651.grp9.risk.client;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -13,11 +15,15 @@ public class LosePage {
     private Stage Window;
     public ObjectOutputStream objectOutputStream;
     public ObjectInputStream objectInputStream;
+    public MediaPlayer mediaPlayer;
 
     public LosePage(Stage Window, ObjectInputStream objectInputStream, ObjectOutputStream objectOutputStream) {
         this.Window = Window;
         this.objectInputStream = objectInputStream;
         this.objectOutputStream = objectOutputStream;
+        String musicFile = "src/main/resources/Music/lose.mp3";
+        Media sound = new Media(new File(musicFile).toURI().toString());
+        this.mediaPlayer = new MediaPlayer(sound);
     }
 
     @FXML
@@ -32,11 +38,10 @@ public class LosePage {
             this.Window = Window;
         FXMLLoader loaderStart = new FXMLLoader(getClass().getResource("/FXML/StartView.fxml"));
         loaderStart.setControllerFactory(c->{
-            return new StartGameController(Window,objectInputStream,objectOutputStream);
+            return new StartGameController(Window,objectInputStream,objectOutputStream,mediaPlayer);
         });
         Scene scene = new Scene(loaderStart.load());
         Window.setScene(scene);
         Window.show();
     }
-
 }
