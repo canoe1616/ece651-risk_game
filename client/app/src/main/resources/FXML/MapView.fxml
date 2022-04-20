@@ -15,7 +15,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="600.0" style="-fx-background-color: linear-gradient(#4568DC, #B06AB3);" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.duke.ece651.grp9.risk.client.MapController">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="600.0" style="-fx-background-color: linear-gradient(#4568DC, #B06AB3);" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.duke.ece651.grp9.risk.client.MapController">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -242,9 +242,9 @@
             <Font name="Copperplate" size="15.0" />
          </font>
       </Button>
-      <Label fx:id="spyLabel" prefHeight="45.0" prefWidth="105.0" text="Has a Spy" wrapText="true" GridPane.columnIndex="18" GridPane.columnSpan="4" GridPane.rowIndex="8" GridPane.rowSpan="2">
+      <Label fx:id="spyLabel" prefHeight="45.0" prefWidth="105.0" text="Has a Spy" wrapText="true" GridPane.columnIndex="19" GridPane.columnSpan="4" GridPane.rowIndex="43">
          <font>
-            <Font name="Copperplate" size="14.0" />
+            <Font name="Copperplate" size="12.0" />
          </font>
       </Label>
 <!--      <Text fx:id="color_text" strokeType="OUTSIDE" strokeWidth="0.0" text="color" GridPane.columnIndex="7" GridPane.rowIndex="5">-->

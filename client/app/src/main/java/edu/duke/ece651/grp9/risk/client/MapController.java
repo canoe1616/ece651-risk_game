@@ -148,6 +148,7 @@ public class MapController {
     updateResources();
     colorLabel.setText("You are the " + color + " player");
     System.out.println("Status: end of showMap");
+    spyLabel.setVisible(false);
     // updateMapafterInitiualization();
   }
 
