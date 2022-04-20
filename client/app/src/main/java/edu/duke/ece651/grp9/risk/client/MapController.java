@@ -410,10 +410,10 @@ public class MapController {
       Button btn = (Button) source;
       Territory ter = myMap.findTerritory(btn.getText());
       // if visible this round and the neighbored territory is not cloaked, update text
-      if (player.getTerritoryList().contains(ter) || (isVisibleTerr(btn.getText())
-          && ter.getCloakNum() == 0)) {
+      if (player.getTerritoryList().contains(ter) || (myMap.isNeighbor(ter, color)
+          && ter.getCloakNum() == 0) || ter.hasSpy(myMap.findPlayer(color)) > 0) {
         territoryStats.setText(myMap.getTerritoryInfo(btn.getText()));
-      } else if (isVisibleTerr(btn.getText()) && ter.getCloakNum() > 0) {
+      } else if (myMap.isNeighbor(ter, color) && ter.getCloakNum() > 0) {
         // if the neighbored territory was cloaked, display null
         territoryStats.setText(null);
       } else { // if the territory is invisible, set old text from seen, or null if it hasn't been seen before
@@ -431,37 +431,21 @@ public class MapController {
     }
   }
 
-  /**
-   * check if the territory is visible in this round, if yes, update ter info; else, do not update.
-   */
-  public boolean isVisibleTerr(String terName) {
-    HashSet<Territory> neighbors = new HashSet<>();
-    Player player = myMap.findPlayer(color);
-    Territory territory = myMap.findTerritory(terName);
-    for (Territory ter : player.getTerritoryList()) {
-      for (Territory nei : ter.getNeighbors()) {
-        neighbors.add(nei);
-      }
-    }
-    boolean hasSpy = territory.hasSpy(player) > 0;
-    return player.getTerritoryList().contains(territory) || neighbors.contains(territory)
-        || hasSpy;
-  }
-
-  private String getTerritoryInfo(String terrName) {
-    StringBuilder sb = new StringBuilder();
-    sb.append("Territory " + terrName + "\n");
-    Territory t = myMap.findTerritory(terrName);
-    sb.append("Owner: " + t.getOwner().getName() + "\n");
-    //int[] unitCounts = new int[] {13, 0, 0, 0, 0, 0, 0};
-    for (int i = 0; i < 7; i++) {
-      sb.append("Level " + i + ": " + t.getUnits(i) + "\n");
-    }
-    sb.append("Food Production: 50\n");
-    sb.append("Money Production: 20\n");
-    sb.append("Size: " + t.getSize());
-    return sb.toString();
-  }
+//  /**
+//   * check if the territory is visible in this round, if yes, update ter info; else, do not update.
+//   */
+//  public boolean isVisibleAdjTerr(String terName) {
+//    HashSet<Territory> neighbors = new HashSet<>();
+//    Player player = myMap.findPlayer(color);
+//    Territory territory = myMap.findTerritory(terName);
+//    for (Territory ter : player.getTerritoryList()) {
+//      for (Territory nei : ter.getNeighbors()) {
+//        neighbors.add(nei);
+//      }
+//    }
+//    boolean hasSpy = territory.hasSpy(player) > 0;
+//    return  neighbors.contains(territory);
+//  }
 
 
   @FXML
