@@ -14,6 +14,7 @@ public class ActionSet implements Serializable{
   public boolean techLevelUpgrade;
   public boolean doResearch;
   public HashSet<String> actionListCloak;
+  public HashSet<String> actionListProtect;
 
   /**
    * A construct for an ActionSet that contains a set for moves and a set for attacks.
@@ -25,6 +26,7 @@ public class ActionSet implements Serializable{
     this.techLevelUpgrade = false;
     this.doResearch = false;
     this.actionListCloak = new HashSet<String>();
+    this.actionListProtect = new HashSet<>();
   }
 
   public HashSet<String> getMoveList() {
@@ -41,5 +43,9 @@ public class ActionSet implements Serializable{
 
   public HashSet<String> getCloakList() {
     return actionListCloak;
+  }
+
+  public HashSet<String> getProtectList() {
+    return actionListProtect;
   }
 }
