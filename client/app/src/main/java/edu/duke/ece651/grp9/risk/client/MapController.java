@@ -374,8 +374,8 @@ public class MapController {
     try {
       CloakPopup popup = new CloakPopup();
       popup.display();
-      int checkNum = popup.cloak.split(" ").length;
-      if (checkNum == 1) {
+      //int checkNum = popup.cloak.split(" ").length;
+      if (popup.cloak != null && popup.cloak.split(" ").length == 1) {
         cloaks.add(popup.cloak);
         statusLabel("Cloak territory " + popup.cloak);
       } else {
@@ -410,10 +410,10 @@ public class MapController {
       Button btn = (Button) source;
       Territory ter = myMap.findTerritory(btn.getText());
       // if visible this round and the neighbored territory is not cloaked, update text
-      if (player.getTerritoryList().contains(ter) || (myMap.isNeighbor(ter, color)
+      if (player.getTerritoryList().contains(ter) || (isVisibleTerr(btn.getText())
           && ter.getCloakNum() == 0) || ter.hasSpy(myMap.findPlayer(color)) > 0) {
         territoryStats.setText(myMap.getTerritoryInfo(btn.getText()));
-      } else if (myMap.isNeighbor(ter, color) && ter.getCloakNum() > 0) {
+      } else if (isVisibleTerr(btn.getText()) && ter.getCloakNum() > 0) {
         // if the neighbored territory was cloaked, display null
         territoryStats.setText(null);
       } else { // if the territory is invisible, set old text from seen, or null if it hasn't been seen before
@@ -431,21 +431,21 @@ public class MapController {
     }
   }
 
-//  /**
-//   * check if the territory is visible in this round, if yes, update ter info; else, do not update.
-//   */
-//  public boolean isVisibleAdjTerr(String terName) {
-//    HashSet<Territory> neighbors = new HashSet<>();
-//    Player player = myMap.findPlayer(color);
-//    Territory territory = myMap.findTerritory(terName);
-//    for (Territory ter : player.getTerritoryList()) {
-//      for (Territory nei : ter.getNeighbors()) {
-//        neighbors.add(nei);
-//      }
-//    }
-//    boolean hasSpy = territory.hasSpy(player) > 0;
-//    return  neighbors.contains(territory);
-//  }
+  /**
+   * check if the territory is visible in this round, if yes, update ter info; else, do not update.
+   */
+  public boolean isVisibleTerr(String terName) {
+    HashSet<Territory> neighbors = new HashSet<>();
+    Player player = myMap.findPlayer(color);
+    Territory territory = myMap.findTerritory(terName);
+    for (Territory ter : player.getTerritoryList()) {
+      for (Territory nei : ter.getNeighbors()) {
+        neighbors.add(nei);
+      }
+    }
+    boolean hasSpy = territory.hasSpy(player) > 0;
+    return  neighbors.contains(territory);
+  }
 
 
   @FXML
