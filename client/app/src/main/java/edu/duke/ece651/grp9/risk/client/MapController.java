@@ -14,8 +14,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.Media;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import java.lang.Math;
+import java.util.concurrent.TimeUnit;
+import javafx.scene.media.MediaPlayer.Status;
 
 import java.awt.*;
 import java.io.*;
@@ -141,13 +145,22 @@ public class MapController {
     InitButtonMap();
     // display different map to different players
     // TODO: how to indicate the player's name
+    
+    mediaPlayer.stop();
+
+    String musicFile = "src/main/resources/Music/MainMusic.mp3";
+    Media sound = new Media(new File(musicFile).toURI().toString());
+    mediaPlayer = new MediaPlayer(sound);
+
     showMap();
-    volumn.setValue(100);
-    mediaPlayer.setVolume(1.0);
+    volumn.setValue(0);
+    mediaPlayer.setVolume(0.0);
+
     volumn.valueProperty().addListener((observable, oldValue, newValue) -> {
-            System.out.println(volumn.getValue());
-            mediaPlayer.pause();
+            mediaPlayer.pause(); 
             mediaPlayer.setVolume(volumn.getValue()/100.0);
+            System.out.println(volumn.getValue());
+            System.out.println(mediaPlayer.getVolume());
             mediaPlayer.play();
         });
 

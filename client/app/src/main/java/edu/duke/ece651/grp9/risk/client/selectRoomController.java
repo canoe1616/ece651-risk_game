@@ -52,11 +52,11 @@ public class selectRoomController {
 
     // initial game room according to the given map
     public void initialize() {
-        mediaPlayer.stop();
-        String musicFile = "src/main/resources/Music/MainMusic.mp3";
-        Media sound = new Media(new File(musicFile).toURI().toString());
-        MediaPlayer mediaPlayer = new MediaPlayer(sound);
-        mediaPlayer.play();
+        //mediaPlayer.pause();
+        // String musicFile = "src/main/resources/Music/MainMusic.mp3";
+        // Media sound = new Media(new File(musicFile).toURI().toString());
+        // MediaPlayer mediaPlayer = new MediaPlayer(sound);
+        //mediaPlayer.play();
 
         InitButtonMap();
         try {
@@ -113,7 +113,7 @@ public class selectRoomController {
             MapFactory mapFactory = new MapFactory();
             Map map = mapFactory.makeMap(playerNum);
             Player player = map.findPlayer(real_color);
-            MapController mc = new MapController(Window, map,player,objectInputStream,objectOutputStream,mediaPlayer);
+            MapController mc = new MapController(Window, map,player,objectInputStream,objectOutputStream, mediaPlayer);
             
             return mc;
         });
@@ -150,7 +150,7 @@ public class selectRoomController {
                 e.printStackTrace();
             }
             
-            MapController mc = new MapController(this.Window,map,player,objectInputStream,objectOutputStream,mediaPlayer);
+            MapController mc = new MapController(this.Window,map,player,objectInputStream,objectOutputStream, mediaPlayer);
 
             return mc;
         });
