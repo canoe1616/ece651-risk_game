@@ -110,6 +110,7 @@ public class MapController {
 
   public ObjectOutputStream objectOutputStream;
   public ObjectInputStream objectInputStream;
+  public String unit_order;
 
 
   /**
@@ -133,7 +134,7 @@ public class MapController {
 
 
   public MapController(Stage Window, Map map, Player player, ObjectInputStream objectInputStream,
-      ObjectOutputStream objectOutputStream, MediaPlayer mediaPlayer) {
+      ObjectOutputStream objectOutputStream, MediaPlayer mediaPlayer, String unit_order) {
     this.myMap = map;
     this.Window = Window;
     this.player = player;
@@ -141,6 +142,7 @@ public class MapController {
     this.objectInputStream = objectInputStream;
     this.objectOutputStream = objectOutputStream;
     this.mediaPlayer = mediaPlayer;
+    this.unit_order = unit_order;
   }
 
 
@@ -173,6 +175,12 @@ public class MapController {
   public void showMap() throws Exception {
     //set each button's color and shape in buttonMap
     updateTerritoryText();
+
+    //debug -> for same map between client and server
+    updateTerritoryText();
+    updateTerritoryText();
+
+
     updateButtonColors();
     // set food and money value
     updateResources();
@@ -299,10 +307,11 @@ public class MapController {
     sb.append(ter);
     sb.append("\n");
 
-    System.out.println(player.getName());
-    for (Territory t : player.getTerritoryList()) {
-          sb.append(t.getName() + " ");
-        }
+//    System.out.println(player.getName());
+//    for (Territory t : player.getTerritoryList()) {
+//          sb.append(t.getName() + " ");
+//        }
+    sb.append(unit_order);
 
     status.setText(sb.toString());
     System.out.println("Status: set text:" + sb.toString());

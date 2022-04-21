@@ -45,8 +45,21 @@ public class ServerThread extends Thread{
             objectOutputStream.reset();
             objectOutputStream.writeObject(m);
 
+            StringBuilder sb = new StringBuilder();
+
+            for(Territory t: m.findPlayer(color).getTerritoryList()){
+                sb.append(t.getName() + " ");
+
+            }
+            objectOutputStream.reset();
+            objectOutputStream.writeObject(sb.toString());
+
+
             //read unit assignment
             //gamePlay.unitSetting(objectOutputStream, gamePlay.findPlayer(color, m));
+
+
+
             String unitString = "";
             while(true){
                 String unit_correct = "true";

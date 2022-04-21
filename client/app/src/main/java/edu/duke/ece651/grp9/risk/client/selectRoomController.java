@@ -39,6 +39,7 @@ public class selectRoomController {
     public  ObjectInputStream objectInputStream;
     private HashMap<String, Button> ButtonMap;
     public MediaPlayer mediaPlayer;
+    public String unit_order;
 
 
 
@@ -91,6 +92,7 @@ public class selectRoomController {
         this.objectInputStream = objectInputStream;
         this.objectOutputStream = objectOutputStream;
         this.mediaPlayer = mediaPlayer;
+        this.unit_order =new String();
 
     }
 
@@ -108,6 +110,11 @@ public class selectRoomController {
 
         //debug for same map between client and server
             Map map = (Map)objectInputStream.readObject();
+
+
+            //接传过来的string
+            //
+            unit_order = (String) objectInputStream.readObject();
       
         FXMLLoader loaderStart = new FXMLLoader(getClass().getResource("/FXML/MapView.fxml"));
         loaderStart.setControllerFactory(c -> {
@@ -118,7 +125,7 @@ public class selectRoomController {
 
             System.out.println("Status get the map from the server ");
             Player player = map.findPlayer(real_color);
-            MapController mc = new MapController(Window, map,player,objectInputStream,objectOutputStream, mediaPlayer);
+            MapController mc = new MapController(Window, map,player,objectInputStream,objectOutputStream, mediaPlayer,unit_order);
             
             return mc;
         });
@@ -155,7 +162,7 @@ public class selectRoomController {
                 e.printStackTrace();
             }
             
-            MapController mc = new MapController(this.Window,map,player,objectInputStream,objectOutputStream, mediaPlayer);
+            MapController mc = new MapController(this.Window,map,player,objectInputStream,objectOutputStream, mediaPlayer,unit_order);
 
             return mc;
         });
