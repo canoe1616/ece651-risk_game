@@ -13,36 +13,52 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.scene.control.ComboBox;
+import javafx.fxml.Initializable;
+import java.util.*;
 
-public class MovePopup {
+public class MovePopup implements Initializable{
 
     private static Stage popupwindow;
     public static String action;
 
     @FXML
-    TextField sourceTerritory;
+    ComboBox<String> sourceTerritory;
     @FXML
-    TextField destinationTerritory;
+    ComboBox<String> destinationTerritory;
     @FXML
     TextField numUnits;
     @FXML
     Slider unitLevel;
+    
 
+    @Override
+    public void initialize(URL location, ResourceBundle resources){
+        sourceTerritory.getItems().addAll("A");
+        destinationTerritory.getItems().addAll("B");
+    }
+    
     @FXML
-    public static void display() throws IOException {
+    public void display() throws IOException {
+        
         popupwindow = new Stage();
 
         popupwindow.initModality(Modality.APPLICATION_MODAL);
         popupwindow.setTitle("Create Move");
 
         URL xmlRes = MapController.class.getResource("/FXML/MovePopup.fxml");
+
         assert (xmlRes != null);
         GridPane gp = FXMLLoader.load(xmlRes);
         gp.setAlignment(Pos.CENTER);
+        
+        
 
         Scene scene1 = new Scene(gp, 350, 300);
         popupwindow.setScene(scene1);
         popupwindow.showAndWait();
+
+        
     }
 
     @FXML
@@ -63,7 +79,7 @@ public class MovePopup {
         if (source instanceof Button) {
             Button btn = (Button) source;
             popupwindow.close();
-            String action = sourceTerritory.getText() + " " + destinationTerritory.getText() + " " +
+            String action = sourceTerritory.getValue().toString() + " " + (String)destinationTerritory.getValue().toString() + " " + 
                     numUnits.getText() + " " + (int)unitLevel.getValue();
             this.action = action;
         } else {
