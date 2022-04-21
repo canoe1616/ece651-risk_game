@@ -23,7 +23,7 @@ public class BuyAction implements Action {
     this.player = player;
     this.source = source;
     this.numUnits = numUnits;
-    this.buyChecker = new OwnerRuleChecker(null);
+    this.buyChecker = new OwnerRuleChecker(new BuyRuleChecker(null));
     source.syncUnits();
   }
 
@@ -104,6 +104,6 @@ public class BuyAction implements Action {
    * @return cost of this Upgrade Action
    */
   public int computeCost() {
-    return numUnits * 20;
+    return numUnits * 40;
   }
 }

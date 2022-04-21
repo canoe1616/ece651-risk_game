@@ -156,7 +156,25 @@ public class GamePlay {
       return null;
     }
     return new CloakAction(player, destination);
+  }
 
+  public Action createBuy(Map map, String color, String action) {
+    int numUnits = 0;
+
+    String[] words = action.split(" ");
+    Player player = map.findPlayer(color);
+    Territory source = map.findTerritory(words[0]);
+
+    try {
+      numUnits = Integer.parseInt(words[1]);
+    } catch (NumberFormatException e) {
+    }
+
+    if (source == null) {
+      return null;
+    }
+
+    return new BuyAction(player, source, numUnits);
   }
 
   /**
@@ -168,11 +186,13 @@ public class GamePlay {
    * @return null if no error, String describing problem if there is error
    */
   public String validActionSet(Player player, HashSet<MoveAction> moves, HashSet<AttackAction> attacks,
-      HashSet<UpgradeAction> upgrades, boolean techLevelUpgrade, boolean research, HashSet<CloakAction> cloaks) {
+      HashSet<UpgradeAction> upgrades, boolean techLevelUpgrade, boolean research,
+      HashSet<CloakAction> cloaks, HashSet<BuyAction> buys) {
     int foodCost = 0;
     int moneyCost = 0;
     //Once we first meet the problem, then reenter with "Done", moves and attacks would be "NULL"
-    if (moves.isEmpty() && attacks.isEmpty() && upgrades.isEmpty() && !techLevelUpgrade && !research && cloaks.isEmpty()) {
+    if (moves.isEmpty() && attacks.isEmpty() && upgrades.isEmpty() &&
+        !techLevelUpgrade && !research && cloaks.isEmpty() && buys.isEmpty()) {
       return null;
     }
     for (MoveAction move : moves) {
@@ -208,6 +228,17 @@ public class GamePlay {
       }
     }
 
+    for (BuyAction buy: buys) {
+      if (buy == null) {
+        return "This action is invalid: Territory does not exist";
+      }
+      String error = buy.canPerformAction();
+      moneyCost += buy.computeCost();
+      if (error != null) {
+        return error;
+      }
+    }
+
     // check if have enough resource
     if (foodCost > player.getFoodQuantity()) {
       return "Do not have enough food to do move or attack orders";
@@ -223,7 +254,7 @@ public class GamePlay {
     }
 
     if (moneyCost > player.getMoneyQuantity()) {
-      return "Do not have enough money to do upgrade orders";
+      return "Do not have enough money to do upgrade/buy orders";
     }
 
     if (research) {
@@ -336,6 +367,14 @@ public class GamePlay {
     for (CloakAction cloakAction: allCloaks) {
       if (cloakAction != null) {
         cloakAction.performAction();
+      }
+    }
+  }
+
+  public void playBuy(HashSet<BuyAction> allBuys) {
+    for (BuyAction buyAction: allBuys) {
+      if (buyAction != null) {
+        buyAction.performAction();
       }
     }
   }

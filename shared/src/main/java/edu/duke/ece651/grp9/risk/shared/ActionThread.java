@@ -16,11 +16,12 @@ public class ActionThread extends Thread{
   public HashSet<TechAction> techActions;
   public HashSet<ResearchAction> researchAction;
   public HashSet<CloakAction> allCloak;
+  public HashSet<BuyAction> allBuy;
 
   public ActionThread(Map m, ObjectInputStream objectInputStream, ObjectOutputStream objectOutputStream,
       Player player, HashSet<MoveAction> allMoves, HashSet<AttackAction>allAttack,
       HashSet<UpgradeAction> allUpgrade, HashSet<TechAction> techActions, HashSet<ResearchAction> researchAction,
-                      HashSet<CloakAction> allCloak) {
+                      HashSet<CloakAction> allCloak, HashSet<BuyAction> allBuy) {
     this.m = m;
     this.objectInputStream = objectInputStream;
     this.objectOutputStream = objectOutputStream;
@@ -31,6 +32,7 @@ public class ActionThread extends Thread{
     this.techActions = techActions;
     this.researchAction = researchAction;
     this.allCloak = allCloak;
+    this.allBuy = allBuy;
   }
 
   @Override
@@ -42,6 +44,7 @@ public class ActionThread extends Thread{
           HashSet<AttackAction> attackActions = new HashSet<>();
           HashSet<UpgradeAction> upgradeActions = new HashSet<>();
           HashSet<CloakAction> cloakActions = new HashSet<>();
+          HashSet<BuyAction> buyActions = new HashSet<>();
   
           System.out.println("ready to read actionSet From " + player.getName());
 
@@ -69,10 +72,14 @@ public class ActionThread extends Thread{
             cloakActions.add((CloakAction) gamePlay.createCloak(m, player.getName(), cloak));
           }
 
+          HashSet<String> actionListBuy = actionSet.getBuyList();
+          for (String buy : actionListBuy) {
+            buyActions.add((BuyAction) gamePlay.createBuy(m, player.getName(), buy));
+          }
 
           //moveActions  attackActions need to be reset in the next round.
           String actionProblem = gamePlay.validActionSet(player, moveActions, attackActions,
-              upgradeActions, actionSet.techLevelUpgrade, actionSet.doResearch, cloakActions);
+              upgradeActions, actionSet.techLevelUpgrade, actionSet.doResearch, cloakActions, buyActions);
           //debug：here should be reset
           objectOutputStream.reset();
           objectOutputStream.writeObject(actionProblem); //write 003 (send action problem)
@@ -82,6 +89,7 @@ public class ActionThread extends Thread{
             allAttack.addAll(attackActions);
             allUpgrade.addAll(upgradeActions);
             allCloak.addAll(cloakActions);
+            allBuy.addAll(buyActions);
 
             if (actionSet.techLevelUpgrade) {
               techActions.add(new TechAction(player));
