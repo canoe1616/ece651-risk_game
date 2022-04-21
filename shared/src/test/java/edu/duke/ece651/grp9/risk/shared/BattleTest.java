@@ -2,6 +2,7 @@ package edu.duke.ece651.grp9.risk.shared;
 
 import org.junit.jupiter.api.Test;
 
+import java.sql.SQLOutput;
 import java.util.HashMap;
 import java.util.List;
 
@@ -230,11 +231,47 @@ class BattleTest {
     Battle battle = new Battle(map);
     attackerUnits.put(6, t1.getUnitClass(6));
     defenderUnits.put(0, t3.getUnitClass(0));
-    battle.doOneAttack(attackerUnits, defenderUnits, attacker, defender, t3);
+    battle.doOneAttack(attackerUnits, defenderUnits, attacker, defender, t3, new Player("green"));
 
     assertEquals(t3.getOwner(), attacker);
 
     assertEquals(t3.getUnits(0), 0);
     assertTrue(t3.getUnits(6) > 0);
+  }
+
+  @Test
+  public void test_doOneAttack_withProtection() {
+    MapFactory factory = new MapFactory();
+    Map map = factory.makeMapForTest();
+
+    Player attacker = map.findPlayer("red");
+    Player defender = map.findPlayer("blue");
+    HashMap<Integer, Unit> attackerUnits = new HashMap<>();
+    HashMap<Integer, Unit> defenderUnits = new HashMap<>();
+    Territory t1 = map.findTerritory("A");
+    Territory t3 = map.findTerritory("C");
+
+    assertEquals(false, t3.getIsProtected());
+    t3.doProtect();
+    assertEquals(true, t3.getIsProtected());
+
+    int cnt = 100;
+    int res = 0;
+    while ( cnt-- > 0) {
+      t3.setOwner(defender);
+      t1.setUnits(1, 0);
+      t3.setUnits(0, 0);
+
+      Battle battle = new Battle(map);
+      attackerUnits.put(0, t1.getUnitClass(0));
+      defenderUnits.put(0, t3.getUnitClass(0));
+      battle.doOneAttack(attackerUnits, defenderUnits, attacker, defender, t3, defender);
+      if (t3.getOwner().equals(defender)) {
+        res ++;
+      }
+
+    }
+    System.out.println((double)res/10);
+    assertTrue(res > 0);
   }
 }

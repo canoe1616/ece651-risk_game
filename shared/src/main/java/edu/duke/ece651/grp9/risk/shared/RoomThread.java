@@ -24,6 +24,7 @@ public class RoomThread extends Thread {
     private HashSet<TechAction> techActions = new HashSet<>();
     private HashSet<ResearchAction> researchActions = new HashSet<>();
     private HashSet<CloakAction> allCloaks = new HashSet<>();
+    private HashSet<ProtectAction> allProtects = new HashSet<>();
     private HashSet<BuyAction> allBuys = new HashSet<>();
 
     public Room room;
@@ -42,6 +43,7 @@ public class RoomThread extends Thread {
         researchActions = new HashSet<ResearchAction>();
         remainingColors = new ArrayList<String>();
         allCloaks = new HashSet<CloakAction>();
+        allProtects = new HashSet<ProtectAction>();
         allBuys = new HashSet<BuyAction>();
     }
 
@@ -129,7 +131,7 @@ public class RoomThread extends Thread {
                     else {
                         System.out.println("Status: enter actionThread");
                         ActionThread actionThread = new ActionThread(m, InputList.get(j), OutputList.get(j),
-                            tmp, allMoves, allAttacks, allUpgrades, techActions, researchActions, allCloaks, allBuys);
+                            tmp, allMoves, allAttacks, allUpgrades, techActions, researchActions, allCloaks, allProtects, allBuys);
                         ActionThreadList.add(actionThread);
                         actionThread.start();
                         allMoves.addAll(actionThread.allMove);
@@ -138,7 +140,9 @@ public class RoomThread extends Thread {
                         techActions.addAll(actionThread.techActions);
                         researchActions.addAll(actionThread.researchAction);
                         allCloaks.addAll(actionThread.allCloak);
+                        allProtects.addAll(actionThread.allProtect);
                         allBuys.addAll(actionThread.allBuy);
+
                     }
                 }
 
@@ -149,6 +153,7 @@ public class RoomThread extends Thread {
 
                 int j = 0;
                 System.out.println("perform all actions");
+                gamePlay.playProtect(allProtects);
                 gamePlay.playMoves(allMoves);
                 gamePlay.playBuy(allBuys);
                 gamePlay.playAttacks(m, allAttacks);
@@ -165,6 +170,7 @@ public class RoomThread extends Thread {
                 techActions.clear();
                 researchActions.clear();
                 allCloaks.clear();
+                allProtects.clear();
             }
 
             //for part 3 - for game winner and end this game

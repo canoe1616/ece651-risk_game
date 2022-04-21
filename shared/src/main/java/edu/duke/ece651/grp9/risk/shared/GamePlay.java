@@ -151,16 +151,26 @@ public class GamePlay {
   public Action createCloak(Map map, String color, String action) {
     //String[] words = action.split(" ");
     Player player = map.findPlayer(color);
-    Territory destination = map.findTerritory(action);
-    if (destination == null) {
+    Territory source = map.findTerritory(action);
+    if (source == null) {
       return null;
     }
-    return new CloakAction(player, destination);
+    return new CloakAction(player, source);
+
+  }
+
+  public Action createProtect(Map map, String color, String action) {
+    //String[] words = action.split(" ");
+    Player player = map.findPlayer(color);
+    Territory source = map.findTerritory(action);
+    if (source == null) {
+      return null;
+    }
+    return new ProtectAction(player, source);
   }
 
   public Action createBuy(Map map, String color, String action) {
     int numUnits = 0;
-
     String[] words = action.split(" ");
     Player player = map.findPlayer(color);
     Territory source = map.findTerritory(words[0]);
@@ -186,15 +196,30 @@ public class GamePlay {
    * @return null if no error, String describing problem if there is error
    */
   public String validActionSet(Player player, HashSet<MoveAction> moves, HashSet<AttackAction> attacks,
-      HashSet<UpgradeAction> upgrades, boolean techLevelUpgrade, boolean research,
-      HashSet<CloakAction> cloaks, HashSet<BuyAction> buys) {
+      HashSet<UpgradeAction> upgrades, boolean techLevelUpgrade, boolean research, HashSet<CloakAction> cloaks, HashSet<ProtectAction> protects, HashSet<BuyAction> buys) {
     int foodCost = 0;
     int moneyCost = 0;
     //Once we first meet the problem, then reenter with "Done", moves and attacks would be "NULL"
-    if (moves.isEmpty() && attacks.isEmpty() && upgrades.isEmpty() &&
-        !techLevelUpgrade && !research && cloaks.isEmpty() && buys.isEmpty()) {
+    if (moves.isEmpty() && attacks.isEmpty() && upgrades.isEmpty() && !techLevelUpgrade && !research && cloaks.isEmpty() && protects.isEmpty() && buys.isEmpty()) {
       return null;
     }
+
+    for (ProtectAction protect: protects) {
+      if (protect == null) {
+        return "This action is invalid: Territory does not exist";
+      }
+      String err = protect.canPerformAction();
+      moneyCost += protect.computeCost();
+      if (err != null) {
+        return err;
+      }
+    }
+
+    if (moneyCost > player.getMoneyQuantity()) {
+      return "Do not have enough food to protect a territory";
+    }
+
+
     for (MoveAction move : moves) {
       if (move == null) {
         return "This action is invalid: Territory does not exist";
@@ -367,6 +392,15 @@ public class GamePlay {
     for (CloakAction cloakAction: allCloaks) {
       if (cloakAction != null) {
         cloakAction.performAction();
+      }
+    }
+  }
+
+
+  public void playProtect(HashSet<ProtectAction> allProtects) {
+    for (ProtectAction protectAction: allProtects) {
+      if (protectAction != null) {
+        protectAction.performAction();
       }
     }
   }

@@ -129,9 +129,18 @@ public class Map implements Serializable{
     for (Territory ter: territoryList) {
       ter.setUnits(ter.getUnits(0)+1, 0);
       ter.setUnit(ter.getUnit() + 1);
+      ter.resetProtected();
     }
     for (Player player: players) {
       player.updatePlayerResource();
+
+      // update cloak number
+      for (Territory ter: player.getTerritoryList()) {
+        if (ter.getCloakNum() > 0) {
+          ter.reduceClockNum();
+        }
+      }
+
     }
   }
 
