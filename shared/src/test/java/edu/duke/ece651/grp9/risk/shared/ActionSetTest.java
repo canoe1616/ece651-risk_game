@@ -13,16 +13,18 @@ public class ActionSetTest {
     HashSet<String> b = new HashSet<>();
     HashSet<String> c = new HashSet<>();
     HashSet<String> d = new HashSet<>();
+    HashSet<String> e = new HashSet<>();
     ActionSet s = new ActionSet();
     s.actionListMove = a;
     s.actionListAttack = b;
     s.actionListUpgrade = c;
     s.actionListCloak = d;
+    s.actionListProtect = e;
     assertEquals(s.getMoveList(), a);
     assertEquals(s.getAttackList(), b);
     assertEquals(s.getUpgradeList(), c);
     assertEquals(s.getCloakList(), d);
-
+    assertEquals(s.getProtectList(), e);
   }
 
 }

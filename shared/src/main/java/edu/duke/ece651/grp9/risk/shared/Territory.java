@@ -21,6 +21,7 @@ public class Territory implements Serializable {
   private int size;
   private int cloakNum;
   private HashMap<Player, Spy> spies;
+  private boolean isProtected;
 
   /**
    * Constructor to create a Territory
@@ -43,6 +44,8 @@ public class Territory implements Serializable {
     // default clock num as 0
     this.cloakNum = 0;
     this.spies = new HashMap<>();
+    // default isProtected as false
+    this.isProtected = false;
   }
 
   /**
@@ -425,5 +428,17 @@ public class Territory implements Serializable {
    */
   public HashMap<Player, Spy> getSpies() {
     return spies;
+  }
+
+  public void doProtect() {
+    isProtected = true;
+  }
+
+  public void resetProtected() {
+    isProtected = false;
+  }
+
+  public boolean getIsProtected() {
+    return isProtected;
   }
 }

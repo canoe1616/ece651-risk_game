@@ -95,14 +95,18 @@ public class MapController {
   Button research;
   @FXML
   Button createClock;
+  @FXML
+  Button createProtect;
 
   public static HashSet<String> attacks = new HashSet<>();
   public static HashSet<String> moves = new HashSet<>();
   public static HashSet<String> upgrades = new HashSet<>();
+  public static HashSet<String> buys = new HashSet<>();
   public static boolean techAction = false;
   public HashMap<String, String> seen = new HashMap<>();
   public static boolean researchAction = false;
   public static HashSet<String> cloaks = new HashSet<>();
+  public static HashSet<String> protects = new HashSet<>();
 
   public ObjectOutputStream objectOutputStream;
   public ObjectInputStream objectInputStream;
@@ -409,8 +413,7 @@ public class MapController {
     try {
       CloakPopup popup = new CloakPopup();
       popup.display();
-      int checkNum = popup.cloak.split(" ").length;
-      if (checkNum == 1) {
+      if (popup.cloak != null && popup.cloak.split(" ").length == 1) {
         cloaks.add(popup.cloak);
         statusLabel("Cloak territory " + popup.cloak);
       } else {
@@ -418,6 +421,30 @@ public class MapController {
       }
     } catch (IOException e) {
       System.out.println("Could not display Cloak Popup");
+    }
+  }
+
+  @FXML
+  public void onCreateProtect(ActionEvent actionEvent) {
+    Object source = actionEvent.getSource();
+    if (source instanceof Button) {
+      Button btn = (Button) source;
+      System.out.println(btn.getId());
+    } else {
+      throw new IllegalArgumentException("Invalid source");
+    }
+
+    try {
+      ProtectPopup popup = new ProtectPopup();
+      popup.display();
+      if (popup.protect != null && popup.protect.split(" ").length == 1) {
+        protects.add(popup.protect);
+        statusLabel("Protect territory " + popup.protect);
+      } else {
+        statusLabel("Invalid Action");
+      }
+    } catch (IOException e) {
+      System.out.println("Could not display Protect Popup");
     }
   }
 
@@ -445,10 +472,10 @@ public class MapController {
       Button btn = (Button) source;
       Territory ter = myMap.findTerritory(btn.getText());
       // if visible this round and the neighbored territory is not cloaked, update text
-      if (player.getTerritoryList().contains(ter) || (myMap.isNeighbor(ter, color)
+      if (player.getTerritoryList().contains(ter) || (isVisibleTerr(btn.getText())
           && ter.getCloakNum() == 0) || ter.hasSpy(myMap.findPlayer(color)) > 0) {
         territoryStats.setText(myMap.getTerritoryInfo(btn.getText()));
-      } else if (myMap.isNeighbor(ter, color) && ter.getCloakNum() > 0) {
+      } else if (isVisibleTerr(btn.getText()) && ter.getCloakNum() > 0) {
         // if the neighbored territory was cloaked, display null
         territoryStats.setText(null);
       } else { // if the territory is invisible, set old text from seen, or null if it hasn't been seen before
@@ -466,21 +493,21 @@ public class MapController {
     }
   }
 
-//  /**
-//   * check if the territory is visible in this round, if yes, update ter info; else, do not update.
-//   */
-//  public boolean isVisibleAdjTerr(String terName) {
-//    HashSet<Territory> neighbors = new HashSet<>();
-//    Player player = myMap.findPlayer(color);
-//    Territory territory = myMap.findTerritory(terName);
-//    for (Territory ter : player.getTerritoryList()) {
-//      for (Territory nei : ter.getNeighbors()) {
-//        neighbors.add(nei);
-//      }
-//    }
-//    boolean hasSpy = territory.hasSpy(player) > 0;
-//    return  neighbors.contains(territory);
-//  }
+  /**
+   * check if the territory is visible in this round, if yes, update ter info; else, do not update.
+   */
+  public boolean isVisibleTerr(String terName) {
+    HashSet<Territory> neighbors = new HashSet<>();
+    Player player = myMap.findPlayer(color);
+    Territory territory = myMap.findTerritory(terName);
+    for (Territory ter : player.getTerritoryList()) {
+      for (Territory nei : ter.getNeighbors()) {
+        neighbors.add(nei);
+      }
+    }
+    boolean hasSpy = territory.hasSpy(player) > 0;
+    return  neighbors.contains(territory);
+  }
 
 
   @FXML
@@ -522,6 +549,9 @@ public class MapController {
       for (String upgrade : upgrades) {
         System.out.println("Upgrade : " + upgrade);
       }
+      for (String buy : buys) {
+        System.out.println("Buys : " + buy);
+      }
       if (techAction) {
         System.out.println("Player tech level upgrade");
       }
@@ -535,9 +565,11 @@ public class MapController {
       actionSet.actionListAttack = attacks;
       actionSet.actionListMove = moves;
       actionSet.actionListUpgrade = upgrades;
+      actionSet.actionListBuy = buys;
       actionSet.techLevelUpgrade = techAction;
       actionSet.doResearch = researchAction;
       actionSet.actionListCloak = cloaks;
+      actionSet.actionListProtect = protects;
       objectOutputStream.reset();
       objectOutputStream.writeObject(actionSet); //write 001
       System.out.println("Status: write actionSet");
@@ -615,9 +647,11 @@ public class MapController {
     attacks.clear();
     moves.clear();
     upgrades.clear();
+    buys.clear();
     techAction = false;
     researchAction = false;
     cloaks.clear();
+    protects.clear();
   }
 
   public boolean checkWinner(String endGame) throws IOException {
@@ -670,6 +704,17 @@ public class MapController {
     return words;
   }
 
+  public String[] validBuy(String actionString) {
+    if (actionString == null) {
+      return null;
+    }
+    String[] words = actionString.split(" ");
+    if (words.length != 2) {
+      return null;
+    }
+    return words;
+  }
+
   public String losePopup() throws Exception {
     try {
       LosePopup popup = new LosePopup();
@@ -701,6 +746,31 @@ public class MapController {
     Scene scene = new Scene(loaderStart.load());
     Window.setScene(scene);
     Window.show();
+  }
+
+  @FXML
+  public void onBuyUnit(ActionEvent actionEvent) {
+    Object source = actionEvent.getSource();
+    if (source instanceof Button) {
+      Button btn = (Button) source;
+      System.out.println(btn.getId());
+    } else {
+      throw new IllegalArgumentException("Invalid source");
+    }
+
+    try {
+      BuyPopup popup = new BuyPopup();
+      popup.display();
+      String[] words = validBuy(popup.action);
+      if (words != null) {
+        buys.add(popup.action);
+        statusLabel("Buy " + words[1] + " units in territory " + words[0]);
+      } else {
+        statusLabel("Invalid Action");
+      }
+    } catch (IOException e) {
+      System.out.println("Could not display Buy Popup");
+    }
   }
 }
 

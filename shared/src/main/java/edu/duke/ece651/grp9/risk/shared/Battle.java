@@ -101,8 +101,11 @@ public class Battle {
    */
   public void playBattlePhase() {
     for (HashSet<AttackAction> attacksAll : territoryUnderAttack.values()) {
+      // get original owner of the attacked territory
+      Player oriOwner = attacksAll.iterator().next().getDestination().getOwner();
       HashMap<Player, HashSet<AttackAction>> attacksByPlayer = getAttacksByPlayer(attacksAll);
       // a player starts a battle on a territory
+
       for (HashSet<AttackAction> attacks: attacksByPlayer.values()) {
         AttackAction attack = attacks.iterator().next();
         Player attacker = attack.getPlayer();
@@ -110,7 +113,7 @@ public class Battle {
         Territory destination = attack.getDestination();
         HashMap<Integer, Unit> defenderUnits = destination.getAllUnits();
         HashMap<Integer, Unit> attackerUnits = getAllUnits(attacks);
-        doOneAttack(attackerUnits,defenderUnits, attacker, defender, destination);
+        doOneAttack(attackerUnits,defenderUnits, attacker, defender, destination, oriOwner);
       }
     }
   }
@@ -189,29 +192,36 @@ public class Battle {
    * @param defender is the defender player
    * @param destination is the attacked territory
    */
-  public void doOneAttack(HashMap<Integer, Unit> attackerUnits, HashMap<Integer, Unit> defenderUnits, Player attacker, Player defender, Territory destination) {
+  public void doOneAttack(HashMap<Integer, Unit> attackerUnits, HashMap<Integer, Unit> defenderUnits, Player attacker, Player defender, Territory destination, Player oriOwner) {
     int iterIndex = 0;
+    int protectedNum = 0;
     int defenderUnitSum = getBattleUnitNum(defenderUnits);
-    int attackerUnitSum = getBattleUnitNum(attackerUnits);;
+    int attackerUnitSum = getBattleUnitNum(attackerUnits);
 
+    if (oriOwner.equals(defender) && destination.getIsProtected()) {
+      protectedNum = 3;
+    }
     // if two players both has unit left
-    while (defenderUnitSum > 0 && attackerUnitSum > 0) {
+    while ((defenderUnitSum > 0 || protectedNum > 0) && attackerUnitSum > 0) {
       Unit attackUnit;
       Unit defendUnit;
       if (iterIndex++ % 2 == 0) { // iteratively attack
         // attacker dominates with the highest level unit
+        // if protectedNum greater than 0,
         attackUnit = getHighestLevelUnit(attackerUnits);
-        defendUnit = getLowestLevelUnit(defenderUnits);
+        defendUnit = protectedNum > 0? new Level0Unit():getLowestLevelUnit(defenderUnits);
       } else {
         // defender dominates with the highest level unit
         attackUnit = getLowestLevelUnit(attackerUnits);
-        defendUnit = getHighestLevelUnit(defenderUnits);
+        defendUnit = protectedNum > 0? new Level0Unit():getHighestLevelUnit(defenderUnits);
       }
       if (isSuccessBattle(attackUnit, defendUnit)) {
         // defender's unit decreased by 1
-        int level = defendUnit.getLevel();
-        int unitNum = defendUnit.getNumUnits() - 1;
-        defenderUnits.get(level).setNumUnits(unitNum); // update unitNum
+        if (protectedNum-- <= 0) {
+          int level = defendUnit.getLevel();
+          int unitNum = defendUnit.getNumUnits() - 1;
+          defenderUnits.get(level).setNumUnits(unitNum); // update unitNum
+        }
       } else {
         // attacker's unit decreased by 1
         int level = attackUnit.getLevel();
@@ -220,7 +230,7 @@ public class Battle {
       }
       // update the total units for the defender and the attacker
       defenderUnitSum = getBattleUnitNum(defenderUnits);
-      attackerUnitSum = getBattleUnitNum(attackerUnits);;
+      attackerUnitSum = getBattleUnitNum(attackerUnits);
     }
 
     // check the winner of the game
@@ -234,6 +244,8 @@ public class Battle {
       destination.setUnit(attackerUnitSum);
       attacker.addTerritory(destination);
       defender.removeTerritory(destination);
+      // once changed the ownership, the protection does not work anymore
+      destination.resetProtected();
     } else {
       for (Integer level: defenderUnits.keySet()) {
         destination.setUnits(defenderUnits.get(level).getNumUnits(), level);
@@ -255,6 +267,7 @@ public class Battle {
     int roll2 = defenderRoll.nextInt(20);
     int attackNum = attack.applyBonus(roll1);
     int defendNum = defender.applyBonus(roll2);
+    //System.out.println("attack:" + attackNum + " defender: " + defendNum);
     return attackNum > defendNum;
   }
 }
