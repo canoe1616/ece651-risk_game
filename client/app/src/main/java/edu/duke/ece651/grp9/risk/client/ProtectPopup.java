@@ -26,7 +26,7 @@ public class ProtectPopup {
         popupwindow = new Stage();
 
         popupwindow.initModality(Modality.APPLICATION_MODAL);
-        popupwindow.setTitle("Create Cloak");
+        popupwindow.setTitle("Create Protect");
 
         URL xmlRes = MapController.class.getResource("/FXML/ProtectPopup.fxml");
         assert (xmlRes != null);
