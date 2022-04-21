@@ -99,6 +99,7 @@ public class MapController {
   public static HashSet<String> attacks = new HashSet<>();
   public static HashSet<String> moves = new HashSet<>();
   public static HashSet<String> upgrades = new HashSet<>();
+  public static HashSet<String> buys = new HashSet<>();
   public static boolean techAction = false;
   public HashMap<String, String> seen = new HashMap<>();
   public static boolean researchAction = false;
@@ -513,6 +514,9 @@ public class MapController {
       for (String upgrade : upgrades) {
         System.out.println("Upgrade : " + upgrade);
       }
+      for (String buy : buys) {
+        System.out.println("Buys : " + buy);
+      }
       if (techAction) {
         System.out.println("Player tech level upgrade");
       }
@@ -526,6 +530,7 @@ public class MapController {
       actionSet.actionListAttack = attacks;
       actionSet.actionListMove = moves;
       actionSet.actionListUpgrade = upgrades;
+      actionSet.actionListBuy = buys;
       actionSet.techLevelUpgrade = techAction;
       actionSet.doResearch = researchAction;
       actionSet.actionListCloak = cloaks;
@@ -606,6 +611,7 @@ public class MapController {
     attacks.clear();
     moves.clear();
     upgrades.clear();
+    buys.clear();
     techAction = false;
     researchAction = false;
     cloaks.clear();
@@ -661,6 +667,17 @@ public class MapController {
     return words;
   }
 
+  public String[] validBuy(String actionString) {
+    if (actionString == null) {
+      return null;
+    }
+    String[] words = actionString.split(" ");
+    if (words.length != 2) {
+      return null;
+    }
+    return words;
+  }
+
   public String losePopup() throws Exception {
     try {
       LosePopup popup = new LosePopup();
@@ -692,6 +709,31 @@ public class MapController {
     Scene scene = new Scene(loaderStart.load());
     Window.setScene(scene);
     Window.show();
+  }
+
+  @FXML
+  public void onBuyUnit(ActionEvent actionEvent) {
+    Object source = actionEvent.getSource();
+    if (source instanceof Button) {
+      Button btn = (Button) source;
+      System.out.println(btn.getId());
+    } else {
+      throw new IllegalArgumentException("Invalid source");
+    }
+
+    try {
+      BuyPopup popup = new BuyPopup();
+      popup.display();
+      String[] words = validBuy(popup.action);
+      if (words != null) {
+        buys.add(popup.action);
+        statusLabel("Buy " + words[1] + " units in territory " + words[0]);
+      } else {
+        statusLabel("Invalid Action");
+      }
+    } catch (IOException e) {
+      System.out.println("Could not display Buy Popup");
+    }
   }
 }
 
