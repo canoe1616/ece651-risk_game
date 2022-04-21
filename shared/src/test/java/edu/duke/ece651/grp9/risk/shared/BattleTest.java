@@ -255,11 +255,11 @@ class BattleTest {
     t3.doProtect();
     assertEquals(true, t3.getIsProtected());
 
-    int cnt = 10;
+    int cnt = 100;
     int res = 0;
     while ( cnt-- > 0) {
       t3.setOwner(defender);
-      t1.setUnits(3, 0);
+      t1.setUnits(1, 0);
       t3.setUnits(0, 0);
 
       Battle battle = new Battle(map);

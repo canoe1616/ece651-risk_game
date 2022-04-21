@@ -12,8 +12,14 @@ import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.Media;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import java.lang.Math;
+import java.util.concurrent.TimeUnit;
+import javafx.scene.media.MediaPlayer.Status;
 
 import java.awt.*;
 import java.io.*;
@@ -58,12 +64,15 @@ public class MapController {
   public Button I;
   @FXML
   public Button J;
+  @FXML
+  public Slider volumn;
 
   private HashMap<String, Button> ButtonMap;
   private Map myMap;
   private Player player;
   private String color;
   private Button researchButton;
+  private MediaPlayer mediaPlayer;
 
 
   @FXML
@@ -92,6 +101,7 @@ public class MapController {
   public static HashSet<String> attacks = new HashSet<>();
   public static HashSet<String> moves = new HashSet<>();
   public static HashSet<String> upgrades = new HashSet<>();
+  public static HashSet<String> buys = new HashSet<>();
   public static boolean techAction = false;
   public HashMap<String, String> seen = new HashMap<>();
   public static boolean researchAction = false;
@@ -123,13 +133,14 @@ public class MapController {
 
 
   public MapController(Stage Window, Map map, Player player, ObjectInputStream objectInputStream,
-      ObjectOutputStream objectOutputStream) {
+      ObjectOutputStream objectOutputStream, MediaPlayer mediaPlayer) {
     this.myMap = map;
     this.Window = Window;
     this.player = player;
     this.color = player.getName();
     this.objectInputStream = objectInputStream;
     this.objectOutputStream = objectOutputStream;
+    this.mediaPlayer = mediaPlayer;
   }
 
 
@@ -138,9 +149,25 @@ public class MapController {
     InitButtonMap();
     // display different map to different players
     // TODO: how to indicate the player's name
+    
+    mediaPlayer.stop();
+
+    String musicFile = "src/main/resources/Music/MainMusic.mp3";
+    Media sound = new Media(new File(musicFile).toURI().toString());
+    mediaPlayer = new MediaPlayer(sound);
+
     showMap();
-    //receive the map from the server
-    //myMap =  (Map) objectInputStream.readObject();
+    volumn.setValue(0);
+    mediaPlayer.setVolume(0.0);
+
+    volumn.valueProperty().addListener((observable, oldValue, newValue) -> {
+            mediaPlayer.pause(); 
+            mediaPlayer.setVolume(volumn.getValue()/100.0);
+            System.out.println(volumn.getValue());
+            System.out.println(mediaPlayer.getVolume());
+            mediaPlayer.play();
+        });
+
   }
 
   public void showMap() throws Exception {
@@ -377,7 +404,6 @@ public class MapController {
     try {
       CloakPopup popup = new CloakPopup();
       popup.display();
-      //int checkNum = popup.cloak.split(" ").length;
       if (popup.cloak != null && popup.cloak.split(" ").length == 1) {
         cloaks.add(popup.cloak);
         statusLabel("Cloak territory " + popup.cloak);
@@ -402,7 +428,6 @@ public class MapController {
     try {
       ProtectPopup popup = new ProtectPopup();
       popup.display();
-      //int checkNum = popup.cloak.split(" ").length;
       if (popup.protect != null && popup.protect.split(" ").length == 1) {
         protects.add(popup.protect);
         statusLabel("Protect territory " + popup.protect);
@@ -515,6 +540,9 @@ public class MapController {
       for (String upgrade : upgrades) {
         System.out.println("Upgrade : " + upgrade);
       }
+      for (String buy : buys) {
+        System.out.println("Buys : " + buy);
+      }
       if (techAction) {
         System.out.println("Player tech level upgrade");
       }
@@ -528,6 +556,7 @@ public class MapController {
       actionSet.actionListAttack = attacks;
       actionSet.actionListMove = moves;
       actionSet.actionListUpgrade = upgrades;
+      actionSet.actionListBuy = buys;
       actionSet.techLevelUpgrade = techAction;
       actionSet.doResearch = researchAction;
       actionSet.actionListCloak = cloaks;
@@ -609,6 +638,7 @@ public class MapController {
     attacks.clear();
     moves.clear();
     upgrades.clear();
+    buys.clear();
     techAction = false;
     researchAction = false;
     cloaks.clear();
@@ -665,6 +695,17 @@ public class MapController {
     return words;
   }
 
+  public String[] validBuy(String actionString) {
+    if (actionString == null) {
+      return null;
+    }
+    String[] words = actionString.split(" ");
+    if (words.length != 2) {
+      return null;
+    }
+    return words;
+  }
+
   public String losePopup() throws Exception {
     try {
       LosePopup popup = new LosePopup();
@@ -691,11 +732,36 @@ public class MapController {
         getClass().getResource("/FXML/StartView.fxml"));
     loaderStart.setControllerFactory(c -> {
       //debug 4.9
-      return new StartGameController(Window, objectInputStream, objectOutputStream);
+      return new StartGameController(Window, objectInputStream, objectOutputStream, mediaPlayer);
     });
     Scene scene = new Scene(loaderStart.load());
     Window.setScene(scene);
     Window.show();
+  }
+
+  @FXML
+  public void onBuyUnit(ActionEvent actionEvent) {
+    Object source = actionEvent.getSource();
+    if (source instanceof Button) {
+      Button btn = (Button) source;
+      System.out.println(btn.getId());
+    } else {
+      throw new IllegalArgumentException("Invalid source");
+    }
+
+    try {
+      BuyPopup popup = new BuyPopup();
+      popup.display();
+      String[] words = validBuy(popup.action);
+      if (words != null) {
+        buys.add(popup.action);
+        statusLabel("Buy " + words[1] + " units in territory " + words[0]);
+      } else {
+        statusLabel("Invalid Action");
+      }
+    } catch (IOException e) {
+      System.out.println("Could not display Buy Popup");
+    }
   }
 }
 

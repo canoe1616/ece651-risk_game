@@ -140,28 +140,29 @@ class GamePlayTest {
     HashSet<UpgradeAction> upgrades = new HashSet<>();
     HashSet<CloakAction> cloaks = new HashSet<>();
     HashSet<ProtectAction> protects = new HashSet<>();
+    HashSet<BuyAction> buys = new HashSet<>();
     moves.add((MoveAction) app1.createAction(map, "red", "A B 5 0", true));
     String error1 = "These actions are invalid: A territory ends with negative units";
-    assertEquals(app1.validActionSet(p1, moves, attacks, upgrades, false, false,cloaks,protects), error1);
+    assertEquals(app1.validActionSet(p1, moves, attacks, upgrades, false, false,cloaks,protects, buys), error1);
     moves.clear();
 
     moves.add((MoveAction) app1.createAction(map, "red", "A F 5 0", true));
     String error2 = "This action is invalid: Territory does not exist";
-    assertEquals(app1.validActionSet(p1, moves, attacks, upgrades, false, false, cloaks, protects), error2);
+    assertEquals(app1.validActionSet(p1, moves, attacks, upgrades, false, false, cloaks, protects, buys), error2);
     moves.clear();
 
     attacks.add((AttackAction) app1.createAction(map, "red", "A F 5 0", false));
-    assertEquals(app1.validActionSet(p1, moves, attacks, upgrades, false, false, cloaks, protects), error2);
+    assertEquals(app1.validActionSet(p1, moves, attacks, upgrades, false, false, cloaks, protects, buys), error2);
     attacks.clear();
 
     moves.add((MoveAction) app1.createAction(map, "red", "A C 3 0", true));
     String error3 = "This action is invalid: A is not connected to C.";
-    assertEquals(app1.validActionSet(p1, moves, attacks, upgrades, false, false, cloaks, protects), error3);
+    assertEquals(app1.validActionSet(p1, moves, attacks, upgrades, false, false, cloaks, protects, buys), error3);
     moves.clear();
 
     attacks.add((AttackAction) app1.createAction(map, "red", "A B 5 0", false));
     String error4 = "This action is invalid: you cannot attack your own Territory.";
-    assertEquals(app1.validActionSet(p1, moves, attacks, upgrades, false,false, cloaks, protects), error4);
+    assertEquals(app1.validActionSet(p1, moves, attacks, upgrades, false,false, cloaks, protects, buys), error4);
     moves.clear();
     attacks.clear();
 
@@ -170,7 +171,7 @@ class GamePlayTest {
     }
     moves.add((MoveAction) app1.createAction(map, "red", "A B 0 0", true));
     attacks.add((AttackAction) app1.createAction(map, "red", "A C 0 0", false));
-    assertEquals(app1.validActionSet(p1, moves, attacks, upgrades, false, false, cloaks, protects), null);
+    assertEquals(app1.validActionSet(p1, moves, attacks, upgrades, false, false, cloaks, protects, buys), null);
 
     for (Territory t : p1.getTerritoryList()) {
       t.setUnits(100, 0);
@@ -178,16 +179,16 @@ class GamePlayTest {
 
     upgrades.add((UpgradeAction) app1.createUpgrade(map, "red", "A 5 0 2"));
     assertEquals("This action is invalid: Your technology level is not yet at level 2.",
-        app1.validActionSet(p1, moves, attacks, upgrades,false,false, cloaks, protects));
+        app1.validActionSet(p1, moves, attacks, upgrades,false,false, cloaks, protects, buys));
     p1.upgradeTechLevel();
-    assertEquals(null, app1.validActionSet(p1, moves, attacks, upgrades, false, false, cloaks, protects));
+    assertEquals(null, app1.validActionSet(p1, moves, attacks, upgrades, false, false, cloaks, protects, buys));
 
     // check food resource
     moves.add((MoveAction) app1.createAction(map, "red", "A B 20 0", true));
     moves.add((MoveAction) app1.createAction(map, "red", "A B 20 0", true));
     moves.add((MoveAction) app1.createAction(map, "red", "A B 20 0", true));
     String exp = "Do not have enough food to do move or attack orders";
-    assertEquals(exp, app1.validActionSet(p1, moves, attacks, upgrades, false, false, cloaks, protects));
+    assertEquals(exp, app1.validActionSet(p1, moves, attacks, upgrades, false, false, cloaks, protects, buys));
 
     moves.clear();
     // check money resource
@@ -195,8 +196,8 @@ class GamePlayTest {
     p1.upgradeTechLevel();
     p1.upgradeTechLevel();
     p1.upgradeTechLevel();
-    exp = "Do not have enough money to do upgrade orders";
-    assertEquals(exp, app1.validActionSet(p1, moves, attacks, upgrades, false, false, cloaks, protects));
+    exp = "Do not have enough money to do upgrade/buy orders";
+    assertEquals(exp, app1.validActionSet(p1, moves, attacks, upgrades, false, false, cloaks, protects, buys));
   }
 
   @Test
@@ -212,11 +213,12 @@ class GamePlayTest {
     HashSet<UpgradeAction> upgrades = new HashSet<>();
     HashSet<CloakAction> cloaks = new HashSet<>();
     HashSet<ProtectAction> protects = new HashSet<>();
+    HashSet<BuyAction> buys = new HashSet<>();
 
     assertEquals(p1.getTechLevel(), 1);
     assertEquals(p1.getMoneyQuantity(), 500);
 
-    assertEquals(null, app1.validActionSet(p1, moves, attacks, upgrades, true, false, cloaks, protects));
+    assertEquals(null, app1.validActionSet(p1, moves, attacks, upgrades, true, false, cloaks, protects, buys));
 
     Action action = new TechAction(p1);
     action.performAction();
@@ -233,7 +235,7 @@ class GamePlayTest {
 
     String error = "This action is invalid: You are already at the max tech level.";
 
-    assertEquals(error, app1.validActionSet(p1, moves, attacks, upgrades, true, false, cloaks,protects));
+    assertEquals(error, app1.validActionSet(p1, moves, attacks, upgrades, true, false, cloaks,protects, buys));
   }
 
   @Test
@@ -249,19 +251,20 @@ class GamePlayTest {
     HashSet<UpgradeAction> upgrades = new HashSet<>();
     HashSet<CloakAction> cloaks = new HashSet<>();
     HashSet<ProtectAction> protects = new HashSet<>();
+    HashSet<BuyAction> buys = new HashSet<>();
 
     assertEquals(p1.getTechLevel(), 1);
     assertEquals(p1.getMoneyQuantity(), 500);
 
-    assertEquals(null, app1.validActionSet(p1, moves, attacks, upgrades, false, false, cloaks, protects));
+    assertEquals(null, app1.validActionSet(p1, moves, attacks, upgrades, false, false, cloaks, protects, buys));
 
     String err = "This action is invalid: you cannot do research at the tech level lower than 3.";
-    assertEquals(err, app1.validActionSet(p1, moves, attacks, upgrades, false, true, cloaks,protects));
+    assertEquals(err, app1.validActionSet(p1, moves, attacks, upgrades, false, true, cloaks,protects,buys));
 
     Action upgrade = new TechAction(p1);
     upgrade.performAction();
     upgrade.performAction();
-    assertEquals(null, app1.validActionSet(p1, moves, attacks, upgrades, false, true, cloaks, protects));
+    assertEquals(null, app1.validActionSet(p1, moves, attacks, upgrades, false, true, cloaks, protects, buys));
 
     Action research = new ResearchAction(p1);
     research.performAction();
@@ -285,24 +288,25 @@ class GamePlayTest {
     HashSet<UpgradeAction> upgrades = new HashSet<>();
     HashSet<CloakAction> cloaks = new HashSet<>();
     HashSet<ProtectAction> protects = new HashSet<>();
+    HashSet<BuyAction> buys = new HashSet<>();
 
     assertEquals(p1.getTechLevel(), 1);
     assertEquals(p1.getMoneyQuantity(), 500);
 
-    assertEquals(null, app1.validActionSet(p1, moves, attacks, upgrades, false, false, cloaks, protects));
+    assertEquals(null, app1.validActionSet(p1, moves, attacks, upgrades, false, false, cloaks, protects, buys));
 
     String err = "This action is invalid: you cannot do research at the tech level lower than 3.";
-    assertEquals(err, app1.validActionSet(p1, moves, attacks, upgrades, false, true, cloaks, protects));
+    assertEquals(err, app1.validActionSet(p1, moves, attacks, upgrades, false, true, cloaks, protects, buys));
 
     Action action = new TechAction(p1);
     action.performAction();
     action.performAction();
 
-    assertEquals(null, app1.validActionSet(p1, moves, attacks, upgrades, false, true, cloaks, protects));
+    assertEquals(null, app1.validActionSet(p1, moves, attacks, upgrades, false, true, cloaks, protects, buys));
 
 
     cloaks.add((CloakAction) app1.createCloak(map, "red", "A"));
-    assertEquals("This action is invalid: you cannot do cloak order without researched.",app1.validActionSet(p1, moves, attacks, upgrades, false, true, cloaks, protects));
+    assertEquals("This action is invalid: you cannot do cloak order without researched.",app1.validActionSet(p1, moves, attacks, upgrades, false, true, cloaks, protects, buys));
 
     Action research = new ResearchAction(p1);
     research.performAction();
@@ -310,12 +314,12 @@ class GamePlayTest {
 
     cloaks.clear();
     cloaks.add((CloakAction) app1.createCloak(map, "red", "I"));
-    assertEquals("This action is invalid: you do not own I.",app1.validActionSet(p1, moves, attacks, upgrades, false, true, cloaks, protects));
+    assertEquals("This action is invalid: you do not own I.",app1.validActionSet(p1, moves, attacks, upgrades, false, true, cloaks, protects, buys));
 
     cloaks.clear();
     CloakAction cloakAction = new CloakAction(p1, map.findTerritory("A"));
     cloaks.add(cloakAction);
-    assertEquals(null,app1.validActionSet(p1, moves, attacks, upgrades, false, true, cloaks, protects));
+    assertEquals(null,app1.validActionSet(p1, moves, attacks, upgrades, false, true, cloaks, protects, buys));
 
     cloakAction.performAction();
     assertEquals(255, p1.getMoneyQuantity());

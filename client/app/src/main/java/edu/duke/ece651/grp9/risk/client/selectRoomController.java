@@ -1,6 +1,9 @@
 package edu.duke.ece651.grp9.risk.client;
 
-import edu.duke.ece651.grp9.risk.shared.*;
+import edu.duke.ece651.grp9.risk.shared.Map;
+import edu.duke.ece651.grp9.risk.shared.MapFactory;
+import edu.duke.ece651.grp9.risk.shared.Player;
+import edu.duke.ece651.grp9.risk.shared.Room;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,11 +16,15 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.File;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.ResourceBundle;
+
+import javafx.scene.media.*;
+import javafx.application.Application;
+import javafx.scene.layout.StackPane;
 
 public class selectRoomController {
     private Stage Window;
@@ -31,6 +38,9 @@ public class selectRoomController {
     public  ObjectOutputStream objectOutputStream;
     public  ObjectInputStream objectInputStream;
     private HashMap<String, Button> ButtonMap;
+    public MediaPlayer mediaPlayer;
+
+
 
     private void InitButtonMap(){
         ButtonMap = new HashMap<>();
@@ -42,13 +52,32 @@ public class selectRoomController {
 
     // initial game room according to the given map
     public void initialize() {
+        //mediaPlayer.pause();
+        // String musicFile = "src/main/resources/Music/MainMusic.mp3";
+        // Media sound = new Media(new File(musicFile).toURI().toString());
+        // MediaPlayer mediaPlayer = new MediaPlayer(sound);
+        //mediaPlayer.play();
+
         InitButtonMap();
         try {
-            for (int i = 1; i <= 4; i++) {
-                String roomStatus = (String) objectInputStream.readObject();
-                if (roomStatus.equals("true")) {
-                    ButtonMap.get("room"+i).setDisable(true);
-                }
+
+            String startOrnot1 = (String) objectInputStream.readObject();
+            String startOrnot2 = (String) objectInputStream.readObject();
+            String startOrnot3 = (String) objectInputStream.readObject();
+            String startOrnot4 = (String) objectInputStream.readObject();
+
+            if (startOrnot1.equals("true")) {
+                System.out.println("ROOM 1 FULL");
+                ButtonMap.get("room1").setDisable(true);
+            }
+            if (startOrnot2.equals("true")) {
+                ButtonMap.get("room2").setDisable(true);
+            }
+            if (startOrnot3.equals("true")) {
+                ButtonMap.get("room3").setDisable(true);
+            }
+            if (startOrnot4.equals("true")) {
+                ButtonMap.get("room4").setDisable(true);
             }
         }
         catch(Exception e){
@@ -57,16 +86,18 @@ public class selectRoomController {
     }
 
 
-    public selectRoomController(Stage Window, ObjectInputStream objectInputStream,ObjectOutputStream objectOutputStream ) {
+    public selectRoomController(Stage Window, ObjectInputStream objectInputStream,ObjectOutputStream objectOutputStream,MediaPlayer mediaPlayer ) {
         this.Window = Window;
         this.objectInputStream = objectInputStream;
         this.objectOutputStream = objectOutputStream;
+        this.mediaPlayer = mediaPlayer;
 
     }
 
     private void joinRoomHelper(int playerNum, ActionEvent actionEvent) throws Exception {
 
-    
+
+
         System.out.println("Status: enter the joining room helper");
         objectOutputStream.reset();
         objectOutputStream.writeObject(playerNum-1); //write room_id
@@ -82,7 +113,7 @@ public class selectRoomController {
             MapFactory mapFactory = new MapFactory();
             Map map = mapFactory.makeMap(playerNum);
             Player player = map.findPlayer(real_color);
-            MapController mc = new MapController(this.Window, map,player,objectInputStream,objectOutputStream);
+            MapController mc = new MapController(Window, map,player,objectInputStream,objectOutputStream, mediaPlayer);
             
             return mc;
         });
@@ -119,7 +150,7 @@ public class selectRoomController {
                 e.printStackTrace();
             }
             
-            MapController mc = new MapController(this.Window,map,player,objectInputStream,objectOutputStream);
+            MapController mc = new MapController(this.Window,map,player,objectInputStream,objectOutputStream, mediaPlayer);
 
             return mc;
         });
@@ -148,6 +179,7 @@ public class selectRoomController {
     public void JoinRoom4(ActionEvent actionEvent) throws Exception {
         joinRoomHelper(5, actionEvent);
     }
+
 
     public String unitPopup() throws Exception{
         try {
@@ -190,10 +222,4 @@ public class selectRoomController {
                 }
             }
     }
-
-
-
-
-
-    
 }

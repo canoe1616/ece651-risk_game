@@ -25,6 +25,7 @@ public class RoomThread extends Thread {
     private HashSet<ResearchAction> researchActions = new HashSet<>();
     private HashSet<CloakAction> allCloaks = new HashSet<>();
     private HashSet<ProtectAction> allProtects = new HashSet<>();
+    private HashSet<BuyAction> allBuys = new HashSet<>();
 
     public Room room;
     public int player_num;
@@ -43,6 +44,7 @@ public class RoomThread extends Thread {
         remainingColors = new ArrayList<String>();
         allCloaks = new HashSet<CloakAction>();
         allProtects = new HashSet<ProtectAction>();
+        allBuys = new HashSet<BuyAction>();
     }
 
     @Override
@@ -129,7 +131,7 @@ public class RoomThread extends Thread {
                     else {
                         System.out.println("Status: enter actionThread");
                         ActionThread actionThread = new ActionThread(m, InputList.get(j), OutputList.get(j),
-                            tmp, allMoves, allAttacks, allUpgrades, techActions, researchActions, allCloaks, allProtects);
+                            tmp, allMoves, allAttacks, allUpgrades, techActions, researchActions, allCloaks, allProtects, allBuys);
                         ActionThreadList.add(actionThread);
                         actionThread.start();
                         allMoves.addAll(actionThread.allMove);
@@ -139,6 +141,8 @@ public class RoomThread extends Thread {
                         researchActions.addAll(actionThread.researchAction);
                         allCloaks.addAll(actionThread.allCloak);
                         allProtects.addAll(actionThread.allProtect);
+                        allBuys.addAll(actionThread.allBuy);
+
                     }
                 }
 
@@ -151,6 +155,7 @@ public class RoomThread extends Thread {
                 System.out.println("perform all actions");
                 gamePlay.playProtect(allProtects);
                 gamePlay.playMoves(allMoves);
+                gamePlay.playBuy(allBuys);
                 gamePlay.playAttacks(m, allAttacks);
                 gamePlay.playUpgrades(allUpgrades);
                 gamePlay.playTechLevels(techActions);
@@ -159,6 +164,7 @@ public class RoomThread extends Thread {
                 // increase the basic unit per terr, produce resource
                 m.upgradeMapPerRound();
                 allMoves.clear();
+                allBuys.clear();
                 allAttacks.clear();
                 allUpgrades.clear();
                 techActions.clear();
