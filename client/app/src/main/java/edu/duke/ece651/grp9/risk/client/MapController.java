@@ -86,6 +86,8 @@ public class MapController {
   Button research;
   @FXML
   Button createClock;
+  @FXML
+  Button createProtect;
 
   public static HashSet<String> attacks = new HashSet<>();
   public static HashSet<String> moves = new HashSet<>();
@@ -94,6 +96,7 @@ public class MapController {
   public HashMap<String, String> seen = new HashMap<>();
   public static boolean researchAction = false;
   public static HashSet<String> cloaks = new HashSet<>();
+  public static HashSet<String> protects = new HashSet<>();
 
   public ObjectOutputStream objectOutputStream;
   public ObjectInputStream objectInputStream;
@@ -386,6 +389,31 @@ public class MapController {
     }
   }
 
+  @FXML
+  public void onCreateProtect(ActionEvent actionEvent) {
+    Object source = actionEvent.getSource();
+    if (source instanceof Button) {
+      Button btn = (Button) source;
+      System.out.println(btn.getId());
+    } else {
+      throw new IllegalArgumentException("Invalid source");
+    }
+
+    try {
+      ProtectPopup popup = new ProtectPopup();
+      popup.display();
+      //int checkNum = popup.cloak.split(" ").length;
+      if (popup.protect != null && popup.protect.split(" ").length == 1) {
+        protects.add(popup.protect);
+        statusLabel("Protect territory " + popup.protect);
+      } else {
+        statusLabel("Invalid Action");
+      }
+    } catch (IOException e) {
+      System.out.println("Could not display Protect Popup");
+    }
+  }
+
   // move to map class, easier for testing
 //    private String getTerritoryInfo(String terrName) {
 //        StringBuilder sb = new StringBuilder();
@@ -503,6 +531,7 @@ public class MapController {
       actionSet.techLevelUpgrade = techAction;
       actionSet.doResearch = researchAction;
       actionSet.actionListCloak = cloaks;
+      actionSet.actionListProtect = protects;
       objectOutputStream.reset();
       objectOutputStream.writeObject(actionSet); //write 001
       System.out.println("Status: write actionSet");
@@ -583,6 +612,7 @@ public class MapController {
     techAction = false;
     researchAction = false;
     cloaks.clear();
+    protects.clear();
   }
 
   public boolean checkWinner(String endGame) throws IOException {
