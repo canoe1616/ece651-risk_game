@@ -346,7 +346,7 @@ public class MapController {
     }
 
     try {
-      MovePopup popup = new MovePopup();
+      MovePopup popup = new MovePopup(myMap,player);
       popup.display();
       String[] words = validAction(popup.action);
       if (words != null) {

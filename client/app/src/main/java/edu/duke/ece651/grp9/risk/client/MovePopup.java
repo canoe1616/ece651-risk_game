@@ -2,6 +2,10 @@ package edu.duke.ece651.grp9.risk.client;
 
 import java.io.IOException;
 import java.net.URL;
+
+import edu.duke.ece651.grp9.risk.shared.Player;
+import edu.duke.ece651.grp9.risk.shared.Map;
+import edu.duke.ece651.grp9.risk.shared.Territory;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -21,6 +25,8 @@ public class MovePopup implements Initializable{
 
     private static Stage popupwindow;
     public static String action;
+    private Map map;
+    public Player player;
 
     @FXML
     ComboBox<String> sourceTerritory;
@@ -32,10 +38,25 @@ public class MovePopup implements Initializable{
     Slider unitLevel;
     
 
+    public MovePopup(Map map, Player player){
+
+        this.map = map;
+        this.player = player;
+      //  initialize();
+    }
+
     @Override
+    //construct
     public void initialize(URL location, ResourceBundle resources){
-        sourceTerritory.getItems().addAll("A");
-        destinationTerritory.getItems().addAll("B");
+
+        System.out.println("enter the initialize");
+
+        for(Territory t : player.getTerritoryList()) {
+            System.out.println(t.getName() + "\n");
+            sourceTerritory.getItems().addAll(t.getName());
+            destinationTerritory.getItems().addAll(t.getName());
+        }
+
     }
     
     @FXML
