@@ -3,9 +3,11 @@ package edu.duke.ece651.grp9.risk.client;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
@@ -14,13 +16,21 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ResourceBundle;
 
-public class CloakPopup {
+public class CloakPopup implements Initializable {
     private static Stage popupwindow;
     public static String cloak;
 
     @FXML
-    TextField sourceTerritory;
+    ComboBox<String> sourceTerritory;
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources){
+        sourceTerritory.getItems().addAll("A","B","C","D","E","F","G","H","I","J");
+    }
+
+
 
     @FXML
     public static void display() throws IOException {
@@ -56,7 +66,7 @@ public class CloakPopup {
         if (source instanceof Button) {
             Button btn = (Button) source;
             popupwindow.close();
-            String action = sourceTerritory.getText();
+            String action = sourceTerritory.getValue().toString();
             this.cloak = action;
         } else {
             throw new IllegalArgumentException("Invalid source");
