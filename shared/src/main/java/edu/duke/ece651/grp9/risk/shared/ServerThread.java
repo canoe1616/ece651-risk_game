@@ -41,6 +41,10 @@ public class ServerThread extends Thread{
             objectOutputStream.reset();
             objectOutputStream.writeObject(color);//send the color
 
+            //4.21 for keeping the same map between the client and server
+            objectOutputStream.reset();
+            objectOutputStream.writeObject(m);
+
             //read unit assignment
             //gamePlay.unitSetting(objectOutputStream, gamePlay.findPlayer(color, m));
             String unitString = "";

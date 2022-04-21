@@ -105,13 +105,18 @@ public class selectRoomController {
         try{
         real_color = (String)objectInputStream.readObject(); //color
         System.out.println("Status get the color: " + real_color);
+
+        //debug for same map between client and server
+            Map map = (Map)objectInputStream.readObject();
       
         FXMLLoader loaderStart = new FXMLLoader(getClass().getResource("/FXML/MapView.fxml"));
         loaderStart.setControllerFactory(c -> {
             
            //  make a map for n players
-            MapFactory mapFactory = new MapFactory();
-            Map map = mapFactory.makeMap(playerNum);
+//            MapFactory mapFactory = new MapFactory();
+//            Map map = mapFactory.makeMap(playerNum);
+
+            System.out.println("Status get the map from the server ");
             Player player = map.findPlayer(real_color);
             MapController mc = new MapController(Window, map,player,objectInputStream,objectOutputStream, mediaPlayer);
             

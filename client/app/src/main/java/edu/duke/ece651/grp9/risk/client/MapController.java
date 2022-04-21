@@ -289,10 +289,19 @@ public class MapController {
   }
 
   public void updateTerritoryText() {
-    String ter = "You have 30 total units, how do you want to place the units?\n" +
-        "you are " + color;
-    status.setText(ter);
-    System.out.println("Status: set text:" + ter);
+    player = myMap.findPlayer(color);
+    StringBuilder sb = new StringBuilder();
+    String ter = "you have "  ;
+    sb.append(ter);
+    sb.append("\n");
+
+    System.out.println(player.getName());
+    for (Territory t : player.getTerritoryList()) {
+          sb.append(t.getName() + " ");
+        }
+
+    status.setText(sb.toString());
+    System.out.println("Status: set text:" + sb.toString());
   }
 
 

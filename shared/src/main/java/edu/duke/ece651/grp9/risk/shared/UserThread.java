@@ -98,7 +98,7 @@ public class UserThread extends Thread {
              *if( gameplay.userPassPairs.containsKey(username){
              *  this.socket =
              * })
-             * 在server 端新建一个global 的变量，userLIst
+             * 在 端新建一个global 的变量，userLIst
              * 如果这个user曾经有进来过，代表它存在在userlist 当中，应该放相同的Socket.
              * 如果这是一个新加入的user的话，我们就build一个新的userlist,然后把它放到userlist
              */
