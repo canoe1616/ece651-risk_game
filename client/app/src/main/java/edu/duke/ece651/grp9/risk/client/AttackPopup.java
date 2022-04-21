@@ -10,34 +10,40 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.MenuButton;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.Slider;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.scene.control.ComboBox;
+import java.util.*;
 
-public class AttackPopup {
+public class AttackPopup implements Initializable{
 
     private static Stage popupwindow;
     public static String action;
 
+
     @FXML
-    TextField sourceTerritory;
+    ComboBox<String> sourceTerritory;
     @FXML
-    TextField destinationTerritory;
+    ComboBox<String> destinationTerritory;
     @FXML
     TextField numUnits;
     @FXML
     Slider unitLevel;
 
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources){
+        sourceTerritory.getItems().addAll("A","B","C","D","E","F","G","H","I","J");
+        destinationTerritory.getItems().addAll("A","B","C","D","E","F","G","H","I","J");
+    }
+
+
     @FXML
-    public static void display() throws IOException {
+    public void display() throws IOException {
         popupwindow = new Stage();
 
         popupwindow.initModality(Modality.APPLICATION_MODAL);
@@ -71,7 +77,7 @@ public class AttackPopup {
         if (source instanceof Button) {
             Button btn = (Button) source;
             popupwindow.close();
-            String action = sourceTerritory.getText() + " " + destinationTerritory.getText() + " " +
+            String action = sourceTerritory.getValue().toString() + " " + destinationTerritory.getValue().toString() + " " +
                     numUnits.getText() + " " + (int)unitLevel.getValue();
             this.action = action;
         } else {
