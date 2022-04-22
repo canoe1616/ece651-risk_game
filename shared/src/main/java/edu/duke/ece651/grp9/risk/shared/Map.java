@@ -158,10 +158,10 @@ public class Map implements Serializable{
     for (int i = 0; i < 7; i++) {
       sb.append("Level " + i + ": " + t.getUnits(i) + "\n");
     }
+    sb.append("Cloak Number: " + t.getCloakNum() + "\n");
     sb.append("Food Prod: 50\n");
     sb.append("Money Prod: 20\n");
     sb.append("Size: " + t.getSize() + "\n");
-    sb.append("Cloak Number: " + t.getCloakNum());
     return sb.toString();
   }
 

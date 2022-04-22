@@ -10,16 +10,24 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-
+import javafx.scene.control.ComboBox;
+import javafx.fxml.Initializable;
 import java.io.IOException;
+import java.util.ResourceBundle;
 import java.net.URL;
 
-public class ProtectPopup {
+public class ProtectPopup implements Initializable{
     private static Stage popupwindow;
     public static String protect;
 
     @FXML
-    TextField sourceTerritory;
+    ComboBox sourceTerritory;
+
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources){
+        sourceTerritory.getItems().addAll("A","B","C","D","E","F","G","H","I","J");
+    }
 
     @FXML
     public static void display() throws IOException {
@@ -55,7 +63,7 @@ public class ProtectPopup {
         if (source instanceof Button) {
             Button btn = (Button) source;
             popupwindow.close();
-            String action = sourceTerritory.getText();
+            String action = sourceTerritory.getValue().toString();
             this.protect = action;
         } else {
             throw new IllegalArgumentException("Invalid source");

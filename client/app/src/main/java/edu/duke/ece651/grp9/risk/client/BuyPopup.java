@@ -13,16 +13,24 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.fxml.Initializable;
+import javafx.scene.control.ComboBox;
+import java.util.ResourceBundle;
 
-public class BuyPopup {
+public class BuyPopup implements Initializable{
 
   private static Stage popupwindow;
   public static String action;
 
   @FXML
-  TextField sourceTerritory;
+  ComboBox sourceTerritory;
   @FXML
   TextField numUnits;
+
+  @Override
+  public void initialize(URL location, ResourceBundle resources){
+      sourceTerritory.getItems().addAll("A","B","C","D","E","F","G","H","I","J");
+  }
 
   @FXML
   public static void display() throws IOException {
@@ -59,7 +67,7 @@ public class BuyPopup {
     if (source instanceof Button) {
       Button btn = (Button) source;
       popupwindow.close();
-      String action = sourceTerritory.getText() + " " + numUnits.getText() ;
+      String action = sourceTerritory.getValue().toString() + " " + numUnits.getText() ;
       this.action = action;
     } else {
       throw new IllegalArgumentException("Invalid source");

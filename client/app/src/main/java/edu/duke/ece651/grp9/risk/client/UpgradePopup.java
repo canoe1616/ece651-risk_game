@@ -19,20 +19,27 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import java.util.ResourceBundle;
+import javafx.scene.control.ComboBox;
 
-public class UpgradePopup {
+public class UpgradePopup implements Initializable {
 
     private static Stage popupwindow;
     public static String upgrade;
 
     @FXML
-    TextField territory;
+    ComboBox territory;
     @FXML
     TextField numUnits;
     @FXML
     Slider startLevel;
     @FXML
     Slider endLevel;
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources){
+        territory.getItems().addAll("A","B","C","D","E","F","G","H","I","J");
+    }
 
     @FXML
     public static void display() throws IOException {
@@ -69,7 +76,7 @@ public class UpgradePopup {
         if (source instanceof Button) {
             Button btn = (Button) source;
             popupwindow.close();
-            String upgradeAction = territory.getText() + " " + numUnits.getText() + " " +
+            String upgradeAction = territory.getValue().toString() + " " + numUnits.getText() + " " +
                     (int)startLevel.getValue() + " " + (int)endLevel.getValue();
             this.upgrade = upgradeAction;
         } else {
