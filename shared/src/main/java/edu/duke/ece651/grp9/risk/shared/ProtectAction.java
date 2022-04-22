@@ -90,6 +90,10 @@ public class ProtectAction implements Action{
 
     @Override
     public int computeCost() {
-       return protectCost;
+        if (source.getIsProtected()) {
+            return 0;
+        } else {
+            return protectCost;
+        }
     }
 }

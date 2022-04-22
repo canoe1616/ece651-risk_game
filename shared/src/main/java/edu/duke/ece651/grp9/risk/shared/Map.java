@@ -129,6 +129,7 @@ public class Map implements Serializable{
     for (Territory ter: territoryList) {
       ter.setUnits(ter.getUnits(0)+1, 0);
       ter.setUnit(ter.getUnit() + 1);
+      // reset each territory's protect status to be false
       ter.resetProtected();
     }
     for (Player player: players) {
