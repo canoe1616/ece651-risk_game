@@ -1,17 +1,10 @@
-ECE 651: CI/CD Intro: Factoring Server 
-======================================
+ECE 651: Risk game
 
-The code in this project is for a server which reads
-numbers, and prints back their prime factors.  While
-that code is not itself particularly exciting, the point
-of this project is to walk studenst through the setup of 
-CI/CD on Duke's Gitlab.
+• Established a client-server multi-player game using Java and TCP socket programming which allows a player to be
+able to switch between different games with Multithreading and concurrency programming.
+• Implemented a graphical-based UI/UX with JavaFx and used Mockito to mock every UI action in unit tests.
+• Conducted unit test with the JUnit 5 framework and achieved 100% test coverage on the project with CI/CD
 
-![pipeline](https://gitlab.oit.duke.edu/yc407/factorserver/badges/master/pipeline.svg)
-![coverage](https://gitlab.oit.duke.edu/yc407/factorserver/badges/master/coverage.svg?job=test)
-
-## Coverage
-[Detailed coverage](https://yc407.pages.oit.duke.edu/factorserver/dashboard.html)
 
 
 
